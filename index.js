@@ -377,7 +377,7 @@ const main = async (restartAccount) => {
     nightmare.on('request', async request => {
       const requestUrl = await request.url()
       if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
-        return request.abort(['blockedbyclient']);
+        // return request.abort(['blockedbyclient']);
       }
       request.continue();
     });
