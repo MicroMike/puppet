@@ -140,7 +140,7 @@ const main = async (restartAccount) => {
   //   webPreferences
   // })
   const params = {
-    executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+    // executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
     userDataDir: 'save/' + player + '_' + login,
     headless: false,
     // slowMo: 200,
@@ -199,6 +199,7 @@ const main = async (restartAccount) => {
   const insert = async (selector, text) => {
     try {
       await nightmare.click(selector)
+      await nightmare.waitFor(1000)
       await nightmare.evaluate(args => {
         if (document.querySelector(args.selector)) {
           document.querySelector(args.selector).value = args.text
