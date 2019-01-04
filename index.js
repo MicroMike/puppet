@@ -289,7 +289,7 @@ const main = async (restartAccount) => {
     if (player === 'tidal') {
       url = 'https://listen.tidal.com/'
 
-      username = '#email'
+      username = 'input#email'
       password = '[name="password"]'
       loginBtn = '.login-cta'
       goToLogin = '#sidebar section button + button'
