@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tidal": "cross-env TYPE=tidal RAND=true node index",
-    "napster": "cross-env TYPE=napster RAND=true node index"
+    "tidal": "TYPE=tidal RAND=true node index",
+    "napster": "TYPE=napster RAND=true node index"
   },
   "author": "",
   "license": "ISC",

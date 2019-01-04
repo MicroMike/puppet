@@ -139,13 +139,18 @@ const main = async (restartAccount) => {
   //   typeInterval: 300,
   //   webPreferences
   // })
-
-  const browser = await puppeteer.launch({
+  const params = {
     executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
     userDataDir: 'save/' + player + '_' + login,
     headless: false,
     // slowMo: 200,
-  });
+  }
+
+  if (player === 'napster') {
+    delete params.userDataDir
+  }
+
+  const browser = await puppeteer.launch(params);
   const pages = await browser.pages()
   const nightmare = pages[0]
 
@@ -159,9 +164,19 @@ const main = async (restartAccount) => {
     }
   }
 
-  const exists = async (selector) => {
+  const waitForSelector = async (selector) => {
     try {
       await nightmare.waitForSelector(selector)
+      return true
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
+  const exists = async (selector) => {
+    try {
+      await nightmare.waitForSelector(selector, { timeout: 1000 * 10 })
       return true
     } catch (error) {
       // console.log(error)
@@ -169,11 +184,26 @@ const main = async (restartAccount) => {
     }
   }
 
+  const click = async (selector) => {
+    try {
+      const clicked = await nightmare.evaluate(selector => {
+        return document.querySelector(selector) && document.querySelector(selector).click()
+      }, selector)
+      return clicked
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+
   const insert = async (selector, text) => {
     try {
-      const elementHandle = await nightmare.$(selector);
       await nightmare.click(selector)
-      await elementHandle.type(text, { delay: 300 });
+      await nightmare.evaluate(args => {
+        if (document.querySelector(args.selector)) {
+          document.querySelector(args.selector).value = args.text
+        }
+      }, { selector, text })
       return true
     } catch (error) {
       console.log(error)
@@ -306,17 +336,11 @@ const main = async (restartAccount) => {
       return new Promise(async (resolve, reject) => {
         try {
           let errorLog
-          const needCaptcha = await nightmare
-            .evaluate(() => {
-              return window.___grecaptcha_cfg.clients[0] ? location.href : false
-            })
-            .then()
-            .catch(async (e) => {
-              return null
-            })
+          const needCaptcha = await nightmare.evaluate(() => {
+            return window.___grecaptcha_cfg.clients[0] ? location.href : false
+          })
 
           console.log(!!needCaptcha)
-
           if (!needCaptcha) { return resolve('click') }
 
           const captcha = await anticaptcha(needCaptcha, keyCaptcha, true)
@@ -336,14 +360,6 @@ const main = async (restartAccount) => {
                 })
               }, 5000);
             }, captcha)
-            .then()
-            .catch(async (e) => {
-              errorLog = e
-            })
-
-          if (errorLog) {
-            return resolve(errorLog)
-          }
           resolve('done')
         }
         catch (e) {
@@ -354,52 +370,52 @@ const main = async (restartAccount) => {
     }
 
     await nightmare.setRequestInterception(true);
-    nightmare.on('request', request => {
-      console.log(request)
-      if (request.resourceType() === 'image') {
-        return request.abort(['blockedbyclient']);
+    nightmare.on('request', async request => {
+      const requestUrl = await request.url()
+      if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
+        // return request.abort(['blockedbyclient']);
       }
       request.continue();
     });
-return
+
     // ***************************************************************************************************************************************************************
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
 
     if (player === 'tidal') {
       await gotoUrl(url)
-      await nightmare.waitFor(1000 + rand(2000))
+      await nightmare.waitFor(2000 + rand(2000))
       let notConnected = await exists(goToLogin)
 
       if (notConnected) {
-        await nightmare.click(goToLogin)
-        await nightmare.waitFor(1000 + rand(2000))
+        await click(goToLogin)
+        await nightmare.waitFor(2000 + rand(2000))
         const done = await exists(reLog)
 
         if (done) {
-          await nightmare.waitFor(1000 + rand(2000))
-          await nightmare.click(reLog)
+          await nightmare.waitFor(2000 + rand(2000))
+          await click(reLog)
         }
         else {
-          await nightmare.waitFor(1000 + rand(2000))
+          await nightmare.waitFor(2000 + rand(2000))
           await insert(username, login)
 
           const validCallback = await resolveCaptcha()
           // console.log(validCallback)
           if (validCallback === 'click') {
-            await nightmare.click('#recap-invisible')
+            await click('#recap-invisible')
           }
           else if (validCallback !== 'done') { throw validCallback }
 
-          await nightmare.waitFor(password, { timeout: 1000 * 60 * 3 })
-          await nightmare.waitFor(1000 + rand(2000))
+          await waitForSelector(password)
+          await nightmare.waitFor(2000 + rand(2000))
           await insert(password, pass)
-          await nightmare.waitFor(1000 + rand(2000))
-          await nightmare.click('body > div > div > div > div > div > div > div > form > button')
+          await nightmare.waitFor(2000 + rand(2000))
+          await click('body > div > div > div > div > div > div > div > form > button')
         }
       }
 
-      await nightmare.waitFor(1000 + rand(2000))
+      await nightmare.waitFor(5000 + rand(2000))
       await gotoUrl(album())
     }
 
@@ -409,19 +425,19 @@ return
     }
 
     if (!connected && player !== 'tidal') {
-      await nightmare.waitFor(1000 + rand(2000))
+      await nightmare.waitFor(2000 + rand(2000))
       await gotoUrl(url)
-      await nightmare.waitFor(password)
+      await waitForSelector(password)
 
       usernameInput = await exists(username)
 
       await insert(usernameInput ? username : password, login)
-      await nightmare.waitFor(1000 + rand(2000))
+      await nightmare.waitFor(2000 + rand(2000))
       await insert(password, '')
-      await nightmare.waitFor(1000 + rand(2000))
+      await nightmare.waitFor(2000 + rand(2000))
       await insert(password, pass)
-      await nightmare.waitFor(1000 + rand(2000))
-      await nightmare.click(remember || 'body')
+      await nightmare.waitFor(2000 + rand(2000))
+      await click(remember || 'body')
 
       let validCallback = 'click'
       if (player === 'spotify') {
@@ -430,11 +446,11 @@ return
       }
 
       if (validCallback === 'click') {
-        await nightmare.waitFor(1000 + rand(2000))
-        await nightmare.click(loginBtn)
+        await nightmare.waitFor(2000 + rand(2000))
+        await click(loginBtn)
       }
 
-      await nightmare.waitFor(1000 + rand(2000))
+      await nightmare.waitFor(2000 + rand(2000))
       suppressed = await exists(loginError)
 
       if (suppressed) { throw 'del' }
@@ -461,7 +477,7 @@ return
     // ***************************************************************************************************************************************************************
 
     if (player === 'amazon') {
-      await nightmare.waitFor(1000 + rand(2000))
+      await nightmare.waitFor(2000 + rand(2000))
       await nightmare.evaluate((btn) => {
         document.querySelector(btn.shuffleBtn) && document.querySelector(btn.shuffleBtn).click()
         document.querySelector(btn.repeatBtn) && document.querySelector(btn.repeatBtn).click()
@@ -470,18 +486,18 @@ return
 
     let stopBeforePlay
     if (player === 'spotify') {
-      await nightmare.waitFor(1000 + rand(2000))
+      await nightmare.waitFor(2000 + rand(2000))
       stopBeforePlay = await exists(usedDom)
     }
 
     if (!stopBeforePlay) {
-      await nightmare.waitFor(playBtn)
-      await nightmare.waitFor(1000 + rand(2000))
-      await nightmare.click(playBtn)
+      await waitForSelector(playBtn)
+      await nightmare.waitFor(2000 + rand(2000))
+      await click(playBtn)
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
-        await nightmare.waitFor(repeatBtn)
-        await nightmare.waitFor(1000 + rand(2000))
+        await waitForSelector(repeatBtn)
+        await nightmare.waitFor(2000 + rand(2000))
         await nightmare.evaluate((btn) => {
           const clickLoop = () => {
             document.querySelector(btn.repeatBtn).click()
@@ -536,8 +552,7 @@ return
 
       countTimeout--
 
-      await nightmare
-        .waitFor(1000 + rand(2000))
+      await nightmare.waitFor(2000 + rand(2000))
       const playExist = await exists(playBtn)
 
       if (!playExist) {
@@ -545,8 +560,8 @@ return
         return
       }
 
-      await nightmare.waitFor(1000 + rand(2000))
-      await nightmare.click(playBtn)
+      await nightmare.waitFor(2000 + rand(2000))
+      await click(playBtn)
     }, process.env.TEST || process.env.TYPE ? 1000 * 60 * 3 : 1000 * 60 * 10 + rand(1000 * 60 * 15));
 
     const restart = async (timeout = 0) => {
@@ -578,7 +593,7 @@ return
           used = typeof used === 'string' && used.match(/currently/) ? used : false
 
           if (!used) {
-            await nightmare.click('#wimp > div > div > div > div > div > button')
+            await click('#wimp > div > div > div > div > div > button')
           }
         }
       }
@@ -606,14 +621,14 @@ return
             const isPause = await exists('.player-play-button .icon-pause2')
 
             if (isPause) {
-              await nightmare.click('.player-play-button .icon-pause2')
-              await nightmare.waitFor(1000 + rand(2000))
+              await click('.player-play-button .icon-pause2')
+              await nightmare.waitFor(2000 + rand(2000))
             }
 
             const isPlay = await exists('.player-play-button .icon-play-button')
 
             if (isPlay) {
-              await nightmare.click('.player-play-button .icon-play-button')
+              await click('.player-play-button .icon-play-button')
             }
           }
         }
