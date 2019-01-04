@@ -166,7 +166,7 @@ const main = async (restartAccount) => {
 
   const waitForSelector = async (selector) => {
     try {
-      await nightmare.waitForSelector(selector)
+      await nightmare.waitForSelector(selector, { timeout: 1000 * 60 * 3 })
       return true
     } catch (error) {
       console.log(error)
