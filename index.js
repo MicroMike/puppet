@@ -187,6 +187,7 @@ const main = async (restartAccount) => {
   const click = async (selector) => {
     try {
       const clicked = await nightmare.evaluate(selector => {
+        console.log(document.querySelector(selector))
         return document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
       return clicked
@@ -370,7 +371,7 @@ const main = async (restartAccount) => {
     nightmare.on('request', async request => {
       const requestUrl = await request.url()
       if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
-        // return request.abort(['blockedbyclient']);
+        return request.abort(['blockedbyclient']);
       }
       request.continue();
     });
