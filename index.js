@@ -140,7 +140,7 @@ const main = async (restartAccount) => {
   //   webPreferences
   // })
   const params = {
-    // executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+    executablePath: '/usr/bin/google-chrome-stable',
     userDataDir: 'save/' + player + '_' + login,
     headless: false,
     // slowMo: 200,
