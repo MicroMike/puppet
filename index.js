@@ -202,7 +202,11 @@ const main = async (restartAccount) => {
       await nightmare.waitFor(1000)
       await nightmare.evaluate(args => {
         if (document.querySelector(args.selector)) {
+          console.log('ok')
           document.querySelector(args.selector).value = args.text
+        }
+        else {
+          console.log('not ok')
         }
       }, { selector, text })
       return true
