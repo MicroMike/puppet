@@ -348,9 +348,7 @@ const main = async (restartAccount) => {
           console.log(!!needCaptcha)
           if (!needCaptcha) { return resolve('click') }
 
-          // const captcha = await anticaptcha(needCaptcha, keyCaptcha, true)
-          const captcha = 'test'
-          console.log(captcha)
+          const captcha = await anticaptcha(needCaptcha, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
 
           await nightmare
@@ -379,7 +377,7 @@ const main = async (restartAccount) => {
     nightmare.on('request', async request => {
       const requestUrl = await request.url()
       if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
-        // return request.abort(['blockedbyclient']);
+        return request.abort(['blockedbyclient']);
       }
       request.continue();
     });
