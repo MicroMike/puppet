@@ -198,17 +198,9 @@ const main = async (restartAccount) => {
 
   const insert = async (selector, text) => {
     try {
+      const elementHandle = await nightmare.$(selector);
       await nightmare.click(selector)
-      await nightmare.waitFor(1000)
-      await nightmare.evaluate(args => {
-        if (document.querySelector(args.selector)) {
-          console.log('ok', args.selector, args.text)
-          document.querySelector(args.selector).value = args.text
-        }
-        else {
-          console.log('not ok')
-        }
-      }, { selector, text })
+      await elementHandle.type(text, { delay: 300 });
       return true
     } catch (error) {
       console.log(error)
