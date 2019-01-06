@@ -10,6 +10,7 @@ let countTimeout = 0
 let countTimeoutFreeze = 0
 const max = 20
 const pause = check ? 10 : 30
+let err = false
 
 const getTime = () => {
   const date = new Date
@@ -150,7 +151,17 @@ const main = async (restartAccount) => {
     delete params.userDataDir
   }
 
-  const browser = await puppeteer.launch(params);
+  let browser
+
+  try {
+    browser = await puppeteer.launch(params);
+  }
+  catch (e) {
+    err = true
+    params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+    browser = await puppeteer.launch(params);
+  }
+
   const pages = await browser.pages()
   const nightmare = pages[0]
 
@@ -667,9 +678,9 @@ const main = async (restartAccount) => {
 }
 
 const mainInter = setInterval(() => {
-  if (over || process.env.TEST) { return clearInterval(mainInter) }
+  if (over || process.env.TEST || err) { return clearInterval(mainInter) }
   try {
-    // main()
+    main()
   }
   catch (e) {
     console.log('ZEUB')
