@@ -460,6 +460,9 @@ const main = async (restartAccount) => {
         await click(loginBtn)
       }
 
+      if (player === 'spotify') {
+        await nightmare.waitFor(10000 + rand(2000))
+      }
       await nightmare.waitFor(2000 + rand(2000))
       suppressed = await exists(loginError)
 
