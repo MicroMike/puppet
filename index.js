@@ -209,6 +209,7 @@ const main = async (restartAccount) => {
   }
 
   const insert = async (selector, text) => {
+    if (!text) { return }
     try {
       const elementHandle = await nightmare.$(selector);
       await nightmare.click(selector)
