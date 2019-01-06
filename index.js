@@ -393,7 +393,7 @@ const main = async (restartAccount) => {
     // ***************************************************************************************************************************************************************
 
     if (player === 'tidal') {
-      await gotoUrl(url)
+      await gotoUrl(album())
       await nightmare.waitFor(2000 + rand(2000))
       let notConnected = await exists(goToLogin)
 
@@ -423,10 +423,10 @@ const main = async (restartAccount) => {
           await nightmare.waitFor(2000 + rand(2000))
           await click('body > div > div > div > div > div > div > div > form > button')
         }
-      }
 
-      await nightmare.waitFor(5000 + rand(2000))
-      await gotoUrl(album())
+        await nightmare.waitFor(5000 + rand(2000))
+        await gotoUrl(album())
+      }
     }
 
     if (player === 'amazon' || player === 'napster' || player === 'spotify') {
