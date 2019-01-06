@@ -94,7 +94,7 @@ const main = async (restartAccount) => {
     return albumUrl
   }
   if (over) { return }
-  if (!restartAccount) {
+  if (!restartAccount && !check) {
     if (golbalAccountsLength === 0) {
       console.log('Pas de comptes')
       return
@@ -674,7 +674,7 @@ const main = async (restartAccount) => {
       });
     }
 
-    // await browser.close()
+    await browser.close()
   }
 }
 
