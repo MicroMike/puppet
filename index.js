@@ -9,7 +9,7 @@ let over = false
 let countTimeout = 0
 let countTimeoutFreeze = 0
 const max = 20
-const pause = check ? 10 : 30
+const pause = check ? 5 : 30
 let err = false
 
 const getTime = () => {
