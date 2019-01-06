@@ -346,7 +346,7 @@ const main = async (restartAccount) => {
         try {
           let errorLog
           const needCaptcha = await nightmare.evaluate(() => {
-            return window.___grecaptcha_cfg.clients[0] ? location.href : false
+            return window.___grecaptcha_cfg ? location.href : false
           })
 
           console.log(!!needCaptcha)
