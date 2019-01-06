@@ -10,7 +10,7 @@ let countTimeout = 0
 let countTimeoutFreeze = 0
 const max = 20
 const pause = check ? 5 : 30
-let err = false
+let errorPath = false
 
 const getTime = () => {
   const date = new Date
@@ -157,7 +157,7 @@ const main = async (restartAccount) => {
     browser = await puppeteer.launch(params);
   }
   catch (e) {
-    err = true
+    errorPath = true
     params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
     browser = await puppeteer.launch(params);
   }
@@ -679,7 +679,7 @@ const main = async (restartAccount) => {
 }
 
 const mainInter = setInterval(() => {
-  if (over || process.env.TEST || err) { return clearInterval(mainInter) }
+  if (over || process.env.TEST || errorPath) { return clearInterval(mainInter) }
   try {
     main()
   }
