@@ -3,4 +3,7 @@ save/*/*/*
 !Cookies
 save/*/*.*
 save/*/DevToolsActivePort
+save/*/SingletonLock
+save/*/SingletonCookie
+save/*/SingletonSocket
 save/*/Local State
