@@ -8,6 +8,7 @@
     "tidal": "TYPE=tidal RAND=true node index",
     "spotify": "TYPE=spotify RAND=true node index",
     "napster": "TYPE=napster RAND=true node index",
+    "amazon": "TYPE=amazon RAND=true node index",
     "check": "CHECK=true node index",
     "push": "git add . && git commit -m c && git push"
   },
