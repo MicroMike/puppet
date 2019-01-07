@@ -484,7 +484,6 @@ const main = async (restartAccount) => {
     if (player === 'napster') {
       const issueAccount = await exists('.account-issue')
       const issueRadio = await exists('.unradio')
-      console.log(issueAccount)
       if (issueAccount || issueRadio) { throw 'del' }
     }
 
