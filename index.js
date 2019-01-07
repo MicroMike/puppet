@@ -210,11 +210,9 @@ const main = async (restartAccount) => {
 
   const click = async (selector) => {
     try {
-      const clicked = await nightmare.evaluate(selector => {
-        console.log(document.querySelector(selector))
-        return document.querySelector(selector) && document.querySelector(selector).click()
+      await nightmare.evaluate(selector => {
+        document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
-      return clicked
     } catch (error) {
       console.log(error)
       return false
@@ -626,46 +624,32 @@ const main = async (restartAccount) => {
 
       if (!used && player === 'napster') {
         t1 = await nightmare.evaluate(() => {
-          const time = '.player-progress-slider-box span.ui-slider-handle'
-          return document.querySelector(time).style.left
+          const timeLine = '.player-progress-slider-box span.ui-slider-handle'
+          return document.querySelector(timeLine) && document.querySelector(timeLine).style.left
         })
 
-        if (t2 && t1 === t2) {
+        if (t1 === t2) {
           freeze++
         }
         else {
           freeze = 0
         }
 
-        if (freeze >= 2) {
+        if (!t1) {
+          fix = true
+        }
+        else if (freeze >= 2) {
           freeze = 0
-
-          if (t1 === 'no bar') {
-            fix = true
-          }
-          else {
-            const isPause = await exists('.player-play-button .icon-pause2')
-
-            if (isPause) {
-              await click('.player-play-button .icon-pause2')
-              await nightmare.waitFor(2000 + rand(2000))
-            }
-
-            const isPlay = await exists('.player-play-button .icon-play-button')
-
-            if (isPlay) {
-              await click('.player-play-button .icon-play-button')
-            }
-          }
+          await click('.player-play-button .icon-pause2')
+          await nightmare.waitFor(2000 + rand(2000))
+          await click('.player-play-button .icon-play-button')
         }
 
         t2 = t1
       }
 
       if (used || fix) {
-        if (used) {
-          console.log(getTime() + ' used', account)
-        }
+        console.log(getTime(), used ? ' used' : ' no bar', account)
         restart(used ? 1000 * 60 * 60 : 0)
       }
     }, 1000 * 30)
