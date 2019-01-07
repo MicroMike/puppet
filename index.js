@@ -224,6 +224,9 @@ const main = async (restartAccount) => {
     try {
       const elementHandle = await nightmare.$(selector);
       await nightmare.click(selector)
+      await nightmare.evaluate(selector => {
+        document.querySelector(selector).value = ''
+      }, selector)
       await elementHandle.type(text, { delay: 300 });
       return true
     } catch (error) {
