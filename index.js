@@ -655,6 +655,8 @@ const main = async (restartAccount) => {
     }, 1000 * 30)
   }
   catch (e) {
+    await browser.close()
+
     accountsValid = accountsValid.filter(a => a !== account)
 
     console.log(getTime() + " ERROR ", account, e)
@@ -673,8 +675,6 @@ const main = async (restartAccount) => {
         });
       });
     }
-
-    await browser.close()
   }
 }
 
