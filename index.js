@@ -435,10 +435,10 @@ const main = async (restartAccount) => {
           await insert(password, pass)
           await nightmare.waitFor(2000 + rand(2000))
           await click('body > div > div > div > div > div > div > div > form > button')
-        }
 
-        await nightmare.waitFor(5000 + rand(2000))
-        await gotoUrl(album())
+          await nightmare.waitFor(5000 + rand(2000))
+          await gotoUrl(album())
+        }
       }
     }
 
@@ -635,14 +635,17 @@ const main = async (restartAccount) => {
           freeze = 0
         }
 
-        if (!t1) {
-          fix = true
-        }
-        else if (freeze >= 2) {
+        if (freeze >= 2) {
           freeze = 0
-          await click('.player-play-button .icon-pause2')
-          await nightmare.waitFor(2000 + rand(2000))
-          await click('.player-play-button .icon-play-button')
+
+          if (!t1) {
+            fix = true
+          }
+          else {
+            await click('.player-play-button .icon-pause2')
+            await nightmare.waitFor(2000 + rand(2000))
+            await click('.player-play-button .icon-play-button')
+          }
         }
 
         t2 = t1
