@@ -172,6 +172,12 @@ const main = async (restartAccount) => {
   const pages = await browser.pages()
   const nightmare = pages[0]
 
+  await nightmare.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
+    });
+  });
+
   const gotoUrl = async (url) => {
     try {
       await nightmare.goto(url, { timeout: 1000 * 60 * 3 })
