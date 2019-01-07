@@ -148,7 +148,7 @@ const main = async (restartAccount) => {
     userDataDir: 'save/' + player + '_' + login,
     headless: false,
     defaultViewport: {
-      width: 700,
+      width: 750,
       height: 450,
     }
     // slowMo: 200,
