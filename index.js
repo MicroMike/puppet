@@ -333,8 +333,8 @@ const main = async (restartAccount) => {
       url = 'https://accounts.spotify.com/login'
       loggedDom = '.sessionInfo'
 
-      username = 'form input[name="username"]'
-      password = 'form input[name="password"]'
+      username = '#login-username'
+      password = '#login-password'
       loginBtn = '#login-button'
       loginError = '.alert.alert-warning'
 
