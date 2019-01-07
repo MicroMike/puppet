@@ -312,6 +312,7 @@ const main = async (restartAccount) => {
         'https://listen.tidal.com/album/88716570',
         'https://listen.tidal.com/album/88041212',
         'https://listen.tidal.com/album/101352536',
+        'https://listen.tidal.com/album/101927847',
       ]
 
       usedDom = '.WARN'
@@ -337,6 +338,7 @@ const main = async (restartAccount) => {
         'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
         'https://open.spotify.com/album/5509gS9cZUrbTFege0fpTk',
         'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
+        'https://open.spotify.com/album/2jmPHLM2be2g19841vHjWE',
       ]
       usedDom = '.ConnectBar'
     }
