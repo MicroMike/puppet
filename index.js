@@ -148,8 +148,8 @@ const main = async (restartAccount) => {
     userDataDir: 'save/' + player + '_' + login,
     headless: false,
     defaultViewport: {
-      width: 725,
-      height: 460,
+      width: 700,
+      height: 450,
     }
     // slowMo: 200,
   }
@@ -391,7 +391,7 @@ const main = async (restartAccount) => {
     await nightmare.setRequestInterception(true);
     nightmare.on('request', async request => {
       const requestUrl = await request.url()
-      if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
+      if (request.resourceType() === 'image' && !/svg$/.test(requestUrl) && player !== 'napster') {
         return request.abort(['blockedbyclient']);
       }
       request.continue();
