@@ -1,6 +1,9 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const request = require('ajax-request');
+
+process.setMaxListeners(Infinity)
+
 const check = process.env.CHECK
 let golbalAccountsLength = []
 let accounts = []
