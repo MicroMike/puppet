@@ -483,6 +483,7 @@ const main = async (restartAccount) => {
 
     if (player === 'napster') {
       const issue = await nightmare.evaluate(() => {
+        console.log(!!document.querySelector('.unradio'), !!document.querySelector('.account-issue'))
         return document.querySelector('.unradio') || document.querySelector('.account-issue')
       })
       console.log(issue)
