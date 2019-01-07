@@ -194,6 +194,10 @@ const main = async (restartAccount) => {
       return true
     } catch (error) {
       throw 'Selector :' + selector + ' not found'
+      await nightmare.screenshot({
+        path: player + '_' + login,
+        fullPage: true
+      })
       return false
     }
   }
