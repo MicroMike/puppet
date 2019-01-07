@@ -486,6 +486,7 @@ const main = async (restartAccount) => {
         return document.querySelector('.unradio') && document.querySelector('.unradio').innerHTML ||
           document.querySelector('.account-issue') && document.querySelector('.account-issue').innerHTML
       })
+      console.log(issue)
       if (issue) { throw 'del' }
     }
 
