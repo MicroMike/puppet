@@ -193,7 +193,7 @@ const main = async (restartAccount) => {
       await nightmare.waitForSelector(selector, { timeout: 1000 * 60 * 3 })
       return true
     } catch (error) {
-      console.log(error)
+      throw 'Selector :' + selector + ' not found'
       return false
     }
   }
