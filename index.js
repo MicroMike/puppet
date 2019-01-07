@@ -482,12 +482,10 @@ const main = async (restartAccount) => {
     // }
 
     if (player === 'napster') {
-      const issue = await nightmare.evaluate(() => {
-        console.log(!!document.querySelector('.unradio'), !!document.querySelector('.account-issue'))
-        return document.querySelector('.unradio') || document.querySelector('.account-issue')
-      })
-      console.log(issue)
-      if (issue) { throw 'del' }
+      const issueAccount = await exists('.account-issue')
+      const issueRadio = await exists('.unradio')
+      console.log(issueAccount)
+      if (issueAccount || issueRadio) { throw 'del' }
     }
 
     if (check) {
