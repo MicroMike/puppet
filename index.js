@@ -155,7 +155,7 @@ const main = async (restartAccount) => {
   }
 
   if (player === 'napster') {
-    // delete params.userDataDir
+    delete params.userDataDir
   }
 
   let browser
