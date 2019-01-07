@@ -147,6 +147,10 @@ const main = async (restartAccount) => {
     executablePath: '/usr/bin/google-chrome-stable',
     userDataDir: 'save/' + player + '_' + login,
     headless: false,
+    defaultViewport: {
+      width: 800,
+      height: 800,
+    }
     // slowMo: 200,
   }
 
