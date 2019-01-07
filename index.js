@@ -391,7 +391,7 @@ const main = async (restartAccount) => {
     await nightmare.setRequestInterception(true);
     nightmare.on('request', async request => {
       const requestUrl = await request.url()
-      if (request.resourceType() === 'image' && !/svg$/.test(requestUrl) && player !== 'napster') {
+      if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
         return request.abort(['blockedbyclient']);
       }
       request.continue();
