@@ -4,7 +4,7 @@ let valid = []
 
 const fs = require('fs');
 
-fs.readFile('check.txt', 'utf8', function (err, data) {
+fs.readFile('napsterAccount.txt', 'utf8', function (err, data) {
   if (err) return console.log(err);
   one = data.split(',')
 
@@ -23,7 +23,7 @@ fs.readFile('check.txt', 'utf8', function (err, data) {
     two = data.split(',')
     valid = valid.filter(account => two.indexOf(account) === -1)
 
-    fs.writeFile('check.txt', valid, function (err) {
+    fs.writeFile('napsterAccount.txt', valid, function (err) {
       if (err) return console.log(err);
     });
   })
