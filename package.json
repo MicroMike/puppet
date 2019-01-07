@@ -11,7 +11,8 @@
     "amazon": "TYPE=amazon RAND=true node index",
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "check": "CHECK=true node index",
-    "push": "git add . && git commit -m c && git push"
+    "push": "git add . && git commit -m c && git push",
+    "del": "git add napsterAccountDel.txt && git commit -m c && git push"
   },
   "author": "",
   "license": "ISC",
