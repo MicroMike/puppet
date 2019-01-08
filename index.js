@@ -425,7 +425,7 @@ const main = async (restartAccount) => {
       }
     }
 
-    if (player === 'spotify') {
+    if (player === 'spotify' && check) {
       await gotoUrl('https://www.spotify.com/fr/account/overview')
       const free = await nightmare.evaluate(() => {
         const typeAccount = document.querySelector('.product-name')
