@@ -360,7 +360,7 @@ const main = async (restartAccount) => {
           if (!needCaptcha) { return resolve('click') }
 
           const captcha = check ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
-          console.log('done')
+          console.log('done', login)
           if (captcha === 'error') { return resolve('error') }
 
           await nightmare
