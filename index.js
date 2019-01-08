@@ -10,7 +10,6 @@ let accounts = []
 let accountsValid = []
 let over = false
 let countTimeout = 0
-let countTimeoutFreeze = 0
 const max = 20
 const pause = check ? 15 : 30
 let errorPath = false
@@ -106,14 +105,12 @@ const main = async (restartAccount) => {
       return
     }
   }
-  // let session = persist || 'persist: ' + Date.now()
+
   let account = restartAccount || accounts[0]
   accounts = accounts.filter(a => a !== account)
 
   accountsValid = accountsValid.filter(a => a !== account)
   accountsValid.push(account)
-
-  let inter
 
   accountInfo = account.split(':')
   const player = accountInfo[0]
@@ -121,28 +118,6 @@ const main = async (restartAccount) => {
   const pass = accountInfo[2]
   const logged = accountInfo[3] || null
 
-  // account += !logged ? ':' + session : ''
-
-  const webPreferences = {
-    partition: process.env.TEST ? '' : 'persist: ' + player + ':' + login,
-    webSecurity: true,
-    allowRunningInsecureContent: true,
-    plugins: true,
-    images: !!process.env.TEST || !!process.env.TYPE,
-    experimentalFeatures: true
-  }
-
-  // const Nightmare = require('nightmare')
-  // const nightmare = Nightmare({
-  //   electronPath: require('electron'),
-  //   // openDevTools: !!process.env.TEST,
-  //   alwaysOnTop: !!process.env.TEST,
-  //   waitTimeout: 1000 * 60 * 3,
-  //   gotoTimeout: 1000 * 59 * 3,
-  //   show: true,
-  //   typeInterval: 300,
-  //   webPreferences
-  // })
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
     userDataDir: 'save/' + player + '_' + login,
@@ -180,7 +155,7 @@ const main = async (restartAccount) => {
 
   const gotoUrl = async (url) => {
     try {
-      await nightmare.goto(url, { timeout: 1000 * 60 * 3 })
+      await nightmare.goto(url, { timeout: 1000 * 60 * 3, waitUntil: 'domcontentloaded' })
       return true
     } catch (error) {
       // console.log(error)
@@ -188,16 +163,12 @@ const main = async (restartAccount) => {
     }
   }
 
-  const waitForSelector = async (selector) => {
+  const waitForSelector = async (selector, timeout = 1000 * 60 * 3) => {
     try {
-      await nightmare.waitForSelector(selector, { timeout: 1000 * 60 * 3 })
+      await nightmare.waitForSelector(selector, { timeout })
       return true
     } catch (error) {
       throw 'Selector :' + selector + ' not found'
-      await nightmare.screenshot({
-        path: '/' + player + '_' + login + '.jpg',
-        fullPage: true
-      })
       return false
     }
   }
@@ -207,36 +178,46 @@ const main = async (restartAccount) => {
       await nightmare.waitForSelector(selector, { timeout: 1000 * 10 })
       return true
     } catch (error) {
-      // console.log(error)
       return false
     }
   }
 
   const click = async (selector) => {
-    try {
-      await nightmare.evaluate(selector => {
-        document.querySelector(selector) && document.querySelector(selector).click()
-      }, selector)
-    } catch (error) {
-      console.log(error)
-      return false
-    }
+    const exist = await waitForSelector(selector, 1000 * 10)
+    if (!exist) { return false }
+
+    await nightmare.waitFor(2000 + rand(2000))
+    await nightmare.evaluate(selector => {
+      document.querySelector(selector) && document.querySelector(selector).click()
+    }, selector)
+
+    return true
+  }
+
+  const justClick = async (selector) => {
+    const exist = await exists(selector)
+    if (!exist) { return false }
+
+    await nightmare.waitFor(2000 + rand(2000))
+    await nightmare.evaluate(selector => {
+      document.querySelector(selector) && document.querySelector(selector).click()
+    }, selector)
+
+    return true
   }
 
   const insert = async (selector, text) => {
-    if (!text) { return }
-    try {
-      const elementHandle = await nightmare.$(selector);
-      await nightmare.click(selector)
-      await nightmare.evaluate(selector => {
-        document.querySelector(selector).value = ''
-      }, selector)
-      await elementHandle.type(text, { delay: 300 });
-      return true
-    } catch (error) {
-      console.log(error)
-      return false
-    }
+    const exist = await click(selector)
+    if (!exist) { return false }
+
+    await nightmare.waitFor(2000 + rand(2000))
+    const elementHandle = await nightmare.$(selector);
+    await nightmare.evaluate(selector => {
+      document.querySelector(selector).value = ''
+    }, selector)
+    await elementHandle.type(text, { delay: 300 });
+
+    return true
   }
 
   let username
@@ -260,6 +241,11 @@ const main = async (restartAccount) => {
   let errorLog = false
   let connected = false
   let suppressed = false
+
+  let inter
+  let changeInterval
+  let restartTimeout
+  let errorClick = false
 
   try {
     if (player === 'napster') {
@@ -367,14 +353,14 @@ const main = async (restartAccount) => {
         try {
           let errorLog
           const needCaptcha = await nightmare.evaluate(() => {
-            return window.___grecaptcha_cfg ? location.href : false
+            return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients ? location.href : false
           })
 
           console.log(!!needCaptcha)
           if (!needCaptcha) { return resolve('click') }
 
           const captcha = await anticaptcha(needCaptcha, keyCaptcha, true)
-          console.log(captcha)
+          console.log('done')
           if (captcha === 'error') { return resolve('error') }
 
           await nightmare
@@ -415,33 +401,28 @@ const main = async (restartAccount) => {
     if (player === 'tidal') {
       await gotoUrl(album())
       await nightmare.waitFor(2000 + rand(2000))
-      let notConnected = await exists(goToLogin)
+      const notConnected = await justClick(goToLogin)
 
       if (notConnected) {
-        await click(goToLogin)
-        await nightmare.waitFor(2000 + rand(2000))
-        const done = await exists(reLog)
+        const done = await justClick(reLog)
 
-        if (done) {
-          await nightmare.waitFor(2000 + rand(2000))
-          await click(reLog)
-        }
-        else {
-          await nightmare.waitFor(2000 + rand(2000))
+        if (!done) {
           await insert(username, login)
 
           const validCallback = await resolveCaptcha()
           // console.log(validCallback)
           if (validCallback === 'click') {
-            await click('#recap-invisible')
+            errorClick = await click('#recap-invisible')
+            if (errorClick) { return }
           }
           else if (validCallback !== 'done') { throw validCallback }
 
-          await waitForSelector(password)
-          await nightmare.waitFor(2000 + rand(2000))
+          const passwordSelector = await waitForSelector(password)
+          if (!passwordSelector) { return }
+
           await insert(password, pass)
-          await nightmare.waitFor(2000 + rand(2000))
-          await click('body > div > div > div > div > div > div > div > form > button')
+          errorClick = await click('body > div > div > div > div > div > div > div > form > button')
+          if (errorClick) { return }
 
           await nightmare.waitFor(5000 + rand(2000))
           await gotoUrl(album())
@@ -449,7 +430,7 @@ const main = async (restartAccount) => {
       }
     }
 
-    if (player === 'amazon' || player === 'napster' || player === 'spotify') {
+    if (player === 'amazon' || player === 'spotify') {
       await gotoUrl(album())
       connected = await exists(loggedDom)
     }
@@ -457,17 +438,12 @@ const main = async (restartAccount) => {
     if (!connected && player !== 'tidal') {
       await nightmare.waitFor(2000 + rand(2000))
       await gotoUrl(url)
-      await waitForSelector(password)
 
       usernameInput = await exists(username)
 
       await insert(usernameInput ? username : password, login)
-      await nightmare.waitFor(2000 + rand(2000))
-      await insert(password, '')
-      await nightmare.waitFor(2000 + rand(2000))
       await insert(password, pass)
-      await nightmare.waitFor(2000 + rand(2000))
-      await click(remember || 'body')
+      await justClick(remember)
 
       let validCallback = 'click'
       if (player === 'spotify') {
@@ -476,8 +452,7 @@ const main = async (restartAccount) => {
       }
 
       if (validCallback === 'click') {
-        await nightmare.waitFor(2000 + rand(2000))
-        await click(loginBtn)
+        await justClick(loginBtn)
       }
 
       if (player === 'amazon') {
@@ -508,11 +483,8 @@ const main = async (restartAccount) => {
     // ***************************************************************************************************************************************************************
 
     if (player === 'amazon') {
-      await nightmare.waitFor(2000 + rand(2000))
-      await nightmare.evaluate((btn) => {
-        document.querySelector(btn.shuffleBtn) && document.querySelector(btn.shuffleBtn).click()
-        document.querySelector(btn.repeatBtn) && document.querySelector(btn.repeatBtn).click()
-      }, { shuffleBtn, repeatBtn })
+      await justClick(shuffleBtn)
+      await justClick(repeatBtn)
     }
 
     let stopBeforePlay
@@ -522,30 +494,23 @@ const main = async (restartAccount) => {
     }
 
     if (!stopBeforePlay) {
-      await waitForSelector(playBtn)
-      await nightmare.waitFor(2000 + rand(2000))
-      await click(playBtn)
+      errorClick = await click(playBtn)
+      if (!errorClick) { return }
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
-        await waitForSelector(repeatBtn)
-        await nightmare.waitFor(2000 + rand(2000))
-        await nightmare.evaluate((btn) => {
-          const clickLoop = () => {
-            document.querySelector(btn.repeatBtn).click()
-            setTimeout(() => {
-              if (!document.querySelector(btn.repeatBtnOk)) {
-                clickLoop()
-              }
-            }, 2600);
-          }
+        const clickLoop = () => {
+          setTimeout(async () => {
+            const existRepeatBtnOk = await exists(repeatBtnOk)
+            if (!existRepeatBtnOk) {
+              await justClick(repeatBtn)
+              clickLoop()
+            }
+          }, 2600);
+        }
 
-          if (document.querySelector(btn.repeatBtn) && !document.querySelector(btn.repeatBtnOk)) {
-            clickLoop()
-          }
+        clickLoop()
 
-          document.querySelector(btn.shuffleBtn) && document.querySelector(btn.shuffleBtn).click()
-
-        }, { repeatBtn, repeatBtnOk, shuffleBtn })
+        await justClick(shuffleBtn)
       }
     }
 
@@ -558,54 +523,33 @@ const main = async (restartAccount) => {
     let freeze = 1
     let fix = false
     let used
-    let inter
-    let changeInterval
-
-    const ifCatch = async (e) => {
-      clearInterval(inter)
-      clearInterval(changeInterval)
-      accountsValid = accountsValid.filter(a => a !== account)
-      accounts.push(account)
-      await browser.close()
-      console.log("ERROR freeze ", e)
-    }
 
     changeInterval = setInterval(async () => {
       if (over) { return clearInterval(changeInterval) }
 
       await gotoUrl(album())
 
-      countTimeout++
-
-      for (let i = 0; i < countTimeout; i++) {
-        await nightmare.waitFor(1000 * 60)
-      }
-
+      await nightmare.waitFor(1000 * 60 * ++countTimeout)
       countTimeout--
 
-      await nightmare.waitFor(2000 + rand(2000))
-      const playExist = await exists(playBtn)
-
-      if (!playExist) {
-        ifCatch('catch no play')
-        return
-      }
-
-      await nightmare.waitFor(2000 + rand(2000))
-      await click(playBtn)
-    }, process.env.TEST || process.env.TYPE ? 1000 * 60 * 3 : 1000 * 60 * 10 + rand(1000 * 60 * 15));
+      errorClick = await click(playBtn)
+      if (!errorClick) { return }
+    }, process.env.TEST || process.env.TYPE ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
 
     const restart = async (timeout = 0) => {
       clearInterval(changeInterval)
       clearInterval(inter)
+      clearTimeout(restartTimeout)
+
       accountsValid = accountsValid.filter(a => a !== account)
       setTimeout(() => {
         accounts.push(account)
       }, timeout);
+
       await browser.close()
     }
 
-    let restartTimeout = setTimeout(() => {
+    restartTimeout = setTimeout(() => {
       if (over) { return clearTimeout(restartTimeout) }
       restart()
     }, 1000 * 60 * 30 + rand(1000 * 60 * 30));
@@ -616,7 +560,7 @@ const main = async (restartAccount) => {
       used = await exists(usedDom)
 
       if (used) {
-        used = await nightmare.evaluate((usedDom) => {
+        used = await nightmare.evaluate(() => {
           return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
         }, usedDom)
 
@@ -624,7 +568,7 @@ const main = async (restartAccount) => {
           used = typeof used === 'string' && used.match(/currently/) ? used : false
 
           if (!used) {
-            await click('#wimp > div > div > div > div > div > button')
+            await justClick('#wimp > div > div > div > div > div > button')
           }
         }
       }
@@ -635,23 +579,17 @@ const main = async (restartAccount) => {
           return document.querySelector(timeLine) && document.querySelector(timeLine).style.left
         })
 
-        if (t1 === t2) {
-          freeze++
-        }
-        else {
-          freeze = 0
-        }
+        if (t1 === t2) { freeze++ }
+        else { freeze = 0 }
 
         if (freeze >= 2) {
           freeze = 0
 
-          if (!t1) {
-            fix = true
-          }
+          if (!t1) { fix = true }
           else {
-            await click('.player-play-button .icon-pause2')
+            await justClick('.player-play-button .icon-pause2')
             await nightmare.waitFor(2000 + rand(2000))
-            await click('.player-play-button .icon-play-button')
+            await justClick('.player-play-button .icon-play-button')
           }
         }
 
@@ -666,6 +604,10 @@ const main = async (restartAccount) => {
   }
   catch (e) {
     await browser.close()
+
+    clearInterval(inter)
+    clearInterval(changeInterval)
+    clearTimeout(restartTimeout)
 
     accountsValid = accountsValid.filter(a => a !== account)
 
