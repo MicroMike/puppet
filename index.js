@@ -352,7 +352,7 @@ const main = async (restartAccount) => {
 
           if (!needCaptcha) { return resolve('click') }
 
-          const captcha = check && player === 'spotify' ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
+          const captcha = process.env.CHECK ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
           console.log('resolveCaptcha', 'done', login)
           if (captcha === 'error') { return resolve('error') }
 
