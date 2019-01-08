@@ -474,7 +474,9 @@ const main = async (restartAccount) => {
     }
 
     if (check) {
-      await browser.close()
+      setTimeout(() => {
+        await browser.close()
+      }, 1000 * 30);
       return
     }
 
