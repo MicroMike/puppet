@@ -560,7 +560,7 @@ const main = async (restartAccount) => {
       used = await exists(usedDom)
 
       if (used) {
-        used = await nightmare.evaluate(() => {
+        used = await nightmare.evaluate((usedDom) => {
           return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
         }, usedDom)
 
