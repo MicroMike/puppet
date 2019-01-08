@@ -424,6 +424,7 @@ const main = async (restartAccount) => {
     }
 
     if (player === 'spotify' && check) {
+      console.log(tokenAutoLog)
       if (tokenAutoLog) {
         await gotoUrl(tokenAutoLog)
         await nightmare.waitFor(5000 + rand(2000))
