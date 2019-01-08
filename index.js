@@ -350,7 +350,6 @@ const main = async (restartAccount) => {
             return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients ? location.href : false
           })
 
-          console.log(!!needCaptcha)
           if (!needCaptcha) { return resolve('click') }
 
           const captcha = check && player === 'spotify' ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
