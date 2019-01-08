@@ -440,6 +440,10 @@ const main = async (restartAccount) => {
     }
 
     if (!connected && player !== 'tidal') {
+      if (player === 'spotify') {
+        throw 'Spotify relog ' + login
+        return
+      }
       await nightmare.waitFor(2000 + rand(2000))
       await gotoUrl(url)
 
