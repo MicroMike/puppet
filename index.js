@@ -425,6 +425,15 @@ const main = async (restartAccount) => {
       }
     }
 
+    if (player === 'spotify') {
+      await gotoUrl('https://www.spotify.com/fr/account/overview')
+      const free = await nightmare.evaluate(() => {
+        const typeAccount = document.querySelector('.product-name')
+        return typeAccount && /Free|free/.test(typeAccount.innerHTML)
+      })
+      if (free) { throw 'del' }
+    }
+
     if (player === 'amazon' || player === 'spotify') {
       await gotoUrl(album())
       connected = await exists(loggedDom)
