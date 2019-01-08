@@ -343,7 +343,6 @@ const main = async (restartAccount) => {
     }
 
     const resolveCaptcha = async () => {
-      console.log('resolveCaptcha')
       return new Promise(async (resolve, reject) => {
         try {
           let errorLog
@@ -354,8 +353,8 @@ const main = async (restartAccount) => {
           console.log(!!needCaptcha)
           if (!needCaptcha) { return resolve('click') }
 
-          const captcha = check ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
-          console.log('done', login)
+          const captcha = check && player === 'spotify' ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
+          console.log('resolveCaptcha', 'done', login)
           if (captcha === 'error') { return resolve('error') }
 
           await nightmare
