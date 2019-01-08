@@ -438,7 +438,7 @@ const main = async (restartAccount) => {
     }
 
     if (!connected && player !== 'tidal') {
-      if (player === 'spotify') {
+      if (player === 'spotify' && process.env.RAND) {
         throw 'Spotify relog ' + login
         return
       }
