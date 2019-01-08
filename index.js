@@ -4,7 +4,7 @@ const request = require('ajax-request');
 
 process.setMaxListeners(Infinity)
 
-const check = process.env.CHECK
+const check = process.env.CHECK || process.env.TYPE
 let golbalAccountsLength = []
 let accounts = []
 let accountsValid = []
@@ -534,7 +534,7 @@ const main = async (restartAccount) => {
 
       errorClick = await click(playBtn)
       if (!errorClick) { return }
-    }, process.env.TEST || process.env.TYPE ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
+    }, process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
 
     const restart = async (timeout = 0) => {
       clearInterval(changeInterval)
@@ -641,7 +641,6 @@ const mainInter = setInterval(() => {
 }, 1000 * pause);
 
 let file = process.env.FILE || 'napsterAccount.txt'
-file = check ? 'check.txt' : file
 
 fs.readFile(file, 'utf8', async (err, data) => {
   if (err) return console.log(err);
