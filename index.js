@@ -590,7 +590,7 @@ const main = async (restartAccount) => {
         if (t1 === t2) { freeze++ }
         else { freeze = 0 }
 
-        if (freeze >= 2) {
+        if (freeze > 3) {
           freeze = 0
 
           if (!t1) { fix = true }
@@ -608,7 +608,7 @@ const main = async (restartAccount) => {
         console.log(getTime(), used ? ' used' : ' no bar', account)
         restart(used ? 1000 * 60 * 60 : 0)
       }
-    }, 1000 * 30)
+    }, 1000 * 10)
   }
   catch (e) {
     await browser.close()
