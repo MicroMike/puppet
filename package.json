@@ -12,7 +12,8 @@
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "check": "CHECK=true node index",
     "push": "git add . && git commit -m c && git push",
-    "compare": "node compare && git add napsterAccount.txt && git commit -m c && git push"
+    "compare": "node compare && git add napsterAccount.txt && git commit -m c && git push",
+    "vpn": "expressvpn disconnect && expressvpn connect nl"
   },
   "author": "",
   "license": "ISC",
