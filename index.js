@@ -97,16 +97,11 @@ const main = async (restartAccount) => {
   }
   if (over) { return }
   if (!restartAccount && !check) {
-    if (golbalAccountsLength === 0) {
-      console.log('Pas de comptes')
-      return
-    }
-    if (accountsValid.length >= golbalAccountsLength || accountsValid.length >= max) {
-      return
-    }
+    if (accountsValid.length >= max) { return }
   }
 
   let account = restartAccount || accounts[0]
+  if (!account) { return }
   accounts = accounts.filter(a => a !== account)
 
   accountsValid = accountsValid.filter(a => a !== account)
