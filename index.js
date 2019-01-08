@@ -111,7 +111,7 @@ const main = async (restartAccount) => {
   const player = accountInfo[0]
   const login = accountInfo[1]
   const pass = accountInfo[2]
-  const logged = accountInfo[3] || null
+  const tokenAutoLog = accountInfo[3] || null
 
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
@@ -424,6 +424,10 @@ const main = async (restartAccount) => {
     }
 
     if (player === 'spotify' && check) {
+      if (tokenAutoLog) {
+        await gotoUrl(tokenAutoLog)
+        await nightmare.waitFor(5000 + rand(2000))
+      }
       await gotoUrl('https://www.spotify.com/fr/account/overview')
       const free = await nightmare.evaluate(() => {
         const typeAccount = document.querySelector('.product-name')
