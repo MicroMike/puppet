@@ -620,11 +620,11 @@ const main = async (restartAccount) => {
     }, 1000 * 10)
   }
   catch (e) {
-    await browser.close()
-
     clearInterval(inter)
     clearInterval(changeInterval)
     clearTimeout(restartTimeout)
+
+    await browser.close()
 
     accountsValid = accountsValid.filter(a => a !== account)
 
