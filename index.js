@@ -261,6 +261,9 @@ const main = async (restartAccount) => {
         'https://app.napster.com/artist/hanke/album/new-york-story',
         'https://app.napster.com/artist/hanke/album/100-revenge',
         'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
+        'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
+        'https://app.napster.com/artist/xondes/album/wicked',
+        'https://app.napster.com/artist/mahone/album/stone-distraction/',
       ]
 
       usedDom = '.player-error-box'
@@ -286,6 +289,8 @@ const main = async (restartAccount) => {
         'https://music.amazon.fr/albums/B07G5PPYSY',
         'https://music.amazon.fr/albums/B07D3PGSR4',
         'https://music.amazon.fr/albums/B07LGWP7SX',
+        'https://music.amazon.fr/albums/B07MBH9D43',
+        'https://music.amazon.fr/albums/B07M75PR8X',
       ]
 
       usedDom = '.concurrentStreamsPopover'
@@ -312,6 +317,8 @@ const main = async (restartAccount) => {
         'https://listen.tidal.com/album/88041212',
         'https://listen.tidal.com/album/101352536',
         'https://listen.tidal.com/album/101927847',
+        'https://listen.tidal.com/album/101962381',
+        'https://listen.tidal.com/album/101844025',
       ]
 
       usedDom = '.WARN'
@@ -338,6 +345,8 @@ const main = async (restartAccount) => {
         'https://open.spotify.com/album/5509gS9cZUrbTFege0fpTk',
         'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
         'https://open.spotify.com/album/2jmPHLM2be2g19841vHjWE',
+        'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
+        'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
       ]
       usedDom = '.ConnectBar'
     }
