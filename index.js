@@ -178,7 +178,7 @@ const main = async (restartAccount) => {
   }
 
   const click = async (selector) => {
-    const exist = await waitForSelector(selector, 1000 * 10)
+    const exist = await waitForSelector(selector)
     if (!exist) { return false }
 
     await nightmare.waitFor(2000 + rand(2000))
@@ -546,15 +546,20 @@ const main = async (restartAccount) => {
     let used
 
     changeInterval = setInterval(async () => {
-      if (over) { return clearInterval(changeInterval) }
+      try {
+        if (over) { return clearInterval(changeInterval) }
 
-      await gotoUrl(album())
+        await gotoUrl(album())
 
-      await nightmare.waitFor(1000 * 60 * ++countTimeout)
-      countTimeout--
+        await nightmare.waitFor(1000 * 60 * ++countTimeout)
+        countTimeout--
 
-      errorClick = await click(playBtn)
-      if (!errorClick) { return }
+        errorClick = await click(playBtn)
+        if (!errorClick) { return }
+      }
+      catch (e) {
+        console.log('click error')
+      }
     }, process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
 
     const restart = async (timeout = 0) => {
@@ -624,7 +629,7 @@ const main = async (restartAccount) => {
         }
       }
       catch (e) {
-        console.log('interval error', e)
+        console.log('click error')
       }
     }, 1000 * 10)
   }
