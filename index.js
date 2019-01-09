@@ -567,50 +567,55 @@ const main = async (restartAccount) => {
     }, 1000 * 60 * 30 + rand(1000 * 60 * 30));
 
     inter = setInterval(async () => {
-      if (over) { return clearInterval(inter) }
+      try {
+        if (over) { return clearInterval(inter) }
 
-      used = await exists(usedDom)
+        used = await exists(usedDom)
 
-      if (used) {
-        used = await nightmare.evaluate((usedDom) => {
-          return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
-        }, usedDom)
+        if (used) {
+          used = await nightmare.evaluate((usedDom) => {
+            return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
+          }, usedDom)
 
-        if (player === 'tidal') {
-          used = typeof used === 'string' && used.match(/currently/) ? used : false
+          if (player === 'tidal') {
+            used = typeof used === 'string' && used.match(/currently/) ? used : false
 
-          if (!used) {
-            await justClick('#wimp > div > div > div > div > div > button')
-          }
-        }
-      }
-
-      if (!used && player === 'napster') {
-        t1 = await nightmare.evaluate(() => {
-          const timeLine = '.player-progress-slider-box span.ui-slider-handle'
-          return document.querySelector(timeLine) && document.querySelector(timeLine).style.left
-        })
-
-        if (t1 === t2) { freeze++ }
-        else { freeze = 0 }
-
-        if (freeze > 3) {
-          freeze = 0
-
-          if (!t1) { fix = true }
-          else {
-            await justClick('.player-play-button .icon-pause2')
-            await nightmare.waitFor(2000 + rand(2000))
-            await justClick('.player-play-button .icon-play-button')
+            if (!used) {
+              await justClick('#wimp > div > div > div > div > div > button')
+            }
           }
         }
 
-        t2 = t1
-      }
+        if (!used && player === 'napster') {
+          t1 = await nightmare.evaluate(() => {
+            const timeLine = '.player-progress-slider-box span.ui-slider-handle'
+            return document.querySelector(timeLine) && document.querySelector(timeLine).style.left
+          })
 
-      if (used || fix) {
-        console.log(getTime(), used ? ' used' : ' no bar', account)
-        restart(used ? 1000 * 60 * 60 : 0)
+          if (t1 === t2) { freeze++ }
+          else { freeze = 0 }
+
+          if (freeze > 3) {
+            freeze = 0
+
+            if (!t1) { fix = true }
+            else {
+              await justClick('.player-play-button .icon-pause2')
+              await nightmare.waitFor(2000 + rand(2000))
+              await justClick('.player-play-button .icon-play-button')
+            }
+          }
+
+          t2 = t1
+        }
+
+        if (used || fix) {
+          console.log(getTime(), used ? ' used' : ' no bar', account)
+          restart(used ? 1000 * 60 * 60 : 0)
+        }
+      }
+      catch (e) {
+        console.log('interval error', e)
       }
     }, 1000 * 10)
   }
