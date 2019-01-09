@@ -558,21 +558,27 @@ const main = async (restartAccount) => {
         if (!errorClick) { return }
       }
       catch (e) {
-        console.log('click error')
+        console.log('error changeInterval timeout', login)
       }
     }, process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
 
     const restart = async (timeout = 0) => {
-      clearInterval(changeInterval)
-      clearInterval(inter)
-      clearTimeout(restartTimeout)
+      try {
 
-      accountsValid = accountsValid.filter(a => a !== account)
-      setTimeout(() => {
-        accounts.push(account)
-      }, timeout);
+        clearInterval(changeInterval)
+        clearInterval(inter)
+        clearTimeout(restartTimeout)
 
-      await browser.close()
+        accountsValid = accountsValid.filter(a => a !== account)
+        setTimeout(() => {
+          accounts.push(account)
+        }, timeout);
+
+        await browser.close()
+      }
+      catch (e) {
+        console.log('error restart timeout', login)
+      }
     }
 
     restartTimeout = setTimeout(() => {
@@ -629,7 +635,7 @@ const main = async (restartAccount) => {
         }
       }
       catch (e) {
-        console.log('click error')
+        console.log('error loopInterval timeout', login)
       }
     }, 1000 * 10)
   }
