@@ -242,6 +242,34 @@ const main = async (restartAccount) => {
   let restartTimeout
   let errorClick = false
 
+  const catchFct = async (e) => {
+    clearInterval(inter)
+    clearInterval(changeInterval)
+    clearTimeout(restartTimeout)
+
+    await nightmare.screenshot({ path: login + '_screenshot.png' });
+    await browser.close()
+
+    accountsValid = accountsValid.filter(a => a !== account)
+
+    console.log(getTime() + " ERROR ", account, e)
+
+    if (e !== 'del') {
+      accounts.push(account)
+    }
+    else {
+      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
+        if (err) return console.log(err);
+        data = data.split(',')
+        data = data.filter(a => a !== account)
+        data.push(account)
+        fs.writeFile('napsterAccountDel.txt', data.join(','), function (err) {
+          if (err) return console.log(err);
+        });
+      });
+    }
+  }
+
   try {
     if (player === 'napster') {
       url = 'https://app.napster.com/login/'
@@ -558,21 +586,17 @@ const main = async (restartAccount) => {
         countTimeout--
 
         errorClick = await click(playBtn)
-        if (!errorClick) {
-          throw 'changeInterval :' + login + ' not found'
-          return
-        }
+        if (!errorClick) { return }
 
         changing = false
       }
       catch (e) {
-        console.log('error changeInterval timeout', account)
+        catchFct(e)
       }
     }, process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
 
     const restart = async (timeout = 0) => {
       try {
-
         clearInterval(changeInterval)
         clearInterval(inter)
         clearTimeout(restartTimeout)
@@ -585,7 +609,7 @@ const main = async (restartAccount) => {
         await browser.close()
       }
       catch (e) {
-        console.log('error restart timeout', account)
+        catchFct(e)
       }
     }
 
@@ -627,7 +651,10 @@ const main = async (restartAccount) => {
           if (freeze > 3) {
             freeze = 0
 
-            if (!t1) { fix = true }
+            if (!t1) {
+              fix = true
+              await nightmare.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
+            }
             else {
               await justClick('.player-play-button .icon-pause2')
               await nightmare.waitFor(2000 + rand(2000))
@@ -644,37 +671,12 @@ const main = async (restartAccount) => {
         }
       }
       catch (e) {
-        await nightmare.screenshot({ path: login + '_screenshot.png' });
-        console.log('error loopInterval timeout', account)
+        catchFct(e)
       }
     }, 1000 * 10)
   }
   catch (e) {
-    clearInterval(inter)
-    clearInterval(changeInterval)
-    clearTimeout(restartTimeout)
-
-    await nightmare.screenshot({ path: login + '_screenshot.png' });
-    await browser.close()
-
-    accountsValid = accountsValid.filter(a => a !== account)
-
-    console.log(getTime() + " ERROR ", account, e)
-
-    if (e !== 'del') {
-      accounts.push(account)
-    }
-    else {
-      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
-        if (err) return console.log(err);
-        data = data.split(',')
-        data = data.filter(a => a !== account)
-        data.push(account)
-        fs.writeFile('napsterAccountDel.txt', data.join(','), function (err) {
-          if (err) return console.log(err);
-        });
-      });
-    }
+    catchFct(e)
   }
 }
 
