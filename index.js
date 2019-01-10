@@ -544,10 +544,13 @@ const main = async (restartAccount) => {
     let freeze = 1
     let fix = false
     let used
+    let changing = false
 
     changeInterval = setInterval(async () => {
       try {
         if (over) { return clearInterval(changeInterval) }
+
+        changing = true
 
         await gotoUrl(album())
 
@@ -559,6 +562,8 @@ const main = async (restartAccount) => {
           throw 'changeInterval :' + login + ' not found'
           return
         }
+
+        changing = false
       }
       catch (e) {
         console.log('error changeInterval timeout', account)
@@ -592,6 +597,7 @@ const main = async (restartAccount) => {
     inter = setInterval(async () => {
       try {
         if (over) { return clearInterval(inter) }
+        if (changing) { return }
 
         used = await exists(usedDom)
 
