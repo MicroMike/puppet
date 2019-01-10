@@ -555,7 +555,10 @@ const main = async (restartAccount) => {
         countTimeout--
 
         errorClick = await click(playBtn)
-        if (!errorClick) { return }
+        if (!errorClick) {
+          throw 'changeInterval :' + login + ' not found'
+          return
+        }
       }
       catch (e) {
         console.log('error changeInterval timeout', account)
@@ -635,6 +638,7 @@ const main = async (restartAccount) => {
         }
       }
       catch (e) {
+        await nightmare.screenshot({ path: login + '_screenshot.png' });
         console.log('error loopInterval timeout', account)
       }
     }, 1000 * 10)
@@ -644,6 +648,7 @@ const main = async (restartAccount) => {
     clearInterval(changeInterval)
     clearTimeout(restartTimeout)
 
+    await nightmare.screenshot({ path: login + '_screenshot.png' });
     await browser.close()
 
     accountsValid = accountsValid.filter(a => a !== account)
