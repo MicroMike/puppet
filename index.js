@@ -558,7 +558,7 @@ const main = async (restartAccount) => {
         if (!errorClick) { return }
       }
       catch (e) {
-        console.log('error changeInterval timeout', login)
+        console.log('error changeInterval timeout', account)
       }
     }, process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
 
@@ -577,7 +577,7 @@ const main = async (restartAccount) => {
         await browser.close()
       }
       catch (e) {
-        console.log('error restart timeout', login)
+        console.log('error restart timeout', account)
       }
     }
 
@@ -635,7 +635,7 @@ const main = async (restartAccount) => {
         }
       }
       catch (e) {
-        console.log('error loopInterval timeout', login)
+        console.log('error loopInterval timeout', account)
       }
     }, 1000 * 10)
   }
