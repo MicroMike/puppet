@@ -178,41 +178,56 @@ const main = async (restartAccount) => {
   }
 
   const click = async (selector) => {
-    const exist = await waitForSelector(selector)
-    if (!exist) { return false }
+    try {
+      const exist = await waitForSelector(selector)
+      if (!exist) { return false }
 
-    await nightmare.waitFor(2000 + rand(2000))
-    await nightmare.evaluate(selector => {
-      document.querySelector(selector) && document.querySelector(selector).click()
-    }, selector)
+      await nightmare.waitFor(2000 + rand(2000))
+      await nightmare.evaluate(selector => {
+        document.querySelector(selector) && document.querySelector(selector).click()
+      }, selector)
 
-    return true
+      return true
+    }
+    catch (e) {
+      console.log('Click error ' + selector, account)
+    }
   }
 
   const justClick = async (selector) => {
-    const exist = await exists(selector)
-    if (!exist) { return false }
+    try {
+      const exist = await exists(selector)
+      if (!exist) { return false }
 
-    await nightmare.waitFor(2000 + rand(2000))
-    await nightmare.evaluate(selector => {
-      document.querySelector(selector) && document.querySelector(selector).click()
-    }, selector)
+      await nightmare.waitFor(2000 + rand(2000))
+      await nightmare.evaluate(selector => {
+        document.querySelector(selector) && document.querySelector(selector).click()
+      }, selector)
+      return true
+    }
+    catch (e) {
+      console.log('Justclick ' + selector, account)
+    }
 
-    return true
   }
 
   const insert = async (selector, text) => {
-    const exist = await click(selector)
-    if (!exist) { return false }
+    try {
+      const exist = await click(selector)
+      if (!exist) { return false }
 
-    await nightmare.waitFor(2000 + rand(2000))
-    const elementHandle = await nightmare.$(selector);
-    await nightmare.evaluate(selector => {
-      document.querySelector(selector).value = ''
-    }, selector)
-    await elementHandle.type(text, { delay: 300 });
+      await nightmare.waitFor(2000 + rand(2000))
+      const elementHandle = await nightmare.$(selector);
+      await nightmare.evaluate(selector => {
+        document.querySelector(selector).value = ''
+      }, selector)
+      await elementHandle.type(text, { delay: 300 });
 
-    return true
+      return true
+    }
+    catch (e) {
+      console.log('Insert error ' + selector, account)
+    }
   }
 
   let username
