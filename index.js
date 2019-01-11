@@ -168,9 +168,9 @@ const main = async (restartAccount) => {
     }
   }
 
-  const exists = async (selector) => {
+  const exists = async (selector, timeout = 1000 * 10) => {
     try {
-      await nightmare.waitForSelector(selector, { timeout: 1000 * 10 })
+      await nightmare.waitForSelector(selector, { timeout })
       return true
     } catch (error) {
       return false
@@ -178,7 +178,7 @@ const main = async (restartAccount) => {
   }
 
   const click = async (selector) => {
-    const exist = await waitForSelector(selector)
+    const exist = await exists(selector, 1000 * 60 * 3)
     if (!exist) { return false }
 
     try {
@@ -190,7 +190,6 @@ const main = async (restartAccount) => {
       return true
     }
     catch (e) {
-      await nightmare.screenshot({ path: 'click_' + login + '.png' });
       console.log('Click error ' + selector, account, 'exist :' + exist)
       return false
     }
@@ -267,8 +266,11 @@ const main = async (restartAccount) => {
     clearInterval(changeInterval)
     clearTimeout(restartTimeout)
 
-    await nightmare.screenshot({ path: login + '_screenshot.png' });
-    await browser.close()
+    try {
+      await nightmare.screenshot({ path: login + '_screenshot.png' });
+      await browser.close()
+    }
+    catch (e) { }
 
     accountsValid = accountsValid.filter(a => a !== account)
 
