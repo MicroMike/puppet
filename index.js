@@ -598,27 +598,6 @@ const main = async (restartAccount) => {
     let used
     let changing = false
 
-    changeInterval = setInterval(async () => {
-      try {
-        if (over || overError) { return clearInterval(changeInterval) }
-
-        changing = true
-
-        await gotoUrl(album())
-
-        await nightmare.waitFor(1000 * 60 * ++countTimeout)
-        countTimeout--
-
-        errorClick = await click(playBtn)
-        if (!errorClick) { return }
-
-        changing = false
-      }
-      catch (e) {
-        catchFct(e)
-      }
-    }, process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
-
     const restart = async (timeout = 0) => {
       try {
         clearInterval(changeInterval)
@@ -641,6 +620,25 @@ const main = async (restartAccount) => {
       if (over) { return clearTimeout(restartTimeout) }
       restart()
     }, 1000 * 60 * 30 + rand(1000 * 60 * 30));
+
+    changeInterval = setInterval(async () => {
+      try {
+        if (over || overError) { return clearInterval(changeInterval) }
+
+        changing = true
+
+        await gotoUrl(album())
+        await nightmare.waitFor(1000 * 60)
+
+        errorClick = await click(playBtn)
+        if (!errorClick) { return }
+
+        changing = false
+      }
+      catch (e) {
+        catchFct(e)
+      }
+    }, process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
 
     inter = setInterval(async () => {
       try {
