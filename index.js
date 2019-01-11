@@ -192,7 +192,7 @@ const main = async (restartAccount) => {
     catch (e) {
       await nightmare.screenshot({ path: 'click_' + login + '.png' });
       console.log('Click error ' + selector, account, 'exist :' + exist)
-      return false      
+      return false
     }
   }
 
@@ -538,6 +538,10 @@ const main = async (restartAccount) => {
       const issueAccount = await exists('.account-issue')
       const issueRadio = await exists('.unradio')
       if (issueAccount || issueRadio) { throw 'del' }
+      const reload = await exists('#main-container .not-found')
+      if (reload) {
+        await gotoUrl(album())
+      }
     }
 
     if (check) {
@@ -673,6 +677,7 @@ const main = async (restartAccount) => {
 
             if (!t1) {
               fix = true
+              console.log(getTime(), ' no bar', account)
               await nightmare.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
             }
             else {
@@ -686,7 +691,6 @@ const main = async (restartAccount) => {
         }
 
         if (used || fix) {
-          console.log(getTime(), used ? ' used' : ' no bar', account)
           restart(used ? 1000 * 60 * 60 : 0)
         }
       }
