@@ -178,10 +178,10 @@ const main = async (restartAccount) => {
   }
 
   const click = async (selector) => {
-    try {
-      const exist = await waitForSelector(selector)
-      if (!exist) { return false }
+    const exist = await waitForSelector(selector)
+    if (!exist) { return false }
 
+    try {
       await nightmare.waitFor(2000 + rand(2000))
       await nightmare.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
@@ -190,15 +190,16 @@ const main = async (restartAccount) => {
       return true
     }
     catch (e) {
-      console.log('Click error ' + selector, account)
+      await nightmare.screenshot({ path: 'click_' + login + '.png' });
+      console.log('Click error ' + selector, account, 'exist :' + exist)
     }
   }
 
   const justClick = async (selector) => {
-    try {
-      const exist = await exists(selector)
-      if (!exist) { return false }
+    const exist = await exists(selector)
+    if (!exist) { return false }
 
+    try {
       await nightmare.waitFor(2000 + rand(2000))
       await nightmare.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
@@ -212,10 +213,10 @@ const main = async (restartAccount) => {
   }
 
   const insert = async (selector, text) => {
-    try {
-      const exist = await click(selector)
-      if (!exist) { return false }
+    const exist = await click(selector)
+    if (!exist) { return false }
 
+    try {
       await nightmare.waitFor(2000 + rand(2000))
       const elementHandle = await nightmare.$(selector);
       await nightmare.evaluate(selector => {
@@ -256,8 +257,11 @@ const main = async (restartAccount) => {
   let changeInterval
   let restartTimeout
   let errorClick = false
+  let overError = false
 
   const catchFct = async (e) => {
+    overError = true
+
     clearInterval(inter)
     clearInterval(changeInterval)
     clearTimeout(restartTimeout)
@@ -591,7 +595,7 @@ const main = async (restartAccount) => {
 
     changeInterval = setInterval(async () => {
       try {
-        if (over) { return clearInterval(changeInterval) }
+        if (over || overError) { return clearInterval(changeInterval) }
 
         changing = true
 
@@ -635,7 +639,7 @@ const main = async (restartAccount) => {
 
     inter = setInterval(async () => {
       try {
-        if (over) { return clearInterval(inter) }
+        if (over || overError) { return clearInterval(inter) }
         if (changing) { return }
 
         used = await exists(usedDom)
