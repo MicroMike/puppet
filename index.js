@@ -150,10 +150,10 @@ const main = async (restartAccount) => {
 
   const gotoUrl = async (url) => {
     try {
-      await nightmare.goto(url, { timeout: 1000 * 60 * 3, waitUntil: 'domcontentloaded' })
+      await nightmare.goto(url, { timeout: 1000 * 60 * 5, waitUntil: 'domcontentloaded' })
       return true
     } catch (error) {
-      // console.log(error)
+      console.log('error connect')
       return false
     }
   }
@@ -192,6 +192,7 @@ const main = async (restartAccount) => {
     catch (e) {
       await nightmare.screenshot({ path: 'click_' + login + '.png' });
       console.log('Click error ' + selector, account, 'exist :' + exist)
+      return false      
     }
   }
 
