@@ -124,7 +124,7 @@ const main = async (restartAccount) => {
     // slowMo: 200,
   }
 
-  if (player === 'napster') {
+  if (player === 'napster' || player === 'spotify') {
     delete params.userDataDir
   }
 
@@ -412,7 +412,6 @@ const main = async (restartAccount) => {
           if (!needCaptcha) { return resolve('click') }
 
           const captcha = process.env.RAND ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
-          console.log('resolveCaptcha', 'done', login)
           if (captcha === 'error') { return resolve('error') }
 
           await nightmare
@@ -502,8 +501,7 @@ const main = async (restartAccount) => {
 
     if (!connected && player !== 'tidal') {
       if (player === 'spotify' && process.env.RAND) {
-        throw 'Spotify relog ' + login
-        return
+        // throw 'Spotify relog ' + login
       }
       await nightmare.waitFor(2000 + rand(2000))
       await gotoUrl(url)
@@ -735,7 +733,7 @@ fs.readFile(file, 'utf8', async (err, data) => {
   if (err) return console.log(err);
   accounts = data = data.split(',')
 
-  accounts = accounts.filter(m => m.split(':')[0] !== 'spotify')
+  // accounts = accounts.filter(m => m.split(':')[0] !== 'spotify')
 
   if (process.env.TYPE) {
     accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
