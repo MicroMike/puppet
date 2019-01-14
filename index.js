@@ -599,13 +599,12 @@ const main = async (restartAccount) => {
     let fix = false
     let used
     let changing = false
+    let timeLine
+    let style
 
     const restart = async (timeout = 0) => {
       try {
-        clearInterval(changeInterval)
-        clearInterval(inter)
-        clearTimeout(restartTimeout)
-
+        overError = true
         accountsValid = accountsValid.filter(a => a !== account)
         setTimeout(() => {
           accounts.push(account)
@@ -614,7 +613,7 @@ const main = async (restartAccount) => {
         await browser.close()
       }
       catch (e) {
-        catchFct(e)
+        catchFct('restart')
       }
     }
 
@@ -623,30 +622,25 @@ const main = async (restartAccount) => {
       restart()
     }, 1000 * 60 * 30 + rand(1000 * 60 * 30));
 
-    changeInterval = setInterval(async () => {
-      try {
-        if (over || overError) { return clearInterval(changeInterval) }
+    let timeLoop = 0
+    const loop = async () => {
+      let changeTime = process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
+      if (timeLoop === changeTime) {
+        try {
+          await gotoUrl(album())
+          await nightmare.waitFor(1000 * 30)
 
-        changing = true
+          errorClick = await click(playBtn)
+          if (!errorClick) { return }
 
-        await gotoUrl(album())
-        await nightmare.waitFor(1000 * 60)
-
-        errorClick = await click(playBtn)
-        if (!errorClick) { return }
-
-        changing = false
+          timeLoop = 0
+        }
+        catch (e) {
+          catchFct('change loop')
+        }
       }
-      catch (e) {
-        catchFct(e)
-      }
-    }, process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7));
 
-    inter = setInterval(async () => {
       try {
-        if (over || overError) { return clearInterval(inter) }
-        if (changing) { return }
-
         used = await exists(usedDom)
 
         if (used) {
@@ -663,11 +657,26 @@ const main = async (restartAccount) => {
           }
         }
 
-        if (!used && player === 'napster') {
-          t1 = await nightmare.evaluate(() => {
-            const timeLine = '.player-progress-slider-box span.ui-slider-handle'
-            return document.querySelector(timeLine) && document.querySelector(timeLine).style.left
-          })
+        if (!used) {
+          if (player === 'napster') {
+            timeLine = '.player-progress-slider-box span.ui-slider-handle'
+            style = 'left'
+          }
+          else if (player === 'tidal') {
+            timeLine = '[class*="fillingBlock"] > div:first-child'
+            style = 'transform'
+          }
+          else if (player === 'amazon') {
+            timeLine = '.scrubberBackground'
+            style = 'width'
+          }
+          else {
+            return
+          }
+
+          t1 = await nightmare.evaluate((args) => {
+            return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
+          }, { timeLine, style })
 
           if (t1 === t2) { freeze++ }
           else { freeze = 0 }
@@ -675,10 +684,12 @@ const main = async (restartAccount) => {
           if (freeze > 3) {
             freeze = 0
 
-            if (!t1) {
+            if (!t1 || player !== 'napster') {
               fix = true
-              console.log(getTime(), ' no bar', account)
-              await nightmare.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
+              if (!t1) {
+                console.log(getTime(), ' no bar', account)
+                await nightmare.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
+              }
             }
             else {
               await justClick('.player-play-button .icon-pause2')
@@ -695,9 +706,18 @@ const main = async (restartAccount) => {
         }
       }
       catch (e) {
-        catchFct(e)
+        catchFct('inter loop')
       }
-    }, 1000 * 10)
+
+      loopAdd = 1000 * 10
+      timeLoop += loopAdd
+      setTimeout(() => {
+        if (over || overError) { return }
+        loop()
+      }, loopAdd);
+    }
+
+    loop()
   }
   catch (e) {
     catchFct(e)
