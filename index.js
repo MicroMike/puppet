@@ -624,9 +624,9 @@ const main = async (restartAccount) => {
 
     let timeLoop = 0
     const loop = async () => {
-      let changeTime = process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
-      if (timeLoop === changeTime) {
-        try {
+      try {
+        let changeTime = process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
+        if (timeLoop === changeTime) {
           await gotoUrl(album())
           await nightmare.waitFor(1000 * 30)
 
@@ -635,12 +635,7 @@ const main = async (restartAccount) => {
 
           timeLoop = 0
         }
-        catch (e) {
-          catchFct('change loop')
-        }
-      }
 
-      try {
         used = await exists(usedDom)
 
         if (used) {
@@ -704,17 +699,17 @@ const main = async (restartAccount) => {
         if (used || fix) {
           restart(used ? 1000 * 60 * 60 : 0)
         }
+
+        loopAdd = 1000 * 10
+        timeLoop += loopAdd
+        setTimeout(() => {
+          if (over || overError) { return }
+          loop()
+        }, loopAdd);
       }
       catch (e) {
-        catchFct('inter loop')
+        catchFct(e)
       }
-
-      loopAdd = 1000 * 10
-      timeLoop += loopAdd
-      setTimeout(() => {
-        if (over || overError) { return }
-        loop()
-      }, loopAdd);
     }
 
     loop()
@@ -739,6 +734,8 @@ let file = process.env.FILE || 'napsterAccount.txt'
 fs.readFile(file, 'utf8', async (err, data) => {
   if (err) return console.log(err);
   accounts = data = data.split(',')
+
+  accounts = accounts.filter(m => m.split(':')[0] !== 'spotify')
 
   if (process.env.TYPE) {
     accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
