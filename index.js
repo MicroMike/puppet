@@ -178,7 +178,7 @@ const main = async (restartAccount) => {
   }
 
   const click = async (selector) => {
-    const exist = await exists(selector, 1000 * 60 * 3)
+    const exist = await waitForSelector(selector, 1000 * 60 * 3)
     if (!exist) { return false }
 
     try {
@@ -464,7 +464,6 @@ const main = async (restartAccount) => {
           // console.log(validCallback)
           if (validCallback === 'click') {
             errorClick = await click('#recap-invisible')
-            if (errorClick) { return }
           }
           else if (validCallback !== 'done') { throw validCallback }
 
@@ -567,8 +566,7 @@ const main = async (restartAccount) => {
     }
 
     if (!stopBeforePlay) {
-      errorClick = await click(playBtn)
-      if (!errorClick) { return }
+      await click(playBtn)
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
         const clickLoop = () => {
@@ -624,12 +622,11 @@ const main = async (restartAccount) => {
     const loop = async () => {
       try {
         let changeTime = process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
-        if (timeLoop === changeTime) {
+        if (timeLoop >= changeTime) {
           await gotoUrl(album())
           await nightmare.waitFor(1000 * 30)
 
-          errorClick = await click(playBtn)
-          if (!errorClick) { return }
+          await click(playBtn)
 
           timeLoop = 0
         }
