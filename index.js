@@ -607,11 +607,6 @@ const main = async (restartAccount) => {
       }
     }
 
-    restartTimeout = setTimeout(() => {
-      if (over) { return clearTimeout(restartTimeout) }
-      restart()
-    }, 1000 * 60 * 30 + rand(1000 * 60 * 30));
-
     let timeLoop = 0
     const loop = async () => {
       try {
