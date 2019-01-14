@@ -178,7 +178,7 @@ const main = async (restartAccount) => {
   }
 
   const click = async (selector) => {
-    const exist = await waitForSelector(selector, 1000 * 60 * 3)
+    const exist = await waitForSelector(selector)
     if (!exist) { return false }
 
     try {
@@ -249,21 +249,16 @@ const main = async (restartAccount) => {
   let reLog
   let loginError
 
-  let errorLog = false
   let connected = false
   let suppressed = false
 
-  let inter
   let changeInterval
   let restartTimeout
   let errorClick = false
-  let overError = false
 
   const catchFct = async (e) => {
-    overError = true
 
-    clearInterval(inter)
-    clearInterval(changeInterval)
+    clearTimeout(changeInterval)
     clearTimeout(restartTimeout)
 
     try {
@@ -600,7 +595,6 @@ const main = async (restartAccount) => {
 
     const restart = async (timeout = 0) => {
       try {
-        overError = true
         accountsValid = accountsValid.filter(a => a !== account)
         setTimeout(() => {
           accounts.push(account)
@@ -621,6 +615,12 @@ const main = async (restartAccount) => {
     let timeLoop = 0
     const loop = async () => {
       try {
+        let restartTime = 1000 * 60 * 30 + rand(1000 * 60 * 30)
+        if (timeLoop >= restartTime) {
+          restart()
+          return
+        }
+
         let changeTime = process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
         if (timeLoop >= changeTime) {
           await gotoUrl(album())
@@ -697,12 +697,13 @@ const main = async (restartAccount) => {
 
         if (used || fix) {
           restart(used ? 1000 * 60 * 60 : 0)
+          return
         }
 
         loopAdd = 1000 * 10
         timeLoop += loopAdd
-        setTimeout(() => {
-          if (over || overError) { return }
+        changeInterval = setTimeout(() => {
+          if (over) { return }
           loop()
         }, loopAdd);
       }
