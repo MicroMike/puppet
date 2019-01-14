@@ -660,6 +660,10 @@ const main = async (restartAccount) => {
             timeLine = '.scrubberBackground'
             style = 'width'
           }
+          else if (player === 'spotify') {
+            timeLine = '.progress-bar__fg'
+            style = 'width'
+          }
           else {
             return
           }
