@@ -513,10 +513,10 @@ const main = async (restartAccount) => {
       await justClick(remember)
 
       let validCallback = 'click'
-      if (player === 'spotify') {
-        validCallback = await resolveCaptcha()
-        if (validCallback !== 'click' && validCallback !== 'done') { throw validCallback }
-      }
+      // if (player === 'spotify') {
+      //   validCallback = await resolveCaptcha()
+      //   if (validCallback !== 'click' && validCallback !== 'done') { throw validCallback }
+      // }
 
       if (validCallback === 'click') {
         await justClick(loginBtn)
