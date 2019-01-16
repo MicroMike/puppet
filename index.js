@@ -277,7 +277,7 @@ const main = async (restartAccount) => {
     else {
       fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
         if (err) return console.log(err);
-        data = data.split(',')
+        data = data.split(',').filter(e => e)
         data = data.filter(a => a !== account)
         data.push(account)
         fs.writeFile('napsterAccountDel.txt', data.join(','), function (err) {
@@ -728,27 +728,30 @@ let file = process.env.FILE || 'napsterAccount.txt'
 
 fs.readFile(file, 'utf8', async (err, data) => {
   if (err) return console.log(err);
-  accounts = data = data.split(',')
+  fs.readFile('napsterAccountDel.txt', 'utf8', async (err2, dataDel) => {
+    if (err2) return console.log(err2);
 
-  // accounts = accounts.filter(m => m.split(':')[0] !== 'spotify')
+    dataDel = dataDel.split(',').filter(e => e)
+    accounts = data = data.split(',').filter(e => dataDel.indexOf(e) < 0)
 
-  if (process.env.TYPE) {
-    accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
-  }
-  else if (!process.env.FILE && !check) {
-    const split = parseInt(data.length / 2)
-    if (process.env.BEGIN === '2') {
-      accounts = data.slice(split)
+    if (process.env.TYPE) {
+      accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
     }
-    else {
-      accounts = data.slice(0, split)
+    else if (!process.env.FILE && !check) {
+      const split = parseInt(data.length / 2)
+      if (process.env.BEGIN === '2') {
+        accounts = data.slice(split)
+      }
+      else {
+        accounts = data.slice(0, split)
+      }
     }
-  }
 
-  accounts = process.env.RAND ? shuffle(accounts) : accounts
-  golbalAccountsLength = accounts.length
-  console.log(accounts.length)
-  main()
+    accounts = process.env.RAND ? shuffle(accounts) : accounts
+    golbalAccountsLength = accounts.length
+    console.log(accounts.length)
+    main()
+  })
 });
 
 process.on('SIGINT', function (code) {
