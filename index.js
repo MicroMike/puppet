@@ -361,7 +361,6 @@ const main = async (restartAccount) => {
         'https://listen.tidal.com/album/93312939',
         'https://listen.tidal.com/album/93087422',
         'https://listen.tidal.com/album/88716570',
-        'https://listen.tidal.com/album/88041212',
         'https://listen.tidal.com/album/101352536',
         'https://listen.tidal.com/album/101927847',
         'https://listen.tidal.com/album/101962381',
