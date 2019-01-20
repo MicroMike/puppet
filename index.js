@@ -263,6 +263,7 @@ const main = async (restartAccount) => {
 
     try {
       await nightmare.screenshot({ path: login + '_screenshot.png' });
+      await nightmare.goto('about:blank')
       await browser.close()
     }
     catch (e) { }
@@ -543,6 +544,7 @@ const main = async (restartAccount) => {
 
     if (check) {
       setTimeout(async () => {
+        await nightmare.goto('about:blank')
         await browser.close()
       }, 1000 * 30);
       return
@@ -603,6 +605,7 @@ const main = async (restartAccount) => {
           accounts.push(account)
         }, timeout);
 
+        await nightmare.goto('about:blank')
         await browser.close()
       }
       catch (e) {
