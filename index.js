@@ -666,7 +666,7 @@ const main = async (restartAccount) => {
           }
           else if (player === 'spotify') {
             timeLine = '.progress-bar__fg'
-            style = 'width'
+            style = 'transform'
           }
           else {
             return
