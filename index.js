@@ -685,7 +685,7 @@ const main = async (restartAccount) => {
             if (!t1 || player !== 'napster') {
               fix = true
               if (!t1) {
-                console.log(getTime(), ' no bar', account)
+                console.log(getTime(), ' no bar ' + t1, account)
                 await nightmare.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
               }
             }
