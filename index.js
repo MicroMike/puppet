@@ -311,6 +311,7 @@ const main = async (restartAccount) => {
         'https://app.napster.com/artist/xondes/album/wicked',
         'https://app.napster.com/artist/mahone/album/stone-distraction/',
         'https://app.napster.com/artist/lapilluledors/album/red-beast',
+        'https://app.napster.com/artist/hazel/album/electric-nature',
       ]
 
       usedDom = '.player-error-box'
@@ -367,6 +368,7 @@ const main = async (restartAccount) => {
         'https://listen.tidal.com/album/101962381',
         'https://listen.tidal.com/album/101844025',
         'https://listen.tidal.com/album/102503463',
+        'https://listen.tidal.com/album/102564740',
       ]
 
       usedDom = '.WARN'
@@ -396,6 +398,7 @@ const main = async (restartAccount) => {
         'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
         'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
         'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',
+        'https://open.spotify.com/album/5CPIRky6BGgl3CCdzMYAXZ',
       ]
       usedDom = '.ConnectBar'
     }
