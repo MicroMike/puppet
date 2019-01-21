@@ -153,7 +153,7 @@ const main = async (restartAccount) => {
       await nightmare.goto(url, { timeout: 1000 * 60 * 5, waitUntil: 'domcontentloaded' })
       return true
     } catch (error) {
-      console.log('error connect')
+      throw 'error connect ' + account
       return false
     }
   }
