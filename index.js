@@ -653,7 +653,7 @@ const main = async (restartAccount) => {
 
         if (!used) {
           if (player === 'napster') {
-            timeLine = '.player-progress-slider-box span.ui-slider-handle'
+            timeLine = 'span.ui-slider-handle'
             style = 'left'
           }
           else if (player === 'tidal') {
@@ -691,7 +691,6 @@ const main = async (restartAccount) => {
             }
             else {
               await justClick('.player-play-button .icon-pause2')
-              await nightmare.waitFor(2000 + rand(2000))
               await justClick('.player-play-button .icon-play-button')
             }
           }
