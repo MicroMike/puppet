@@ -264,8 +264,10 @@ const main = async (restartAccount) => {
     clearTimeout(changeInterval)
     clearTimeout(restartTimeout)
 
+    const del = e === 'del'
+
     try {
-      if (e !== 'del') {
+      if (del) {
         await nightmare.screenshot({ path: login + '_screenshot.png' });
       }
       await nightmare.goto('about:blank')
@@ -277,7 +279,7 @@ const main = async (restartAccount) => {
 
     console.log(getTime() + " ERROR ", account, e)
 
-    if (e !== 'del') {
+    if (!del) {
       accounts.push(account)
     }
     else {
