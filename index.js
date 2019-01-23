@@ -265,9 +265,11 @@ const main = async (restartAccount) => {
     clearTimeout(restartTimeout)
 
     try {
-      await nightmare.screenshot({ path: login + '_screenshot.png' });
+      if (e !== 'del') {
+        await nightmare.screenshot({ path: login + '_screenshot.png' });
+      }
       await nightmare.goto('about:blank')
-      await browser.close()
+      await nightmare.close()
     }
     catch (e) { }
 
@@ -532,7 +534,6 @@ const main = async (restartAccount) => {
 
       await gotoUrl(album())
     }
-    // }
 
     if (player === 'napster') {
       const issueAccount = await exists('.account-issue')
@@ -547,7 +548,7 @@ const main = async (restartAccount) => {
     if (check) {
       setTimeout(async () => {
         await nightmare.goto('about:blank')
-        await browser.close()
+        await nightmare.close()
       }, 1000 * 30);
       return
     }
@@ -608,7 +609,7 @@ const main = async (restartAccount) => {
         }, timeout);
 
         await nightmare.goto('about:blank')
-        await browser.close()
+        await nightmare.close()
       }
       catch (e) {
         catchFct('restart')
