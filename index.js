@@ -158,13 +158,18 @@ const main = async (restartAccount) => {
     }
   }
 
-  const waitForSelector = async (selector, timeout = 1000 * 60 * 3) => {
+  const waitForSelector = async (selector, timeout = 1000 * 60 * 3, retry = false) => {
     try {
       await nightmare.waitForSelector(selector, { timeout })
       return true
     } catch (error) {
-      throw 'Selector :' + selector + ' not found'
-      return false
+      if (retry) {
+        throw 'Selector :' + selector + ' not found'
+      }
+      else {
+        console.log('retry', account)
+        await waitForSelector(selector, timeout, true)
+      }
     }
   }
 
@@ -179,7 +184,6 @@ const main = async (restartAccount) => {
 
   const click = async (selector) => {
     const exist = await waitForSelector(selector)
-    if (!exist) { return false }
 
     try {
       await nightmare.waitFor(2000 + rand(2000))
@@ -213,8 +217,7 @@ const main = async (restartAccount) => {
   }
 
   const insert = async (selector, text) => {
-    const exist = await click(selector)
-    if (!exist) { return false }
+    await click(selector)
 
     try {
       await nightmare.waitFor(2000 + rand(2000))
@@ -438,14 +441,14 @@ const main = async (restartAccount) => {
       })
     }
 
-    await nightmare.setRequestInterception(true);
-    nightmare.on('request', async request => {
-      const requestUrl = await request.url()
-      if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
-        return request.abort(['blockedbyclient']);
-      }
-      request.continue();
-    });
+    // await nightmare.setRequestInterception(true);
+    // nightmare.on('request', async request => {
+    //   const requestUrl = await request.url()
+    //   if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
+    //     return request.abort(['blockedbyclient']);
+    //   }
+    //   request.continue();
+    // });
 
     // ***************************************************************************************************************************************************************
     // *************************************************************************** CONNECT ***************************************************************************
@@ -465,16 +468,12 @@ const main = async (restartAccount) => {
           const validCallback = await resolveCaptcha()
           // console.log(validCallback)
           if (validCallback === 'click') {
-            errorClick = await click('#recap-invisible')
+            await click('#recap-invisible')
           }
           else if (validCallback !== 'done') { throw validCallback }
 
-          const passwordSelector = await waitForSelector(password)
-          if (!passwordSelector) { return }
-
           await insert(password, pass)
-          errorClick = await click('body > div > div > div > div > div > div > div > form > button')
-          if (errorClick) { return }
+          await click('body > div > div > div > div > div > div > div > form > button')
 
           await nightmare.waitFor(5000 + rand(2000))
           await gotoUrl(album())
@@ -679,7 +678,7 @@ const main = async (restartAccount) => {
           if (t1 === t2) { freeze++ }
           else { freeze = 0 }
 
-          if (freeze > 3) {
+          if (freeze >= 2) {
             freeze = 0
 
             if (!t1 || player !== 'napster') {
@@ -703,7 +702,7 @@ const main = async (restartAccount) => {
           return
         }
 
-        loopAdd = 1000 * 10
+        loopAdd = 1000 * 5
         timeLoop += loopAdd
         changeInterval = setTimeout(() => {
           if (over) { return }
@@ -724,12 +723,7 @@ const main = async (restartAccount) => {
 
 const mainInter = setInterval(() => {
   if (over || process.env.TEST || errorPath) { return clearInterval(mainInter) }
-  try {
-    main()
-  }
-  catch (e) {
-    console.log('ZEUB')
-  }
+  main()
 }, 1000 * pause);
 
 let file = process.env.FILE || 'napsterAccount.txt'
