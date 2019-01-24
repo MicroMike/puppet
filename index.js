@@ -140,9 +140,9 @@ const main = async (restartAccount) => {
   }
 
   const pages = await browser.pages()
-  const nightmare = pages[0]
+  const page = pages[0]
 
-  await nightmare.evaluateOnNewDocument(() => {
+  await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
       get: () => false,
     });
@@ -150,7 +150,7 @@ const main = async (restartAccount) => {
 
   const gotoUrl = async (url) => {
     try {
-      await nightmare.goto(url, { timeout: 1000 * 60 * 5, waitUntil: 'domcontentloaded' })
+      await page.goto(url, { timeout: 1000 * 60 * 5, waitUntil: 'domcontentloaded' })
       return true
     } catch (error) {
       throw 'error connect ' + account
@@ -160,15 +160,14 @@ const main = async (restartAccount) => {
 
   const waitForSelector = async (selector, timeout = 1000 * 60 * 3, retry = false) => {
     try {
-      await nightmare.waitForSelector(selector, { timeout })
+      await page.waitForSelector(selector, { timeout })
       return true
     } catch (error) {
       if (retry) {
         throw 'Selector :' + selector + ' not found'
       }
       else {
-        console.log('retry', account)
-	await nightmare.reload()
+        await page.reload()
         await waitForSelector(selector, timeout, true)
       }
     }
@@ -176,7 +175,7 @@ const main = async (restartAccount) => {
 
   const exists = async (selector, timeout = 1000 * 10) => {
     try {
-      await nightmare.waitForSelector(selector, { timeout })
+      await page.waitForSelector(selector, { timeout })
       return true
     } catch (error) {
       return false
@@ -187,8 +186,8 @@ const main = async (restartAccount) => {
     const exist = await waitForSelector(selector)
 
     try {
-      await nightmare.waitFor(2000 + rand(2000))
-      await nightmare.evaluate(selector => {
+      await page.waitFor(2000 + rand(2000))
+      await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
 
@@ -205,8 +204,8 @@ const main = async (restartAccount) => {
     if (!exist) { return false }
 
     try {
-      await nightmare.waitFor(2000 + rand(2000))
-      await nightmare.evaluate(selector => {
+      await page.waitFor(2000 + rand(2000))
+      await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
       return true
@@ -221,9 +220,9 @@ const main = async (restartAccount) => {
     await click(selector)
 
     try {
-      await nightmare.waitFor(2000 + rand(2000))
-      const elementHandle = await nightmare.$(selector);
-      await nightmare.evaluate(selector => {
+      await page.waitFor(2000 + rand(2000))
+      const elementHandle = await page.$(selector);
+      await page.evaluate(selector => {
         document.querySelector(selector).value = ''
       }, selector)
       await elementHandle.type(text, { delay: 300 });
@@ -269,10 +268,10 @@ const main = async (restartAccount) => {
 
     try {
       if (del) {
-        await nightmare.screenshot({ path: login + '_screenshot.png' });
+        await page.screenshot({ path: login + '_screenshot.png' });
       }
-      await nightmare.goto('about:blank')
-      await nightmare.close()
+      await page.goto('about:blank')
+      await page.close()
     }
     catch (e) { }
 
@@ -415,7 +414,7 @@ const main = async (restartAccount) => {
       return new Promise(async (resolve, reject) => {
         try {
           let errorLog
-          const needCaptcha = await nightmare.evaluate(() => {
+          const needCaptcha = await page.evaluate(() => {
             return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients ? location.href : false
           })
 
@@ -424,7 +423,7 @@ const main = async (restartAccount) => {
           const captcha = process.env.RAND ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
 
-          await nightmare
+          await page
             .evaluate((captcha) => {
               setTimeout(() => {
                 let clients = window.___grecaptcha_cfg.clients[0]
@@ -446,8 +445,8 @@ const main = async (restartAccount) => {
       })
     }
 
-    // await nightmare.setRequestInterception(true);
-    // nightmare.on('request', async request => {
+    // await page.setRequestInterception(true);
+    // page.on('request', async request => {
     //   const requestUrl = await request.url()
     //   if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
     //     return request.abort(['blockedbyclient']);
@@ -461,7 +460,7 @@ const main = async (restartAccount) => {
 
     if (player === 'tidal') {
       await gotoUrl(album())
-      await nightmare.waitFor(2000 + rand(2000))
+      await page.waitFor(2000 + rand(2000))
       const notConnected = await justClick(goToLogin)
 
       if (notConnected) {
@@ -480,7 +479,7 @@ const main = async (restartAccount) => {
           await insert(password, pass)
           await click('body > div > div > div > div > div > div > div > form > button')
 
-          await nightmare.waitFor(5000 + rand(2000))
+          await page.waitFor(5000 + rand(2000))
           await gotoUrl(album())
         }
       }
@@ -489,10 +488,10 @@ const main = async (restartAccount) => {
     if (player === 'spotify' && check) {
       if (tokenAutoLog) {
         await gotoUrl('https:' + tokenAutoLog)
-        await nightmare.waitFor(5000 + rand(2000))
+        await page.waitFor(5000 + rand(2000))
       }
       await gotoUrl('https://www.spotify.com/fr/account/overview')
-      const free = await nightmare.evaluate(() => {
+      const free = await page.evaluate(() => {
         const typeAccount = document.querySelector('.product-name')
         return typeAccount && /Free|free/.test(typeAccount.innerHTML)
       })
@@ -508,7 +507,7 @@ const main = async (restartAccount) => {
       if (player === 'spotify' && process.env.RAND) {
         // throw 'Spotify relog ' + login
       }
-      await nightmare.waitFor(2000 + rand(2000))
+      await page.waitFor(2000 + rand(2000))
       await gotoUrl(url)
 
       usernameInput = await exists(username)
@@ -528,9 +527,9 @@ const main = async (restartAccount) => {
       }
 
       if (player === 'amazon') {
-        await nightmare.waitFor(10000 + rand(2000))
+        await page.waitFor(10000 + rand(2000))
       }
-      await nightmare.waitFor(2000 + rand(2000))
+      await page.waitFor(2000 + rand(2000))
       suppressed = await exists(loginError)
 
       if (suppressed) { throw 'del' }
@@ -550,8 +549,8 @@ const main = async (restartAccount) => {
 
     if (check) {
       setTimeout(async () => {
-        await nightmare.goto('about:blank')
-        await nightmare.close()
+        await page.goto('about:blank')
+        await page.close()
       }, 1000 * 30);
       return
     }
@@ -567,7 +566,7 @@ const main = async (restartAccount) => {
 
     let stopBeforePlay
     if (player === 'spotify') {
-      await nightmare.waitFor(2000 + rand(2000))
+      await page.waitFor(2000 + rand(2000))
       stopBeforePlay = await exists(usedDom)
     }
 
@@ -611,8 +610,8 @@ const main = async (restartAccount) => {
           accounts.push(account)
         }, timeout);
 
-        await nightmare.goto('about:blank')
-        await nightmare.close()
+        await page.goto('about:blank')
+        await page.close()
       }
       catch (e) {
         catchFct('restart')
@@ -631,7 +630,7 @@ const main = async (restartAccount) => {
         let changeTime = process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
         if (timeLoop >= changeTime) {
           await gotoUrl(album())
-          await nightmare.waitFor(1000 * 30)
+          await page.waitFor(1000 * 30)
 
           await click(playBtn)
 
@@ -641,7 +640,7 @@ const main = async (restartAccount) => {
         used = await exists(usedDom)
 
         if (used) {
-          used = await nightmare.evaluate((usedDom) => {
+          used = await page.evaluate((usedDom) => {
             return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
           }, usedDom)
 
@@ -675,7 +674,7 @@ const main = async (restartAccount) => {
             return
           }
 
-          t1 = await nightmare.evaluate((args) => {
+          t1 = await page.evaluate((args) => {
             return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
           }, { timeLine, style })
 
@@ -689,7 +688,7 @@ const main = async (restartAccount) => {
               fix = true
               if (!t1) {
                 console.log(getTime(), ' no bar ' + t1, account)
-                await nightmare.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
+                await page.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
               }
             }
             else {
