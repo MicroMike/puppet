@@ -469,8 +469,7 @@ const main = async (restartAccount) => {
         if (!done) {
           await insert(username, login)
 
-          const validCallback = await resolveCaptcha()
-          // console.log(validCallback)
+          const validCallback = check ? await resolveCaptcha() : 'click'
           if (validCallback === 'click') {
             await click('#recap-invisible')
           }
