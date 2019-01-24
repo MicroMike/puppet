@@ -168,6 +168,7 @@ const main = async (restartAccount) => {
       }
       else {
         console.log('retry', account)
+	await nightmare.reload()
         await waitForSelector(selector, timeout, true)
       }
     }
