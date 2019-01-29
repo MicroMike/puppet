@@ -711,7 +711,7 @@ const main = async (restartAccount) => {
         }, loopAdd);
       }
       catch (e) {
-        catchFct(e)
+        catchFct('loop catch')
       }
     }
 
