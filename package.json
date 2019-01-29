@@ -9,7 +9,7 @@
     "spotify": "TYPE=spotify node index",
     "napster": "TYPE=napster node index",
     "amazon": "TYPE=amazon node index",
-    "all": "git clean -f && git pull && FILE=napsterAccount.txt RAND=true node index",
+    "all": "git reset --hard && git clean -f && git pull && FILE=napsterAccount.txt RAND=true node index",
     "check": "CHECK=true node index",
     "push": "git add . && git commit -m c && git push",
     "compare": "git pull && node compare && git add napsterAccount.txt && git commit -m c && git push",
