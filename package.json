@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tidal": "cross-env TYPE=tidal node index",
+    "tidal": "TYPE=tidal node index",
     "spotify": "TYPE=spotify node index",
     "napster": "TYPE=napster node index",
     "amazon": "TYPE=amazon node index",
