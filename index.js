@@ -256,20 +256,15 @@ const main = async (restartAccount) => {
   let suppressed = false
 
   let changeInterval
-  let restartTimeout
-  let errorClick = false
 
   const catchFct = async (e) => {
 
     clearTimeout(changeInterval)
-    clearTimeout(restartTimeout)
 
     const del = e === 'del'
 
     try {
-      if (del) {
-        await page.screenshot({ path: login + '_screenshot.png' });
-      }
+      await page.screenshot({ path: login + '_screenshot.png' });
       await page.goto('about:blank')
       await page.close()
     }
@@ -280,7 +275,9 @@ const main = async (restartAccount) => {
     console.log(getTime() + " ERROR ", account, e)
 
     if (!del) {
-      accounts.push(account)
+      if (!check) {
+        accounts.push(account)
+      }
     }
     else {
       fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
@@ -667,9 +664,6 @@ const main = async (restartAccount) => {
           else if (player === 'spotify') {
             timeLine = '.progress-bar__fg'
             style = 'transform'
-          }
-          else {
-            return
           }
 
           t1 = await page.evaluate((args) => {
