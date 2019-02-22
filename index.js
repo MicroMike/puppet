@@ -583,6 +583,7 @@ const main = async (restartAccount) => {
         await page.goto('about:blank')
         await page.close()
       }, 1000 * 30);
+      main()
     }
 
     // ***************************************************************************************************************************************************************
@@ -717,7 +718,7 @@ const main = async (restartAccount) => {
 }
 
 const mainInter = setInterval(() => {
-  if (over || process.env.TEST || errorPath) { return clearInterval(mainInter) }
+  if (over || process.env.TEST || errorPath || check) { return clearInterval(mainInter) }
   main()
 }, 1000 * pause);
 
