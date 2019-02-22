@@ -475,6 +475,7 @@ const main = async (restartAccount) => {
           // else if (validCallback !== 'done') { throw validCallback }
 
           await waitForSelector(password, 1000 * 60 * 5)
+          main()
 
           await insert(password, pass)
           await click('body > div > div > div > div > div > div > div > form > button')
@@ -482,6 +483,12 @@ const main = async (restartAccount) => {
           await page.waitFor(5000 + rand(2000))
           await gotoUrl(album())
         }
+        else if (check) {
+          main()
+        }
+      }
+      else if (check) {
+        main()
       }
     }
 
@@ -587,7 +594,6 @@ const main = async (restartAccount) => {
         await page.goto('about:blank')
         await page.close()
       }, 1000 * 30);
-      main()
     }
 
     // ***************************************************************************************************************************************************************
