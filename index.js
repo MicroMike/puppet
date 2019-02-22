@@ -708,7 +708,7 @@ const main = async (restartAccount) => {
         }, loopAdd);
       }
       catch (e) {
-        catchFct('loop catch')
+        // catchFct('loop catch')
       }
     }
 
