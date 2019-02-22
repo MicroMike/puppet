@@ -466,11 +466,13 @@ const main = async (restartAccount) => {
         if (!done) {
           await insert(username, login)
 
-          const validCallback = check ? await resolveCaptcha() : 'click'
-          if (validCallback === 'click') {
-            await click('#recap-invisible')
-          }
-          else if (validCallback !== 'done') { throw validCallback }
+          // const validCallback = check ? await resolveCaptcha() : 'click'
+          // if (validCallback === 'click') {
+          //   await click('#recap-invisible')
+          // }
+          // else if (validCallback !== 'done') { throw validCallback }
+
+          await waitForSelector(password, 1000 * 60 * 5)
 
           await insert(password, pass)
           await click('body > div > div > div > div > div > div > div > form > button')
