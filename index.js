@@ -272,7 +272,9 @@ const main = async (restartAccount) => {
 
     accountsValid = accountsValid.filter(a => a !== account)
 
-    console.log(getTime() + " ERROR ", account, e)
+    if (e !== 'loop') {
+      console.log(getTime() + " ERROR ", account, e)
+    }
 
     if (!del) {
       if (!check) {
@@ -708,7 +710,7 @@ const main = async (restartAccount) => {
         }, loopAdd);
       }
       catch (e) {
-        // catchFct('loop catch')
+        catchFct('loop')
       }
     }
 
