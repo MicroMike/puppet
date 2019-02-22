@@ -623,7 +623,7 @@ const main = async (restartAccount) => {
           return
         }
 
-        let changeTime = process.env.TEST || check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
+        let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
         if (timeLoop >= changeTime) {
           await gotoUrl(album())
           await page.waitFor(1000 * 30)
@@ -718,7 +718,7 @@ const main = async (restartAccount) => {
 }
 
 const mainInter = setInterval(() => {
-  if (over || process.env.TEST || errorPath || check) { return clearInterval(mainInter) }
+  if (over || errorPath || check) { return clearInterval(mainInter) }
   main()
 }, 1000 * pause);
 
