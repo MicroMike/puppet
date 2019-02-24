@@ -258,9 +258,6 @@ const main = async (restartAccount) => {
   let changeInterval
 
   const catchFct = async (e) => {
-    if (check) {
-      main()
-    }
 
     clearTimeout(changeInterval)
 
@@ -598,8 +595,11 @@ const main = async (restartAccount) => {
 
     if (check) {
       setTimeout(async () => {
-        await page.goto('about:blank')
-        await page.close()
+        try {
+          await page.goto('about:blank')
+          await page.close()
+        }
+        catch (e) { }
       }, 1000 * 30);
     }
 
