@@ -258,9 +258,6 @@ const main = async (restartAccount) => {
   let changeInterval
 
   const catchFct = async (e) => {
-    if (check) {
-      main()
-    }
 
     clearTimeout(changeInterval)
 
@@ -282,6 +279,9 @@ const main = async (restartAccount) => {
     if (!del) {
       if (!check) {
         accounts.push(account)
+      }
+      else {
+        main()
       }
     }
     else {
