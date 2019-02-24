@@ -258,6 +258,9 @@ const main = async (restartAccount) => {
   let changeInterval
 
   const catchFct = async (e) => {
+    if (check) {
+      main()
+    }
 
     clearTimeout(changeInterval)
 
@@ -289,7 +292,6 @@ const main = async (restartAccount) => {
         data.push(account)
         fs.writeFile('napsterAccountDel.txt', data.join(','), function (err) {
           if (err) return console.log(err);
-          main()
         });
       });
     }
