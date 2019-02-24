@@ -258,6 +258,9 @@ const main = async (restartAccount) => {
   let changeInterval
 
   const catchFct = async (e) => {
+    if (check) {
+      main()
+    }
 
     clearTimeout(changeInterval)
 
