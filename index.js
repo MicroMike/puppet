@@ -355,6 +355,7 @@ const main = async (restartAccount) => {
     }
     if (player === 'tidal') {
       url = 'https://listen.tidal.com/'
+      loggedDom = '[class*="userLoggedIn"]'
 
       username = 'input#email'
       password = '[name="password"]'
@@ -484,6 +485,8 @@ const main = async (restartAccount) => {
           await click('body > div > div > div > div > div > div > div > form > button')
 
           await page.waitFor(5000 + rand(2000))
+          connected = await exists(loggedDom)
+          if (!connected) { throw 'del' }
           await gotoUrl(album())
         }
         else if (check) {
