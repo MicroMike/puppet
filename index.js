@@ -289,6 +289,7 @@ const main = async (restartAccount) => {
         data.push(account)
         fs.writeFile('napsterAccountDel.txt', data.join(','), function (err) {
           if (err) return console.log(err);
+          main()
         });
       });
     }
@@ -473,14 +474,8 @@ const main = async (restartAccount) => {
           //   await click('#recap-invisible')
           // }
           // else if (validCallback !== 'done') { throw validCallback }
-          try {
-            await waitForSelector(password, 1000 * 60 * 5)
-          }
-          catch (e) {
-            main()
-            return
-          }
 
+          await waitForSelector(password, 1000 * 60 * 5)
           main()
 
           await insert(password, pass)
