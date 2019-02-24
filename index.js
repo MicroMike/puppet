@@ -479,8 +479,6 @@ const main = async (restartAccount) => {
           // else if (validCallback !== 'done') { throw validCallback }
 
           await waitForSelector(password, 1000 * 60 * 5)
-          main()
-
           await insert(password, pass)
           await click('body > div > div > div > div > div > div > div > form > button')
 
@@ -489,12 +487,6 @@ const main = async (restartAccount) => {
           if (!connected) { throw 'del' }
           await gotoUrl(album())
         }
-        else if (check) {
-          main()
-        }
-      }
-      else if (check) {
-        main()
       }
     }
 
@@ -560,7 +552,7 @@ const main = async (restartAccount) => {
       }
     }
 
-    if (check && player !== 'tidal') {
+    if (check) {
       main()
     }
 
