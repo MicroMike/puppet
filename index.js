@@ -117,6 +117,10 @@ const main = async (restartAccount) => {
     executablePath: '/usr/bin/google-chrome-stable',
     userDataDir: 'save/' + player + '_' + login,
     headless: false,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+    ],
     defaultViewport: {
       width: 720,
       height: 450,
