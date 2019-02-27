@@ -14,6 +14,7 @@
     "push": "git add . && git commit -m c && git push",
     "compare": "git pull && node compare && git add napsterAccount.txt && git commit -m c && git push",
     "vpn": "expressvpn disconnect && expressvpn connect nl",
+    "node": "curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -",
     "initn": "/sbin/ip route del 5.189.154.0/24 via 5.189.154.1 dev ens18 && /sbin/ip route add 5.189.154.0/24 dev ens18 proto kernel scope link src 5.189.154.39 && expressvpn connect nl",
     "inits": "/sbin/ip route del 5.189.185.0/24 via 5.189.185.1 dev ens18 && /sbin/ip route add 5.189.185.0/24 dev ens18 proto kernel scope link src 5.189.185.48 && expressvpn connect nl",
     "inity": "/sbin/ip route del 173.249.43.0/24 via 173.249.43.1 dev ens18 && /sbin/ip route add 173.249.43.0/24 dev ens18 proto kernel scope link src 173.249.43.6 && expressvpn connect nl",
