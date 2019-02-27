@@ -86,6 +86,7 @@ const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
 
 const main = async (restartAccount) => {
   let albums = []
+  let close = false
   let currentAlbum
   const album = () => {
     let albumUrl = albums[rand(albums.length)]
@@ -269,16 +270,13 @@ const main = async (restartAccount) => {
 
     try {
       await page.screenshot({ path: login + '_screenshot.png' });
-      await page.goto('about:blank')
-      await page.close()
+      close = true
     }
     catch (e) { }
 
     accountsValid = accountsValid.filter(a => a !== account)
 
-    if (e !== 'loop') {
-      console.log(getTime() + " ERROR ", account, e)
-    }
+    console.log(getTime() + " ERROR ", account, e)
 
     if (!del) {
       if (!check) {
@@ -636,6 +634,11 @@ const main = async (restartAccount) => {
 
     let timeLoop = 0
     const loop = async () => {
+      if (close) {
+        await page.goto('about:blank')
+        await page.close()
+        return
+      }
       try {
         let restartTime = 1000 * 60 * 30 + rand(1000 * 60 * 30)
         if (timeLoop >= restartTime) {
