@@ -314,12 +314,13 @@ const main = async (restartAccount) => {
       repeatBtnOk = '.repeat-button.repeat'
 
       albums = [
+        'https://app.napster.com/artist/honey/album/just-another-emotion',
         'https://app.napster.com/artist/yokem/album/boombeats',
         'https://app.napster.com/artist/hanke/album/new-york-story',
         'https://app.napster.com/artist/hanke/album/100-revenge',
         'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
         'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
-        'https://app.napster.com/artist/xondes/album/wicked',
+        'https://app.napster.com/artist/xondes/album/wicked-344744668',
         'https://app.napster.com/artist/mahone/album/stone-distraction/',
         'https://app.napster.com/artist/lapilluledors/album/red-beast',
         'https://app.napster.com/artist/hazel/album/electric-nature',
