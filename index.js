@@ -385,7 +385,7 @@ const main = async (restartAccount) => {
       ]
 
       usedDom = '.WARN'
-      reLog = '[class*="userLoggedOut"] button + button'
+      reLog = 'body > div > div.main > div > div > div > div > div > button'
     }
     if (player === 'spotify') {
       url = 'https://accounts.spotify.com/login'
@@ -483,7 +483,7 @@ const main = async (restartAccount) => {
 
           await waitForSelector(password, 1000 * 60 * 5)
           await insert(password, pass)
-          await click('div.main > div > div > div > div > div > button')
+          await click('body > div > div > div > div > div > div > div > form > button')
 
           await page.waitFor(5000 + rand(2000))
           connected = await exists(loggedDom)
