@@ -575,7 +575,13 @@ const main = async (restartAccount) => {
     }
 
     if (!stopBeforePlay) {
-      await click(playBtn)
+      try {
+        await click(playBtn)
+      }
+      catch (e) {
+        console.log('start play')
+        throw 'error'
+      }
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
         const clickLoop = () => {
@@ -650,9 +656,15 @@ const main = async (restartAccount) => {
         let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
         if (timeLoop >= changeTime) {
           await gotoUrl(album())
-          await page.waitFor(1000 * 30)
+          await waitForSelector(playBtn)
 
-          await click(playBtn)
+          try {
+            await click(playBtn)
+          }
+          catch (e) {
+            console.log('loop play')
+            throw 'error'
+          }
 
           timeLoop = 0
         }
