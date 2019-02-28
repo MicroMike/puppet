@@ -730,7 +730,7 @@ const main = async (restartAccount) => {
         }, loopAdd);
       }
       catch (e) {
-        catchFct('loop')
+        catchFct(e)
       }
     }
 
