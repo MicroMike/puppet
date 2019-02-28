@@ -704,7 +704,8 @@ const main = async (restartAccount) => {
             }, { timeLine, style })
           }
           catch (e) {
-            console.log(e)
+            //console.log(e)
+            return
           }
 
           if (t1 === t2) { freeze++ }
