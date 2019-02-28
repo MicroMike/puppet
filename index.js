@@ -691,9 +691,14 @@ const main = async (restartAccount) => {
             style = 'transform'
           }
 
-          t1 = await page.evaluate((args) => {
-            return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
-          }, { timeLine, style })
+          try {
+            t1 = await page.evaluate((args) => {
+              return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
+            }, { timeLine, style })
+          }
+          catch (e) {
+            console.log(e)
+          }
 
           if (t1 === t2) { freeze++ }
           else { freeze = 0 }
