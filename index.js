@@ -11,7 +11,7 @@ let accountsValid = []
 let over = false
 let countTimeout = 0
 const max = 20
-const pause = check ? 10 : 30
+const pause = check ? 15 : 30
 let errorPath = false
 
 const getTime = () => {
@@ -577,8 +577,11 @@ const main = async (restartAccount) => {
         await click(playBtn)
       }
       catch (e) {
-        console.log('start play')
-        throw 'error'
+        try {
+          await gotoUrl(album())
+          await click(playBtn)
+        }
+        catch (e) { throw 'error' }
       }
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
