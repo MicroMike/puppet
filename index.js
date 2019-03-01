@@ -134,13 +134,13 @@ const main = async (restartAccount) => {
 
   let browser
 
+  // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+
   try {
     browser = await puppeteer.launch(params);
   }
   catch (e) {
-    errorPath = true
-    params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-    browser = await puppeteer.launch(params);
+    process.exit()
   }
 
   const pages = await browser.pages()
@@ -800,3 +800,7 @@ fs.readFile(file, 'utf8', async (err, data) => {
 process.on('SIGINT', function (code) {
   over = true
 });
+
+setTimeout(() => {
+  process.exit()
+}, 1000 * 15);
