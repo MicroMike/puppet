@@ -800,7 +800,3 @@ fs.readFile(file, 'utf8', async (err, data) => {
 process.on('SIGINT', function (code) {
   over = true
 });
-
-setTimeout(() => {
-  process.exit()
-}, 1000 * 15);
