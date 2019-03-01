@@ -601,6 +601,15 @@ const main = async (restartAccount) => {
       }
     }
 
+    if (player === 'tidal') {
+      const delTidal = await page.evaluate(() => {
+        return document.querySelector('.ReactModal__Overlay') && document.querySelector('.ReactModal__Overlay').innerText
+      })
+      if (typeof delTidal === 'string' && delTidal.match(/expired/)) {
+        throw 'del'
+      }
+    }
+
     if (check) {
       setTimeout(async () => {
         try {
@@ -718,14 +727,6 @@ const main = async (restartAccount) => {
             if (!t1 || player !== 'napster') {
               fix = true
               if (!t1) {
-                if (player === 'tidal') {
-                  const delTidal = await page.evaluate(() => {
-                    return document.querySelector('.ReactModal__Overlay') && document.querySelector('.ReactModal__Overlay').innerText
-                  })
-                  if (typeof delTidal === 'string' && delTidal.match(/expired/)) {
-                    throw 'del'
-                  }
-                }
                 console.log(getTime(), ' no bar ' + t1, account)
                 await page.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
               }
