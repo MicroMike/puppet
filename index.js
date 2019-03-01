@@ -318,12 +318,12 @@ const main = async (restartAccount) => {
         'https://app.napster.com/artist/yokem/album/boombeats',
         'https://app.napster.com/artist/hanke/album/new-york-story',
         'https://app.napster.com/artist/hanke/album/100-revenge',
-        'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
-        'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
-        'https://app.napster.com/artist/xondes/album/wicked-344744668',
         'https://app.napster.com/artist/mahone/album/stone-distraction/',
-        'https://app.napster.com/artist/lapilluledors/album/red-beast',
         'https://app.napster.com/artist/hazel/album/electric-nature',
+        'https://app.napster.com/artist/lapilluledors/album/red-beast',
+        // 'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
+        //'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
+        //'https://app.napster.com/artist/xondes/album/wicked-344744668',
       ]
 
       usedDom = '.player-error-box'
@@ -348,10 +348,10 @@ const main = async (restartAccount) => {
         'https://music.amazon.fr/albums/B07D3NQ235',
         'https://music.amazon.fr/albums/B07G5PPYSY',
         'https://music.amazon.fr/albums/B07D3PGSR4',
-        'https://music.amazon.fr/albums/B07LGWP7SX',
-        'https://music.amazon.fr/albums/B07MBH9D43',
-        'https://music.amazon.fr/albums/B07M75PR8X',
         'https://music.amazon.fr/albums/B07MTV7JYS',
+        // 'https://music.amazon.fr/albums/B07M75PR8X',
+        // 'https://music.amazon.fr/albums/B07LGWP7SX',
+        // 'https://music.amazon.fr/albums/B07MBH9D43',
       ]
 
       usedDom = '.concurrentStreamsPopover'
@@ -376,12 +376,12 @@ const main = async (restartAccount) => {
         'https://listen.tidal.com/album/93312939',
         'https://listen.tidal.com/album/93087422',
         'https://listen.tidal.com/album/88716570',
-        'https://listen.tidal.com/album/101352536',
         'https://listen.tidal.com/album/101927847',
-        'https://listen.tidal.com/album/101962381',
-        'https://listen.tidal.com/album/101844025',
-        'https://listen.tidal.com/album/102503463',
         'https://listen.tidal.com/album/102564740',
+        'https://listen.tidal.com/album/102503463',
+        // 'https://listen.tidal.com/album/101962381',
+        // 'https://listen.tidal.com/album/101352536',
+        // 'https://listen.tidal.com/album/101844025',
       ]
 
       usedDom = '.WARN'
@@ -406,12 +406,12 @@ const main = async (restartAccount) => {
       albums = [
         'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
         'https://open.spotify.com/album/5509gS9cZUrbTFege0fpTk',
-        'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
         'https://open.spotify.com/album/2jmPHLM2be2g19841vHjWE',
-        'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
-        'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
-        'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',
         'https://open.spotify.com/album/5CPIRky6BGgl3CCdzMYAXZ',
+        'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',
+        // 'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
+        // 'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
+        // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
       ]
       usedDom = '.ConnectBar'
     }
