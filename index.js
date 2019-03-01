@@ -140,6 +140,7 @@ const main = async (restartAccount) => {
     browser = await puppeteer.launch(params);
   }
   catch (e) {
+    console.log(e)
     process.exit()
   }
 
