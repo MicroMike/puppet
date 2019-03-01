@@ -466,10 +466,11 @@ const main = async (restartAccount) => {
 
     if (player === 'tidal') {
       await gotoUrl(album())
-      await page.waitFor(2000 + rand(2000))
+      await page.waitFor(2000)
       const notConnected = await justClick(goToLogin)
 
       if (notConnected) {
+        await page.waitFor(2000)
         const done = await justClick(reLog)
 
         if (!done) {
