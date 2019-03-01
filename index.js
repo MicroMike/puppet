@@ -114,7 +114,7 @@ const main = async (restartAccount) => {
   const tokenAutoLog = accountInfo[4] || null
 
   const params = {
-    executablePath: '/usr/bin/google-chrome-stable',
+    executablePath: '/usr/bin/google-chrome',
     userDataDir: 'save/' + player + '_' + login,
     headless: false,
     args: [
