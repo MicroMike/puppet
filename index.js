@@ -781,15 +781,6 @@ fs.readFile(file, 'utf8', async (err, data) => {
     if (process.env.TYPE) {
       accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
     }
-    else if (!process.env.FILE && !check) {
-      const split = parseInt(data.length / 2)
-      if (process.env.BEGIN === '2') {
-        accounts = data.slice(split)
-      }
-      else {
-        accounts = data.slice(0, split)
-      }
-    }
 
     accounts = process.env.RAND ? shuffle(accounts) : accounts
     golbalAccountsLength = accounts.length
