@@ -26,6 +26,7 @@
     "ajax-request": "^1.2.3",
     "fs": "0.0.1-security",
     "puppeteer": "^1.11.0",
-    "puppeteer-core": "^1.11.0"
+    "puppeteer-core": "^1.11.0",
+    "shelljs": "^0.8.3"
   }
 }
