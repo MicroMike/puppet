@@ -640,7 +640,7 @@ fs.readFile(file, 'utf8', async (err, data) => {
       accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
     }
 
-    accounts = process.env.RAND ? shuffle(accounts) : accounts
+    accounts = process.env.RAND || process.env.RECHECK ? shuffle(accounts) : accounts
     console.log(accounts.length)
     main()
   })
