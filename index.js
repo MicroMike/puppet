@@ -631,7 +631,7 @@ fs.readFile(file, 'utf8', async (err, data) => {
       accounts = accounts.filter(e => dataDel.indexOf(e) < 0)
     }
     else {
-      fs.writeFile('recheck.txt', '', function (err) {
+      fs.writeFile('napsterAccountDel.txt', '', function (err) {
         if (err) return console.log(err);
       });
     }
