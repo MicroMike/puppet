@@ -11,6 +11,7 @@
     "amazon": "TYPE=amazon node index",
     "all": "git reset --hard && git clean -f && git pull && FILE=napsterAccount.txt RAND=true node index",
     "check": "CHECK=true node index",
+    "recheck": "FILE=napsterAccountDel.txt RECHECK=true node index",
     "push": "git add . && git commit -m c && git push",
     "compare": "git pull && node compare && git add napsterAccount.txt && git commit -m c && git push",
     "vpn": "expressvpn disconnect && expressvpn connect nl",

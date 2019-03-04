@@ -1,11 +1,10 @@
-const puppeteer = require('puppeteer');
 const fs = require('fs');
 const request = require('ajax-request');
+const puppet = require('./puppet')
 
 process.setMaxListeners(Infinity)
 
-const check = process.env.CHECK || process.env.TYPE
-let golbalAccountsLength = []
+const check = process.env.CHECK || process.env.RECHECK || process.env.TYPE
 let accounts = []
 let accountsValid = []
 let over = false
@@ -113,131 +112,8 @@ const main = async (restartAccount) => {
   const pass = accountInfo[2]
   const tokenAutoLog = accountInfo[4] || null
 
-  const params = {
-    executablePath: '/usr/bin/google-chrome',
-    userDataDir: 'save/' + player + '_' + login,
-    headless: false,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-    ],
-    defaultViewport: {
-      width: 720,
-      height: 450,
-    }
-    // slowMo: 200,
-  }
-
-  if (player === 'napster' || player === 'spotify') {
-    delete params.userDataDir
-  }
-
-  let browser
-
-  // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-
-  try {
-    browser = await puppeteer.launch(params);
-  }
-  catch (e) {
-    console.log(e)
-    process.exit()
-  }
-
-  const pages = await browser.pages()
-  const page = pages[0]
-
-  await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
-    });
-  });
-
-  const gotoUrl = async (url) => {
-    try {
-      await page.goto(url, { timeout: 1000 * 60 * 5, waitUntil: 'domcontentloaded' })
-      return true
-    } catch (error) {
-      throw 'error connect ' + account
-      return false
-    }
-  }
-
-  const waitForSelector = async (selector, timeout = 1000 * 60 * 3, retry = false) => {
-    try {
-      await page.waitForSelector(selector, { timeout })
-      return true
-    } catch (error) {
-      if (retry) {
-        throw 'Selector :' + selector + ' not found'
-      }
-      else {
-        await page.reload()
-        await waitForSelector(selector, timeout, true)
-      }
-    }
-  }
-
-  const exists = async (selector, timeout = 1000 * 10) => {
-    try {
-      await page.waitForSelector(selector, { timeout })
-      return true
-    } catch (error) {
-      return false
-    }
-  }
-
-  const click = async (selector) => {
-    const exist = await waitForSelector(selector)
-
-    try {
-      await page.waitFor(2000 + rand(2000))
-      await page.evaluate(selector => {
-        document.querySelector(selector) && document.querySelector(selector).click()
-      }, selector)
-
-      return true
-    }
-    catch (e) {
-      console.log('Click error ' + selector, account, 'exist :' + exist)
-      return false
-    }
-  }
-
-  const justClick = async (selector) => {
-    const exist = await exists(selector)
-    if (!exist) { return false }
-
-    try {
-      await page.waitFor(2000 + rand(2000))
-      await page.evaluate(selector => {
-        document.querySelector(selector) && document.querySelector(selector).click()
-      }, selector)
-      return true
-    }
-    catch (e) {
-      console.log('Justclick ' + selector, account)
-    }
-
-  }
-
-  const insert = async (selector, text) => {
-    await click(selector)
-
-    try {
-      await page.waitFor(2000 + rand(2000))
-      const elementHandle = await page.$(selector);
-      await page.evaluate(selector => {
-        document.querySelector(selector).value = ''
-      }, selector)
-      await elementHandle.type(text, { delay: 300 });
-
-      return true
-    }
-    catch (e) {
-      console.log('Insert error ' + selector, account)
-    }
-  }
+  let noCache = player === 'napster' || player === 'spotify'
+  let page = await puppet('save/' + player + '_' + login, noCache)
 
   let username
   let password
@@ -270,8 +146,7 @@ const main = async (restartAccount) => {
 
     try {
       await page.screenshot({ path: login + '_screenshot.png' });
-      await page.goto('about:blank')
-      await page.close()
+      await page.cls()
     }
     catch (e) { }
 
@@ -280,10 +155,8 @@ const main = async (restartAccount) => {
     console.log(getTime() + " ERROR ", account, e)
 
     if (!del) {
-      if (!check) {
-        accounts.push(account)
-      }
-      else {
+      accounts.push(account)
+      if (check) {
         main()
       }
     }
@@ -452,55 +325,46 @@ const main = async (restartAccount) => {
       })
     }
 
-    // await page.setRequestInterception(true);
-    // page.on('request', async request => {
-    //   const requestUrl = await request.url()
-    //   if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
-    //     return request.abort(['blockedbyclient']);
-    //   }
-    //   request.continue();
-    // });
-
     // ***************************************************************************************************************************************************************
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
 
     if (player === 'tidal') {
-      await gotoUrl(album())
+      await page.gotoUrl(album())
       await page.waitFor(2000)
-      const notConnected = await justClick(goToLogin)
+      const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
         await page.waitFor(2000)
-        const done = await justClick(reLog)
+        const done = await page.jClk(reLog)
 
         if (!done) {
-          await insert(username, login)
+          await page.inst(username, login)
 
           // const validCallback = check ? await resolveCaptcha() : 'click'
           // if (validCallback === 'click') {
-          //   await click('#recap-invisible')
+          //   await page.clk('#recap-invisible')
           // }
           // else if (validCallback !== 'done') { throw validCallback }
 
-          await waitForSelector(password, 1000 * 60 * 5)
-          await insert(password, pass)
-          await click('body > div > div > div > div > div > div > div > form > button')
+          await page.wfs(password, 1000 * 60 * 5)
+          await page.inst(password, pass)
+          await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
           await page.waitFor(5000 + rand(2000))
-          connected = await exists(loggedDom)
+          connected = await page.ext(loggedDom)
           if (!connected) { throw 'del' }
-          await gotoUrl(album())
+          await page.gotoUrl(album())
         }
       }
     }
 
     if (player === 'spotify' && check) {
       if (tokenAutoLog) {
-        await gotoUrl('https:' + tokenAutoLog)
+        await page.gotoUrl('https:' + tokenAutoLog)
         await page.waitFor(5000 + rand(2000))
       }
-      await gotoUrl('https://www.spotify.com/fr/account/overview')
+      await page.gotoUrl('https://www.spotify.com/fr/account/overview')
       const free = await page.evaluate(() => {
         const typeAccount = document.querySelector('.product-name')
         return typeAccount && /Free|free/.test(typeAccount.innerHTML)
@@ -509,8 +373,8 @@ const main = async (restartAccount) => {
     }
 
     if (player === 'amazon' || player === 'spotify') {
-      await gotoUrl(album())
-      connected = await exists(loggedDom)
+      await page.gotoUrl(album())
+      connected = await page.ext(loggedDom)
     }
 
     if (!connected && player !== 'tidal') {
@@ -518,13 +382,13 @@ const main = async (restartAccount) => {
         // throw 'Spotify relog ' + login
       }
       await page.waitFor(2000 + rand(2000))
-      await gotoUrl(url)
+      await page.gotoUrl(url)
 
-      usernameInput = await exists(username)
+      usernameInput = await page.ext(username)
 
-      await insert(usernameInput ? username : password, login)
-      await insert(password, pass)
-      await justClick(remember)
+      await page.inst(usernameInput ? username : password, login)
+      await page.inst(password, pass)
+      await page.jClk(remember)
 
       let validCallback = 'click'
       // if (player === 'spotify') {
@@ -533,27 +397,27 @@ const main = async (restartAccount) => {
       // }
 
       if (validCallback === 'click') {
-        await justClick(loginBtn)
+        await page.jClk(loginBtn)
       }
 
       if (player === 'amazon') {
         await page.waitFor(10000 + rand(2000))
       }
       await page.waitFor(2000 + rand(2000))
-      suppressed = await exists(loginError)
+      suppressed = await page.ext(loginError)
 
       if (suppressed) { throw 'del' }
 
-      await gotoUrl(album())
+      await page.gotoUrl(album())
     }
 
     if (player === 'napster') {
-      const issueAccount = await exists('.account-issue')
-      const issueRadio = await exists('.unradio')
+      const issueAccount = await page.ext('.account-issue')
+      const issueRadio = await page.ext('.unradio')
       if (issueAccount || issueRadio) { throw 'del' }
-      const reload = await exists('#main-container .not-found')
+      const reload = await page.ext('#main-container .not-found')
       if (reload) {
-        await gotoUrl(album())
+        await page.gotoUrl(album())
       }
     }
 
@@ -562,34 +426,25 @@ const main = async (restartAccount) => {
     // ***************************************************************************************************************************************************************
 
     if (player === 'amazon') {
-      await justClick(shuffleBtn)
-      await justClick(repeatBtn)
+      await page.jClk(shuffleBtn)
+      await page.jClk(repeatBtn)
     }
 
     let stopBeforePlay
     if (player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
-      stopBeforePlay = await exists(usedDom)
+      stopBeforePlay = await page.ext(usedDom)
     }
 
     if (!stopBeforePlay) {
-      try {
-        await click(playBtn)
-      }
-      catch (e) {
-        try {
-          await gotoUrl(album())
-          await click(playBtn)
-        }
-        catch (e) { throw 'error' }
-      }
+      await page.clk(playBtn, 'first play')
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
         const clickLoop = () => {
           setTimeout(async () => {
-            const existRepeatBtnOk = await exists(repeatBtnOk)
+            const existRepeatBtnOk = await page.ext(repeatBtnOk)
             if (!existRepeatBtnOk) {
-              await justClick(repeatBtn)
+              await page.jClk(repeatBtn)
               clickLoop()
             }
           }, 2600);
@@ -597,7 +452,7 @@ const main = async (restartAccount) => {
 
         clickLoop()
 
-        await justClick(shuffleBtn)
+        await page.jClk(shuffleBtn)
       }
     }
 
@@ -613,8 +468,7 @@ const main = async (restartAccount) => {
     if (check) {
       setTimeout(async () => {
         try {
-          await page.goto('about:blank')
-          await page.close()
+          await page.cls()
         }
         catch (e) { }
       }, 1000 * 30);
@@ -641,8 +495,7 @@ const main = async (restartAccount) => {
           accounts.push(account)
         }, timeout);
 
-        await page.goto('about:blank')
-        await page.close()
+        await page.cls()
       }
       catch (e) {
         catchFct('restart')
@@ -660,21 +513,15 @@ const main = async (restartAccount) => {
 
         let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
         if (timeLoop >= changeTime) {
-          await gotoUrl(album())
-          await waitForSelector(playBtn)
+          await page.gotoUrl(album())
+          await page.wfs(playBtn)
 
-          try {
-            await click(playBtn)
-          }
-          catch (e) {
-            console.log('loop play')
-            throw 'error'
-          }
+          await page.clk(playBtn, 'loop play')
 
           timeLoop = 0
         }
 
-        used = await exists(usedDom)
+        used = await page.ext(usedDom)
 
         if (used) {
           used = await page.evaluate((usedDom) => {
@@ -685,7 +532,7 @@ const main = async (restartAccount) => {
             used = typeof used === 'string' && used.match(/currently/) ? used : false
 
             if (!used) {
-              await justClick('#wimp > div > div > div > div > div > button')
+              await page.jClk('#wimp > div > div > div > div > div > button')
             }
           }
         }
@@ -732,8 +579,8 @@ const main = async (restartAccount) => {
               }
             }
             else {
-              await justClick('.player-play-button .icon-pause2')
-              await justClick('.player-play-button .icon-play-button')
+              await page.jClk('.player-play-button .icon-pause2')
+              await page.jClk('.player-play-button .icon-play-button')
             }
           }
 
@@ -765,7 +612,7 @@ const main = async (restartAccount) => {
 }
 
 const mainInter = setInterval(() => {
-  if (over || errorPath) { return clearInterval(mainInter) }
+  if (over || errorPath || accounts.length === 0) { return clearInterval(mainInter) }
   main()
 }, 1000 * pause);
 
@@ -773,18 +620,27 @@ let file = process.env.FILE || 'napsterAccount.txt'
 
 fs.readFile(file, 'utf8', async (err, data) => {
   if (err) return console.log(err);
+
   fs.readFile('napsterAccountDel.txt', 'utf8', async (err2, dataDel) => {
     if (err2) return console.log(err2);
 
-    dataDel = dataDel.split(',').filter(e => e)
-    accounts = data = data.split(',').filter(e => dataDel.indexOf(e) < 0)
+    accounts = data.split(',')
+
+    if (!process.env.RECHECK) {
+      dataDel = dataDel.split(',').filter(e => e)
+      accounts = accounts.filter(e => dataDel.indexOf(e) < 0)
+    }
+    else {
+      fs.writeFile('recheck.txt', '', function (err) {
+        if (err) return console.log(err);
+      });
+    }
 
     if (process.env.TYPE) {
       accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
     }
 
     accounts = process.env.RAND ? shuffle(accounts) : accounts
-    golbalAccountsLength = accounts.length
     console.log(accounts.length)
     main()
   })
