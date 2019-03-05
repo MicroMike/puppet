@@ -33,7 +33,6 @@ module.exports = async (userDataDir, noCache) => {
     browser = await puppeteer.launch(params);
   }
   catch (e) {
-    console.log(e)
     process.exit()
   }
 
