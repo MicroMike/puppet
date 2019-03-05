@@ -253,6 +253,7 @@ const main = async (restartAccount) => {
         'https://listen.tidal.com/album/101927847',
         'https://listen.tidal.com/album/102564740',
         'https://listen.tidal.com/album/102503463',
+        'https://listen.tidal.com/album/105237098',
         // 'https://listen.tidal.com/album/101962381',
         // 'https://listen.tidal.com/album/101352536',
         // 'https://listen.tidal.com/album/101844025',
@@ -283,6 +284,7 @@ const main = async (restartAccount) => {
         'https://open.spotify.com/album/2jmPHLM2be2g19841vHjWE',
         'https://open.spotify.com/album/5CPIRky6BGgl3CCdzMYAXZ',
         'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',
+        'https://open.spotify.com/album/2kFEMTIWWw0jXD57Ewr7go',
         // 'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
         // 'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
         // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
@@ -513,10 +515,9 @@ const main = async (restartAccount) => {
 
         let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
         if (timeLoop >= changeTime) {
-          await page.gotoUrl(album())
-          await page.wfs(playBtn)
-
-          await page.clk(playBtn, 'loop play')
+          const changeAlbum = album()
+          await page.gotoUrl(changeAlbum)
+          await page.clk(playBtn, 'loop play ' + changeAlbum)
 
           timeLoop = 0
         }
