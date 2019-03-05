@@ -2,5 +2,5 @@
 const shell = require('shelljs');
 
 while (true) {
-  shell.exec('npm run all')
+  shell.exec('git reset --hard && git clean -f && git pull && npm run all')
 }
