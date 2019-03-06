@@ -223,6 +223,7 @@ const main = async (restartAccount) => {
         'https://music.amazon.fr/albums/B07G5PPYSY',
         'https://music.amazon.fr/albums/B07D3PGSR4',
         'https://music.amazon.fr/albums/B07MTV7JYS',
+        'https://music.amazon.fr/albums/B07PGN58LX',
         // 'https://music.amazon.fr/albums/B07M75PR8X',
         // 'https://music.amazon.fr/albums/B07LGWP7SX',
         // 'https://music.amazon.fr/albums/B07MBH9D43',
