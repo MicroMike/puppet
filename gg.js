@@ -11,7 +11,7 @@ let accountsValid = []
 let over = false
 let countTimeout = 0
 const max = 20
-const pause = check ? 15 : 60 * 5
+const pause = check ? 15 : 60
 let errorPath = false
 
 const getTime = () => {
