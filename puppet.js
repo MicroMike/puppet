@@ -108,7 +108,7 @@ module.exports = async (userDataDir, noCache) => {
       return true
     }
     catch (e) {
-      console.log('Justclick ' + selector, e)
+      console.log('Justclick ' + selector)
     }
   }
 

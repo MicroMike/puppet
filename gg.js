@@ -84,17 +84,19 @@ const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
   })
 }
 
+let currentAlbum = 0
+let albumCount = 0
+
 const main = async (restartAccount) => {
   let albums = []
-  let currentAlbum
   const album = () => {
-    // let albumUrl = albums[rand(albums.length)]
-    // while (currentAlbum === albumUrl) {
-    //   albumUrl = albums[rand(albums.length)]
-    // }
-    // currentAlbum = albumUrl
-    // return albumUrl
-    return albums[0]
+    const album = albums[albumCount]
+    if (currentAlbum++ < album.nb) {
+      return album.url
+    }
+    albumCount++
+    currentAlbum = 0
+    return albums()
   }
   if (over) { return }
   if (!restartAccount && !check) {
@@ -114,8 +116,7 @@ const main = async (restartAccount) => {
   const pass = accountInfo[2]
   const tokenAutoLog = accountInfo[4] || null
 
-  let noCache = player === 'napster' || player === 'spotify'
-  let page = await puppet('save/' + player + '_' + login, noCache)
+  let page = await puppet('save/' + player + '_' + login)
 
   let username
   let password
@@ -158,9 +159,6 @@ const main = async (restartAccount) => {
 
     if (!del) {
       accounts.push(account)
-      if (check) {
-        main()
-      }
     }
     else {
       fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
@@ -193,102 +191,24 @@ const main = async (restartAccount) => {
       keyCaptcha = '6LeIZkQUAAAAANoHuYD1qz5bV_ANGCJ7n7OAW3mo'
 
       albums = [
-        'https://open.spotify.com/show/3RtIVGkwrDr3YtyfwFRxvB?si=1i_Lz4FNRL-ZQUSw8-XTQQ'
+        { url: 'https://open.spotify.com/episode/3aDHIMOr84YCdppa6MaNiy?si=EWp8JfF3Rim_ytrsvKCKRg', nb: 30 },
+        { url: 'https://open.spotify.com/episode/2bA23y9aqKgGQYVb5TfC7u?si=72ldIcAPQAC8xc5DcFc4Sg', nb: 16 },
+        { url: 'https://open.spotify.com/episode/7iUTfYmzs0eWiCEbrnrKd1?si=hRCbue6TT06OkI_HpAh1uQ', nb: 46 },
+        { url: 'https://open.spotify.com/episode/6IgI03zmCk8ett8uH0kyRc?si=xIP25DdEQQ2awvIpex9bfw', nb: 28 },
+        { url: 'https://open.spotify.com/episode/5LL15Nysx87pAOzPkbABag?si=BdhMNkvyRvmkvt9lmCpiiw', nb: 13 },
       ]
+
       usedDom = '.ConnectBar'
-    }
-
-    const resolveCaptcha = async () => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          let errorLog
-          const needCaptcha = await page.evaluate(() => {
-            return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients ? location.href : false
-          })
-
-          if (!needCaptcha) { return resolve('click') }
-
-          const captcha = process.env.RAND ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
-          if (captcha === 'error') { return resolve('error') }
-
-          await page
-            .evaluate((captcha) => {
-              setTimeout(() => {
-                let clients = window.___grecaptcha_cfg.clients[0]
-                Object.keys(clients).map(key => {
-                  let client = clients[key]
-                  Object.keys(client).map(k => {
-                    let l = client[k]
-                    l && l.callback && l.callback(captcha)
-                  })
-                })
-              }, 5000);
-            }, captcha)
-          resolve('done')
-        }
-        catch (e) {
-          console.log(e)
-          resolve('error')
-        }
-      })
     }
 
     // ***************************************************************************************************************************************************************
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
 
-    if (player === 'tidal') {
-      await page.gotoUrl(album())
-      await page.waitFor(2000)
-      const notConnected = await page.jClk(goToLogin)
+    await page.gotoUrl('https://open.spotify.com/episode/3aDHIMOr84YCdppa6MaNiy?si=EWp8JfF3Rim_ytrsvKCKRg')
+    connected = await page.ext(loggedDom)
 
-      if (notConnected) {
-        await page.waitFor(2000)
-        const done = await page.jClk(reLog)
-
-        if (!done) {
-          await page.inst(username, login)
-
-          // const validCallback = check ? await resolveCaptcha() : 'click'
-          // if (validCallback === 'click') {
-          //   await page.clk('#recap-invisible')
-          // }
-          // else if (validCallback !== 'done') { throw validCallback }
-
-          await page.wfs(password, 1000 * 60 * 5)
-          await page.inst(password, pass)
-          await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
-
-          await page.waitFor(5000 + rand(2000))
-          connected = await page.ext(loggedDom)
-          if (!connected) { throw 'del' }
-          await page.gotoUrl(album())
-        }
-      }
-    }
-
-    if (player === 'spotify' && check) {
-      if (tokenAutoLog) {
-        await page.gotoUrl('https:' + tokenAutoLog)
-        await page.waitFor(5000 + rand(2000))
-      }
-      await page.gotoUrl('https://www.spotify.com/fr/account/overview')
-      const free = await page.evaluate(() => {
-        const typeAccount = document.querySelector('.product-name')
-        return typeAccount && /Free|free/.test(typeAccount.innerHTML)
-      })
-      if (free) { throw 'del' }
-    }
-
-    if (player === 'amazon' || player === 'spotify') {
-      await page.gotoUrl(album())
-      connected = await page.ext(loggedDom)
-    }
-
-    if (!connected && player !== 'tidal') {
-      if (player === 'spotify' && process.env.RAND) {
-        // throw 'Spotify relog ' + login
-      }
+    if (!connected) {
       await page.waitFor(2000 + rand(2000))
       await page.gotoUrl(url)
 
@@ -315,28 +235,13 @@ const main = async (restartAccount) => {
       suppressed = await page.ext(loginError)
 
       if (suppressed) { throw 'del' }
-
-      await page.gotoUrl(album())
     }
 
-    if (player === 'napster') {
-      const issueAccount = await page.ext('.account-issue')
-      const issueRadio = await page.ext('.unradio')
-      if (issueAccount || issueRadio) { throw 'del' }
-      const reload = await page.ext('#main-container .not-found')
-      if (reload) {
-        await page.gotoUrl(album())
-      }
-    }
+    await page.gotoUrl('https://open.spotify.com/episode/3aDHIMOr84YCdppa6MaNiy?si=EWp8JfF3Rim_ytrsvKCKRg')
 
     // ***************************************************************************************************************************************************************
     // *************************************************************************** PLAY ******************************************************************************
     // ***************************************************************************************************************************************************************
-
-    if (player === 'amazon') {
-      await page.jClk(shuffleBtn)
-      await page.jClk(repeatBtn)
-    }
 
     let stopBeforePlay
     if (player === 'spotify') {
@@ -344,185 +249,24 @@ const main = async (restartAccount) => {
       stopBeforePlay = await page.ext(usedDom)
     }
 
-    if (!stopBeforePlay) {
-      await page.clk(playBtn, 'first play')
-
-      if (player === 'napster' || player === 'tidal' || player === 'spotify') {
-        const clickLoop = () => {
-          setTimeout(async () => {
-            const existRepeatBtnOk = await page.ext(repeatBtnOk)
-            if (!existRepeatBtnOk) {
-              await page.jClk(repeatBtn)
-              clickLoop()
-            }
-          }, 2600);
-        }
-
-        clickLoop()
-
-        await page.jClk(shuffleBtn)
+    const play = async () => {
+      if (!stopBeforePlay) {
+        await page.clk(playBtn, 'first play')
       }
     }
 
-    if (player === 'tidal') {
-      const delTidal = await page.evaluate(() => {
-        return document.querySelector('.ReactModal__Overlay') && document.querySelector('.ReactModal__Overlay').innerText
-      })
-      if (typeof delTidal === 'string' && delTidal.match(/expired/)) {
-        throw 'del'
-      }
-    }
+    await page.gotoUrl(album())
+    play()
 
-    if (check) {
-      setTimeout(async () => {
-        try {
-          await page.cls()
-        }
-        catch (e) { }
-      }, 1000 * 30);
-      return
-    }
-
-    // ***************************************************************************************************************************************************************
-    // *************************************************************************** LOOP ******************************************************************************
-    // ***************************************************************************************************************************************************************
-
-    let t1
-    let t2
-    let freeze = 1
-    let fix = false
-    let used
-    let changing = false
-    let timeLine
-    let style
-
-    const restart = async (timeout = 0) => {
-      try {
-        accountsValid = accountsValid.filter(a => a !== account)
-        setTimeout(() => {
-          accounts.push(account)
-        }, timeout);
-
-        await page.cls()
-      }
-      catch (e) {
-        catchFct('restart')
-      }
-    }
-
-    let timeLoop = 0
-    const loop = async () => {
-      try {
-        let restartTime = 1000 * 60 * 30 + rand(1000 * 60 * 30)
-        if (timeLoop >= restartTime) {
-          restart()
-          return
-        }
-
-        let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
-        if (timeLoop >= changeTime) {
-          await page.gotoUrl(album())
-          await page.wfs(playBtn)
-
-          await page.clk(playBtn, 'loop play')
-
-          timeLoop = 0
-        }
-
-        used = await page.ext(usedDom)
-
-        if (used) {
-          used = await page.evaluate((usedDom) => {
-            return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
-          }, usedDom)
-
-          if (player === 'tidal') {
-            used = typeof used === 'string' && used.match(/currently/) ? used : false
-
-            if (!used) {
-              await page.jClk('#wimp > div > div > div > div > div > button')
-            }
-          }
-        }
-
-        if (!used) {
-          if (player === 'napster') {
-            timeLine = 'span.ui-slider-handle'
-            style = 'left'
-          }
-          else if (player === 'tidal') {
-            timeLine = '[class*="fillingBlock"] > div:first-child'
-            style = 'transform'
-          }
-          else if (player === 'amazon') {
-            timeLine = '.scrubberBackground'
-            style = 'width'
-          }
-          else if (player === 'spotify') {
-            timeLine = '.progress-bar__fg'
-            style = 'transform'
-          }
-
-          try {
-            t1 = await page.evaluate((args) => {
-              return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
-            }, { timeLine, style })
-          }
-          catch (e) {
-            //console.log(e)
-            return
-          }
-
-          if (t1 === t2) { freeze++ }
-          else { freeze = 0 }
-
-          if (freeze >= 2) {
-            freeze = 0
-
-            if (!t1 || player !== 'napster') {
-              fix = true
-              if (!t1) {
-                console.log(getTime(), ' no bar ' + t1, account)
-                await page.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
-              }
-            }
-            else {
-              await page.jClk('.player-play-button .icon-pause2')
-              await page.jClk('.player-play-button .icon-play-button')
-            }
-          }
-
-          t2 = t1
-        }
-
-        if (used || fix) {
-          restart(used ? 1000 * 60 * 60 : 0)
-          return
-        }
-
-        loopAdd = 1000 * 5
-        timeLoop += loopAdd
-        changeInterval = setTimeout(() => {
-          if (over) { return }
-          loop()
-        }, loopAdd);
-      }
-      catch (e) {
-        catchFct(e)
-      }
-    }
-
-    loop()
+    setTimeout(async () => {
+      await page.cls()
+      main()
+    }, 1000 * 33 + rand(1000 * 30));
   }
   catch (e) {
     catchFct(e)
   }
 }
-
-const mainInter = setInterval(() => {
-  if (over || errorPath || accounts.length === 0) { return clearInterval(mainInter) }
-  main()
-}, 1000 * pause);
 
 let file = process.env.FILE || 'napsterAccount.txt'
 
@@ -545,7 +289,7 @@ fs.readFile(file, 'utf8', async (err, data) => {
     }
 
     if (process.env.TYPE) {
-      accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
+      accounts = accounts.filter(m => m.split(':')[0] === 'spotify')
     }
 
     accounts = process.env.RAND || process.env.RECHECK ? shuffle(accounts) : accounts

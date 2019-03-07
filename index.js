@@ -196,8 +196,8 @@ const main = async (restartAccount) => {
         'https://app.napster.com/artist/hazel/album/electric-nature',
         'https://app.napster.com/artist/lapilluledors/album/red-beast',
         // 'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
-        //'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
-        //'https://app.napster.com/artist/xondes/album/wicked-344744668',
+        // 'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
+        // 'https://app.napster.com/artist/xondes/album/wicked-344744668',
       ]
 
       usedDom = '.player-error-box'
