@@ -84,18 +84,18 @@ const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
   })
 }
 
-let currentAlbum = 0
-let albumCount = 0
+let albumNbCount = 0
+let albumId = 0
 
 const main = async (restartAccount) => {
   let albums = []
   const album = () => {
-    const album = albums[albumCount]
-    if (currentAlbum++ < album.nb) {
+    const album = albums[albumId]
+    if (albumNbCount++ < album.nb) {
       return album.url
     }
-    albumCount++
-    currentAlbum = 0
+    albumId++
+    albumNbCount = 0
     return albums()
   }
   if (over) { return }
@@ -223,20 +223,8 @@ const main = async (restartAccount) => {
       await page.inst(usernameInput ? username : password, login)
       await page.inst(password, pass)
       await page.jClk(remember)
+      await page.jClk(loginBtn)
 
-      let validCallback = 'click'
-      // if (player === 'spotify') {
-      //   validCallback = await resolveCaptcha()
-      //   if (validCallback !== 'click' && validCallback !== 'done') { throw validCallback }
-      // }
-
-      if (validCallback === 'click') {
-        await page.jClk(loginBtn)
-      }
-
-      if (player === 'amazon') {
-        await page.waitFor(10000 + rand(2000))
-      }
       await page.waitFor(2000 + rand(2000))
       suppressed = await page.ext(loginError)
 
@@ -262,6 +250,7 @@ const main = async (restartAccount) => {
     await page.clk(playBtn, 'first play')
 
     setTimeout(async () => {
+      console.log(albumNbCount, albumId)
       await page.cls()
     }, 1000 * 33 + rand(1000 * 30));
   }
