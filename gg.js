@@ -96,7 +96,7 @@ let albumNbCount = 0
 let albumId = 0
 
 const album = () => {
-  if (albumNbCount++ < album.nb) {
+  if (albumNbCount++ < albums[albumId].nb) {
     return albums[albumId].url
   }
   else {
@@ -251,7 +251,7 @@ const main = async (restartAccount) => {
     await page.clk(playBtn, 'first play')
 
     setTimeout(async () => {
-      console.log(albumNbCount, albumId)
+      console.log('album :' + albumId, 'play ' + albumNbCount)
       await page.cls()
     }, 1000 * 33 + rand(1000 * 30));
   }
