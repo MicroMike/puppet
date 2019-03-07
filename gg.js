@@ -245,25 +245,17 @@ const main = async (restartAccount) => {
     // *************************************************************************** PLAY ******************************************************************************
     // ***************************************************************************************************************************************************************
 
-    let stopBeforePlay
-    if (player === 'spotify') {
-      await page.waitFor(2000 + rand(2000))
-      stopBeforePlay = await page.ext(usedDom)
-    }
+    await page.waitFor(2000 + rand(2000))
+    let stopBeforePlay = await page.ext(usedDom)
 
-    const play = async () => {
-      if (!stopBeforePlay) {
-        await page.clk(playBtn, 'first play')
-        return true
-      }
-      return false
+    if (stopBeforePlay) {
+      await page.cls()
+      main()
+      return
     }
 
     await page.gotoUrl(album())
-    let playable
-    do {
-      playable = await play()
-    } while (!playable)
+    await page.clk(playBtn, 'first play')
 
     setTimeout(async () => {
       await page.cls()
