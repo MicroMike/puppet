@@ -185,7 +185,7 @@ const main = async (restartAccount) => {
       loginBtn = '#login-button'
       loginError = '.alert.alert-warning'
 
-      playBtn = '.TrackListHeader__button.TrackListHeader__button--top button'
+      playBtn = '.TrackListHeader__button.TrackListHeader__button--bottom button'
       repeatBtn = '[class*="spoticon-repeat"]'
       repeatBtnOk = '.spoticon-repeat-16.control-button--active'
       shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
