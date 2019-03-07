@@ -87,17 +87,19 @@ const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
 let albumNbCount = 0
 let albumId = 0
 
-const main = async (restartAccount) => {
-  let albums = []
-  const album = () => {
-    const album = albums[albumId]
-    if (albumNbCount++ < album.nb) {
-      return album.url
-    }
+const album = () => {
+  if (albumNbCount++ < album.nb) {
+    return albums[albumId].url
+  }
+  else {
     albumId++
     albumNbCount = 0
-    return albums()
+    return albums[albumId].url
   }
+}
+
+const main = async (restartAccount) => {
+  let albums = []
   if (over) { return }
   if (!restartAccount && !check) {
     if (accountsValid.length >= max) { return }
