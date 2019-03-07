@@ -175,6 +175,10 @@ const main = async (restartAccount) => {
     main()
   }
 
+  setTimeout(() => {
+    main()
+  }, 1000 * 30);
+
   try {
     if (player === 'spotify') {
       url = 'https://accounts.spotify.com/login'
@@ -259,7 +263,6 @@ const main = async (restartAccount) => {
 
     setTimeout(async () => {
       await page.cls()
-      main()
     }, 1000 * 33 + rand(1000 * 30));
   }
   catch (e) {
