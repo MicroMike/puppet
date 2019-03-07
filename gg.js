@@ -255,7 +255,7 @@ const main = async (restartAccount) => {
     setTimeout(async () => {
       console.log('album :' + CalbumId, 'play ' + CalbumNbCount)
       await page.cls()
-    }, 1000 * 33 + rand(1000 * 30));
+    }, 1000 * 60 + rand(1000 * 30));
   }
   catch (e) {
     catchFct(e)
