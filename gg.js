@@ -107,6 +107,8 @@ const album = () => {
 }
 
 const main = async (restartAccount) => {
+  const CalbumNbCount = albumNbCount
+  const CalbumId = albumId
   if (over) { return }
   if (!restartAccount && !check) {
     if (accountsValid.length >= max) { return }
@@ -251,7 +253,7 @@ const main = async (restartAccount) => {
     await page.clk(playBtn, 'first play')
 
     setTimeout(async () => {
-      console.log('album :' + albumId, 'play ' + albumNbCount)
+      console.log('album :' + CalbumId, 'play ' + CalbumNbCount)
       await page.cls()
     }, 1000 * 33 + rand(1000 * 30));
   }
