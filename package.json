@@ -12,7 +12,7 @@
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "check": "CHECK=true node index",
     "recheck": "FILE=napsterAccountDel.txt RECHECK=true node index",
-    "gg": "cross-env FILE=ggAccounts.txt RAND=true node gg",
+    "gg": "FILE=ggAccounts.txt RAND=true node gg",
     "push": "git add . && git commit -m c && git push",
     "compare": "git pull && node compare && git add napsterAccount.txt && git commit -m c && git push",
     "vpn": "expressvpn disconnect && expressvpn connect nl",
