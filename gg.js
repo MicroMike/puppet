@@ -185,7 +185,7 @@ const main = async (restartAccount) => {
       loginBtn = '#login-button'
       loginError = '.alert.alert-warning'
 
-      playBtn = '.TrackListHeader__button.TrackListHeader__button--top'
+      playBtn = '.TrackListHeader__button.TrackListHeader__button--top button'
       repeatBtn = '[class*="spoticon-repeat"]'
       repeatBtnOk = '.spoticon-repeat-16.control-button--active'
       shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
@@ -258,7 +258,7 @@ const main = async (restartAccount) => {
     }
 
     await page.gotoUrl(album())
-    play()
+    await play()
 
     setTimeout(async () => {
       await page.cls()
