@@ -161,7 +161,6 @@ const main = async (restartAccount) => {
       accounts.push(account)
     }
     else {
-      main()
       fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
         if (err) return console.log(err);
         data = data.split(',').filter(e => e)
@@ -172,6 +171,8 @@ const main = async (restartAccount) => {
         });
       });
     }
+
+    main()
   }
 
   try {
