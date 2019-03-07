@@ -84,6 +84,14 @@ const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
   })
 }
 
+let albums = [
+  { url: 'https://open.spotify.com/episode/3aDHIMOr84YCdppa6MaNiy?si=EWp8JfF3Rim_ytrsvKCKRg', nb: 30 },
+  { url: 'https://open.spotify.com/episode/2bA23y9aqKgGQYVb5TfC7u?si=72ldIcAPQAC8xc5DcFc4Sg', nb: 16 },
+  { url: 'https://open.spotify.com/episode/7iUTfYmzs0eWiCEbrnrKd1?si=hRCbue6TT06OkI_HpAh1uQ', nb: 46 },
+  { url: 'https://open.spotify.com/episode/6IgI03zmCk8ett8uH0kyRc?si=xIP25DdEQQ2awvIpex9bfw', nb: 28 },
+  { url: 'https://open.spotify.com/episode/5LL15Nysx87pAOzPkbABag?si=BdhMNkvyRvmkvt9lmCpiiw', nb: 13 },
+]
+
 let albumNbCount = 0
 let albumId = 0
 
@@ -99,7 +107,6 @@ const album = () => {
 }
 
 const main = async (restartAccount) => {
-  let albums = []
   if (over) { return }
   if (!restartAccount && !check) {
     if (accountsValid.length >= max) { return }
@@ -197,14 +204,6 @@ const main = async (restartAccount) => {
       shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
 
       keyCaptcha = '6LeIZkQUAAAAANoHuYD1qz5bV_ANGCJ7n7OAW3mo'
-
-      albums = [
-        { url: 'https://open.spotify.com/episode/3aDHIMOr84YCdppa6MaNiy?si=EWp8JfF3Rim_ytrsvKCKRg', nb: 30 },
-        { url: 'https://open.spotify.com/episode/2bA23y9aqKgGQYVb5TfC7u?si=72ldIcAPQAC8xc5DcFc4Sg', nb: 16 },
-        { url: 'https://open.spotify.com/episode/7iUTfYmzs0eWiCEbrnrKd1?si=hRCbue6TT06OkI_HpAh1uQ', nb: 46 },
-        { url: 'https://open.spotify.com/episode/6IgI03zmCk8ett8uH0kyRc?si=xIP25DdEQQ2awvIpex9bfw', nb: 28 },
-        { url: 'https://open.spotify.com/episode/5LL15Nysx87pAOzPkbABag?si=BdhMNkvyRvmkvt9lmCpiiw', nb: 13 },
-      ]
 
       usedDom = '.ConnectBar'
     }
