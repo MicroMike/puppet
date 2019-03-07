@@ -92,7 +92,7 @@ let albums = [
   { url: 'https://open.spotify.com/episode/5LL15Nysx87pAOzPkbABag?si=BdhMNkvyRvmkvt9lmCpiiw', nb: 13 },
 ]
 
-let albumNbCount = 0
+let albumNbCount = 7
 let albumId = 0
 
 const album = () => {
@@ -254,6 +254,7 @@ const main = async (restartAccount) => {
 
     setTimeout(async () => {
       console.log('album :' + CalbumId, 'play ' + CalbumNbCount)
+      accounts.push(account)
       await page.cls()
     }, 1000 * 60 + rand(1000 * 30));
   }
