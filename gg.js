@@ -254,11 +254,16 @@ const main = async (restartAccount) => {
     const play = async () => {
       if (!stopBeforePlay) {
         await page.clk(playBtn, 'first play')
+        return true
       }
+      return false
     }
 
     await page.gotoUrl(album())
-    await play()
+    let playable
+    do {
+      playable = await play()
+    } while (!playable)
 
     setTimeout(async () => {
       await page.cls()
