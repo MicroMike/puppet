@@ -9,7 +9,7 @@ let accounts = []
 let accountsValid = []
 let over = false
 let countTimeout = 0
-const max = 20
+const max = 19
 const pause = check ? 15 : 30
 let errorPath = false
 
