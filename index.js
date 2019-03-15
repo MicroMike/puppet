@@ -115,6 +115,11 @@ const main = async (restartAccount) => {
   let noCache = player === 'napster' || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
+  if (!page) {
+    accounts.push(account)
+    return
+  }
+
   let username
   let password
   let url

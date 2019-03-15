@@ -34,6 +34,7 @@ module.exports = async (userDataDir, noCache) => {
   }
   catch (e) {
     console.log('BROWSER FAIL')
+    return false
     //process.exit()
   }
 
