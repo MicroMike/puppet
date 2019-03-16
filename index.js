@@ -116,6 +116,7 @@ const main = async (restartAccount) => {
   let page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) {
+    accountsValid = accountsValid.filter(a => a !== account)
     accounts.push(account)
     return
   }
