@@ -117,6 +117,8 @@ const main = async (restartAccount) => {
   accountsValid = accountsValid.filter(a => a !== account)
   accountsValid.push(account)
 
+  process.stdout.write(getTime() + " " + accountsValid.length);
+
   let username
   let password
   let url
@@ -154,7 +156,8 @@ const main = async (restartAccount) => {
 
     accountsValid = accountsValid.filter(a => a !== account)
 
-    console.log(getTime() + " ERROR ", account, e)
+    process.stdout.write(getTime() + " " + accountsValid.length);
+    // console.log(getTime() + " ERROR ", account, e)
 
     if (!del) {
       accounts.push(account)
