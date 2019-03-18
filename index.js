@@ -117,7 +117,7 @@ const main = async (restartAccount) => {
   accountsValid = accountsValid.filter(a => a !== account)
   accountsValid.push(account)
 
-  process.stdout.write(getTime() + " " + accountsValid.length);
+  process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
   let username
   let password
@@ -156,7 +156,7 @@ const main = async (restartAccount) => {
 
     accountsValid = accountsValid.filter(a => a !== account)
 
-    process.stdout.write(getTime() + " " + accountsValid.length);
+    process.stdout.write(getTime() + " " + accountsValid.length + "\r");
     // console.log(getTime() + " ERROR ", account, e)
 
     if (!del) {
