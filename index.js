@@ -101,7 +101,6 @@ const main = async (restartAccount) => {
 
   let account = restartAccount || accounts[0]
   if (!account) { return }
-  accounts = accounts.filter(a => a !== account)
 
   accountInfo = account.split(':')
   const player = accountInfo[0]
@@ -114,6 +113,7 @@ const main = async (restartAccount) => {
 
   if (!page) { return }
 
+  accounts = accounts.filter(a => a !== account)
   accountsValid = accountsValid.filter(a => a !== account)
   accountsValid.push(account)
 
