@@ -33,9 +33,9 @@ module.exports = async (userDataDir, noCache) => {
     browser = await puppeteer.launch(params);
   }
   catch (e) {
-    console.log('BROWSER FAIL')
-    return false
+    // console.log('BROWSER FAIL')
     //process.exit()
+    return false
   }
 
   const pages = await browser.pages()

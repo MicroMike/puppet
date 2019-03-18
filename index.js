@@ -9,7 +9,7 @@ let accounts = []
 let accountsValid = []
 let over = false
 let countTimeout = 0
-const max = 19
+const max = 20
 const pause = check ? 15 : 30
 let errorPath = false
 
@@ -103,9 +103,6 @@ const main = async (restartAccount) => {
   if (!account) { return }
   accounts = accounts.filter(a => a !== account)
 
-  accountsValid = accountsValid.filter(a => a !== account)
-  accountsValid.push(account)
-
   accountInfo = account.split(':')
   const player = accountInfo[0]
   const login = accountInfo[1]
@@ -115,11 +112,10 @@ const main = async (restartAccount) => {
   let noCache = player === 'napster' || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
-  if (!page) {
-    accountsValid = accountsValid.filter(a => a !== account)
-    accounts.push(account)
-    return
-  }
+  if (!page) { return }
+
+  accountsValid = accountsValid.filter(a => a !== account)
+  accountsValid.push(account)
 
   let username
   let password
