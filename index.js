@@ -412,9 +412,9 @@ const main = async (restartAccount) => {
         await page.waitFor(10000 + rand(2000))
       }
       await page.waitFor(2000 + rand(2000))
-      suppressed = await page.ext(loginError)
+      suppressed = await page.get(loginError)
 
-      if (suppressed) { throw 'del' }
+      if (player === 'napster' && suppressed.match(/password/) || (player !== 'napster' && suppressed)) { throw 'del' }
 
       await page.gotoUrl(album())
     }
@@ -474,12 +474,7 @@ const main = async (restartAccount) => {
     }
 
     if (check) {
-      setTimeout(async () => {
-        try {
-          await page.cls()
-        }
-        catch (e) { }
-      }, 1000 * 30);
+      await page.cls()
       return
     }
 

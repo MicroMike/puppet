@@ -132,17 +132,16 @@ module.exports = async (userDataDir, noCache) => {
   }
 
   page.get = async (selector) => {
-    await page.wfs(selector)
+    const ext = await page.ext(selector)
+    if (!ext) { return false }
 
     try {
       await page.waitFor(2000 + rand(2000))
-      const links = await page.evaluate(selector => {
-        const list = document.querySelectorAll(selector)
-        const arr = Array.prototype.slice.call(list).map(el => el.href)
-        return arr
+      const html = await page.evaluate(selector => {
+        return document.querySelector(selector) && document.querySelector(selector).innerHTML
       }, selector)
 
-      return links
+      return html
     }
     catch (e) {
       console.log('Get error ' + selector)
