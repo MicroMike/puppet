@@ -10,7 +10,7 @@ let accountsValid = []
 let over = false
 let countTimeout = 0
 const max = 20
-const pause = check ? 15 : 30
+const pause = check ? 20 : 30
 let errorPath = false
 
 const getTime = () => {
@@ -414,8 +414,11 @@ const main = async (restartAccount) => {
       await page.waitFor(2000 + rand(2000))
       suppressed = await page.get(loginError)
 
-      if (player === 'napster' && suppressed.match(/password/) || (player !== 'napster' && suppressed)) { throw 'del' }
-
+      if (suppressed && (player !== 'napster' || suppressed.match(/password/))) {
+        console.log(suppressed)
+        throw 'del'
+      }
+      //suppressed.match(/password/)
       await page.gotoUrl(album())
     }
 
