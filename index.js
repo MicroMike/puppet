@@ -156,11 +156,8 @@ const main = async (restartAccount) => {
 
     accountsValid = accountsValid.filter(a => a !== account)
 
+    console.log(getTime() + " ERROR ", account, e)
     process.stdout.write(getTime() + " " + accountsValid.length + "\r");
-
-    if (check) {
-      console.log(getTime() + " ERROR ", account, e)
-    }
 
     if (!del) {
       accounts.push(account)
