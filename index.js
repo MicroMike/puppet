@@ -171,7 +171,7 @@ const main = async (restartAccount) => {
         data = data.split(',').filter(e => e)
         data = data.filter(a => a !== account)
         data.push(account)
-        fs.writeFile('napsterAccountDel.txt', data.join(','), function (err) {
+        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
           if (err) return console.log(err);
         });
       });

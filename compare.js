@@ -32,6 +32,10 @@ fs.readFile('napsterAccount.txt', 'utf8', function (err, data) {
     fs.writeFile('napsterAccount.txt', valid, function (err) {
       if (err) return console.log(err);
     });
+
+    fs.writeFile('napsterAccountDel.txt', '', function (err) {
+      if (err) return console.log(err);
+    });
   })
 
 });
