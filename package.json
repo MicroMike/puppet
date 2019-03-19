@@ -10,6 +10,7 @@
     "napster": "TYPE=napster node index",
     "amazon": "TYPE=amazon node index",
     "all": "FILE=napsterAccount.txt RAND=true node index",
+    "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node index",
     "recheck": "FILE=napsterAccountDel.txt RECHECK=true node index",
     "gg": "FILE=ggAccounts.txt RAND=true node gg",

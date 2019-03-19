@@ -1,10 +1,10 @@
-const puppeteer = require('puppeteer');
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
 module.exports = async (userDataDir, noCache) => {
+  const puppeteer = require('puppeteer');
 
   const params = {
     executablePath: '/usr/bin/google-chrome',

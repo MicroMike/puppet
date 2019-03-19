@@ -9,7 +9,7 @@ let accounts = []
 let accountsValid = []
 let over = false
 let countTimeout = 0
-const max = 20
+const max = process.env.BIG ? 50 : 20
 const pause = check ? 20 : 30
 let errorPath = false
 
