@@ -178,6 +178,10 @@ const main = async (restartAccount) => {
     }
   }
 
+  page.on('error', function (err) {
+    catchFct('crashed')
+  });
+
   try {
     if (player === 'napster') {
       url = 'https://app.napster.com/login/'
