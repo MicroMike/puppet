@@ -414,9 +414,11 @@ const main = async (restartAccount) => {
       await page.waitFor(2000 + rand(2000))
       suppressed = await page.get(loginError)
 
-      if (suppressed && (player !== 'napster' || suppressed.match(/password/))) {
-        // console.log(suppressed)
-        throw 'del'
+      if (suppressed) {
+        if (player !== 'napster' || suppressed.match(/password/)) {
+          throw 'del'
+        }
+        throw 'error'
       }
       //suppressed.match(/password/)
       await page.gotoUrl(album())
