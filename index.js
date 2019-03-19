@@ -10,7 +10,7 @@ let accountsValid = []
 let over = false
 let countTimeout = 0
 const max = process.env.BIG ? 50 : 20
-const pause = check ? 20 : 30
+const pause = check || process.env.BIG ? 20 : 30
 let errorPath = false
 
 const getTime = () => {
@@ -204,6 +204,7 @@ const main = async (restartAccount) => {
         'https://app.napster.com/artist/mahone/album/stone-distraction/',
         'https://app.napster.com/artist/hazel/album/electric-nature',
         'https://app.napster.com/artist/lapilluledors/album/red-beast',
+        'https://app.napster.com/artist/dj-reid/album/satisfaction-spell',
         // 'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
         // 'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
         // 'https://app.napster.com/artist/xondes/album/wicked-344744668',
