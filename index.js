@@ -415,7 +415,7 @@ const main = async (restartAccount) => {
       suppressed = await page.get(loginError)
 
       if (suppressed && (player !== 'napster' || suppressed.match(/password/))) {
-        console.log(suppressed)
+        // console.log(suppressed)
         throw 'del'
       }
       //suppressed.match(/password/)
@@ -509,21 +509,27 @@ const main = async (restartAccount) => {
     }
 
     let timeLoop = 0
+    let timeLoop2 = 0
+
     const loop = async () => {
+      let loopAdd = 1000 * 5
       try {
-        let restartTime = 1000 * 60 * 30 + rand(1000 * 60 * 30)
-        if (timeLoop >= restartTime) {
+        let restartTime = 1000 * 60 * 15 + rand(1000 * 60 * 15)
+        if (timeLoop2 >= restartTime) {
           restart()
           return
         }
 
-        let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 3 + rand(1000 * 60 * 7)
-        if (timeLoop >= changeTime) {
-          const changeAlbum = album()
-          await page.gotoUrl(changeAlbum)
-          await page.clk(playBtn, 'loop play ' + changeAlbum)
+        let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 5 + rand(1000 * 60 * 5)
+        if (timeLoop >= changeTime && player !== 'napster') {
+          await page.gotoUrl(album())
+          await page.clk(playBtn, 'loop play ' + player)
 
           timeLoop = 0
+          setTimeout(() => {
+            loop()
+          }, loopAdd);
+          return
         }
 
         used = await page.ext(usedDom)
@@ -597,8 +603,9 @@ const main = async (restartAccount) => {
           return
         }
 
-        loopAdd = 1000 * 5
         timeLoop += loopAdd
+        timeLoop2 += loopAdd
+
         changeInterval = setTimeout(() => {
           if (over) { return }
           loop()
