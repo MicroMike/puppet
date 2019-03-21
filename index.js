@@ -384,15 +384,6 @@ const main = async () => {
       }
     }
 
-    if (player === 'spotify' && check) {
-      await page.gotoUrl('https://www.spotify.com/fr/account/overview')
-      const free = await page.evaluate(() => {
-        const typeAccount = document.querySelector('.product-name')
-        return typeAccount && /Free|free/.test(typeAccount.innerHTML)
-      })
-      if (free) { throw 'del' }
-    }
-
     if (player === 'amazon' || player === 'spotify') {
       await page.gotoUrl(album())
       connected = await page.ext(loggedDom)
@@ -433,7 +424,16 @@ const main = async () => {
         }
         throw 'error'
       }
-      //suppressed.match(/password/)
+
+      if (player === 'spotify' && check) {
+        await page.gotoUrl('https://www.spotify.com/account/overview')
+        const free = await page.evaluate(() => {
+          const typeAccount = document.querySelector('.product-name')
+          return typeAccount && /Free|free/.test(typeAccount.innerHTML)
+        })
+        if (free) { throw 'del' }
+      }
+
       await page.gotoUrl(album())
     }
 
