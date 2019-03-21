@@ -3,8 +3,9 @@ let two = []
 let valid = []
 
 const fs = require('fs');
+let file = process.env.FILE || 'napsterAccount.txt'
 
-fs.readFile('napsterAccount.txt', 'utf8', function (err, data) {
+fs.readFile(file, 'utf8', function (err, data) {
   if (err) return console.log(err);
   one = data.split(',')
 
@@ -29,7 +30,7 @@ fs.readFile('napsterAccount.txt', 'utf8', function (err, data) {
       console.log(two)
     }
 
-    fs.writeFile('napsterAccount.txt', valid, function (err) {
+    fs.writeFile(file, valid, function (err) {
       if (err) return console.log(err);
     });
 
