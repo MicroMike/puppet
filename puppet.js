@@ -7,7 +7,7 @@ module.exports = async (userDataDir, noCache) => {
   const puppeteer = require('puppeteer');
 
   const params = {
-    executablePath: '/usr/bin/google-chrome',
+    executablePath: '/usr/bin/google-chrome-stable',
     userDataDir,
     headless: false,
     args: [
