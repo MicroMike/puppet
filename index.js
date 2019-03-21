@@ -471,6 +471,8 @@ const main = async () => {
       }
       catch (e) {
         console.log(e)
+        accountsValid = accountsValid.filter(a => a !== account)
+        accounts.push(account)
         await page.evaluate(() => {
           document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:blue;height:100px">PAUSE</div>')
         })
