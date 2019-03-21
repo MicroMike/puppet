@@ -116,8 +116,8 @@ module.exports = async (userDataDir, noCache) => {
 
   page.inst = async (selector, text) => {
     try {
-      await page.clk(selector)
       await page.waitFor(2000 + rand(2000))
+      await page.clk(selector)
       const elementHandle = await page.$(selector);
       await page.evaluate(selector => {
         document.querySelector(selector).value = ''

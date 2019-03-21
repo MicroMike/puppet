@@ -12,7 +12,7 @@
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node index",
-    "randcheck": "RAND=true CHECK=true FILE=check.txt node index",
+    "rc": "RECHECK=true FILE=check.txt node index",
     "recheck": "FILE=napsterAccountDel.txt RECHECK=true node index",
     "gg": "FILE=ggAccounts.txt RAND=true node gg",
     "push": "git add . && git commit -m c && git push",

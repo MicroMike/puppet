@@ -104,10 +104,10 @@ const main = async () => {
   const player = accountInfo[0]
   const login = accountInfo[1]
   const pass = accountInfo[2]
-  const tokenAutoLog = accountInfo[4] || null
 
   let noCache = player === 'napster' || player === 'spotify'
-  let page = await puppet('save/' + player + '_' + login, noCache)
+  // let page = await puppet('save/' + player + '_' + login, noCache)
+  let page = await puppet('save/' + player + '_' + login, false)
 
   if (!page) { return }
 
@@ -378,10 +378,6 @@ const main = async () => {
     }
 
     if (player === 'spotify' && check) {
-      if (tokenAutoLog) {
-        await page.gotoUrl('https:' + tokenAutoLog)
-        await page.waitFor(5000 + rand(2000))
-      }
       await page.gotoUrl('https://www.spotify.com/fr/account/overview')
       const free = await page.evaluate(() => {
         const typeAccount = document.querySelector('.product-name')
