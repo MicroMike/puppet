@@ -470,8 +470,9 @@ const main = async () => {
         await page.clk(playBtn, 'first play')
       }
       catch (e) {
+        console.log(e)
         await page.evaluate(() => {
-          document.querySelector('body').insertAdjacentHTML('beforeBegin', '<div style="background-color:blue;height:100px">PAUSE</div>')
+          document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:blue;height:100px">PAUSE</div>')
         })
         return
       }
