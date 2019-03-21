@@ -311,7 +311,7 @@ const main = async () => {
             return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients ? location.href : false
           })
 
-          if (!needCaptcha) { return resolve('click') }
+          // if (!needCaptcha) { return resolve('click') }
 
           const captcha = !check ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
