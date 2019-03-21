@@ -9,7 +9,11 @@ let accounts = []
 let accountsValid = []
 let over = false
 const max = process.env.BIG ? 60 : 20
-const pause = check || process.env.BIG ? 20 : 30
+const pause = process.env.BIG
+  ? 20
+  : check
+    ? 5
+    : 30
 let errorPath = false
 let stop = false
 
