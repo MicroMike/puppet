@@ -313,7 +313,7 @@ const main = async () => {
 
           if (!needCaptcha) { return resolve('click') }
 
-          const captcha = process.env.RAND ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
+          const captcha = !check ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
 
           await page
@@ -353,14 +353,15 @@ const main = async () => {
 
         if (!done) {
           stop = true
-          await page.inst(username, login)
-          await page.clk('#recap-invisible')
 
-          // const validCallback = check ? await resolveCaptcha() : 'click'
-          // if (validCallback === 'click') {
-          //   await page.clk('#recap-invisible')
-          // }
-          // else if (validCallback !== 'done') { throw validCallback }
+          const validCallback = check ? await resolveCaptcha() : 'click'
+          if (validCallback === 'click') {
+            await page.reload()
+            await page.inst(username, login)
+            await page.clk('#recap-invisible')
+          }
+          else if (validCallback !== 'done') { throw validCallback }
+
 
           await page.wfs(password, 1000 * 60 * 5)
           stop = false
