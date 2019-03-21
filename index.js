@@ -1,6 +1,5 @@
 const fs = require('fs');
 const request = require('ajax-request');
-const puppet = require('./puppet')
 
 process.setMaxListeners(Infinity)
 
@@ -109,6 +108,7 @@ const main = async () => {
   const login = accountInfo[1]
   const pass = accountInfo[2]
 
+  const puppet = require('./puppet')
   let noCache = false//player === 'napster' //|| player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
