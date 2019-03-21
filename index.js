@@ -317,26 +317,28 @@ const main = async () => {
           if (captcha === 'error') { return resolve('error') }
 
           await page.reload()
-          await page
-            .evaluate((captcha) => {
-              setTimeout(() => {
-                let clients = window.___grecaptcha_cfg.clients[0]
-                Object.keys(clients).map(key => {
-                  let client = clients[key]
-                  Object.keys(client).map(k => {
-                    let l = client[k]
-                    l && l.callback && l.callback(captcha)
-                  })
-                })
-              }, 5000);
-            }, captcha)
-          resolve('done')
+          resolve(captcha)
         }
         catch (e) {
           console.log(e)
           resolve('error')
         }
       })
+    }
+
+    const log = async (captcha) => {
+      await page.evaluate((captcha) => {
+        setTimeout(() => {
+          let clients = window.___grecaptcha_cfg.clients[0]
+          Object.keys(clients).map(key => {
+            let client = clients[key]
+            Object.keys(client).map(k => {
+              let l = client[k]
+              l && l.callback && l.callback(captcha)
+            })
+          })
+        }, 5000);
+      }, captcha)
     }
 
     // ***************************************************************************************************************************************************************
@@ -359,10 +361,16 @@ const main = async () => {
           }
 
           const validCallback = await resolveCaptcha()
-          if (validCallback !== 'done') { throw validCallback }
+          if (validCallback === 'error') { throw validCallback }
 
           await page.inst(username, login)
-          await page.clk('#recap-invisible')
+
+          if (validCallback === 'click') {
+            await page.clk('#recap-invisible')
+          }
+          else {
+            await log(validCallback)
+          }
 
           await page.wfs(password, 1000 * 60 * 5)
           await page.inst(password, pass)
