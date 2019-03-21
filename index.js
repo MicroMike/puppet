@@ -8,10 +8,10 @@ const check = process.env.CHECK || process.env.RECHECK || process.env.TYPE
 let accounts = []
 let accountsValid = []
 let over = false
-let countTimeout = 0
 const max = process.env.BIG ? 60 : 20
 const pause = check || process.env.BIG ? 20 : 30
 let errorPath = false
+let stop = false
 
 const getTime = () => {
   const date = new Date
@@ -83,7 +83,7 @@ const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
   })
 }
 
-const main = async (restartAccount) => {
+const main = async () => {
   let albums = []
   let currentAlbum
   const album = () => {
@@ -94,12 +94,10 @@ const main = async (restartAccount) => {
     currentAlbum = albumUrl
     return albumUrl
   }
-  if (over) { return }
-  if (!restartAccount && !check) {
-    if (accountsValid.length >= max) { return }
-  }
+  if (over || accounts.length === 0) { return }
+  if (!check && accountsValid.length >= max) { return }
 
-  let account = restartAccount || accounts[0]
+  let account = accounts[0]
   if (!account) { return }
 
   accountInfo = account.split(':')
@@ -180,6 +178,10 @@ const main = async (restartAccount) => {
 
   page.on('error', function (err) {
     catchFct('crashed')
+  });
+
+  page.on('close', function (err) {
+    catchFct('closed')
   });
 
   try {
@@ -352,7 +354,9 @@ const main = async (restartAccount) => {
         const done = await page.jClk(reLog)
 
         if (!done) {
+          stop = true
           await page.inst(username, login)
+          await page.clk('#recap-invisible')
 
           // const validCallback = check ? await resolveCaptcha() : 'click'
           // if (validCallback === 'click') {
@@ -361,6 +365,7 @@ const main = async (restartAccount) => {
           // else if (validCallback !== 'done') { throw validCallback }
 
           await page.wfs(password, 1000 * 60 * 5)
+          stop = false
           await page.inst(password, pass)
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
@@ -455,7 +460,15 @@ const main = async (restartAccount) => {
     }
 
     if (!stopBeforePlay) {
-      await page.clk(playBtn, 'first play')
+      try {
+        await page.clk(playBtn, 'first play')
+      }
+      catch (e) {
+        await page.evaluate(() => {
+          document.querySelector('body').insertAdjacentHTML('beforeBegin', '<div style="background-color:blue;height:100px">PAUSE</div>')
+        })
+        return
+      }
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
         const clickLoop = () => {
@@ -631,8 +644,10 @@ const main = async (restartAccount) => {
 }
 
 const mainInter = setInterval(() => {
-  if (over || errorPath || accounts.length === 0) { return clearInterval(mainInter) }
-  main()
+  if (over || errorPath) { return clearInterval(mainInter) }
+  if (!stop) {
+    main()
+  }
 }, 1000 * pause);
 
 let file = process.env.FILE || 'napsterAccount.txt'
