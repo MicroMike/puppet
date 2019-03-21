@@ -376,7 +376,7 @@ const main = async () => {
           await page.inst(password, pass)
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          await page.waitFor(5000 + rand(2000))
+          await page.waitFor(1000 * 10 + rand(2000))
           connected = await page.ext(loggedDom)
           if (!connected) { throw 'del' }
           await page.gotoUrl(album())
@@ -424,20 +424,19 @@ const main = async () => {
         }
         throw 'error'
       }
+    }
 
-      if (player === 'spotify' && check) {
-        await page.gotoUrl('https://www.spotify.com/account/overview')
-        const free = await page.evaluate(() => {
-          const typeAccount = document.querySelector('.product-name')
-          return typeAccount && /Free|free/.test(typeAccount.innerHTML)
-        })
-        if (free) { throw 'del' }
-      }
+    if (player === 'spotify' && check) {
+      await page.gotoUrl('https://www.spotify.com/account/overview')
+      const free = await page.evaluate(() => {
+        const typeAccount = document.querySelector('.product-name')
+        return typeAccount && /Free|free/.test(typeAccount.innerHTML)
+      })
+      if (free) { throw 'del' }
 
       await page.gotoUrl(album())
     }
-
-    if (player === 'napster') {
+    else if (player === 'napster') {
       const issueAccount = await page.ext('.account-issue')
       const issueRadio = await page.ext('.unradio')
       if (issueAccount || issueRadio) { throw 'del' }
@@ -445,6 +444,9 @@ const main = async () => {
       if (reload) {
         await page.gotoUrl(album())
       }
+    }
+    else {
+      await page.gotoUrl(album())
     }
 
     // ***************************************************************************************************************************************************************
