@@ -109,7 +109,7 @@ const main = async () => {
   const login = accountInfo[1]
   const pass = accountInfo[2]
 
-  let noCache = player === 'napster' //|| player === 'spotify'
+  let noCache = false//player === 'napster' //|| player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) { return }
