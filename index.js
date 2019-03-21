@@ -316,6 +316,7 @@ const main = async () => {
           const captcha = !check ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
 
+          await page.reload()
           await page
             .evaluate((captcha) => {
               setTimeout(() => {
@@ -352,19 +353,18 @@ const main = async () => {
         const done = await page.jClk(reLog)
 
         if (!done) {
-          stop = true
-
-          const validCallback = check ? await resolveCaptcha() : 'click'
-          if (validCallback === 'click') {
-            await page.reload()
-            await page.inst(username, login)
-            await page.clk('#recap-invisible')
+          if (!check) {
+            catchFct('not log')
+            return
           }
-          else if (validCallback !== 'done') { throw validCallback }
 
+          const validCallback = await resolveCaptcha()
+          if (validCallback !== 'done') { throw validCallback }
+
+          await page.inst(username, login)
+          await page.clk('#recap-invisible')
 
           await page.wfs(password, 1000 * 60 * 5)
-          stop = false
           await page.inst(password, pass)
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
