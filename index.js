@@ -180,9 +180,7 @@ const main = async () => {
     catchFct('crashed')
   });
 
-  page.on('close', function (err) {
-    catchFct('closed')
-  });
+  // page.on('close', function (err) { });
 
   try {
     if (player === 'napster') {
