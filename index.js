@@ -444,9 +444,7 @@ const main = async () => {
       const issueRadio = await page.ext('.unradio')
       if (issueAccount || issueRadio) { throw 'del' }
       const reload = await page.ext('#main-container .not-found')
-      if (reload) {
-        await page.gotoUrl(album())
-      }
+      await page.gotoUrl(album())
     }
     else {
       await page.gotoUrl(album())
