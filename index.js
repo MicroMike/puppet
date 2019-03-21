@@ -4,7 +4,7 @@ const puppet = require('./puppet')
 
 process.setMaxListeners(Infinity)
 
-const check = process.env.CHECK || process.env.RECHECK || process.env.TYPE
+const check = process.env.CHECK || process.env.TYPE
 let accounts = []
 let accountsValid = []
 let over = false
@@ -655,21 +655,14 @@ fs.readFile(file, 'utf8', async (err, data) => {
 
     accounts = data.split(',')
 
-    if (!process.env.RECHECK) {
-      dataDel = dataDel.split(',').filter(e => e)
-      accounts = accounts.filter(e => dataDel.indexOf(e) < 0)
-    }
-    else {
-      fs.writeFile('napsterAccountDel.txt', '', function (err) {
-        if (err) return console.log(err);
-      });
-    }
+    dataDel = dataDel.split(',').filter(e => e)
+    accounts = accounts.filter(e => dataDel.indexOf(e) < 0)
 
     if (process.env.TYPE) {
       accounts = accounts.filter(m => m.split(':')[0] === process.env.TYPE)
     }
 
-    accounts = process.env.RAND || process.env.RECHECK ? shuffle(accounts) : accounts
+    accounts = process.env.RAND ? shuffle(accounts) : accounts
     console.log(accounts.length)
     main()
   })
