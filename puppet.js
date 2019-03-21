@@ -25,12 +25,13 @@ module.exports = async (userDataDir, noCache) => {
     delete params.userDataDir
   }
 
-  let browser
+  let browserContext
 
   // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
 
   try {
-    browser = await puppeteer.launch(params);
+    const launch = await puppeteer.launch(params);
+    browserContext = launch.defaultBrowserContext()
   }
   catch (e) {
     // console.log('BROWSER FAIL')
@@ -38,7 +39,7 @@ module.exports = async (userDataDir, noCache) => {
     return false
   }
 
-  const pages = await browser.pages()
+  const pages = await browserContext.pages()
   const page = pages[0]
 
   await page.evaluateOnNewDocument(() => {
@@ -152,7 +153,7 @@ module.exports = async (userDataDir, noCache) => {
   page.cls = async () => {
     try {
       await page.goto('about:blank')
-      await browser.close()
+      await browserContext.browser().close()
     }
     catch (e) {
       throw 'Can\'t close', e
