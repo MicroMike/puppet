@@ -43,7 +43,7 @@ const main = async () => {
 
   accountsValid++
   console.log(account)
-  const log = shell.exec('ACCOUNT=' + account + ' node runAccount', { async: () => { accountsValid-- } })
+  const log = shell.exec('ACCOUNT=' + account + ' node runAccount')
 }
 
 const mainInter = setInterval(() => {
