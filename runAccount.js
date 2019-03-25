@@ -417,7 +417,8 @@ const fct = async () => {
       const reload = await page.ext('#main-container .not-found')
       await page.gotoUrl(album())
     }
-    else {
+    else if (player !== 'tidal') {
+      await page.waitFor(1000 * 3)
       await page.gotoUrl(album())
     }
 
