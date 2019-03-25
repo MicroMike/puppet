@@ -2,7 +2,6 @@ const fs = require('fs');
 const request = require('ajax-request');
 var shell = require('shelljs');
 
-console.log(process.env.TYPE)
 const check = process.env.CHECK || process.env.TYPE ? true : false
 let accounts = []
 let accountsValid = 0
