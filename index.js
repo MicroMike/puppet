@@ -1,5 +1,4 @@
 const fs = require('fs');
-const request = require('ajax-request');
 var shell = require('shelljs');
 
 const check = process.env.CHECK || process.env.TYPE ? true : false

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const puppet = require('./puppet')
+const request = require('ajax-request');
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 
