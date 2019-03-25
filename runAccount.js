@@ -4,6 +4,13 @@ const request = require('ajax-request');
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 
+let over = false
+process.on('SIGINT', function (code) {
+  over = true
+});
+
+process.setMaxListeners(Infinity)
+
 const getTime = () => {
   const date = new Date
   return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
