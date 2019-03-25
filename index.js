@@ -42,6 +42,7 @@ const main = async () => {
   accountsValid++
   process.stdout.write(getTime() + " " + accountsValid + "\r");
   const log = shell.exec('CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount', (code, b, c) => {
+    console.log(code)
     accountsValid--
     // 4 = DEL
     if (code !== 4) {
