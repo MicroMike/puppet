@@ -2,8 +2,6 @@ const fs = require('fs');
 const request = require('ajax-request');
 var shell = require('shelljs');
 
-process.setMaxListeners(Infinity)
-
 const check = process.env.CHECK || process.env.TYPE
 let accounts = []
 let accountsValid = 0
