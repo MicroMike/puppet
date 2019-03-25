@@ -287,7 +287,7 @@ const fct = async () => {
 
           // if (!needCaptcha) { return resolve('click') }
 
-          const captcha = !check ? true : await anticaptcha(needCaptcha, keyCaptcha, true)
+          const captcha = await anticaptcha(needCaptcha, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
 
           await page.reload()
@@ -329,10 +329,10 @@ const fct = async () => {
         const done = await page.jClk(reLog)
 
         if (!done) {
-          if (!check) {
-            catchFct('not log')
-            return
-          }
+          // if (!check) {
+          //   catchFct('not log')
+          //   return
+          // }
 
           const validCallback = await resolveCaptcha()
           if (validCallback === 'error') { throw validCallback }
