@@ -1,5 +1,16 @@
+const fs = require('fs');
 const puppet = require('./puppet')
 const account = process.env.ACCOUNT
+const check = process.env.CHECK === true || process.env.TYPE === true
+
+const getTime = () => {
+  const date = new Date
+  return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
+}
+
+const rand = (max, min) => {
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+}
 
 const fct = async () => {
   let albums = []
@@ -54,19 +65,13 @@ const fct = async () => {
 
     try {
       await page.screenshot({ path: login + '_screenshot.png' });
-      await page.cls()
+      // await page.cls()
     }
     catch (e) { }
 
-    console.log(getTime() + " ERROR ", account, e)
+    console.log(getTime() + " ERR ", account, e)
 
-    if (!del) {
-      accounts.push(account)
-      if (check) {
-        main()
-      }
-    }
-    else {
+    if (del) {
       fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
         if (err) return console.log(err);
         data = data.split(',').filter(e => e)
@@ -77,13 +82,17 @@ const fct = async () => {
         });
       });
     }
+
+    process.exit(del ? 4 : 1)
   }
 
   page.on('error', function (err) {
     catchFct('crashed')
   });
 
-  // page.on('close', function (err) { });
+  page.on('close', function (err) {
+    process.exit(1)
+  });
 
   try {
     if (player === 'napster') {
@@ -424,11 +433,9 @@ const fct = async () => {
         await page.clk(playBtn, 'first play')
       }
       catch (e) {
-        console.log(e)
-        accountsValid = accountsValid.filter(a => a !== account)
-        accounts.push(account)
+        console.log(e, account)
         await page.evaluate(() => {
-          document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:blue;height:100px">PAUSE</div>')
+          document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:blue;height:500px">PAUSE</div>')
         })
         return
       }
@@ -477,14 +484,9 @@ const fct = async () => {
     let timeLine
     let style
 
-    const restart = async (timeout = 0) => {
+    const restart = async () => {
       try {
-        accountsValid = accountsValid.filter(a => a !== account)
-        setTimeout(() => {
-          accounts.push(account)
-        }, timeout);
-
-        await page.cls()
+        process.exit(1)
       }
       catch (e) {
         catchFct('restart')
@@ -504,7 +506,7 @@ const fct = async () => {
         }
 
         let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 5 + rand(1000 * 60 * 5)
-        if (timeLoop >= changeTime && player !== 'napster') {
+        if (timeLoop >= changeTime) {
           await page.gotoUrl(album())
           await page.clk(playBtn, 'loop play ' + player)
 
@@ -554,10 +556,7 @@ const fct = async () => {
               return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
             }, { timeLine, style })
           }
-          catch (e) {
-            //console.log(e)
-            return
-          }
+          catch (e) { }
 
           if (t1 === t2) { freeze++ }
           else { freeze = 0 }
@@ -582,7 +581,7 @@ const fct = async () => {
         }
 
         if (used || fix) {
-          restart(used ? 1000 * 60 * 60 : 0)
+          restart()
           return
         }
 
@@ -590,7 +589,6 @@ const fct = async () => {
         timeLoop2 += loopAdd
 
         changeInterval = setTimeout(() => {
-          if (over) { return }
           loop()
         }, loopAdd);
       }

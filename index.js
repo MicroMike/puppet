@@ -1,6 +1,5 @@
 const fs = require('fs');
 const request = require('ajax-request');
-const runAccount = require('./runAccount')
 var shell = require('shelljs');
 
 process.setMaxListeners(Infinity)
@@ -38,12 +37,19 @@ const main = async () => {
   if (over || accounts.length === 0) { return }
   if (!check && accountsValid >= max) { return }
 
-  let account = accounts[0]
+  let account = accounts.shift()
   if (!account) { return }
 
   accountsValid++
-  console.log(account)
-  const log = shell.exec('ACCOUNT=' + account + ' node runAccount')
+  process.stdout.write(getTime() + " " + accountsValid + "\r");
+  const log = shell.exec('CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount', (code, b, c) => {
+    accountsValid--
+    // 4 = DEL
+    if (code !== 4) {
+      accounts.push(account)
+    }
+    process.stdout.write(getTime() + " " + accountsValid + "\r");
+  })
 }
 
 const mainInter = setInterval(() => {
@@ -51,7 +57,6 @@ const mainInter = setInterval(() => {
   if (!stop) {
     main()
   }
-  process.stdout.write(getTime() + " " + accountsValid + "\r");
 }, 1000 * pause);
 
 let file = process.env.FILE || 'napsterAccount.txt'
