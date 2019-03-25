@@ -3,7 +3,7 @@ var shell = require('shelljs');
 
 process.setMaxListeners(Infinity)
 
-const check = process.env.CHECK || process.env.TYPE ? true : false
+const check = process.env.CHECK || process.env.TYPE
 let accounts = []
 let accountsValid = 0
 let over = false
@@ -41,8 +41,12 @@ const main = async () => {
 
   accountsValid++
   process.stdout.write(getTime() + " " + accountsValid + "\r");
-  const log = shell.exec('CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount', (code, b, c) => {
-    console.log(code)
+
+  const cmd = check
+    ? 'CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount'
+    : 'ACCOUNT=' + account + ' node runAccount'
+
+  const log = shell.exec(cmd, (code, b, c) => {
     accountsValid--
     // 4 = DEL
     if (code !== 4) {

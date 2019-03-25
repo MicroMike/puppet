@@ -475,7 +475,7 @@ const fct = async () => {
     }
 
     if (check) {
-      await page.cls()
+      process.exit(1)
       return
     }
 
