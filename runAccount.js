@@ -1,7 +1,7 @@
 const fs = require('fs');
 const puppet = require('./puppet')
 const account = process.env.ACCOUNT
-const check = process.env.CHECK === true || process.env.TYPE === true
+const check = process.env.CHECK
 
 const getTime = () => {
   const date = new Date
