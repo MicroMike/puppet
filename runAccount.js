@@ -496,25 +496,15 @@ const fct = async () => {
     let timeLine
     let style
 
-    const restart = async () => {
-      try {
-        process.exit(1)
-      }
-      catch (e) {
-        catchFct('restart')
-      }
-    }
-
     let timeLoop = 0
     let timeLoop2 = 0
 
     const loop = async () => {
       let loopAdd = 1000 * 5
       try {
-        let restartTime = 1000 * 60 * 15 + rand(1000 * 60 * 15)
+        let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
         if (timeLoop2 >= restartTime) {
-          restart()
-          return
+          process.exit(1)
         }
 
         let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 5 + rand(1000 * 60 * 5)
@@ -593,8 +583,7 @@ const fct = async () => {
         }
 
         if (used || fix) {
-          restart()
-          return
+          process.exit(1)
         }
 
         timeLoop += loopAdd
