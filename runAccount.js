@@ -442,11 +442,14 @@ const fct = async () => {
         await page.clk(playBtn, 'first play')
       }
       catch (e) {
-        console.log(e, account)
-        await page.evaluate(() => {
-          document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:blue;height:500px">PAUSE</div>')
-        })
-        return
+        if (player === 'tidal') {
+          console.log(e, account)
+          await page.evaluate(() => {
+            document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:blue;height:500px">PAUSE</div>')
+          })
+          return
+        }
+        catchFct(e)
       }
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
