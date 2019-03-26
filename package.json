@@ -12,7 +12,6 @@
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node index",
-    "clear": "find save/ -type f ! -iname \"Cookies\" -delete",
     "rm": "rm -R *.png",
     "rc": "CHECK=true RAND=true FILE=check.txt node index",
     "gg": "FILE=ggAccounts.txt RAND=true node gg",
