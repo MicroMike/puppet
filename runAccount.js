@@ -40,7 +40,7 @@ const fct = async () => {
   let noCache = player === 'napster' || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
-  if (!page) { console.log('error') }
+  if (!page) { process.exit(1) }
 
   let username
   let password
