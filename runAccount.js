@@ -451,14 +451,12 @@ const fct = async () => {
     }
 
     if (player === 'tidal') {
-      try {
-        const delTidal = await page.evaluate(() => {
-          return document.querySelector('.ReactModal__Overlay') && document.querySelector('.ReactModal__Overlay').innerText
-        })
-        if (typeof delTidal === 'string' && delTidal.match(/expired/)) {
-          throw 'del'
-        }
-      } catch (e) { }
+      const delTidal = await page.evaluate(() => {
+        return document.querySelector('.ReactModal__Overlay') && document.querySelector('.ReactModal__Overlay').innerText
+      })
+      if (typeof delTidal === 'string' && delTidal.match(/expired/)) {
+        throw 'del'
+      }
     }
 
     if (check) {
