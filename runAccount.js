@@ -433,6 +433,7 @@ const fct = async () => {
         if (player === "spotify") {
           await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
         }
+        exit(1)
       }
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
