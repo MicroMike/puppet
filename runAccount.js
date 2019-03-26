@@ -320,10 +320,10 @@ const fct = async () => {
         const done = await page.jClk(reLog)
 
         if (!done) {
-          // if (!check) {
-          //   catchFct('not log')
-          //   return
-          // }
+          if (!check) {
+            catchFct('not log')
+            return
+          }
 
           const validCallback = await resolveCaptcha('https://login.tidal.com')
           if (validCallback === 'error') { throw validCallback }
