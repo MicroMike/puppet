@@ -419,19 +419,7 @@ const fct = async () => {
     }
 
     if (!stopBeforePlay) {
-      try {
-        await page.clk(playBtn, 'first play')
-      }
-      catch (e) {
-        if (player === 'tidal') {
-          console.log(e, account)
-          await page.evaluate(() => {
-            document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:blue;height:500px">PAUSE</div>')
-          })
-          return
-        }
-        catchFct(e)
-      }
+      await page.clk(playBtn, 'first play')
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
         const clickLoop = () => {
