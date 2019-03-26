@@ -79,18 +79,6 @@ const fct = async () => {
 
     console.log(getTime() + " ERR ", account, e)
 
-    if (del) {
-      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
-        if (err) return console.log(err);
-        data = data.split(',').filter(e => e)
-        data = data.filter(a => a !== account)
-        data.push(account)
-        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
-          if (err) return console.log(err);
-        });
-      });
-    }
-
     process.exit(del ? 4 : 1)
   }
 

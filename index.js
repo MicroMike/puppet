@@ -47,10 +47,23 @@ const main = async () => {
     : 'ACCOUNT=' + account + ' node runAccount'
 
   const log = shell.exec(cmd, (code, b, c) => {
-    accountsValid--
-    // 4 = DEL
-    if (code !== 4) {
-      accounts.push(account)
+    if (!check) {
+      accountsValid--
+      // 4 = DEL
+      if (code !== 4) {
+        accounts.push(account)
+      }
+    }
+    if (code === 4) {
+      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
+        if (err) return console.log(err);
+        data = data.split(',').filter(e => e)
+        data = data.filter(a => a !== account)
+        data.push(account)
+        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
+          if (err) return console.log(err);
+        });
+      });
     }
     process.stdout.write(getTime() + " " + accountsValid + "\r");
   })
