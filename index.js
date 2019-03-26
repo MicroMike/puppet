@@ -7,7 +7,7 @@ const check = process.env.CHECK || process.env.TYPE
 let accounts = []
 let accountsValid = 0
 let over = false
-const max = process.env.BIG ? 60 : 20
+const max = process.env.BIG ? 90 : 20
 const pause = process.env.BIG
   ? 20
   : check
