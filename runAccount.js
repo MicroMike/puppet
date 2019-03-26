@@ -42,6 +42,16 @@ const fct = async () => {
 
   if (!page) { process.exit(1) }
 
+  const exit = async (code) => {
+    if (player === 'spotify') {
+      try {
+        await page.gotoUrl('https://spotify.com/logout')
+      }
+      catch (e) { }
+    }
+    process.exit(code)
+  }
+
   let username
   let password
   let url
@@ -79,7 +89,7 @@ const fct = async () => {
 
     console.log(getTime() + " ERR ", account, e)
 
-    process.exit(del ? 4 : 1)
+    exit(del ? 4 : 1)
   }
 
   page.on('error', function (err) {
@@ -87,7 +97,7 @@ const fct = async () => {
   });
 
   page.on('close', function (err) {
-    process.exit(1)
+    exit(1)
   });
 
   try {
@@ -416,7 +426,14 @@ const fct = async () => {
     }
 
     if (!stopBeforePlay) {
-      await page.clk(playBtn, 'first play')
+      try {
+        await page.clk(playBtn, 'first play')
+      }
+      catch (e) {
+        if (player === "spotify") {
+          await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
+        }
+      }
 
       if (player === 'napster' || player === 'tidal' || player === 'spotify') {
         const clickLoop = () => {
@@ -445,8 +462,7 @@ const fct = async () => {
     }
 
     if (check) {
-      process.exit(1)
-      return
+      exit(1)
     }
 
     // ***************************************************************************************************************************************************************
@@ -470,7 +486,7 @@ const fct = async () => {
       try {
         let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
         if (timeLoop2 >= restartTime) {
-          process.exit(1)
+          exit(1)
         }
 
         let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 5 + rand(1000 * 60 * 5)
@@ -549,7 +565,7 @@ const fct = async () => {
         }
 
         if (used || fix) {
-          process.exit(1)
+          exit(1)
         }
 
         timeLoop += loopAdd
