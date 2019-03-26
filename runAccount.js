@@ -277,17 +277,10 @@ const fct = async () => {
       })
     }
 
-    const resolveCaptcha = async () => {
+    const resolveCaptcha = async (captchaUrl) => {
       return new Promise(async (resolve, reject) => {
         try {
-          let errorLog
-          const needCaptcha = await page.evaluate(() => {
-            return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients ? location.href : false
-          })
-
-          // if (!needCaptcha) { return resolve('click') }
-
-          const captcha = await anticaptcha(needCaptcha, keyCaptcha, true)
+          const captcha = await anticaptcha(captchaUrl, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
 
           await page.reload()
@@ -334,7 +327,7 @@ const fct = async () => {
           //   return
           // }
 
-          const validCallback = await resolveCaptcha()
+          const validCallback = await resolveCaptcha('https://login.tidal.com')
           if (validCallback === 'error') { throw validCallback }
 
           await page.inst(username, login)
