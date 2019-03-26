@@ -82,7 +82,6 @@ fs.readFile(file, 'utf8', async (err, data) => {
 
     accounts = process.env.RAND ? shuffle(accounts) : accounts
     console.log(accounts.length)
-    shell.exec('find save/ -type f ! -iname "Cookies" -delete')
     main()
   })
 });
