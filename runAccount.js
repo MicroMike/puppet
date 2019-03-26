@@ -367,9 +367,6 @@ const fct = async () => {
         await page.jClk(loginBtn)
       }
 
-      if (player === 'amazon') {
-        await page.waitFor(10000 + rand(2000))
-      }
       await page.waitFor(2000 + rand(2000))
       suppressed = await page.get(loginError)
 
