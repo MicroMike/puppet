@@ -1,3 +1,5 @@
+process.setMaxListeners(0)
+
 const fs = require('fs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
@@ -8,8 +10,6 @@ let over = false
 process.on('SIGINT', function (code) {
   over = true
 });
-
-process.setMaxListeners(Infinity)
 
 const getTime = () => {
   const date = new Date

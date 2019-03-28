@@ -1,7 +1,7 @@
+process.setMaxListeners(0)
+
 const fs = require('fs');
 var shell = require('shelljs');
-
-process.setMaxListeners(Infinity)
 
 const check = process.env.CHECK || process.env.TYPE
 let accounts = []
