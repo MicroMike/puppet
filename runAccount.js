@@ -3,6 +3,7 @@ process.setMaxListeners(0)
 const fs = require('fs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
+const socket = io('https://online-music.herokuapp.com/');
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 
@@ -466,6 +467,12 @@ const fct = async () => {
       exit(1)
     }
 
+    socket.emit('update', {
+      account,
+      time: getTime(),
+      play: true
+    })
+
     // ***************************************************************************************************************************************************************
     // *************************************************************************** LOOP ******************************************************************************
     // ***************************************************************************************************************************************************************
@@ -487,6 +494,13 @@ const fct = async () => {
       try {
         let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
         if (timeLoop2 >= restartTime) {
+
+          socket.emit('update', {
+            account,
+            time: getTime(),
+            restart: true
+          })
+
           exit(1)
         }
 
@@ -495,10 +509,17 @@ const fct = async () => {
           await page.gotoUrl(album())
           await page.clk(playBtn, 'loop play ' + player)
 
+          socket.emit('update', {
+            account,
+            time: getTime(),
+            loop: true
+          })
+
           timeLoop = 0
           setTimeout(() => {
             loop()
           }, loopAdd);
+
           return
         }
 
@@ -566,6 +587,12 @@ const fct = async () => {
         }
 
         if (used || fix) {
+          socket.emit('update', {
+            account,
+            time: getTime(),
+            used: true
+          })
+
           exit(1)
         }
 

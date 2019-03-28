@@ -1,9 +1,9 @@
 process.setMaxListeners(0)
 
 const fs = require('fs');
-var shell = require('shelljs');
-var io = require('socket.io-client');
-var socket = io('https://online-music.herokuapp.com/');
+const shell = require('shelljs');
+const io = require('socket.io-client');
+const socket = io('https://online-music.herokuapp.com/');
 
 const check = process.env.CHECK || process.env.TYPE
 let accounts = []
@@ -44,11 +44,17 @@ const main = async () => {
   accountsValid++
   process.stdout.write(getTime() + " " + accountsValid + "\r");
 
+  socket.emit('update', {
+    account,
+    accountsValid: accountsValid,
+    time: getTime()
+  })
+
   const cmd = check
     ? 'CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount'
     : 'ACCOUNT=' + account + ' node runAccount'
 
-  const log = shell.exec(cmd, (code, b, c) => {
+  shell.exec(cmd, (code, b, c) => {
     if (!check) {
       accountsValid--
       // 4 = DEL
@@ -68,7 +74,6 @@ const main = async () => {
       });
     }
     process.stdout.write(getTime() + " " + accountsValid + "\r");
-    socket.emit('update', getTime() + " " + accountsValid)
   })
 }
 
