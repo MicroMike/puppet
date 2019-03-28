@@ -18,7 +18,7 @@ let stop = false
 
 const getTime = () => {
   const date = new Date
-  return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
+  return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes() + ' '
 }
 
 const rand = (max, min) => {
