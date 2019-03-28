@@ -13,8 +13,8 @@ module.exports = async (userDataDir, noCache) => {
     userDataDir,
     headless: false,
     args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
+      // '--no-sandbox',
+      // '--disable-setuid-sandbox',
       '--disable-translate',
     ],
     defaultViewport: {
@@ -103,7 +103,10 @@ module.exports = async (userDataDir, noCache) => {
 
   page.jClk = async (selector) => {
     const exist = await page.ext(selector)
-    if (!exist) { return false }
+    if (!exist) {
+      console.log(selector + ' don\'t exist')
+      return false
+    }
 
     try {
       await page.waitFor(2000 + rand(2000))

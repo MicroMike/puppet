@@ -316,7 +316,7 @@ const fct = async () => {
       const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        await page.waitFor(2000)
+        await page.waitFor(1000 * 10)
         const done = await page.jClk(reLog)
 
         if (!done) {
