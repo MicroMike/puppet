@@ -4,18 +4,21 @@ const nightmare = Nightmare({
   // openDevTools: {
   //   mode: 'detach'
   // },
-  alwaysOnTop: false,
-  waitTimeout: 1000 * 60 * 3,
+  waitTimeout: 1000 * 60,
   show: true,
-  width: 600,
-  height: 600,
   typeInterval: 300,
   webPreferences: {
+    // partition: persist,
     webSecurity: false,
     allowRunningInsecureContent: true,
     plugins: true,
+    images: false,
     experimentalFeatures: true
   }
 })
 
-nightmare.goto('https://spotify.com')
+nightmare
+  .goto('https://spotify.com')
+  .catch(error => {
+    console.error('Search failed:', error)
+  })

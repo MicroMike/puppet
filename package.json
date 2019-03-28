@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "try": "node try",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tidal": "TYPE=tidal node index",
     "spotify": "TYPE=spotify node index",
@@ -31,8 +32,10 @@
   "dependencies": {
     "ajax-request": "^1.2.3",
     "cross-env": "^5.2.0",
+    "electron": "git+https://github.com/castlabs/electron-releases.git#v5.0.0-wvvmp-beta.7",
     "fs": "0.0.1-security",
     "fs-extra": "^7.0.1",
+    "nightmare": "^3.0.1",
     "puppeteer": "^1.11.0",
     "puppeteer-core": "^1.11.0",
     "shelljs": "^0.8.3",

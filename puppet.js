@@ -32,8 +32,8 @@ module.exports = async (userDataDir, noCache) => {
   // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
 
   try {
-    const launch = await puppeteer.launch(params);
-    browserContext = launch.defaultBrowserContext()
+    // const launch = await puppeteer.launch(params);
+    // browserContext = launch.defaultBrowserContext()
   }
   catch (e) {
     // console.log('BROWSER FAIL')
@@ -41,14 +41,14 @@ module.exports = async (userDataDir, noCache) => {
     return false
   }
 
-  const pages = await browserContext.pages()
-  const page = pages[0]
+  // const pages = await browserContext.pages()
+  // const page = pages[0]
 
-  await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
-    });
-  });
+  // await page.evaluateOnNewDocument(() => {
+  //   Object.defineProperty(navigator, 'webdriver', {
+  //     get: () => false,
+  //   });
+  // });
 
   // await page.setRequestInterception(true);
   // page.on('request', async request => {
@@ -58,6 +58,29 @@ module.exports = async (userDataDir, noCache) => {
   //   }
   //   request.continue();
   // });
+
+  const Nightmare = require('nightmare')
+  const page = Nightmare({
+    electronPath: require('electron'),
+    // openDevTools: {
+    //   mode: 'detach'
+    // },
+    waitTimeout: 1000 * 60 * 3,
+    show: true,
+    typeInterval: 300,
+    webPreferences: {
+      // partition: persist,
+      webSecurity: false,
+      allowRunningInsecureContent: true,
+      plugins: true,
+      images: false,
+      experimentalFeatures: true
+    }
+  })
+
+  page.catch(error => {
+    console.log(error)
+  })
 
   page.gotoUrl = async (url) => {
     try {
@@ -70,7 +93,8 @@ module.exports = async (userDataDir, noCache) => {
 
   page.wfs = async (selector, timeout = 1000 * 60 * 3, retry = false) => {
     try {
-      await page.waitForSelector(selector, { timeout })
+      // await page.waitForSelector(selector, { timeout })
+      await page.wait(selector)
       return true
     } catch (e) {
       throw 'Selector error ' + selector
@@ -79,7 +103,8 @@ module.exports = async (userDataDir, noCache) => {
 
   page.ext = async (selector, timeout = 1000 * 10) => {
     try {
-      await page.waitForSelector(selector, { timeout })
+      // await page.waitForSelector(selector, { timeout })
+      await page.wait(selector)
       return true
     } catch (error) {
       return false
@@ -89,7 +114,8 @@ module.exports = async (userDataDir, noCache) => {
   page.clk = async (selector, error) => {
     try {
       await page.wfs(selector)
-      await page.waitFor(2000 + rand(2000))
+      // await page.waitFor(2000 + rand(2000))
+      await page.wait(2000 + rand(2000))
       await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
@@ -111,7 +137,8 @@ module.exports = async (userDataDir, noCache) => {
     }
 
     try {
-      await page.waitFor(2000 + rand(2000))
+      // await page.waitFor(2000 + rand(2000))
+      await page.wait(2000 + rand(2000))
       await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
@@ -124,13 +151,15 @@ module.exports = async (userDataDir, noCache) => {
 
   page.inst = async (selector, text) => {
     try {
-      await page.waitFor(2000 + rand(2000))
+      // await page.waitFor(2000 + rand(2000))
+      await page.wait(2000 + rand(2000))
       await page.clk(selector)
-      const elementHandle = await page.$(selector);
+      // const elementHandle = await page.$(selector);
       await page.evaluate(selector => {
         document.querySelector(selector).value = ''
       }, selector)
-      await elementHandle.type(text, { delay: 300 });
+      // await elementHandle.type(text, { delay: 300 });
+      await page.type(selector, text);
 
       return true
     }
@@ -144,7 +173,8 @@ module.exports = async (userDataDir, noCache) => {
     if (!ext) { return false }
 
     try {
-      await page.waitFor(2000 + rand(2000))
+      // await page.waitFor(2000 + rand(2000))
+      await page.wait(2000 + rand(2000))
       const html = await page.evaluate(selector => {
         return document.querySelector(selector) && document.querySelector(selector).innerHTML
       }, selector)
@@ -159,8 +189,9 @@ module.exports = async (userDataDir, noCache) => {
 
   page.cls = async () => {
     try {
-      await page.goto('about:blank')
-      await browserContext.browser().close()
+      // await page.goto('about:blank')
+      // await browserContext.browser().close()
+      page.end()
     }
     catch (e) {
       throw 'Can\'t close', e
