@@ -1,6 +1,6 @@
 const Nightmare = require('nightmare')
 const nightmare = Nightmare({
-  electronPath: require('electron'),
+  electronPath: require('electron-widevinecdm'),
   // openDevTools: {
   //   mode: 'detach'
   // },
