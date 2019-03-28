@@ -11,7 +11,6 @@ const nightmare = Nightmare({
   height: 600,
   typeInterval: 300,
   webPreferences: {
-    partition: session,
     webSecurity: false,
     allowRunningInsecureContent: true,
     plugins: true,
