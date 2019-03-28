@@ -3,6 +3,7 @@ process.setMaxListeners(0)
 const fs = require('fs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
+const io = require('socket.io-client');
 const socket = io('https://online-music.herokuapp.com/');
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
