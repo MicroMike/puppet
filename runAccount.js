@@ -44,6 +44,12 @@ const fct = async () => {
   if (!page) { process.exit(1) }
 
   const exit = async (code) => {
+    socket.emit('update', {
+      account,
+      time: getTime(),
+      exit: true
+    })
+
     if (player === 'spotify') {
       try {
         await page.gotoUrl('https://spotify.com/logout')
@@ -420,38 +426,43 @@ const fct = async () => {
       await page.jClk(repeatBtn)
     }
 
-    let stopBeforePlay
     if (player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
-      stopBeforePlay = await page.ext(usedDom)
-    }
-
-    if (!stopBeforePlay) {
-      try {
-        await page.clk(playBtn, 'first play')
-      }
-      catch (e) {
-        if (player === "spotify") {
-          await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
-        }
+      const stopBeforePlay = await page.ext(usedDom)
+      if (stopBeforePlay) {
+        socket.emit('update', {
+          account,
+          time: getTime(),
+          used: true
+        })
         exit(1)
       }
+    }
 
-      if (player === 'napster' || player === 'tidal' || player === 'spotify') {
-        const clickLoop = () => {
-          setTimeout(async () => {
-            const existRepeatBtnOk = await page.ext(repeatBtnOk)
-            if (!existRepeatBtnOk) {
-              await page.jClk(repeatBtn)
-              clickLoop()
-            }
-          }, 2600);
-        }
-
-        clickLoop()
-
-        await page.jClk(shuffleBtn)
+    try {
+      await page.clk(playBtn, 'first play')
+    }
+    catch (e) {
+      if (player === "spotify") {
+        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
+      exit(1)
+    }
+
+    if (player === 'napster' || player === 'tidal' || player === 'spotify') {
+      const clickLoop = () => {
+        setTimeout(async () => {
+          const existRepeatBtnOk = await page.ext(repeatBtnOk)
+          if (!existRepeatBtnOk) {
+            await page.jClk(repeatBtn)
+            clickLoop()
+          }
+        }, 2600);
+      }
+
+      clickLoop()
+
+      await page.jClk(shuffleBtn)
     }
 
     if (player === 'tidal') {
@@ -494,13 +505,6 @@ const fct = async () => {
       try {
         let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
         if (timeLoop2 >= restartTime) {
-
-          socket.emit('update', {
-            account,
-            time: getTime(),
-            restart: true
-          })
-
           exit(1)
         }
 
