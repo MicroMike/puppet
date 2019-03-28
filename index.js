@@ -2,6 +2,8 @@ process.setMaxListeners(0)
 
 const fs = require('fs');
 var shell = require('shelljs');
+var io = require('socket.io-client');
+var socket = io('https://online-music.herokuapp.com/');
 
 const check = process.env.CHECK || process.env.TYPE
 let accounts = []
@@ -66,6 +68,7 @@ const main = async () => {
       });
     }
     process.stdout.write(getTime() + " " + accountsValid + "\r");
+    socket.emit('update', getTime() + " " + accountsValid)
   })
 }
 
