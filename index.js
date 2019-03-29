@@ -54,7 +54,7 @@ const main = async () => {
     ? 'CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount'
     : 'ACCOUNT=' + account + ' node runAccount'
 
-  shell.exec('cross-env ' + cmd, (code, b, c) => {
+  shell.exec(cmd, (code, b, c) => {
     if (!check) {
       accountsValid--
       // 4 = DEL
@@ -103,7 +103,7 @@ fs.readFile(file, 'utf8', async (err, data) => {
 
     accounts = process.env.RAND ? shuffle(accounts) : accounts
     console.log(accounts.length)
-    // shell.exec('find save/ -type f ! -iname "Cookies" -delete')
+    shell.exec('find save/ -type f ! -iname "Cookies" -delete')
     main()
   })
 });

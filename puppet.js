@@ -69,7 +69,7 @@ module.exports = async (userDataDir, noCache) => {
     show: true,
     typeInterval: 300,
     webPreferences: {
-      // partition: persist,
+      partition: 'persist: ' + userDataDir,
       webSecurity: false,
       allowRunningInsecureContent: true,
       plugins: true,
@@ -77,8 +77,6 @@ module.exports = async (userDataDir, noCache) => {
       experimentalFeatures: true
     }
   })
-
-  nightmare.goto('http://google.fr')
 
   let page = {}
 
