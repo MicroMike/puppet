@@ -80,7 +80,7 @@ const main = async () => {
 const mainInter = setInterval(() => {
   if (over || errorPath) { return clearInterval(mainInter) }
   if (!stop) {
-    // main()
+    main()
   }
 }, 1000 * pause);
 
