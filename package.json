@@ -10,7 +10,7 @@
     "spotify": "TYPE=spotify node index",
     "napster": "TYPE=napster node index",
     "amazon": "TYPE=amazon node index",
-    "all": "FILE=napsterAccount.txt RAND=true node index",
+    "all": "cross-env FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node index",
     "clear": "find save/ -type f ! -iname \"Cookies\" -delete",

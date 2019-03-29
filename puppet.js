@@ -81,12 +81,8 @@ module.exports = async (userDataDir, noCache) => {
   let page = {}
 
   page.waitFor = async (timeOrSelector) => {
-    try {
-      nightmare.wait(timeOrSelector)
-    }
-    catch (e) {
-      throw 'Can\'t close', e
-    }
+    await nightmare.wait(timeOrSelector)
+    return true
   }
 
   page.gotoUrl = async (url) => {
@@ -113,6 +109,7 @@ module.exports = async (userDataDir, noCache) => {
     try {
       // await page.waitForSelector(selector, { timeout })
       await page.waitFor(selector)
+      console.log('ext ok')
       return true
     } catch (error) {
       return false
