@@ -11,7 +11,7 @@ let accountsValid = 0
 let over = false
 const max = process.env.BIG ? 60 : 20
 const pause = process.env.BIG
-  ? 20
+  ? 10
   : check
     ? 5
     : 30
