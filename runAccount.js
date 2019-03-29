@@ -393,9 +393,8 @@ const fct = async () => {
       await page.gotoUrl(album())
     }
     else if (player === 'napster') {
-      const issueAccount = await page.ext('.account-issue')
-      const issueRadio = await page.ext('.unradio')
-      if (issueAccount || issueRadio) { throw 'del' }
+      const issueAccount = await page.ext('.account-issue, .unradio')
+      if (issueAccount) { throw 'del' }
       const reload = await page.ext('#main-container .not-found')
       await page.gotoUrl(album())
     }
