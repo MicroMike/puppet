@@ -199,5 +199,13 @@ module.exports = async (userDataDir, noCache) => {
     return time
   }
 
+  page.screenshot = async (path) => {
+    await nightmare
+      .screenshot(path)
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
   return page
 }

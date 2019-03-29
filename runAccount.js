@@ -93,7 +93,7 @@ const fct = async () => {
     const del = e === 'del'
 
     try {
-      await page.screenshot({ path: login + '_screenshot.png' });
+      await page.screenshot(login + '_screenshot.png');
       // await page.cls()
     }
     catch (e) { }
@@ -536,7 +536,7 @@ const fct = async () => {
               fix = true
               if (!t1) {
                 console.log(getTime(), ' no bar ' + t1, account)
-                await page.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
+                await page.screenshot('nobar_' + login + '_screenshot.png');
               }
             }
             else {
