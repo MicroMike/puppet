@@ -100,13 +100,13 @@ const fct = async () => {
     exit(del ? 4 : 1)
   }
 
-  page.on('error', function (err) {
-    catchFct('crashed')
-  });
+  // page.on('error', function (err) {
+  //   catchFct('crashed')
+  // });
 
-  page.on('close', function (err) {
-    exit(1)
-  });
+  // page.on('close', function (err) {
+  //   exit(1)
+  // });
 
   try {
     if (player === 'napster') {
