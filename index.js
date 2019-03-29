@@ -54,7 +54,7 @@ const main = async () => {
     ? 'CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount'
     : 'ACCOUNT=' + account + ' node runAccount'
 
-  shell.exec('cross-env ' + cmd, (code, b, c) => {
+  shell.exec(cmd, (code, b, c) => {
     if (!check) {
       accountsValid--
       // 4 = DEL
@@ -80,7 +80,7 @@ const main = async () => {
 const mainInter = setInterval(() => {
   if (over || errorPath) { return clearInterval(mainInter) }
   if (!stop) {
-    main()
+    // main()
   }
 }, 1000 * pause);
 

@@ -39,7 +39,7 @@ const fct = async () => {
   const login = accountInfo[1]
   const pass = accountInfo[2]
 
-  let noCache = player === 'napster' || player === 'spotify'
+  let noCache = player === 'napster'// || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) { process.exit(1) }
@@ -51,12 +51,13 @@ const fct = async () => {
       exit: true
     })
 
-    if (player === 'spotify') {
-      try {
+    try {
+      if (player === 'spotify') {
         await page.gotoUrl('https://spotify.com/logout')
       }
-      catch (e) { }
     }
+    catch (e) { }
+
     process.exit(code)
   }
 
@@ -77,6 +78,8 @@ const fct = async () => {
   let usedDom
   let reLog
   let loginError
+  let timeLine
+  let style
 
   let connected = false
   let suppressed = false
@@ -137,6 +140,9 @@ const fct = async () => {
       ]
 
       usedDom = '.player-error-box'
+
+      timeLine = 'span.ui-slider-handle'
+      style = 'left'
     }
     if (player === 'amazon') {
       url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
@@ -166,6 +172,9 @@ const fct = async () => {
       ]
 
       usedDom = '.concurrentStreamsPopover'
+
+      timeLine = '.scrubberBackground'
+      style = 'width'
     }
     if (player === 'tidal') {
       url = 'https://listen.tidal.com/'
@@ -198,6 +207,9 @@ const fct = async () => {
 
       usedDom = '.WARN'
       reLog = 'body > div > div.main > div > div > div > div > div > button'
+
+      timeLine = '[class*="fillingBlock"] > div:first-child'
+      style = 'transform'
     }
     if (player === 'spotify') {
       url = 'https://accounts.spotify.com/login'
@@ -226,7 +238,11 @@ const fct = async () => {
         // 'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
         // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
       ]
+
       usedDom = '.ConnectBar'
+
+      timeLine = '.progress-bar__fg'
+      style = 'transform'
     }
 
     const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
@@ -287,9 +303,9 @@ const fct = async () => {
       return new Promise(async (resolve, reject) => {
         try {
           const captcha = await anticaptcha(captchaUrl, keyCaptcha, true)
-          if (captcha === 'error') { return resolve('error') }
+          if (captcha === 'error') { return resolve('error captcha') }
 
-          await page.reload()
+          await page.refresh()
           resolve(captcha)
         }
         catch (e) {
@@ -299,39 +315,22 @@ const fct = async () => {
       })
     }
 
-    const log = async (captcha) => {
-      await page.evaluate((captcha) => {
-        setTimeout(() => {
-          let clients = window.___grecaptcha_cfg.clients[0]
-          Object.keys(clients).map(key => {
-            let client = clients[key]
-            Object.keys(client).map(k => {
-              let l = client[k]
-              l && l.callback && l.callback(captcha)
-            })
-          })
-        }, 5000);
-      }, captcha)
-    }
-
     // ***************************************************************************************************************************************************************
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
 
     if (player === 'tidal') {
       await page.gotoUrl(album())
-      await page.waitFor(2000)
       const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        await page.waitFor(1000 * 10)
         const done = await page.jClk(reLog)
 
         if (!done) {
-          if (!check) {
-            catchFct('not log')
-            return
-          }
+          // if (!check) {
+          //   catchFct('not log')
+          //   return
+          // }
 
           const validCallback = await resolveCaptcha('https://login.tidal.com')
           if (validCallback === 'error') { throw validCallback }
@@ -342,16 +341,17 @@ const fct = async () => {
             await page.clk('#recap-invisible')
           }
           else {
-            await log(validCallback)
+            await page.log(validCallback)
           }
 
-          await page.wfs(password, 1000 * 60 * 5)
+          await page.waitFor(password, 1000 * 60 * 5)
           await page.inst(password, pass)
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          await page.waitFor(1000 * 10 + rand(2000))
           connected = await page.ext(loggedDom)
           if (!connected) { throw 'del' }
+        }
+        else {
           await page.gotoUrl(album())
         }
       }
@@ -363,10 +363,6 @@ const fct = async () => {
     }
 
     if (!connected && player !== 'tidal') {
-      if (player === 'spotify' && process.env.RAND) {
-        // throw 'Spotify relog ' + login
-      }
-      await page.waitFor(2000 + rand(2000))
       await page.gotoUrl(url)
 
       usernameInput = await page.ext(username)
@@ -375,15 +371,7 @@ const fct = async () => {
       await page.inst(password, pass)
       await page.jClk(remember)
 
-      let validCallback = 'click'
-      // if (player === 'spotify') {
-      //   validCallback = await resolveCaptcha()
-      //   if (validCallback !== 'click' && validCallback !== 'done') { throw validCallback }
-      // }
-
-      if (validCallback === 'click') {
-        await page.jClk(loginBtn)
-      }
+      await page.clk(loginBtn)
 
       await page.waitFor(2000 + rand(2000))
       suppressed = await page.get(loginError)
@@ -398,10 +386,8 @@ const fct = async () => {
 
     if (player === 'spotify' && check) {
       await page.gotoUrl('https://www.spotify.com/account/overview')
-      const free = await page.evaluate(() => {
-        const typeAccount = document.querySelector('.product-name')
-        return typeAccount && /Free|free/.test(typeAccount.innerHTML)
-      })
+      const typeAccount = await page.get('.product-name')
+      const free = typeAccount && /Free|free/.test(typeAccount)
       if (free) { throw 'del' }
 
       await page.gotoUrl(album())
@@ -467,9 +453,7 @@ const fct = async () => {
     }
 
     if (player === 'tidal') {
-      const delTidal = await page.evaluate(() => {
-        return document.querySelector('.ReactModal__Overlay') && document.querySelector('.ReactModal__Overlay').innerText
-      })
+      const delTidal = await page.get('.ReactModal__Overlay')
       if (typeof delTidal === 'string' && delTidal.match(/expired/)) {
         throw 'del'
       }
@@ -495,8 +479,6 @@ const fct = async () => {
     let fix = false
     let used
     let changing = false
-    let timeLine
-    let style
 
     let timeLoop = 0
     let timeLoop2 = 0
@@ -531,9 +513,7 @@ const fct = async () => {
         used = await page.ext(usedDom)
 
         if (used) {
-          used = await page.evaluate((usedDom) => {
-            return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
-          }, usedDom)
+          used = await page.get(usedDom)
 
           if (player === 'tidal') {
             used = typeof used === 'string' && used.match(/currently/) ? used : false
@@ -545,29 +525,7 @@ const fct = async () => {
         }
 
         if (!used) {
-          if (player === 'napster') {
-            timeLine = 'span.ui-slider-handle'
-            style = 'left'
-          }
-          else if (player === 'tidal') {
-            timeLine = '[class*="fillingBlock"] > div:first-child'
-            style = 'transform'
-          }
-          else if (player === 'amazon') {
-            timeLine = '.scrubberBackground'
-            style = 'width'
-          }
-          else if (player === 'spotify') {
-            timeLine = '.progress-bar__fg'
-            style = 'transform'
-          }
-
-          try {
-            t1 = await page.evaluate((args) => {
-              return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
-            }, { timeLine, style })
-          }
-          catch (e) { }
+          t1 = await page.timeLine(timeLine, style)
 
           if (t1 === t2) { freeze++ }
           else { freeze = 0 }

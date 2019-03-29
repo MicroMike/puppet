@@ -65,11 +65,12 @@ module.exports = async (userDataDir, noCache) => {
     // openDevTools: {
     //   mode: 'detach'
     // },
+    alwaysOnTop: false,
     waitTimeout: 1000 * 60 * 3,
     show: true,
     typeInterval: 300,
     webPreferences: {
-      partition: 'persist: ' + userDataDir,
+      partition: noCache ? '' : 'persist: ' + userDataDir,
       webSecurity: false,
       allowRunningInsecureContent: true,
       plugins: true,
@@ -81,122 +82,121 @@ module.exports = async (userDataDir, noCache) => {
   let page = {}
 
   page.waitFor = async (timeOrSelector) => {
-    await nightmare.wait(timeOrSelector)
-    return true
+    await nightmare
+      .wait(timeOrSelector)
+      .catch(e => {
+        throw 'waitFor ' + timeOrSelector
+      })
+  }
+
+  page.refresh = async () => {
+    await nightmare
+      .refresh()
+      .catch(e => {
+        throw 'refresh error ' + e
+      })
   }
 
   page.gotoUrl = async (url) => {
-    try {
-      // await page.goto(url, { timeout: 1000 * 60 * 5, waitUntil: 'domcontentloaded' })
-      await nightmare.goto(url)
-      return true
-    } catch (e) {
-      throw 'error load'
-    }
-  }
-
-  page.wfs = async (selector, timeout = 1000 * 60 * 3, retry = false) => {
-    try {
-      // await page.waitForSelector(selector, { timeout })
-      await page.waitFor(selector)
-      return true
-    } catch (e) {
-      throw 'Selector error ' + selector
-    }
+    await nightmare
+      .wait(2000 + rand(1000))
+      .goto(url)
+      .wait(2000 + rand(1000))
+      .catch(e => {
+        throw 'error load'
+      })
   }
 
   page.ext = async (selector, timeout = 1000 * 10) => {
-    try {
-      // await page.waitForSelector(selector, { timeout })
-      await page.waitFor(selector)
-      console.log('ext ok')
-      return true
-    } catch (error) {
-      return false
-    }
+    await page.waitFor(timeout)
+    const exist = await nightmare.exists(selector)
+    return exist
   }
 
   page.clk = async (selector, error) => {
-    try {
-      await page.wfs(selector)
-      await page.waitFor(2000 + rand(2000))
-      await nightmare.evaluate(selector => {
-        document.querySelector(selector) && document.querySelector(selector).click()
-      }, selector)
-
-      return true
-    }
-    catch (e) {
-      throw error || 'Click error ' + selector
-    }
+    await nightmare
+      .wait(2000 + rand(2000))
+      .click(selector)
+      .catch(e => {
+        throw error || 'Click error ' + selector
+      })
   }
 
   page.jClk = async (selector) => {
     const exist = await page.ext(selector)
-    if (!exist) {
-      if (selector) {
-        console.log(selector + ' don\'t exist')
-      }
-      return false
-    }
+    if (!exist) { return false }
 
-    try {
-      await page.waitFor(2000 + rand(2000))
-      await nightmare.evaluate(selector => {
-        document.querySelector(selector) && document.querySelector(selector).click()
-      }, selector)
-      return true
-    }
-    catch (e) {
-      console.log('Justclick ' + selector)
-    }
+    const isOk = await nightmare
+      .click(selector)
+      .catch(e => {
+        console.log(userDataDir + ' Justclick ' + selector)
+        return false
+      })
+
+    return isOk === null
   }
 
   page.inst = async (selector, text) => {
-    try {
-      await page.waitFor(2000 + rand(2000))
-      await page.clk(selector)
-      // const elementHandle = await page.$(selector);
-      await nightmare.evaluate(selector => {
-        document.querySelector(selector).value = ''
-      }, selector)
-      // await elementHandle.type(text, { delay: 300 });
-      await nightmare.type(selector, text);
-
-      return true
-    }
-    catch (e) {
-      throw 'Insert error ' + selector
-    }
+    await nightmare
+      .wait(2000 + rand(2000))
+      .insert(selector, '')
+      .type(selector, text)
+      .catch(e => {
+        throw 'Insert error ' + selector
+      })
   }
 
   page.get = async (selector) => {
-    const ext = await page.ext(selector)
-    if (!ext) { return false }
+    const exist = await page.ext(selector)
+    if (!exist) { return '' }
 
-    try {
-      await page.waitFor(2000 + rand(2000))
-      const html = await nightmare.evaluate(selector => {
-        return document.querySelector(selector) && document.querySelector(selector).innerHTML
+    const html = await nightmare
+      .evaluate(selector => {
+        return document.querySelector(selector).innerHTML
       }, selector)
+      .catch(e => {
+        console.log(userDataDir + ' Get error ' + selector)
+        return ''
+      })
 
-      return html
-    }
-    catch (e) {
-      console.log('Get error ' + selector)
-      return false
-    }
+    return html
   }
 
   page.cls = async () => {
-    try {
-      // await page.goto('about:blank')
-      // await browserContext.browser().close()
-      nightmare.end()
-    }
-    catch (e) {
-      throw 'Can\'t close', e
-    }
+    await nightmare
+      .end()
+      .catch(e => {
+        throw 'Can\'t close', e
+      })
+  }
+
+  page.log = async (captcha) => {
+    await nightmare
+      .evaluate((captcha) => {
+        setTimeout(() => {
+          let clients = window.___grecaptcha_cfg.clients[0]
+          Object.keys(clients).map(key => {
+            let client = clients[key]
+            Object.keys(client).map(k => {
+              let l = client[k]
+              l && l.callback && l.callback(captcha)
+            })
+          })
+        }, 5000);
+      }, captcha)
+  }
+
+  page.timeLine = async (timeLine, style) => {
+    const time = await nightmare
+      .evaluate((args) => {
+        return document.querySelector(args.timeLine).style[args.style]
+      }, { timeLine, style })
+      .catch(e => {
+        console.log(userDataDir + ' Timeline error ' + selector)
+        return false
+      })
+
+    return time
   }
 
   return page
