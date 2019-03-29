@@ -192,7 +192,7 @@ module.exports = async (userDataDir, noCache) => {
         return document.querySelector(args.timeLine).style[args.style]
       }, { timeLine, style })
       .catch(e => {
-        console.log(userDataDir + ' Timeline error ' + selector)
+        console.log(userDataDir + ' Timeline error')
         return false
       })
 
