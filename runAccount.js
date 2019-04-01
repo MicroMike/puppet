@@ -419,38 +419,36 @@ const fct = async () => {
       await page.jClk(repeatBtn)
     }
 
-    let stopBeforePlay
     if (player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
-      stopBeforePlay = await page.ext(usedDom)
+      const stopBeforePlay = await page.ext(usedDom)
+      if (stopBeforePlay) { exit(1) }
     }
 
-    if (!stopBeforePlay) {
-      try {
-        await page.clk(playBtn, 'first play')
+    try {
+      await page.clk(playBtn, 'first play')
+    }
+    catch (e) {
+      if (player === "spotify") {
+        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
-      catch (e) {
-        if (player === "spotify") {
-          await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
-        }
-        exit(1)
+      exit(1)
+    }
+
+    if (player === 'napster' || player === 'tidal' || player === 'spotify') {
+      const clickLoop = () => {
+        setTimeout(async () => {
+          const existRepeatBtnOk = await page.ext(repeatBtnOk)
+          if (!existRepeatBtnOk) {
+            await page.jClk(repeatBtn)
+            clickLoop()
+          }
+        }, 2600);
       }
 
-      if (player === 'napster' || player === 'tidal' || player === 'spotify') {
-        const clickLoop = () => {
-          setTimeout(async () => {
-            const existRepeatBtnOk = await page.ext(repeatBtnOk)
-            if (!existRepeatBtnOk) {
-              await page.jClk(repeatBtn)
-              clickLoop()
-            }
-          }, 2600);
-        }
+      clickLoop()
 
-        clickLoop()
-
-        await page.jClk(shuffleBtn)
-      }
+      await page.jClk(shuffleBtn)
     }
 
     if (player === 'tidal') {
