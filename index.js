@@ -53,7 +53,7 @@ const main = async () => {
   const player = accountInfo[0]
   const login = accountInfo[1]
 
-  shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete')
+  shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, (code, b, c) => {
     if (!check) {
       accountsValid--
