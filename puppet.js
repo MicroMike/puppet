@@ -103,12 +103,7 @@ module.exports = async (userDataDir, noCache) => {
 
   page.jClk = async (selector) => {
     const exist = await page.ext(selector)
-    if (!exist) {
-      if (selector) {
-        console.log(selector + ' don\'t exist')
-      }
-      return false
-    }
+    if (!exist) { return false }
 
     try {
       await page.waitFor(2000 + rand(2000))
