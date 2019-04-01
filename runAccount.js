@@ -505,16 +505,22 @@ const fct = async () => {
         used = await page.ext(usedDom)
 
         if (used) {
-          used = await page.evaluate((usedDom) => {
-            return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
-          }, usedDom)
-
           if (player === 'tidal') {
+            used = await page.evaluate((usedDom) => {
+              return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
+            }, usedDom)
+
             used = typeof used === 'string' && used.match(/currently/) ? used : false
 
             if (!used) {
               await page.jClk('#wimp > div > div > div > div > div > button')
             }
+            else {
+              exit(1)
+            }
+          }
+          else {
+            exit(1)
           }
         }
 
@@ -550,9 +556,7 @@ const fct = async () => {
             freeze = 0
 
             if (!t1) {
-              fix = true
-              console.log(getTime(), ' no bar ' + t1, account)
-              await page.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
+              catchFct('no bar')
             }
 
             if (player === 'napster') {
@@ -570,7 +574,6 @@ const fct = async () => {
         }
 
         if (used || fix) {
-          exit(1)
         }
 
         timeLoop += loopAdd
