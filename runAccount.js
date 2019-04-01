@@ -547,16 +547,20 @@ const fct = async () => {
           if (freeze >= 2) {
             freeze = 0
 
-            if (!t1 || player !== 'napster') {
+            if (!t1) {
               fix = true
-              if (!t1) {
-                console.log(getTime(), ' no bar ' + t1, account)
-                await page.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
-              }
+              console.log(getTime(), ' no bar ' + t1, account)
+              await page.screenshot({ path: 'nobar_' + login + '_screenshot.png' });
             }
-            else {
-              await page.jClk('.player-play-button .icon-pause2')
-              await page.jClk('.player-play-button .icon-play-button')
+
+            if (player === 'napster') {
+              if (t1 === '0%') {
+                timeLoop = changeTime
+              }
+              else {
+                await page.jClk('.player-play-button .icon-pause2')
+                await page.jClk('.player-play-button .icon-play-button')
+              }
             }
           }
 
