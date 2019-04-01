@@ -44,7 +44,9 @@ const main = async (account) => {
 }
 
 process.on('SIGINT', function (code) {
-  socket.emit('exitScript', accountsValid)
+  if (!check) {
+    socket.emit('exitScript', accountsValid)
+  }
   over = true
 });
 
