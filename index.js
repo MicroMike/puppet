@@ -58,7 +58,7 @@ socket.on('done', () => {
   const mainInter = setInterval(() => {
     if (over) { return clearInterval(mainInter) }
     if (!check && accountsValid.length >= max) { return }
-    socket.emit('getOne', process.env.RAND)
+    socket.emit('getOne', process.env)
   }, 1000 * pause);
 })
 
