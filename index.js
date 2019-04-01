@@ -1,6 +1,5 @@
 process.setMaxListeners(0)
 
-const fs = require('fs');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
@@ -16,6 +15,17 @@ const pause = process.env.BIG
     : 30
 let errorPath = false
 let stop = false
+
+const rand = (max, min) => {
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+}
+
+function shuffle(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    arr.sort(() => { return rand(2) })
+  }
+  return arr
+}
 
 const getTime = () => {
   const date = new Date
@@ -70,6 +80,7 @@ socket.on('done', () => {
 
 socket.on('accounts', data => {
   accounts = data
+  accounts = process.env.RAND ? shuffle(accounts) : accounts
 
   const mainInter = setInterval(() => {
     if (over || errorPath) { return clearInterval(mainInter) }
