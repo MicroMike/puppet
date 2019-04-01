@@ -20,7 +20,7 @@ const getTime = () => {
 
 const main = async (account) => {
   if (over) { return }
-  if (!check && accountsValid >= max) { return }
+  if (!check && accountsValid.length >= max) { return }
 
   accountsValid.push(account)
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
