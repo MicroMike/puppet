@@ -38,6 +38,10 @@ const main = async () => {
     ? 'CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount'
     : 'ACCOUNT=' + account + ' node runAccount'
 
+  const accountInfo = account.split(':')
+  const player = accountInfo[0]
+  const login = accountInfo[1]
+
   shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete')
   shell.exec(cmd, (code, b, c) => {
     if (!check) {
