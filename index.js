@@ -21,6 +21,7 @@ const rand = (max, min) => {
 }
 
 function shuffle(arr) {
+  if (!process.env.RAND) { return arr }
   for (let i = 0; i < arr.length; i++) {
     arr.sort(() => { return rand(2) })
   }
@@ -79,8 +80,7 @@ socket.on('done', () => {
 })
 
 socket.on('accounts', data => {
-  accounts = data
-  accounts = process.env.RAND ? shuffle(accounts) : accounts
+  accounts = shuffle(data)
 
   const mainInter = setInterval(() => {
     if (over || errorPath) { return clearInterval(mainInter) }
@@ -93,5 +93,5 @@ socket.on('accounts', data => {
 });
 
 socket.on('updateAccounts', data => {
-  accounts = data
+  accounts = shuffle(data)
 })
