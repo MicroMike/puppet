@@ -59,6 +59,10 @@ process.on('SIGINT', function (code) {
   over = true
 });
 
+socket.on('done', () => {
+  socket.emit('getAccounts')
+})
+
 socket.on('accounts', data => {
   accounts = data
 
