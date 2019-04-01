@@ -7,11 +7,7 @@ const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
 let over = false
 const max = process.env.BIG ? 60 : 20
-const pause = process.env.BIG
-  ? 20
-  : check
-    ? 5
-    : 30
+const pause = check ? 5 : 13
 
 const getTime = () => {
   const date = new Date
@@ -54,6 +50,10 @@ process.on('SIGINT', function (code) {
   socket.emit('exitScript', accountsValid)
   over = true
 });
+
+socket.on('activate', () => {
+  socket.emit('ok', accountsValid)
+})
 
 socket.on('done', () => {
   socket.emit('getOne', process.env.RAND)
