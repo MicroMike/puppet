@@ -19,8 +19,7 @@ const getTime = () => {
 }
 
 const main = async (account) => {
-  if (over) { return }
-  if (!check && accountsValid.length >= max) { return }
+  if (over || !account) { return }
 
   accountsValid.push(account)
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
@@ -61,6 +60,7 @@ socket.on('done', () => {
 
   const mainInter = setInterval(() => {
     if (over) { return clearInterval(mainInter) }
+    if (!check && accountsValid.length >= max) { return }
     socket.emit('getOne', process.env.RAND)
   }, 1000 * pause);
 })
