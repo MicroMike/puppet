@@ -4,7 +4,6 @@ var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 const check = process.env.CHECK || process.env.TYPE
-let accounts = []
 let accountsValid = []
 let over = false
 const max = process.env.BIG ? 60 : 20
@@ -20,7 +19,7 @@ const getTime = () => {
 }
 
 const main = async (account) => {
-  if (over || accounts.length === 0) { return }
+  if (over) { return }
   if (!check && accountsValid >= max) { return }
 
   accountsValid.push(account)
