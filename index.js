@@ -2,7 +2,7 @@ process.setMaxListeners(0)
 
 const fs = require('fs');
 var shell = require('shelljs');
-var socket = require('socket.io-client')('213.136.86.214:3000');
+var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 const check = process.env.CHECK || process.env.TYPE
 let accounts = []
