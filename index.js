@@ -17,8 +17,6 @@ const getTime = () => {
 }
 
 const main = async (account) => {
-  accountsValid.push(account)
-  socket.emit('runOk', account)
 
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
@@ -47,10 +45,24 @@ const main = async (account) => {
   })
 }
 
-process.on('SIGINT', (code) => {
+const inter = () => {
+  if (over) { return }
+
+  if (check || accountsValid.length < max) {
+    socket.emit('getOne', process.env)
+  }
+
+  setTimeout(() => {
+    inter()
+  }, 1000 * pause);
+}
+
+process.on('SIGINT', () => {
   over = true
   socket.emit('exitScript', accountsValid)
-  process.exit()
+  setTimeout(() => {
+    process.exit()
+  }, 0);
 });
 
 socket.on('activate', () => {
@@ -59,19 +71,14 @@ socket.on('activate', () => {
 
 socket.on('done', () => {
   socket.emit('getOne', process.env)
+  inter()
 })
 
 socket.on('run', account => {
   if (over) { return }
-  if (account) { main(account) }
+  if (account) {
+    accountsValid.push(account)
+    socket.emit('runOk', account)
+    main(account)
+  }
 });
-
-socket.on('next', () => {
-  setTimeout(() => {
-    if (over) { return }
-
-    if (check || accountsValid.length < max) {
-      socket.emit('getOne', process.env)
-    }
-  }, 1000 * pause);
-})
