@@ -57,15 +57,16 @@ socket.on('activate', () => {
 
 socket.on('done', () => {
   socket.emit('getOne', process.env)
-})
 
-socket.on('run', account => {
-  if (account) { main(account) }
+  const inter = setInterval(() => {
+    if (over) { return clearInterval(inter) }
 
-  setTimeout(() => {
-    if (over) { return }
     if (check || accountsValid.length < max) {
       socket.emit('getOne', process.env)
     }
   }, 1000 * pause);
+})
+
+socket.on('run', account => {
+  if (account) { main(account) }
 });
