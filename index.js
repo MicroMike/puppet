@@ -44,11 +44,8 @@ const main = async (account) => {
   })
 }
 
-let lastAccount
-
 process.on('SIGINT', (code) => {
   over = true
-  if (accountsValid.indexOf(lastAccount) < 0) { accountsValid.push(lastAccount) }
   socket.emit('exitScript', accountsValid)
   socket.emit('disconnect')
 });
@@ -70,6 +67,6 @@ socket.on('done', () => {
 })
 
 socket.on('run', account => {
-  lastAccount = account
+  if (over) { return console.log('lost', account) }
   if (account) { main(account) }
 });
