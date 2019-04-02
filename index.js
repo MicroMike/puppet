@@ -20,7 +20,7 @@ const main = async (account) => {
   if (over) {
     socket.emit('exitScript', accountsValid)
     setTimeout(() => {
-      process.exit()
+      // process.exit()
     }, 1000);
     return
   }
