@@ -120,12 +120,10 @@ module.exports = async (userDataDir, noCache) => {
   page.inst = async (selector, text) => {
     try {
       await page.waitFor(2000 + rand(2000))
-      await page.clk(selector)
-      const elementHandle = await page.$(selector);
       await page.evaluate(selector => {
         document.querySelector(selector).value = ''
       }, selector)
-      await elementHandle.type(text, { delay: 300 });
+      await page.type(selector, text, { delay: 150 });
 
       return true
     }
