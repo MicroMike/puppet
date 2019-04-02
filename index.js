@@ -57,17 +57,19 @@ socket.on('activate', () => {
 
 socket.on('done', () => {
   socket.emit('getOne', process.env)
-
-  const inter = setInterval(() => {
-    if (over) { return clearInterval(inter) }
-
-    if (check || accountsValid.length < max) {
-      socket.emit('getOne', process.env)
-    }
-  }, 1000 * pause);
 })
 
 socket.on('run', account => {
   if (over) { return }
   if (account) { main(account) }
 });
+
+socket.on('next', () => {
+  setTimeout(() => {
+    if (over) { return }
+
+    if (check || accountsValid.length < max) {
+      socket.emit('getOne', process.env)
+    }
+  }, 1000 * pause);
+})
