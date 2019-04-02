@@ -50,6 +50,7 @@ process.on('SIGINT', (code) => {
   over = true
   if (accountsValid.indexOf(lastAccount) < 0) { accountsValid.push(lastAccount) }
   socket.emit('exitScript', accountsValid)
+  socket.emit('disconnect')
 });
 
 socket.on('activate', () => {
