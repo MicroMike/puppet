@@ -17,14 +17,6 @@ const getTime = () => {
 const main = async (account) => {
   accountsValid.push(account)
 
-  if (over) {
-    socket.emit('exitScript', accountsValid)
-    setTimeout(() => {
-      // process.exit()
-    }, 1000);
-    return
-  }
-
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
   const cmd = check
@@ -50,8 +42,12 @@ const main = async (account) => {
   })
 }
 
+let lastAccount
+
 process.on('SIGINT', (code) => {
   over = true
+  if (accountsValid.indexOf(lastAccount) < 0) { accountsValid.push(lastAccount) }
+  socket.emit('exitScript', accountsValid)
 });
 
 socket.on('activate', () => {
@@ -71,5 +67,6 @@ socket.on('done', () => {
 })
 
 socket.on('run', account => {
+  lastAccount = account
   if (account) { main(account) }
 });
