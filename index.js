@@ -64,7 +64,7 @@ socket.on('run', account => {
 
   setTimeout(() => {
     if (over) { return }
-    if (!check && accountsValid.length >= max) {
+    if (check || accountsValid.length < max) {
       socket.emit('getOne', process.env)
     }
   }, 1000 * pause);
