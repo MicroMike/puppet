@@ -70,7 +70,6 @@ socket.on('activate', () => {
 })
 
 socket.on('done', () => {
-  socket.emit('getOne', process.env)
   inter()
 })
 
