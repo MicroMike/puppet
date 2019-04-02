@@ -17,7 +17,7 @@ const getTime = () => {
 }
 
 const main = async (account) => {
-
+  accountsValid.push(account)
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
   const cmd = check
@@ -30,8 +30,6 @@ const main = async (account) => {
 
   shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, (code, b, c) => {
-    if (over) { return }
-
     accountsValid = accountsValid.filter(a => a !== account)
     // 4 = DEL
     if (code === 4) {
@@ -45,39 +43,15 @@ const main = async (account) => {
   })
 }
 
-const inter = () => {
-  if (over) { return }
-
-  if (check || accountsValid.length < max) {
-    socket.emit('getOne', process.env)
-  }
-
-  setTimeout(() => {
-    inter()
-  }, 1000 * pause);
-}
-
 process.on('SIGINT', () => {
   over = true
-  socket.emit('exitScript', accountsValid)
-  setTimeout(() => {
-    process.exit()
-  }, 0);
+  process.exit()
 });
 
 socket.on('activate', () => {
-  socket.emit('ok', accountsValid)
-})
-
-socket.on('done', () => {
-  inter()
+  socket.emit('ok', { accountsValid, max, env })
 })
 
 socket.on('run', account => {
-  if (over) { return }
-  if (account) {
-    accountsValid.push(account)
-    socket.emit('runOk', account)
-    main(account)
-  }
+  main(account)
 });
