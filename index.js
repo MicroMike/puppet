@@ -3,9 +3,10 @@ process.setMaxListeners(0)
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 var stdin = process.stdin;
+let over = false
 
 // without this, we would only get streams once enter is pressed
-// stdin.setRawMode(true);
+stdin.setRawMode(true);
 
 // resume stdin in the parent process (node app won't quit all by itself
 // unless an error or process.exit() happens)
@@ -20,13 +21,16 @@ stdin.on('data', function (key) {
   if (key === '\u0003') {
     process.exit();
   }
+  if (key === 'q') {
+    console.log('over')
+    over = true
+  }
   // write the key to stdout all normal like
-  process.stdout.write(key);
+  // process.stdout.write(key);
 });
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
-let over = false
 const max = process.env.BIG ? 60 : 25
 const pause = check ? 5 : 13
 
@@ -37,6 +41,11 @@ const getTime = () => {
 
 const main = async (account) => {
   accountsValid.push(account)
+
+  if (over) {
+    socket.emit('exitScript', accountsValid)
+    process.exit()
+  }
 
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
@@ -63,12 +72,11 @@ const main = async (account) => {
   })
 }
 
-process.on('SIGINT', function (code) {
-  if (!check) {
-    socket.emit('exitScript', accountsValid)
-  }
-  over = true
-});
+// process.on('SIGINT', function (code) {
+//   if (!check) {
+//   }
+//   over = true
+// });
 
 let scriptId
 
@@ -82,11 +90,10 @@ socket.on('done', () => {
 })
 
 socket.on('run', account => {
-  if (over) { return }
-
   if (account) { main(account) }
 
   setTimeout(() => {
+    if (over) { return }
     if (!check && accountsValid.length >= max) {
       socket.emit('getOne', process.env)
     }
