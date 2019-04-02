@@ -47,7 +47,7 @@ const main = async (account) => {
 process.on('SIGINT', (code) => {
   over = true
   socket.emit('exitScript', accountsValid)
-  socket.emit('disconnect')
+  process.exit()
 });
 
 socket.on('activate', () => {
