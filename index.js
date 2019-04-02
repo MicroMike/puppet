@@ -15,9 +15,8 @@ const getTime = () => {
 }
 
 const main = async (account) => {
-  if (over || !account) { return }
-
   accountsValid.push(account)
+
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
   const cmd = check
@@ -56,14 +55,16 @@ socket.on('activate', () => {
 
 socket.on('done', () => {
   socket.emit('getOne', process.env)
-
-  const mainInter = setInterval(() => {
-    if (over) { return clearInterval(mainInter) }
-    if (!check && accountsValid.length >= max) { return }
-    socket.emit('getOne', process.env)
-  }, 1000 * pause);
 })
 
 socket.on('run', account => {
-  main(account)
+  if (over) { return }
+
+  if (account) { main(account) }
+
+  setTimeout(() => {
+    if (!check && accountsValid.length >= max) {
+      socket.emit('getOne', process.env)
+    }
+  }, 1000 * pause);
 });
