@@ -16,6 +16,7 @@ const getTime = () => {
 
 const main = async (account) => {
   accountsValid.push(account)
+  socket.emit('runOk', account)
 
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
@@ -62,16 +63,11 @@ socket.on('done', () => {
 
     if (check || accountsValid.length < max) {
       socket.emit('getOne', process.env)
-      over = true
-      socket.emit('exitScript', accountsValid)
-      process.exit()
     }
   }, 1000 * pause);
 })
 
 socket.on('run', account => {
   if (over) { return }
-
-  socket.emit('runOk', account)
   if (account) { main(account) }
 });
