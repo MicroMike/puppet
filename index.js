@@ -38,7 +38,7 @@ const getTime = () => {
 const main = async (account) => {
   accountsValid.push(account)
 
-  // process.stdout.write(getTime() + " " + accountsValid.length + "\r");
+  process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
   const cmd = check
     ? 'CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount'
@@ -59,7 +59,7 @@ const main = async (account) => {
       socket.emit('loop', account)
     }
 
-    // process.stdout.write(getTime() + " " + accountsValid.length + "\r");
+    process.stdout.write(getTime() + " " + accountsValid.length + "\r");
   })
 }
 
