@@ -62,15 +62,16 @@ socket.on('done', () => {
 
     if (check || accountsValid.length < max) {
       socket.emit('getOne', process.env)
+      over = true
+      socket.emit('exitScript', accountsValid)
       process.exit()
     }
   }, 1000 * pause);
 })
 
 socket.on('run', account => {
-  if (over) {
-    socket.emit('loop', account)
-    return console.log('lost', account)
-  }
+  if (over) { return }
+
+  socket.emit('runOk', account)
   if (account) { main(account) }
 });
