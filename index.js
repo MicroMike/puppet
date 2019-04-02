@@ -2,32 +2,7 @@ process.setMaxListeners(0)
 
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
-var stdin = process.stdin;
 let over = false
-
-// without this, we would only get streams once enter is pressed
-// stdin.setRawMode(true);
-
-// resume stdin in the parent process (node app won't quit all by itself
-// unless an error or process.exit() happens)
-stdin.resume();
-
-// i don't want binary, do you?
-stdin.setEncoding('utf8');
-
-// on any data into stdin
-stdin.on('data', function (key) {
-  // ctrl-c ( end of text )
-  if (key === '\u0003') {
-    process.exit();
-  }
-  if (key === 'q') {
-    console.log('over')
-    over = true
-  }
-  // write the key to stdout all normal like
-  // process.stdout.write(key);
-});
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
@@ -72,16 +47,11 @@ const main = async (account) => {
   })
 }
 
-// process.on('SIGINT', function (code) {
-//   if (!check) {
-//   }
-//   over = true
-// });
+process.on('SIGINT', (code) => {
+  over = true
+});
 
-let scriptId
-
-socket.on('activate', id => {
-  scriptId = id
+socket.on('activate', () => {
   socket.emit('ok', accountsValid)
 })
 
