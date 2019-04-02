@@ -49,7 +49,7 @@ process.on('SIGINT', () => {
 });
 
 socket.on('activate', () => {
-  socket.emit('ok', { accountsValid, max, env })
+  socket.emit('ok', { accountsValid, max, env: process.env })
 })
 
 socket.on('run', account => {
