@@ -29,6 +29,8 @@ const main = async (account) => {
 
   shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, (code, b, c) => {
+    if (over) { return }
+
     accountsValid = accountsValid.filter(a => a !== account)
     // 4 = DEL
     if (code === 4) {
