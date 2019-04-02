@@ -6,7 +6,7 @@ var stdin = process.stdin;
 let over = false
 
 // without this, we would only get streams once enter is pressed
-stdin.setRawMode(true);
+// stdin.setRawMode(true);
 
 // resume stdin in the parent process (node app won't quit all by itself
 // unless an error or process.exit() happens)
