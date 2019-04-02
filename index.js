@@ -11,7 +11,9 @@ const pause = check ? 10 : 30
 
 const getTime = () => {
   const date = new Date
-  return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
+  const hour = date.getUTCHours() + 1
+  const minute = date.getUTCMinutes() < 10 ? '0' + date.getUTCMinutes() : date.getUTCMinutes()
+  return hour + 'H' + minute
 }
 
 const main = async (account) => {
