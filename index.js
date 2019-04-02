@@ -19,7 +19,10 @@ const main = async (account) => {
 
   if (over) {
     socket.emit('exitScript', accountsValid)
-    process.exit()
+    setTimeout(() => {
+      process.exit()
+    }, 1000);
+    return
   }
 
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
