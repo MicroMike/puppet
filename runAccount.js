@@ -7,8 +7,10 @@ const account = process.env.ACCOUNT
 const check = process.env.CHECK
 
 let over = false
+
 process.on('SIGINT', function (code) {
   over = true
+  process.exit()
 });
 
 const getTime = () => {
@@ -324,6 +326,19 @@ const fct = async () => {
           //   catchFct('not log')
           //   return
           // }
+
+          await page.gotoUrl('https://my.tidal.com/login')
+          await page.inst('#Login .login-email', login)
+          await page.inst('#Login [type="password"]', pass)
+          await page.clk('#Login .login-cta')
+
+          await page.waitFor(2000 + rand(2000))
+          await page.gotoUrl('https://my.tidal.com/us/account/subscription')
+
+          const notif = await page.get('.notification-error')
+          if (notif) { throw 'del' }
+
+          await page.gotoUrl('https://login.tidal.com')
 
           const validCallback = await resolveCaptcha('https://login.tidal.com')
           if (validCallback === 'error') { throw validCallback }
