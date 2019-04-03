@@ -11,7 +11,7 @@ fs.readFile('napsterAccount.txt', 'utf8', function (err, data) {
   console.log(accounts.length)
 
   const loop = () => {
-    shell.exec('cross-env CHECK=true ACCOUNT=' + accounts[count++] + ' node runAccount', () => { })
+    shell.exec('CHECK=true ACCOUNT=' + accounts[count++] + ' node runAccount', () => { })
 
     if (count < accounts.length) {
       setTimeout(() => {
