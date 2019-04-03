@@ -334,8 +334,8 @@ const fct = async () => {
 
           await page.waitFor(2000 + rand(2000))
 
-          const notif = await page.get('.notification-info')
-          if (!notif) { throw 'del' }
+          const header = await page.get('.account-header')
+          if (!header) { throw 'del' }
 
           await page.gotoUrl(album())
           await page.waitFor(2000 + rand(2000))
