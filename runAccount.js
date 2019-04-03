@@ -315,11 +315,11 @@ const fct = async () => {
     if (player === 'tidal') {
       await page.gotoUrl(album())
       await page.waitFor(2000)
-      const notConnected = await page.jClk(goToLogin)
+      const notConnected = true//await page.jClk(goToLogin)
 
       if (notConnected) {
-        await page.waitFor(1000 * 10)
-        const done = await page.jClk(reLog)
+        await page.waitFor(2000 + rand(2000))
+        const done = false//await page.jClk(reLog)
 
         if (!done) {
           // if (!check) {
@@ -332,11 +332,17 @@ const fct = async () => {
           await page.inst('#Login [type="password"]', pass)
           await page.clk('#Login .login-cta')
 
-          await page.waitFor(2000 + rand(2000))
-          await page.gotoUrl('https://my.tidal.com/us/account/subscription')
+          await page.waitFor(5000 + rand(2000))
 
           const notif = await page.get('.notification-error')
           if (notif) { throw 'del' }
+
+          if (check) {
+            await page.gotoUrl('https://my.tidal.com/us/account')
+            const family = await page.get('.box-family')
+            if (!family) { throw 'no family' }
+            return
+          }
 
           await page.gotoUrl('https://login.tidal.com')
 
