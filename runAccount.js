@@ -335,7 +335,7 @@ const fct = async () => {
           await page.waitFor(5000 + rand(2000))
 
           const notif = await page.get('.notification-error')
-          if (notif) { throw 'del' }
+          if (notif) { throw notif }
 
           if (check) {
             await page.gotoUrl('https://my.tidal.com/us/account')

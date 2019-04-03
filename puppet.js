@@ -139,7 +139,7 @@ module.exports = async (userDataDir, noCache) => {
     try {
       await page.waitFor(2000 + rand(2000))
       const html = await page.evaluate(selector => {
-        return document.querySelector(selector) && document.querySelector(selector).innerHTML
+        return document.querySelector(selector) && document.querySelector(selector).innerText
       }, selector)
 
       return html
