@@ -195,7 +195,7 @@ const main = async (restartAccount) => {
 
   try {
     if (player === 'spotify') {
-      url = 'https://accounts.spotify.com/login'
+      url = 'https://accounts.spotify.com/fr/login'
       loggedDom = '.sessionInfo'
 
       username = '#login-username'
