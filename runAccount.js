@@ -318,7 +318,7 @@ const fct = async () => {
       const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        await page.waitFor(1000 * 10)
+        await page.waitFor(1000 * 5)
         const done = await page.jClk(reLog)
 
         if (!done) {
@@ -334,10 +334,12 @@ const fct = async () => {
 
           await page.waitFor(2000 + rand(2000))
 
-          const notif = await page.get('.notification-error')
-          if (notif) { throw 'del' }
+          const notif = await page.get('.notification-info')
+          if (!notif) { throw 'del' }
 
-          await page.gotoUrl(url)
+          await page.gotoUrl(album())
+          await page.waitFor(2000 + rand(2000))
+          await page.jClk(goToLogin)
 
           const validCallback = await resolveCaptcha('https://login.tidal.com')
           if (validCallback === 'error') { throw validCallback }
