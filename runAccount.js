@@ -333,12 +333,11 @@ const fct = async () => {
           await page.clk('#Login .login-cta')
 
           await page.waitFor(2000 + rand(2000))
-          await page.gotoUrl('https://my.tidal.com/us/account/subscription')
 
           const notif = await page.get('.notification-error')
           if (notif) { throw 'del' }
 
-          await page.gotoUrl('https://login.tidal.com')
+          await page.gotoUrl(url)
 
           const validCallback = await resolveCaptcha('https://login.tidal.com')
           if (validCallback === 'error') { throw validCallback }
