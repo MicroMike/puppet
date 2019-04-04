@@ -483,7 +483,6 @@ const fct = async () => {
 
     let timeLoop = 0
     let timeLoop2 = 0
-    let tryLoop = false
 
     const loop = async () => {
       let loopAdd = 1000 * 5
@@ -491,6 +490,7 @@ const fct = async () => {
         let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
         if (timeLoop2 >= restartTime) {
           exit(1)
+          return
         }
 
         let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 5 + rand(1000 * 60 * 5)
@@ -558,10 +558,7 @@ const fct = async () => {
           if (freeze >= 2) {
             freeze = 0
 
-            if (!t1) {
-              console.log('no bar')
-              return
-            }
+
 
             if (player === 'napster') {
               if (t1 === '0%') {
@@ -571,6 +568,9 @@ const fct = async () => {
                 await page.jClk('.player-play-button .icon-pause2')
                 await page.jClk('.player-play-button .icon-play-button')
               }
+            }
+            else if (!t1) {
+              throw 'no bar'
             }
           }
 
