@@ -88,7 +88,7 @@ module.exports = async (userDataDir, noCache) => {
     try {
       await page.waitFor(2000 + rand(2000))
       const exist = await page.evaluate(selector => {
-        return document.querySelector(selector)
+        return !!document.querySelector(selector)
       }, selector)
       return exist
     } catch (error) {
