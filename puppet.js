@@ -141,7 +141,7 @@ module.exports = async (userDataDir, noCache) => {
 
   page.get = async (selector) => {
     try {
-      await page.wfs(selector)
+      await page.waitFor(1000 + rand(2000))
       const html = await page.evaluate(selector => {
         return document.querySelector(selector) && document.querySelector(selector).innerHTML
       }, selector)
