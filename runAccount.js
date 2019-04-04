@@ -314,11 +314,9 @@ const fct = async () => {
 
     if (player === 'tidal') {
       await page.gotoUrl(album())
-      await page.waitFor(2000)
       const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        await page.waitFor(1000 * 5)
         const done = await page.jClk(reLog)
 
         if (!done) {
@@ -332,13 +330,10 @@ const fct = async () => {
           await page.inst('#Login [type="password"]', pass)
           await page.clk('#Login .login-cta')
 
-          await page.waitFor(2000 + rand(2000))
-
           const header = await page.get('.account-header')
           if (!header) { throw 'del' }
 
           await page.gotoUrl(album())
-          await page.waitFor(2000 + rand(2000))
           await page.jClk(goToLogin)
 
           const validCallback = await resolveCaptcha('https://login.tidal.com')
@@ -353,7 +348,6 @@ const fct = async () => {
             await log(validCallback)
           }
 
-          await page.wfs(password, 1000 * 60 * 5)
           await page.inst(password, pass)
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 

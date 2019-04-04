@@ -61,26 +61,36 @@ module.exports = async (userDataDir, noCache) => {
 
   page.gotoUrl = async (url) => {
     try {
-      await page.goto(url, { timeout: 1000 * 60 * 5, waitUntil: 'domcontentloaded' })
+      await page.goto(url, { timeout: 1000 * 60 * 5 })
+      await page.waitFor(1000 + rand(2000))
       return true
     } catch (e) {
       throw 'error load'
     }
   }
 
-  page.wfs = async (selector, timeout = 1000 * 60 * 3, retry = false) => {
+  page.wfs = async (selector, error) => {
     try {
-      await page.waitForSelector(selector, { timeout })
+      await page.waitFor(1000 + rand(2000))
+      await page.waitForSelector(selector, { timeout: 1000 * 60 * 1 })
       return true
     } catch (e) {
-      throw 'Selector error ' + selector
+      if (error) {
+        throw 'Selector error ' + selector
+      }
+      else {
+        return false
+      }
     }
   }
 
-  page.ext = async (selector, timeout = 1000 * 10) => {
+  page.ext = async (selector) => {
     try {
-      await page.waitForSelector(selector, { timeout })
-      return true
+      await page.waitFor(1000 + rand(2000))
+      const exist = await page.evaluate(selector => {
+        return document.querySelector(selector)
+      }, selector)
+      return exist
     } catch (error) {
       return false
     }
@@ -88,8 +98,7 @@ module.exports = async (userDataDir, noCache) => {
 
   page.clk = async (selector, error) => {
     try {
-      await page.wfs(selector)
-      await page.waitFor(2000 + rand(2000))
+      await page.wfs(selector, true)
       await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
@@ -102,29 +111,27 @@ module.exports = async (userDataDir, noCache) => {
   }
 
   page.jClk = async (selector) => {
-    const exist = await page.ext(selector)
-    if (!exist) { return false }
-
     try {
-      await page.waitFor(2000 + rand(2000))
+      const exist = await page.wfs(selector)
       await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
-      return true
+      return exist
     }
     catch (e) {
-      console.log('Justclick ' + selector)
+      console.log('Justclick ' + selector, e)
+      return false
     }
   }
 
   page.inst = async (selector, text) => {
     try {
-      await page.waitFor(2000 + rand(2000))
+      await page.wfs(selector, true)
       await page.evaluate(selector => {
         document.querySelector(selector).value = ''
+        document.querySelector(selector).focus()
       }, selector)
       await page.type(selector, text, { delay: 150 });
-
       return true
     }
     catch (e) {
@@ -133,11 +140,8 @@ module.exports = async (userDataDir, noCache) => {
   }
 
   page.get = async (selector) => {
-    const ext = await page.ext(selector)
-    if (!ext) { return false }
-
     try {
-      await page.waitFor(2000 + rand(2000))
+      await page.wfs(selector)
       const html = await page.evaluate(selector => {
         return document.querySelector(selector) && document.querySelector(selector).innerHTML
       }, selector)
