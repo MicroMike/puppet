@@ -446,9 +446,9 @@ const fct = async () => {
     }
 
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
-      const clickLoop = () => {
+      const clickLoop = async () => {
+        const existRepeatBtnOk = await page.ext(repeatBtnOk)
         setTimeout(async () => {
-          const existRepeatBtnOk = await page.ext(repeatBtnOk)
           if (!existRepeatBtnOk) {
             await page.jClk(repeatBtn)
             clickLoop()
