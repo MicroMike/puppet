@@ -110,18 +110,11 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
-  page.jClk = async (selector, wait, tidal) => {
+  page.jClk = async (selector) => {
     try {
-      if (wait) {
-        await page.wfs(selector)
-      }
-      const exist = await page.evaluate(selector => {
+      await page.evaluate(selector => {
         return document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
-      if (tidal) {
-        console.log(selector, exist)
-      }
-      return exist
     }
     catch (e) {
       console.log('Justclick ' + selector)

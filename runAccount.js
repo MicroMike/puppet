@@ -317,9 +317,12 @@ const fct = async () => {
       const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        const done = await page.jClk(reLog, true, true)
+        const done = await page.ext(reLog)
 
-        if (!done) {
+        if (done) {
+          await page.clk(reLog, 'tidal relog error')
+        }
+        else {
           // if (!check) {
           //   catchFct('not log')
           //   return
