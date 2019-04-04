@@ -72,7 +72,7 @@ module.exports = async (userDataDir, noCache) => {
   page.wfs = async (selector, error) => {
     try {
       await page.waitFor(1000 + rand(2000))
-      await page.waitForSelector(selector, { timeout: 1000 * 60 * 1 })
+      await page.waitForSelector(selector, { timeout: 1000 * 60 })
       return true
     } catch (e) {
       if (error) {
@@ -86,7 +86,7 @@ module.exports = async (userDataDir, noCache) => {
 
   page.ext = async (selector) => {
     try {
-      await page.waitFor(1000 + rand(2000))
+      await page.waitFor(2000 + rand(2000))
       const exist = await page.evaluate(selector => {
         return document.querySelector(selector)
       }, selector)
