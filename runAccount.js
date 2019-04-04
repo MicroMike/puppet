@@ -314,10 +314,10 @@ const fct = async () => {
 
     if (player === 'tidal') {
       await page.gotoUrl(album())
-      const notConnected = await page.jClk(goToLogin)
+      const notConnected = await page.jClk(goToLogin, true)
 
       if (notConnected) {
-        const done = await page.jClk(reLog)
+        const done = await page.jClk(reLog, true)
 
         if (!done) {
           // if (!check) {
@@ -377,14 +377,8 @@ const fct = async () => {
       await page.inst(password, pass)
       await page.jClk(remember)
 
-      let validCallback = 'click'
-      // if (player === 'spotify') {
-      //   validCallback = await resolveCaptcha()
-      //   if (validCallback !== 'click' && validCallback !== 'done') { throw validCallback }
-      // }
-
       if (validCallback === 'click') {
-        await page.jClk(loginBtn)
+        await page.clk(loginBtn)
       }
 
       await page.waitFor(2000 + rand(2000))

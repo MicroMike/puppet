@@ -110,10 +110,12 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
-  page.jClk = async (selector) => {
+  page.jClk = async (selector, wait) => {
     try {
-      const exist = await page.wfs(selector)
-      await page.evaluate(selector => {
+      if (wait) {
+        await page.wfs(selector)
+      }
+      const exist = await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
       return exist
