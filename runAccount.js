@@ -314,9 +314,11 @@ const fct = async () => {
 
     if (player === 'tidal') {
       await page.gotoUrl(album())
-      const notConnected = await page.jClk(goToLogin, true)
+      const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
+        await page.waitFor(2000)
+        await page.reload()
         const done = await page.jClk(reLog, true)
 
         if (!done) {
@@ -376,10 +378,7 @@ const fct = async () => {
       await page.inst(usernameInput ? username : password, login)
       await page.inst(password, pass)
       await page.jClk(remember)
-
-      if (validCallback === 'click') {
-        await page.clk(loginBtn)
-      }
+      await page.clk(loginBtn)
 
       await page.waitFor(2000 + rand(2000))
       suppressed = await page.get(loginError)
