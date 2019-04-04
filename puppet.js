@@ -119,7 +119,7 @@ module.exports = async (userDataDir, noCache) => {
       return exist
     }
     catch (e) {
-      console.log('Justclick ' + selector, e)
+      console.log('Justclick ' + selector)
       return false
     }
   }
