@@ -314,7 +314,7 @@ const fct = async () => {
 
     if (player === 'tidal') {
       await page.gotoUrl(album())
-      const notConnected = await page.ext(reLog)
+      const notConnected = await page.ext(goToLogin)
 
       if (notConnected) {
         await page.clk(goToLogin)
