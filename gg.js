@@ -95,7 +95,7 @@ let albums = [
   { url: 'https://open.spotify.com/episode/5YwlHKInZK9O6So8trYhBm', nb: 20 },
 ]
 
-let albumNbCount = 7
+let albumNbCount = 0
 let albumId = 0
 
 const album = () => {
