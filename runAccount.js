@@ -483,6 +483,7 @@ const fct = async () => {
 
     let timeLoop = 0
     let timeLoop2 = 0
+    let tryLoop = false
 
     const loop = async () => {
       let loopAdd = 1000 * 5
@@ -558,7 +559,8 @@ const fct = async () => {
             freeze = 0
 
             if (!t1) {
-              catchFct('no bar')
+              console.log('no bar')
+              return
             }
 
             if (player === 'napster') {
