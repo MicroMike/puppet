@@ -314,16 +314,12 @@ const fct = async () => {
 
     if (player === 'tidal') {
       await page.gotoUrl(album())
-      const notConnected = await page.ext(goToLogin)
+      const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        await page.clk(goToLogin)
-        const done = await page.wfs(reLog, true)
+        const done = await page.clk(reLog)
 
-        if (done) {
-          await page.clk(reLog, 'tidal relog error')
-        }
-        else {
+        if (!done) {
           // if (!check) {
           //   catchFct('not log')
           //   return

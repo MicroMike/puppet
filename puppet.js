@@ -112,9 +112,14 @@ module.exports = async (userDataDir, noCache) => {
 
   page.jClk = async (selector) => {
     try {
-      await page.evaluate(selector => {
-        return document.querySelector(selector) && document.querySelector(selector).click()
-      }, selector)
+      const exist = await page.ext(selector)
+      if (exist) {
+        await page.evaluate(selector => {
+          document.querySelector(selector) && document.querySelector(selector).click()
+        }, selector)
+        return true
+      }
+      return false
     }
     catch (e) {
       console.log('Justclick ' + selector)
