@@ -553,8 +553,6 @@ const fct = async () => {
           if (freeze >= 2) {
             freeze = 0
 
-
-
             if (player === 'napster') {
               if (t1 === '0%') {
                 timeLoop = changeTime
@@ -566,6 +564,9 @@ const fct = async () => {
             }
             else if (!t1) {
               throw 'no bar'
+            }
+            else {
+              timeLoop = changeTime
             }
           }
 
