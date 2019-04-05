@@ -312,57 +312,70 @@ const fct = async () => {
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
 
-    if (player === 'tidal') {
-      await page.gotoUrl(album())
-      const notConnected = await page.jClk(goToLogin)
-
-      if (notConnected) {
-        await page.rload()
-        const done = await page.jClk(reLog, true)
-
-        if (!done) {
-          await page.gotoUrl('https://my.tidal.com/login')
-          await page.inst('#Login .login-email', login)
-          await page.inst('#Login [type="password"]', pass)
-          await page.clk('#Login .login-cta')
-
+    const tidalConnect = async (re) => {
+      try {
+        if (re) {
           await page.rload()
-          const inputLogin = await page.get('#Login .login-email')
-          if (inputLogin) { throw 'del' }
-
+          await page.jClk(reLog, true)
+        }
+        else if (player === 'tidal') {
           await page.gotoUrl(album())
-          await page.jClk(goToLogin)
+          const notConnected = await page.jClk(goToLogin)
 
-          await page.inst(username, login)
-          await page.clk('#recap-invisible')
+          if (notConnected) {
+            await page.rload()
+            const done = await page.jClk(reLog, true)
 
-          try {
-            await page.inst(password, pass)
+            if (!done) {
+              await page.gotoUrl('https://my.tidal.com/login')
+              await page.inst('#Login .login-email', login)
+              await page.inst('#Login [type="password"]', pass)
+              await page.clk('#Login .login-cta')
+
+              await page.rload()
+              const inputLogin = await page.get('#Login .login-email')
+              if (inputLogin) { throw 'del' }
+
+              await page.gotoUrl(album())
+              await page.jClk(goToLogin)
+
+              await page.inst(username, login)
+              await page.clk('#recap-invisible')
+
+              try {
+                await page.inst(password, pass)
+              }
+              catch (e) {
+                return
+              }
+
+              // const validCallback = await resolveCaptcha('https://login.tidal.com')
+              // if (validCallback === 'error') { throw validCallback }
+
+
+              // if (validCallback === 'click') {
+              // await page.clk('#recap-invisible')
+              // }
+              // else {
+              //   await log(validCallback)
+              // }
+
+              await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
+
+              await page.waitFor(1000 * 10 + rand(2000))
+              connected = await page.ext(loggedDom)
+              if (!connected) { throw 'del' }
+              await page.gotoUrl(album())
+            }
           }
-          catch (e) {
-            return
-          }
-
-          // const validCallback = await resolveCaptcha('https://login.tidal.com')
-          // if (validCallback === 'error') { throw validCallback }
-
-
-          // if (validCallback === 'click') {
-          // await page.clk('#recap-invisible')
-          // }
-          // else {
-          //   await log(validCallback)
-          // }
-
-          await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
-
-          await page.waitFor(1000 * 10 + rand(2000))
-          connected = await page.ext(loggedDom)
-          if (!connected) { throw 'del' }
-          await page.gotoUrl(album())
         }
       }
+      catch (e) {
+        await tidalConnect(true)
+      }
     }
+
+    await tidalConnect()
 
     if (player === 'amazon' || player === 'spotify') {
       await page.gotoUrl(album())
