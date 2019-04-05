@@ -591,6 +591,7 @@ const fct = async () => {
             }
             else {
               pause = true
+              timeLoop = changeTime
             }
           }
 
