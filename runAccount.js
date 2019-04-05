@@ -317,25 +317,19 @@ const fct = async () => {
       const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        await page.wfs(reLog)
-        const done = await page.jClk(reLog)
+        await page.reload()
+        const done = await page.jClk(reLog, true)
 
         if (!done) {
-          // if (!check) {
-          //   catchFct('not log')
-          //   return
-          // }
+          if (check) {
+            await page.gotoUrl('https://my.tidal.com/login')
+            await page.inst('#Login .login-email', login)
+            await page.inst('#Login [type="password"]', pass)
+            await page.clk('#Login .login-cta')
 
-          await page.gotoUrl('https://my.tidal.com/login')
-          await page.inst('#Login .login-email', login)
-          await page.inst('#Login [type="password"]', pass)
-          await page.clk('#Login .login-cta')
-
-          const header = await page.get('.account-header')
-          if (!header) { throw 'del' }
-
-          await page.gotoUrl(album())
-          await page.jClk(goToLogin)
+            const header = await page.get('.account-header')
+            if (!header) { throw 'del' }
+          }
 
           const validCallback = await resolveCaptcha('https://login.tidal.com')
           if (validCallback === 'error') { throw validCallback }

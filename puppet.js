@@ -110,9 +110,17 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
-  page.jClk = async (selector) => {
+  page.jClk = async (selector, wait) => {
     try {
-      const exist = await page.ext(selector)
+      let exist
+
+      if (wait) {
+        exist = await page.wfs(selector)
+      }
+      else {
+        exist = await page.ext(selector)
+      }
+
       if (exist) {
         await page.evaluate(selector => {
           document.querySelector(selector) && document.querySelector(selector).click()

@@ -69,3 +69,8 @@ socket.on('activate', () => {
 socket.on('run', account => {
   main(account)
 });
+
+socket.on('reset', () => {
+  over = true
+  process.exit()
+});
