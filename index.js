@@ -70,6 +70,5 @@ socket.on('run', account => {
 
 socket.on('reStart', () => {
   console.log('reset')
-  socket.emit('disconnect')
   process.exit()
 });
