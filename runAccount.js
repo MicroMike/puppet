@@ -322,29 +322,39 @@ const fct = async () => {
         const done = await page.jClk(reLog, true)
 
         if (!done) {
-          if (check) {
-            await page.gotoUrl('https://my.tidal.com/login')
-            await page.inst('#Login .login-email', login)
-            await page.inst('#Login [type="password"]', pass)
-            await page.clk('#Login .login-cta')
+          await page.gotoUrl('https://my.tidal.com/login')
+          await page.inst('#Login .login-email', login)
+          await page.inst('#Login [type="password"]', pass)
+          await page.clk('#Login .login-cta')
 
-            const header = await page.get('.account-header')
-            if (!header) { throw 'del' }
-          }
-
-          const validCallback = await resolveCaptcha('https://login.tidal.com')
-          if (validCallback === 'error') { throw validCallback }
+          await page.waitFor(1000 * 5 + rand(2000))
+          await page.reload()
+          const inputLogin = await page.get('#Login .login-email')
+          if (inputLogin) { throw 'del' }
+          await page.gotoUrl(album())
+          await page.jClk(goToLogin)
 
           await page.inst(username, login)
+          await page.clk('#recap-invisible')
 
-          if (validCallback === 'click') {
-            await page.clk('#recap-invisible')
+          try {
+            await page.inst(password, pass)
           }
-          else {
-            await log(validCallback)
+          catch (e) {
+            return
           }
 
-          await page.inst(password, pass)
+          // const validCallback = await resolveCaptcha('https://login.tidal.com')
+          // if (validCallback === 'error') { throw validCallback }
+
+
+          // if (validCallback === 'click') {
+          // await page.clk('#recap-invisible')
+          // }
+          // else {
+          //   await log(validCallback)
+          // }
+
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
           await page.waitFor(1000 * 10 + rand(2000))
