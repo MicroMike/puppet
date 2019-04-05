@@ -57,10 +57,6 @@ process.on('SIGINT', () => {
   process.exit()
 });
 
-socket.on('start', () => {
-  socket.emit('started')
-})
-
 socket.on('activate', () => {
   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
     if (err) return console.log(err);
