@@ -326,6 +326,8 @@ const fct = async () => {
             await page.rload()
             const done = await page.jClk(reLog, true)
 
+            await page.inst(username, login)
+
             if (!done) {
               await page.gotoUrl('https://my.tidal.com/login')
               await page.inst('#Login .login-email', login)
