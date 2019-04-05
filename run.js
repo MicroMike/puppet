@@ -1,9 +1,7 @@
 var shell = require('shelljs');
-var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
-// shell.exec('npm run reset')
-shell.exec('npm run all')
+shell.exec('git pull')
 
-socket.on('reset', () => {
+while (true) {
   shell.exec('npm run all')
-})
+}
