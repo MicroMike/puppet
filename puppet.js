@@ -69,6 +69,16 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
+  page.rload = async () => {
+    try {
+      await page.waitFor(3000 + rand(2000))
+      await page.reload({ timeout: 1000 * 60 * 5 })
+      return true
+    } catch (e) {
+      throw 'error reload'
+    }
+  }
+
   page.wfs = async (selector, error) => {
     try {
       await page.waitFor(1000 + rand(2000))

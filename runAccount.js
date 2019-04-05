@@ -283,7 +283,7 @@ const fct = async () => {
           const captcha = await anticaptcha(captchaUrl, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
 
-          await page.reload()
+          await page.rload()
           resolve(captcha)
         }
         catch (e) {
@@ -317,8 +317,7 @@ const fct = async () => {
       const notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        await page.waitFor(1000 * 5 + rand(2000))
-        await page.reload()
+        await page.rload()
         const done = await page.jClk(reLog, true)
 
         if (!done) {
@@ -327,10 +326,10 @@ const fct = async () => {
           await page.inst('#Login [type="password"]', pass)
           await page.clk('#Login .login-cta')
 
-          await page.waitFor(1000 * 5 + rand(2000))
-          await page.reload()
+          await page.rload()
           const inputLogin = await page.get('#Login .login-email')
           if (inputLogin) { throw 'del' }
+
           await page.gotoUrl(album())
           await page.jClk(goToLogin)
 
