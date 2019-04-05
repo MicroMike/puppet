@@ -489,6 +489,7 @@ const fct = async () => {
     let timeLoop2 = 0
 
     const loop = async () => {
+      let pause
       let loopAdd = 1000 * 5
       try {
         let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
@@ -575,14 +576,11 @@ const fct = async () => {
               throw 'no bar'
             }
             else {
-              timeLoop = changeTime
+              pause = true
             }
           }
 
           t2 = t1
-        }
-
-        if (used || fix) {
         }
 
         timeLoop += loopAdd
@@ -590,7 +588,7 @@ const fct = async () => {
 
         changeInterval = setTimeout(() => {
           loop()
-        }, loopAdd);
+        }, pause ? 1000 * 60 : loopAdd);
       }
       catch (e) {
         catchFct(e)
