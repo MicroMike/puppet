@@ -3,7 +3,6 @@ process.setMaxListeners(0)
 var fs = require('fs');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
-let over = false
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
@@ -55,7 +54,6 @@ const main = async (account) => {
 }
 
 process.on('SIGINT', () => {
-  over = true
   process.exit()
 });
 
@@ -75,6 +73,6 @@ socket.on('run', account => {
 });
 
 socket.on('reset', () => {
-  over = true
+  socket.emit('disconnect')
   process.exit()
 });
