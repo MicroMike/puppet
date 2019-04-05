@@ -316,7 +316,7 @@ const fct = async () => {
       try {
         if (re) {
           await page.rload()
-          await page.jClk(reLog, true)
+          await page.clk(reLog)
         }
         else if (player === 'tidal') {
           await page.gotoUrl(album())
