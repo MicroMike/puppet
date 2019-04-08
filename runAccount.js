@@ -313,7 +313,7 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
 
     const tidalConnect = async (re) => {
-      if (player === 'tidal') {
+      const promise = new Promise(res => {
         let notConnected = true
 
         if (re) {
@@ -324,10 +324,10 @@ const fct = async () => {
             await page.clk(reLog)
           }
           catch (e) {
-            console.log(e)
-            tidalConnect(true)
+            catchFct('try tidal ' + e)
           }
 
+          res()
           return
         }
 
@@ -344,6 +344,7 @@ const fct = async () => {
             }
             catch (e) {
               await tidalConnect(true)
+              res()
             }
             await page.gotoUrl('https://my.tidal.com/login')
             await page.inst('#Login .login-email', login)
@@ -386,10 +387,15 @@ const fct = async () => {
             await page.gotoUrl(album())
           }
         }
-      }
+        res()
+      })
+
+      return promise
     }
 
-    await tidalConnect()
+    if (player === 'tidal') {
+      await tidalConnect()
+    }
 
     if (player === 'amazon' || player === 'spotify') {
       await page.gotoUrl(album())
@@ -603,6 +609,9 @@ const fct = async () => {
               throw 'no bar'
             }
             else {
+              if (player === 'tidal') {
+                await tidalConnect()
+              }
               pause = true
               timeLoop = changeTime
             }
