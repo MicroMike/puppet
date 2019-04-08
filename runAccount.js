@@ -361,7 +361,7 @@ const fct = async () => {
             await page.inst(password, pass)
           }
           catch (e) {
-            return
+            return 'stop'
           }
 
           // const validCallback = await resolveCaptcha('https://login.tidal.com')
@@ -386,7 +386,10 @@ const fct = async () => {
     }
 
     if (player === 'tidal') {
-      await tidalConnect()
+      const result = await tidalConnect()
+      if (result === 'stop') {
+        return
+      }
     }
 
     if (player === 'amazon' || player === 'spotify') {
