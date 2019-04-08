@@ -71,7 +71,7 @@ module.exports = async (userDataDir, noCache) => {
 
   page.rload = async () => {
     try {
-      await page.waitFor(3000 + rand(2000))
+      await page.waitFor(5000 + rand(2000))
       await page.reload({ timeout: 1000 * 60 * 5 })
       return true
     } catch (e) {
