@@ -313,81 +313,76 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
 
     const tidalConnect = async (re) => {
-      const promise = new Promise(async (res) => {
-        let notConnected = true
+      let notConnected = true
 
-        if (re) {
+      if (re) {
+        try {
+          await page.rload()
+          await page.clk(reLog)
+        }
+        catch (e) {
+          catchFct('try tidal ' + e)
+        }
+
+        return
+      }
+
+      await page.gotoUrl(album())
+      notConnected = await page.jClk(goToLogin)
+
+      if (notConnected) {
+        const done = await page.jClk(reLog, true)
+
+        if (!done) {
           try {
-            await page.rload()
-            await page.clk(reLog)
+            await page.inst(username, login)
           }
           catch (e) {
-            catchFct('try tidal ' + e)
+            await tidalConnect(true)
+            return
           }
 
-          res()
-          return
-        }
+          await page.gotoUrl('https://my.tidal.com/login')
+          await page.inst('#Login .login-email', login)
+          await page.inst('#Login [type="password"]', pass)
+          await page.clk('#Login .login-cta')
 
-        await page.gotoUrl(album())
-        notConnected = await page.jClk(goToLogin)
+          await page.rload()
+          const inputLogin = await page.get('#Login .login-email')
+          if (inputLogin) { throw 'del' }
 
-        if (notConnected) {
-          const done = await page.jClk(reLog, true)
+          await page.gotoUrl(album())
+          await page.jClk(goToLogin)
 
-          if (!done) {
-            try {
-              await page.inst(username, login)
-            }
-            catch (e) {
-              await tidalConnect(true)
-              res()
-            }
-            await page.gotoUrl('https://my.tidal.com/login')
-            await page.inst('#Login .login-email', login)
-            await page.inst('#Login [type="password"]', pass)
-            await page.clk('#Login .login-cta')
+          await page.inst(username, login)
+          await page.clk('#recap-invisible')
 
-            await page.rload()
-            const inputLogin = await page.get('#Login .login-email')
-            if (inputLogin) { throw 'del' }
-
-            await page.gotoUrl(album())
-            await page.jClk(goToLogin)
-
-            await page.inst(username, login)
-            await page.clk('#recap-invisible')
-
-            try {
-              await page.inst(password, pass)
-            }
-            catch (e) {
-              return
-            }
-
-            // const validCallback = await resolveCaptcha('https://login.tidal.com')
-            // if (validCallback === 'error') { throw validCallback }
-
-
-            // if (validCallback === 'click') {
-            // await page.clk('#recap-invisible')
-            // }
-            // else {
-            //   await log(validCallback)
-            // }
-
-            await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
-
-            await page.waitFor(1000 * 10 + rand(2000))
-            connected = await page.ext(loggedDom)
-            if (!connected) { throw 'del' }
-            await page.gotoUrl(album())
+          try {
+            await page.inst(password, pass)
           }
-        }
-        res()
-      })
+          catch (e) {
+            return
+          }
 
-      return promise
+          // const validCallback = await resolveCaptcha('https://login.tidal.com')
+          // if (validCallback === 'error') { throw validCallback }
+
+
+          // if (validCallback === 'click') {
+          // await page.clk('#recap-invisible')
+          // }
+          // else {
+          //   await log(validCallback)
+          // }
+
+          await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
+
+          await page.waitFor(1000 * 10 + rand(2000))
+          connected = await page.ext(loggedDom)
+          if (!connected) { throw 'del' }
+          await page.gotoUrl(album())
+        }
+      }
     }
 
     if (player === 'tidal') {
