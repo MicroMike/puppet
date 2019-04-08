@@ -45,7 +45,7 @@ const main = async (account) => {
 
       socket.emit('delete', account)
     }
-    else {
+    else if (!check) {
       socket.emit('loop', account)
     }
 
