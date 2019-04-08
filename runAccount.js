@@ -313,7 +313,7 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
 
     const tidalConnect = async (re) => {
-      const promise = new Promise(res => {
+      const promise = new Promise(async (res) => {
         let notConnected = true
 
         if (re) {
