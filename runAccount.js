@@ -318,8 +318,6 @@ const fct = async () => {
 
         if (re) {
           try {
-            await page.gotoUrl(album())
-            await page.clk(goToLogin)
             await page.rload()
             await page.clk(reLog)
           }
@@ -335,7 +333,6 @@ const fct = async () => {
         notConnected = await page.jClk(goToLogin)
 
         if (notConnected) {
-          await page.rload()
           const done = await page.jClk(reLog, true)
 
           if (!done) {
