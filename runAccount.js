@@ -316,10 +316,23 @@ const fct = async () => {
       if (player === 'tidal') {
         let notConnected = true
 
-        if (!re) {
-          await page.gotoUrl(album())
-          notConnected = await page.jClk(goToLogin)
+        if (re) {
+          try {
+            await page.gotoUrl(album())
+            await page.clk(goToLogin)
+            await page.rload()
+            await page.clk(reLog)
+          }
+          catch (e) {
+            console.log(e)
+            tidalConnect(true)
+          }
+
+          return
         }
+
+        await page.gotoUrl(album())
+        notConnected = await page.jClk(goToLogin)
 
         if (notConnected) {
           await page.rload()

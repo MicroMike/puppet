@@ -3,5 +3,5 @@ var shell = require('shelljs');
 shell.exec('git pull')
 
 while (true) {
-  shell.exec('npm run all')
+  shell.exec('killall chrome && npm run all')
 }
