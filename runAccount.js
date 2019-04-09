@@ -523,14 +523,14 @@ const fct = async () => {
 
       let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
       if (timeLoop2 >= restartTime) {
-        console.log(account, time, 'min before exit')
+        // console.log(account, time, 'min before exit')
         exit(1)
         return
       }
 
       let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 10 + rand(1000 * 60 * 10)
       if (timeLoop >= changeTime) {
-        console.log(account, time, 'min before change')
+        // console.log(account, time, 'min before change')
         await page.gotoUrl(album())
         await page.clk(playBtn, 'loop play ' + player)
 
