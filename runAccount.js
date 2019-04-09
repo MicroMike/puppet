@@ -5,6 +5,7 @@ const puppet = require('./puppet')
 const request = require('ajax-request');
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
+let duration
 
 let over = false
 
@@ -497,6 +498,8 @@ const fct = async () => {
       exit(1)
     }
 
+    duration = Date.now()
+
     // ***************************************************************************************************************************************************************
     // *************************************************************************** LOOP ******************************************************************************
     // ***************************************************************************************************************************************************************
@@ -519,12 +522,14 @@ const fct = async () => {
 
       let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
       if (timeLoop2 >= restartTime) {
+        console.log((Date.now() - duration) / 60 + 'min before exit')
         exit(1)
         return
       }
 
       let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 10 + rand(1000 * 60 * 10)
       if (timeLoop >= changeTime) {
+        console.log((Date.now() - duration) / 60 + 'min before change')
         await page.gotoUrl(album())
         await page.clk(playBtn, 'loop play ' + player)
 
