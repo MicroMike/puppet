@@ -478,7 +478,7 @@ const fct = async () => {
         }
       }
 
-      await clickLoop()
+      clickLoop()
     }
 
     if (player === 'tidal') {
@@ -514,110 +514,106 @@ const fct = async () => {
     const loop = async () => {
       let pause
       let loopAdd = 1000 * 5
-      try {
-        let restartTime = 1000 * 60 * 40 + rand(1000 * 60 * 20)
-        if (timeLoop2 >= restartTime) {
-          exit(1)
-          return
-        }
 
-        let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 10 + rand(1000 * 60 * 10)
-        if (timeLoop >= changeTime) {
-          await page.gotoUrl(album())
-          await page.clk(playBtn, 'loop play ' + player)
+      let restartTime = 1000 * 60 * 40 + rand(1000 * 60 * 20)
+      if (timeLoop2 >= restartTime) {
+        exit(1)
+        return
+      }
 
-          timeLoop = 0
-          await page.waitFor(loopAdd)
-          loop()
-          return
-        }
+      let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 10 + rand(1000 * 60 * 10)
+      if (timeLoop >= changeTime) {
+        await page.gotoUrl(album())
+        await page.clk(playBtn, 'loop play ' + player)
 
-        used = await page.ext(usedDom)
+        timeLoop = 0
+        await page.waitFor(loopAdd)
+        loop()
+        return
+      }
 
-        if (used) {
-          if (player === 'tidal') {
-            used = await page.evaluate((usedDom) => {
-              return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
-            }, usedDom)
+      used = await page.ext(usedDom)
 
-            used = typeof used === 'string' && used.match(/currently/) ? used : false
+      if (used) {
+        if (player === 'tidal') {
+          used = await page.evaluate((usedDom) => {
+            return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
+          }, usedDom)
 
-            if (!used) {
-              await page.jClk('#wimp > div > div > div > div > div > button')
-            }
-            else {
-              exit(1)
-            }
+          used = typeof used === 'string' && used.match(/currently/) ? used : false
+
+          if (!used) {
+            await page.jClk('#wimp > div > div > div > div > div > button')
           }
           else {
             exit(1)
           }
         }
+        else {
+          exit(1)
+        }
+      }
 
-        if (!used) {
-          if (player === 'napster') {
-            timeLine = 'span.ui-slider-handle'
-            style = 'left'
-          }
-          else if (player === 'tidal') {
-            timeLine = '[class*="fillingBlock"] > div:first-child'
-            style = 'transform'
-          }
-          else if (player === 'amazon') {
-            timeLine = '.scrubberBackground'
-            style = 'width'
-          }
-          else if (player === 'spotify') {
-            timeLine = '.progress-bar__fg'
-            style = 'transform'
-          }
-
-          try {
-            t1 = await page.evaluate((args) => {
-              return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
-            }, { timeLine, style })
-          }
-          catch (e) { }
-
-          if (t1 === t2) { freeze++ }
-          else { freeze = 0 }
-
-          if (freeze >= 2) {
-            freeze = 0
-
-            if (player === 'napster') {
-              if (t1 === '0%') {
-                timeLoop = changeTime
-              }
-              else {
-                await page.jClk('.player-play-button .icon-pause2')
-                await page.jClk('.player-play-button .icon-play-button')
-              }
-            }
-            else if (!t1) {
-              throw 'no bar'
-            }
-            else {
-              if (player === 'tidal') {
-                await tidalConnect()
-              }
-              pause = true
-              timeLoop = changeTime
-            }
-          }
-
-          t2 = t1
+      if (!used) {
+        if (player === 'napster') {
+          timeLine = 'span.ui-slider-handle'
+          style = 'left'
+        }
+        else if (player === 'tidal') {
+          timeLine = '[class*="fillingBlock"] > div:first-child'
+          style = 'transform'
+        }
+        else if (player === 'amazon') {
+          timeLine = '.scrubberBackground'
+          style = 'width'
+        }
+        else if (player === 'spotify') {
+          timeLine = '.progress-bar__fg'
+          style = 'transform'
         }
 
-        timeLoop += loopAdd
-        timeLoop2 += loopAdd
+        try {
+          t1 = await page.evaluate((args) => {
+            return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
+          }, { timeLine, style })
+        }
+        catch (e) { }
 
-        await page.waitFor(pause ? 1000 * 60 : loopAdd)
-        loop()
+        if (t1 === t2) { freeze++ }
+        else { freeze = 0 }
+
+        if (freeze >= 2) {
+          freeze = 0
+
+          if (player === 'napster') {
+            if (t1 === '0%') {
+              timeLoop = changeTime
+            }
+            else {
+              await page.jClk('.player-play-button .icon-pause2')
+              await page.jClk('.player-play-button .icon-play-button')
+            }
+          }
+          else if (!t1) {
+            throw 'no bar'
+          }
+          else {
+            if (player === 'tidal') {
+              await tidalConnect()
+            }
+            pause = true
+            timeLoop = changeTime
+          }
+        }
+
+        t2 = t1
       }
-      catch (e) {
-        catchFct(e)
-      }
+
+      timeLoop += loopAdd
+      timeLoop2 += loopAdd
+
+      await page.waitFor(pause ? 1000 * 60 : loopAdd)
+      loop()
     }
 
     loop()
