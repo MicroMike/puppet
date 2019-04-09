@@ -284,7 +284,6 @@ const fct = async () => {
           const captcha = await anticaptcha(captchaUrl, keyCaptcha, true)
           if (captcha === 'error') { return resolve('error') }
 
-          await page.rload()
           resolve(captcha)
         }
         catch (e) {
@@ -346,48 +345,48 @@ const fct = async () => {
             if (inputLogin) { throw 'del' }
 
             await page.gotoUrl(album())
+
+            const validCallback = await resolveCaptcha('https://login.tidal.com')
+            if (validCallback === 'error') { throw validCallback }
+
             await page.jClk(goToLogin)
-          }
+            await page.inst(username, login)
 
-          await page.inst(username, login)
-          await page.clk('#recap-invisible')
-
-          const waitForPassword = async () => {
-            try {
-              await page.inst(password, pass)
+            if (validCallback === 'click') {
+              await page.clk('#recap-invisible')
             }
-            catch (e) {
-              await waitForPassword()
+            else {
+              await log(validCallback)
             }
+
+            await page.inst(password, pass)
           }
+          else {
+            await page.inst(username, login)
+            await page.clk('#recap-invisible')
 
-          await waitForPassword()
+            const waitForPassword = async () => {
+              try {
+                await page.inst(password, pass)
+              }
+              catch (e) {
+                await waitForPassword()
+              }
+            }
 
-          // const validCallback = await resolveCaptcha('https://login.tidal.com')
-          // if (validCallback === 'error') { throw validCallback }
-
-
-          // if (validCallback === 'click') {
-          // await page.clk('#recap-invisible')
-          // }
-          // else {
-          //   await log(validCallback)
-          // }
+            await waitForPassword()
+          }
 
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          const delTidal = await page.ext(loginError)
-          if (delTidal) { throw 'del' }
-          await page.gotoUrl(album())
+          const logged = await page.wfs(loggedDom)
+          if (!logged) { throw 'del' }
         }
       }
     }
 
     if (player === 'tidal') {
-      const result = await tidalConnect()
-      if (result === 'stop') {
-        return
-      }
+      await tidalConnect()
     }
 
     if (player === 'amazon' || player === 'spotify') {
