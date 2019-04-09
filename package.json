@@ -17,6 +17,7 @@
     "rm": "rm -R *.png",
     "rc": "CHECK=true RAND=true FILE=check.txt node index",
     "gg": "FILE=ggAccounts.txt RAND=true node gg",
+    "pushsave": "git add save/tidal_* && git commit -m c && git push",
     "push": "git add . && git commit -m c && git push",
     "compare": "git pull && node compare && git add napsterAccount.txt && git commit -m c && git push",
     "cc": "FILE=check.txt node compare",
