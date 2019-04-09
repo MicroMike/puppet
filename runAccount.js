@@ -473,8 +473,10 @@ const fct = async () => {
         const existRepeatBtnOk = await page.ext(repeatBtnOk)
         await page.waitFor(2000 + rand(2000))
         if (!existRepeatBtnOk) {
-          await page.jClk(repeatBtn)
-          await clickLoop()
+          const canClick = await page.jClk(repeatBtn)
+          if (canClick) {
+            await clickLoop()
+          }
         }
       }
 
