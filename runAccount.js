@@ -515,7 +515,7 @@ const fct = async () => {
       let pause
       let loopAdd = 1000 * 5
 
-      let restartTime = 1000 * 60 * 40 + rand(1000 * 60 * 20)
+      let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
       if (timeLoop2 >= restartTime) {
         exit(1)
         return
