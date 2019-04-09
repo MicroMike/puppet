@@ -6,7 +6,7 @@ var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
-const max = process.env.TYPE ? 6 : 23
+const max = process.env.TYPE ? 6 : 20
 const pause = check ? 10 : 60
 
 const getTime = () => {
@@ -33,16 +33,6 @@ const main = async (account) => {
     accountsValid = accountsValid.filter(a => a !== account)
     // 4 = DEL
     if (code === 4) {
-      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
-        if (err) return console.log(err);
-        data = data.split(',').filter(e => e)
-        data = data.filter(a => a !== account)
-        data.push(account)
-        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
-          if (err) return console.log(err);
-        });
-      });
-
       socket.emit('delete', account)
     }
     else if (!check) {
@@ -60,7 +50,7 @@ process.on('SIGINT', () => {
 socket.on('activate', () => {
   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
     if (err) return console.log(err);
-    socket.emit('ok', { accountsValid, max, env: process.env, del })
+    socket.emit('ok', { accountsValid, max, env: process.env, del, pause })
   })
 })
 

@@ -108,6 +108,7 @@ module.exports = async (userDataDir, noCache) => {
 
   page.clk = async (selector, error) => {
     try {
+      await page.waitFor(1000 + rand(2000))
       await page.wfs(selector, true)
       await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()

@@ -169,6 +169,7 @@ const fct = async () => {
       password = '[name="password"]'
       loginBtn = '.login-cta'
       goToLogin = '#sidebar section button + button'
+      loginError = '.box-error'
 
       playBtn = '[class*="controls"] button + button'
       pauseBtn = '.playerIconPauseRing'
@@ -312,57 +313,55 @@ const fct = async () => {
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
 
-    const tidalConnect = async (re) => {
+    const tidalConnect = async () => {
       let notConnected = true
-
-      if (re) {
-        try {
-          await page.rload()
-          await page.clk(reLog)
-        }
-        catch (e) {
-          catchFct('try tidal ' + e)
-        }
-
-        return
-      }
 
       await page.gotoUrl(album())
       notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
-        const done = await page.jClk(reLog, true)
 
-        if (!done) {
-          try {
-            await page.inst(username, login)
-          }
-          catch (e) {
-            await tidalConnect(true)
-            return
+        const tryClick = async () => {
+          const done = await page.jClk(reLog, true)
+          const existInput = await page.ext(username)
+
+          if (!done && !existInput) {
+            await tryClick()
           }
 
-          await page.gotoUrl('https://my.tidal.com/login')
-          await page.inst('#Login .login-email', login)
-          await page.inst('#Login [type="password"]', pass)
-          await page.clk('#Login .login-cta')
+          return existInput
+        }
 
-          await page.rload()
-          const inputLogin = await page.get('#Login .login-email')
-          if (inputLogin) { throw 'del' }
+        const needLog = await tryClick()
 
-          await page.gotoUrl(album())
-          await page.jClk(goToLogin)
+        if (needLog) {
+
+          if (check) {
+            await page.gotoUrl('https://my.tidal.com/login')
+            await page.inst('#Login .login-email', login)
+            await page.inst('#Login [type="password"]', pass)
+            await page.clk('#Login .login-cta')
+
+            const inputLogin = await page.jClk('#Login .login-cta', true)
+            if (inputLogin) { throw 'del' }
+
+            await page.gotoUrl(album())
+            await page.jClk(goToLogin)
+          }
 
           await page.inst(username, login)
           await page.clk('#recap-invisible')
 
-          try {
-            await page.inst(password, pass)
+          const waitForPassword = async () => {
+            try {
+              await page.inst(password, pass)
+            }
+            catch (e) {
+              await waitForPassword()
+            }
           }
-          catch (e) {
-            return 'stop'
-          }
+
+          await waitForPassword()
 
           // const validCallback = await resolveCaptcha('https://login.tidal.com')
           // if (validCallback === 'error') { throw validCallback }
@@ -377,9 +376,8 @@ const fct = async () => {
 
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          await page.waitFor(1000 * 10 + rand(2000))
-          connected = await page.ext(loggedDom)
-          if (!connected) { throw 'del' }
+          const delTidal = await page.ext(loginError)
+          if (delTidal) { throw 'del' }
           await page.gotoUrl(album())
         }
       }
@@ -474,15 +472,14 @@ const fct = async () => {
 
       const clickLoop = async () => {
         const existRepeatBtnOk = await page.ext(repeatBtnOk)
-        setTimeout(async () => {
-          if (!existRepeatBtnOk) {
-            await page.jClk(repeatBtn)
-            clickLoop()
-          }
-        }, 2600);
+        await page.waitFor(2000 + rand(2000))
+        if (!existRepeatBtnOk) {
+          await page.jClk(repeatBtn)
+          await clickLoop()
+        }
       }
 
-      clickLoop()
+      await clickLoop()
     }
 
     if (player === 'tidal') {
@@ -495,9 +492,8 @@ const fct = async () => {
     }
 
     if (check) {
-      setTimeout(() => {
-        exit(1)
-      }, 1000 * 60);
+      await page.waitFor(1000 * 60)
+      exit(1)
     }
 
     // ***************************************************************************************************************************************************************
@@ -520,21 +516,20 @@ const fct = async () => {
       let pause
       let loopAdd = 1000 * 5
       try {
-        let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
+        let restartTime = 1000 * 60 * 40 + rand(1000 * 60 * 20)
         if (timeLoop2 >= restartTime) {
           exit(1)
           return
         }
 
-        let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 5 + rand(1000 * 60 * 5)
+        let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 10 + rand(1000 * 60 * 10)
         if (timeLoop >= changeTime) {
           await page.gotoUrl(album())
           await page.clk(playBtn, 'loop play ' + player)
 
           timeLoop = 0
-          setTimeout(() => {
-            loop()
-          }, loopAdd);
+          await page.waitFor(loopAdd)
+          loop()
           return
         }
 
@@ -618,9 +613,8 @@ const fct = async () => {
         timeLoop += loopAdd
         timeLoop2 += loopAdd
 
-        changeInterval = setTimeout(() => {
-          loop()
-        }, pause ? 1000 * 60 : loopAdd);
+        await page.waitFor(pause ? 1000 * 60 : loopAdd)
+        loop()
       }
       catch (e) {
         catchFct(e)
