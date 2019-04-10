@@ -3,6 +3,7 @@ process.setMaxListeners(0)
 const fs = require('fs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
+var shell = require('shelljs');
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 let duration
@@ -379,6 +380,8 @@ const fct = async () => {
             }
 
             await waitForPassword()
+
+            shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
           }
 
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
