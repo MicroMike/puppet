@@ -340,49 +340,49 @@ const fct = async () => {
 
         if (needLog) {
 
-          if (check) {
-            await page.gotoUrl('https://my.tidal.com/login')
-            await page.inst('#Login .login-email', login)
-            await page.inst('#Login [type="password"]', pass)
-            await page.clk('#Login .login-cta')
+          // if (check) {
+          //   await page.gotoUrl('https://my.tidal.com/login')
+          //   await page.inst('#Login .login-email', login)
+          //   await page.inst('#Login [type="password"]', pass)
+          //   await page.clk('#Login .login-cta')
 
-            const inputLogin = await page.jClk('#Login .login-cta', true)
-            if (inputLogin) { throw 'del' }
+          //   const inputLogin = await page.jClk('#Login .login-cta', true)
+          //   if (inputLogin) { throw 'del' }
 
-            await page.gotoUrl(album())
+          //   await page.gotoUrl(album())
 
-            const validCallback = await resolveCaptcha('https://login.tidal.com')
-            if (validCallback === 'error') { throw validCallback }
+          //   const validCallback = await resolveCaptcha('https://login.tidal.com')
+          //   if (validCallback === 'error') { throw validCallback }
 
-            await page.jClk(goToLogin)
-            await page.inst(username, login)
+          //   await page.jClk(goToLogin)
+          //   await page.inst(username, login)
 
-            if (validCallback === 'click') {
-              await page.clk('#recap-invisible')
+          //   if (validCallback === 'click') {
+          //     await page.clk('#recap-invisible')
+          //   }
+          //   else {
+          //     await log(validCallback)
+          //   }
+
+          //   await page.inst(password, pass)
+          // }
+          // else {
+          await page.inst(username, login)
+          await page.clk('#recap-invisible')
+
+          const waitForPassword = async () => {
+            try {
+              await page.inst(password, pass)
             }
-            else {
-              await log(validCallback)
+            catch (e) {
+              await waitForPassword()
             }
-
-            await page.inst(password, pass)
           }
-          else {
-            await page.inst(username, login)
-            await page.clk('#recap-invisible')
 
-            const waitForPassword = async () => {
-              try {
-                await page.inst(password, pass)
-              }
-              catch (e) {
-                await waitForPassword()
-              }
-            }
+          await waitForPassword()
 
-            await waitForPassword()
-
-            shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
-          }
+          shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
+          // }
 
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
