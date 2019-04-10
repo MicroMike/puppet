@@ -30,7 +30,7 @@ const main = async (account) => {
   const login = accountInfo[1]
 
   shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
-  shell.exec(cmd, (code, b, c) => {
+  shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
     const img = await image2base64(login + '_screenshot.png')
