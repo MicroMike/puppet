@@ -316,6 +316,7 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
+    let tidalCaptcha
 
     const tidalConnect = async () => {
       let notConnected = true
@@ -375,13 +376,13 @@ const fct = async () => {
               await page.inst(password, pass)
             }
             catch (e) {
+              tidalCaptcha = true
               await waitForPassword()
             }
           }
 
           await waitForPassword()
 
-          shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
           // }
 
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
@@ -502,6 +503,10 @@ const fct = async () => {
     if (check) {
       await page.waitFor(1000 * 60)
       exit(1)
+    }
+
+    if (tidalCaptcha) {
+      shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
     }
 
     duration = Date.now()
