@@ -3,6 +3,7 @@ process.setMaxListeners(0)
 var fs = require('fs');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
+const image2base64 = require('image-to-base64');
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
@@ -31,6 +32,12 @@ const main = async (account) => {
   shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
+
+    const img = await image2base64(login + '_screenshot.png')
+    if (img) {
+      socket.emit('screen', { img, login, player })
+    }
+
     // 4 = DEL
     if (code === 4) {
       socket.emit('delete', account)
