@@ -33,10 +33,13 @@ const main = async (account) => {
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
-    const img = await image2base64(login + '_screenshot.png')
-    if (img) {
-      socket.emit('screen', { img, login, player })
+    try {
+      const img = await image2base64(login + '_screenshot.png')
+      if (img) {
+        socket.emit('screen', { img, login, player })
+      }
     }
+    catch (e) { }
 
     // 4 = DEL
     if (code === 4) {
