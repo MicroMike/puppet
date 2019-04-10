@@ -500,13 +500,13 @@ const fct = async () => {
       }
     }
 
+    if (tidalCaptcha) {
+      shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
+    }
+
     if (check) {
       await page.waitFor(1000 * 60)
       exit(1)
-    }
-
-    if (tidalCaptcha) {
-      shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
     }
 
     duration = Date.now()
