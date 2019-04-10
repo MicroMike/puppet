@@ -475,16 +475,15 @@ const fct = async () => {
     }
 
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
+      await page.waitFor(2000 + rand(2000))
       await page.jClk(shuffleBtn)
 
       const clickLoop = async () => {
-        const existRepeatBtnOk = await page.ext(repeatBtnOk)
         await page.waitFor(2000 + rand(2000))
+        const existRepeatBtnOk = await page.ext(repeatBtnOk)
         if (!existRepeatBtnOk) {
-          const canClick = await page.jClk(repeatBtn)
-          if (canClick) {
-            await clickLoop()
-          }
+          await page.jClk(repeatBtn)
+          clickLoop()
         }
       }
 
