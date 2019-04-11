@@ -79,7 +79,7 @@ const fct = async () => {
 
   let changeInterval
 
-  const screen = async () => {
+  const screenError = async () => {
     try {
       await page.evaluate(({ account, e }) => {
         document.querySelector('body').insertAdjacentHTML('beforeBegin', '<div>' + account + ' => ' + e + '</div>')
@@ -606,11 +606,11 @@ const fct = async () => {
             }
           }
           else if (!t1) {
-            await screen()
+            await screenError()
             throw 'no bar'
           }
           else {
-            await screen()
+            await screenError()
             throw 'else play error'
           }
         }
