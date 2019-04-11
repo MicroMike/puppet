@@ -77,22 +77,16 @@ const fct = async () => {
   let connected = false
   let suppressed = false
 
-  let changeInterval
-
-  const screenError = async () => {
+  const catchFct = async (e) => {
     try {
       await page.evaluate(({ account, e }) => {
         document.querySelector('body').insertAdjacentHTML('beforeBegin', '<div>' + account + ' => ' + e + '</div>')
       }, { account, e })
       await page.screenshot({ path: login + '_screenshot.png' });
+      await page.waitFor(5000 + rand(2000))
       // await page.cls()
     }
     catch (e) { }
-  }
-
-  const catchFct = async (e) => {
-
-    clearTimeout(changeInterval)
 
     const del = e === 'del'
 
@@ -606,11 +600,9 @@ const fct = async () => {
             }
           }
           else if (!t1) {
-            await screenError()
             throw 'no bar'
           }
           else {
-            await screenError()
             throw 'else play error'
           }
         }
