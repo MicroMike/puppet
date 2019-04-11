@@ -86,6 +86,9 @@ const fct = async () => {
     const del = e === 'del'
 
     try {
+      await page.evaluate(({ account, e }) => {
+        document.querySelector('body').insertAdjacentHTML('beforeBegin', '<div>' + account + ' => ' + e + '</div>')
+      }, { account, e })
       await page.screenshot({ path: login + '_screenshot.png' });
       // await page.cls()
     }
