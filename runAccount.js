@@ -438,7 +438,7 @@ const fct = async () => {
         if (player !== 'napster' || suppressed.match(/password/)) {
           throw 'del'
         }
-        throw 'error'
+        throw 'error login'
       }
     }
 
