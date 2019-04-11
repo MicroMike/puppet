@@ -29,7 +29,7 @@ const main = async (account) => {
   const player = accountInfo[0]
   const login = accountInfo[1]
 
-  shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
+  // shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
@@ -41,9 +41,13 @@ const main = async (account) => {
     }
     catch (e) { }
 
-    // 4 = DEL
     if (code === 4) {
+      // 4 = DEL
       socket.emit('delete', account)
+    }
+    if (code === 5) {
+      // 5 = RETRY
+      main(account)
     }
     else {
       socket.emit('loop', account)

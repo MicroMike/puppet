@@ -89,10 +89,15 @@ const fct = async () => {
     catch (e) { }
 
     const del = e === 'del'
+    const retry = e === 'retry'
+    let code = 1
+
+    code = del ? 4 : code
+    code = retry ? 5 : code
 
     console.log(getTime() + " ERR ", account, e)
 
-    exit(del ? 4 : 1)
+    exit(code)
   }
 
   page.on('error', function (err) {
@@ -603,7 +608,7 @@ const fct = async () => {
             throw 'no bar'
           }
           else {
-            throw 'else play error'
+            throw 'retry'
           }
         }
 
