@@ -79,12 +79,7 @@ const fct = async () => {
 
   let changeInterval
 
-  const catchFct = async (e) => {
-
-    clearTimeout(changeInterval)
-
-    const del = e === 'del'
-
+  const screen = async () => {
     try {
       await page.evaluate(({ account, e }) => {
         document.querySelector('body').insertAdjacentHTML('beforeBegin', '<div>' + account + ' => ' + e + '</div>')
@@ -93,6 +88,13 @@ const fct = async () => {
       // await page.cls()
     }
     catch (e) { }
+  }
+
+  const catchFct = async (e) => {
+
+    clearTimeout(changeInterval)
+
+    const del = e === 'del'
 
     console.log(getTime() + " ERR ", account, e)
 
@@ -438,7 +440,7 @@ const fct = async () => {
         if (player !== 'napster' || suppressed.match(/password/)) {
           throw 'del'
         }
-        throw 'error'
+        throw 'error login'
       }
     }
 
@@ -531,51 +533,20 @@ const fct = async () => {
 
     let t1
     let t2
-    let freeze = 1
-    let fix = false
+    let freeze = 0
     let used
-    let changing = false
     let timeLine
     let style
 
-    let timeLoop = 0
-    let timeLoop2 = 0
-
     const loop = async () => {
       try {
-        let pause
-        let loopAdd = 1000 * 5
-        const time = String((Date.now() - duration) / 60 / 1000).split('.')[0]
-
-        let restartTime = 1000 * 60 * 20 + rand(1000 * 60 * 20)
-        if (timeLoop2 >= restartTime) {
-          // console.log(account, time, 'min before exit')
-          exit(1)
-          return
-        }
-
-        let changeTime = check ? 1000 * 60 * 3 : 1000 * 60 * 10 + rand(1000 * 60 * 10)
-        if (timeLoop >= changeTime) {
-          // console.log(account, time, 'min before change')
-          await page.gotoUrl(album())
-          await page.clk(playBtn, 'loop play ' + player)
-
-          timeLoop = 0
-          await page.waitFor(loopAdd)
-          loop()
-          return
-        }
-
         used = await page.ext(usedDom)
 
         if (used) {
           if (player === 'tidal') {
-            try {
-              used = await page.evaluate((usedDom) => {
-                return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
-              }, usedDom)
-            }
-            catch (e) { return exit(1) }
+            used = await page.evaluate((usedDom) => {
+              return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
+            }, usedDom)
 
             used = typeof used === 'string' && used.match(/currently/) ? used : false
 
@@ -590,66 +561,63 @@ const fct = async () => {
             exit(1)
           }
         }
+      }
+      catch (e) { return exit(1) }
 
-        if (!used) {
-          if (player === 'napster') {
-            timeLine = 'span.ui-slider-handle'
-            style = 'left'
-          }
-          else if (player === 'tidal') {
-            timeLine = '[class*="fillingBlock"] > div:first-child'
-            style = 'transform'
-          }
-          else if (player === 'amazon') {
-            timeLine = '.scrubberBackground'
-            style = 'width'
-          }
-          else if (player === 'spotify') {
-            timeLine = '.progress-bar__fg'
-            style = 'transform'
-          }
-
-          try {
-            t1 = await page.evaluate(({ timeLine, style }) => {
-              return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
-            }, { timeLine, style })
-          }
-          catch (e) { return exit(1) }
-
-          if (t1 === t2) { freeze++ }
-          else { freeze = 0 }
-
-          if (freeze >= 2) {
-            freeze = 0
-
-            if (player === 'napster') {
-              if (t1 === '0%') {
-                timeLoop = changeTime
-              }
-              else {
-                await page.jClk('.player-play-button .icon-pause2')
-                await page.jClk('.player-play-button .icon-play-button')
-              }
-            }
-            else if (!t1) {
-              throw 'no bar'
-            }
-            else {
-              if (player === 'tidal') {
-                await tidalConnect()
-              }
-              pause = true
-              timeLoop = changeTime
-            }
-          }
-
-          t2 = t1
+      try {
+        if (player === 'napster') {
+          timeLine = 'span.ui-slider-handle'
+          style = 'left'
+        }
+        else if (player === 'tidal') {
+          timeLine = '[class*="fillingBlock"] > div:first-child'
+          style = 'transform'
+        }
+        else if (player === 'amazon') {
+          timeLine = '.scrubberBackground'
+          style = 'width'
+        }
+        else if (player === 'spotify') {
+          timeLine = '.progress-bar__fg'
+          style = 'transform'
         }
 
-        timeLoop += loopAdd
-        timeLoop2 += loopAdd
+        try {
+          t1 = await page.evaluate(({ timeLine, style }) => {
+            return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
+          }, { timeLine, style })
+        }
+        catch (e) { return exit(1) }
 
-        await page.waitFor(pause ? 1000 * 60 : loopAdd)
+        if (t1 === t2) { ++freeze }
+        else { freeze = 0 }
+
+        if (freeze > 2) {
+          freeze = 0
+
+          if (player === 'napster') {
+            if (t1 === '0%') {
+              await page.gotoUrl(album())
+              await page.clk(playBtn, 'loop play ' + player)
+            }
+            else {
+              await page.jClk('.player-play-button .icon-pause2')
+              await page.jClk('.player-play-button .icon-play-button')
+            }
+          }
+          else if (!t1) {
+            await screen()
+            throw 'no bar'
+          }
+          else {
+            await screen()
+            throw 'else play error'
+          }
+        }
+
+        t2 = t1
+
+        await page.waitFor(1000 * 5)
         loop()
       }
       catch (e) {
@@ -658,6 +626,10 @@ const fct = async () => {
     }
 
     loop()
+
+    let restartTime = 1000 * 60 * 15 + rand(1000 * 60 * 15)
+    await page.waitFor(restartTime)
+    exit(1)
   }
   catch (e) {
     catchFct(e)
