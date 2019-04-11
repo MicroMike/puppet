@@ -599,8 +599,6 @@ const fct = async () => {
             if (t1 === '0%') {
               await page.gotoUrl(album())
               await page.clk(playBtn, 'loop play ' + player)
-              await page.waitFor(loopAdd)
-              loop()
             }
             else {
               await page.jClk('.player-play-button .icon-pause2')
