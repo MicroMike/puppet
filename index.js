@@ -29,9 +29,21 @@ const main = async (account) => {
   const player = accountInfo[0]
   const login = accountInfo[1]
 
-  // shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
+  shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
+
+    if (code === 4) {
+      // 4 = DEL
+      socket.emit('delete', account)
+    }
+    else if (code === 5) {
+      // 5 = RETRY
+      main(account)
+    }
+    else {
+      socket.emit('loop', account)
+    }
 
     try {
       const img = await image2base64(login + '_screenshot.png')
@@ -40,18 +52,6 @@ const main = async (account) => {
       }
     }
     catch (e) { }
-
-    if (code === 4) {
-      // 4 = DEL
-      socket.emit('delete', account)
-    }
-    if (code === 5) {
-      // 5 = RETRY
-      main(account)
-    }
-    else {
-      socket.emit('loop', account)
-    }
 
     process.stdout.write(getTime() + " " + accountsValid.length + "\r");
   })
