@@ -376,10 +376,10 @@ const fct = async () => {
 
           const waitForPassword = async () => {
             try {
+              tidalCaptcha = true
               await page.inst(password, pass)
             }
             catch (e) {
-              tidalCaptcha = true
               await waitForPassword()
             }
           }
