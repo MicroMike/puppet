@@ -418,12 +418,11 @@ const fct = async () => {
         await page.inst(usernameInput ? username : password, login)
         await page.inst(password, pass)
 
-        if (player === 'napster') {
-          const loginFill = await page.get(username, 'value')
-          const passFill = await page.get(password, 'value')
-          if (!loginFill || passFill) {
-            await fillForm()
-          }
+        const loginFill = await page.get(username, 'value')
+        const passFill = await page.get(password, 'value')
+
+        if (!loginFill || !passFill) {
+          await fillForm()
         }
       }
 
