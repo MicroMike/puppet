@@ -411,8 +411,21 @@ const fct = async () => {
 
       usernameInput = await page.ext(username)
 
-      await page.inst(usernameInput ? username : password, login)
-      await page.inst(password, pass)
+      const fillForm = async () => {
+        await page.inst(usernameInput ? username : password, login)
+        await page.inst(password, pass)
+
+        if (player === 'napster') {
+          const loginFill = await page.get(username, 'value')
+          const passFill = await page.get(password, 'value')
+          if (!loginFill || passFill) {
+            await fillForm()
+          }
+        }
+      }
+
+      await fillForm()
+
       await page.jClk(remember)
       await page.clk(loginBtn)
 
@@ -592,8 +605,8 @@ const fct = async () => {
           }
 
           try {
-            t1 = await page.evaluate((args) => {
-              return document.querySelector(args.timeLine) && document.querySelector(args.timeLine).style[args.style]
+            t1 = await page.evaluate(({ timeLine, style }) => {
+              return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
             }, { timeLine, style })
           }
           catch (e) { }

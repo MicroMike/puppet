@@ -161,12 +161,12 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
-  page.get = async (selector) => {
+  page.get = async (selector, getter = 'innerHTML') => {
     try {
       await page.waitFor(1000 + rand(2000))
-      const html = await page.evaluate(selector => {
-        return document.querySelector(selector) && document.querySelector(selector).innerHTML
-      }, selector)
+      const html = await page.evaluate(({ selector, getter }) => {
+        return document.querySelector(selector) && document.querySelector(selector)[getter]
+      }, { selector, getter })
 
       return html
     }
