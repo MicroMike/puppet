@@ -568,9 +568,12 @@ const fct = async () => {
 
         if (used) {
           if (player === 'tidal') {
-            used = await page.evaluate((usedDom) => {
-              return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
-            }, usedDom)
+            try {
+              used = await page.evaluate((usedDom) => {
+                return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
+              }, usedDom)
+            }
+            catch (e) { return exit(1) }
 
             used = typeof used === 'string' && used.match(/currently/) ? used : false
 
@@ -609,7 +612,7 @@ const fct = async () => {
               return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
             }, { timeLine, style })
           }
-          catch (e) { }
+          catch (e) { return exit(1) }
 
           if (t1 === t2) { freeze++ }
           else { freeze = 0 }
