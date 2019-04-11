@@ -42,7 +42,7 @@ const fct = async () => {
   const pass = accountInfo[2]
 
   let noCache = player === 'napster' || player === 'spotify'
-  let page = await puppet('save/' + player + '_' + login, noCache)
+  let page = await puppet('save/' + player + '_' + login, false)
 
   const exit = async (code) => {
     try {
