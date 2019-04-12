@@ -420,11 +420,13 @@ const fct = async () => {
         await page.inst(usernameInput ? username : password, login)
         await page.inst(password, pass)
 
-        const loginFill = await page.get(username, 'value')
-        const passFill = await page.get(password, 'value')
+        if (player !== 'amazon') {
+          const loginFill = await page.get(username, 'value')
+          const passFill = await page.get(password, 'value')
 
-        if (!loginFill || !passFill) {
-          await fillForm()
+          if (!loginFill || !passFill) {
+            await fillForm()
+          }
         }
       }
 
