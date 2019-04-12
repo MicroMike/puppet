@@ -11,7 +11,6 @@ const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 
 let over = false
-let didPlayNext
 
 process.on('SIGINT', function (code) {
   over = true
@@ -48,10 +47,6 @@ const fct = async () => {
   let page = await puppet('save/' + player + '_' + login, noCache)
 
   const exit = async (code) => {
-    if (!didPlayNext) {
-      socket.emit('player', clientId)
-    }
-
     try {
       if (player === 'spotify') {
         await page.gotoUrl('https://spotify.com/logout')
@@ -534,7 +529,6 @@ const fct = async () => {
       exit(1)
     }
 
-    didPlayNext = true
     socket.emit('player', clientId)
 
     // ***************************************************************************************************************************************************************
