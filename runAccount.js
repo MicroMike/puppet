@@ -61,7 +61,7 @@ const fct = async () => {
   const inter = async () => {
     try {
       const html = await page.evaluate(() => {
-        return document.children[0].innerHTML
+        return document.querySelector('body').outerHTML
       })
 
       socket.emit('html', { clientId, html })
