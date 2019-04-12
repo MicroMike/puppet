@@ -47,7 +47,7 @@ const main = async (account) => {
 
     try {
       const img = await image2base64(login + '_screenshot.png')
-      if (img) {
+      if (img && code !== 1) {
         socket.emit('screen', { img, login, player })
       }
     }

@@ -91,7 +91,7 @@ const fct = async () => {
 
     const del = e === 'del'
     const retry = e === 'retry'
-    let code = 1
+    let code = 6
 
     code = del ? 4 : code
     code = retry ? 5 : code
