@@ -378,6 +378,8 @@ const fct = async () => {
           await page.inst(username, login)
           await page.clk('#recap-invisible')
 
+          socket.emit('player', clientId)
+
           const waitForPassword = async () => {
             try {
               tidalCaptcha = true
