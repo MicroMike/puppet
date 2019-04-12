@@ -4,6 +4,7 @@ var fs = require('fs');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 const image2base64 = require('image-to-base64');
+let clientId
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
@@ -21,9 +22,9 @@ const main = async (account) => {
   accountsValid.push(account)
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
-  const cmd = check
-    ? 'CHECK=' + check + ' ACCOUNT=' + account + ' node runAccount'
-    : 'ACCOUNT=' + account + ' node runAccount'
+  let cmd = 'ACCOUNT=' + account + ' node runAccount'
+  cmd = check ? 'CHECK=' + check + ' ' + cmd : cmd
+  cmd = clientId ? 'CLIENTID=' + clientId + ' ' + cmd : cmd
 
   const accountInfo = account.split(':')
   const player = accountInfo[0]
@@ -61,7 +62,8 @@ process.on('SIGINT', () => {
   process.exit()
 });
 
-socket.on('activate', () => {
+socket.on('activate', (id) => {
+  clientId = id
   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
     if (err) return console.log(err);
     socket.emit('ok', { accountsValid, max, env: process.env, del, pause: 1000 * pause })

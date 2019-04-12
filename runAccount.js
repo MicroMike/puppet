@@ -4,9 +4,11 @@ const fs = require('fs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
 var shell = require('shelljs');
+var socket = require('socket.io-client')('https://online-music.herokuapp.com');
+
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
-let duration
+const clientId = process.env.CLIENTID
 
 let over = false
 
@@ -527,7 +529,9 @@ const fct = async () => {
       exit(1)
     }
 
-    duration = Date.now()
+    socket.on('activate', () => {
+      socket.emit('player', clientId)
+    })
 
     // ***************************************************************************************************************************************************************
     // *************************************************************************** LOOP ******************************************************************************
