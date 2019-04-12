@@ -65,7 +65,7 @@ const fct = async () => {
       })
 
       socket.emit('html', { clientId, html })
-      await page.waitFor(1000 * 5)
+      await page.waitFor(1000 * 30)
 
       inter()
     }
