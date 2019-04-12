@@ -8,7 +8,7 @@ const image2base64 = require('image-to-base64');
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
 const max = process.env.TYPE ? 3 : 20
-const pause = check ? 10 : 30
+const pause = check ? 10 : 90
 
 const getTime = () => {
   const date = new Date
