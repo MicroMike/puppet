@@ -9,7 +9,7 @@
     "spotify": "TYPE=spotify node index",
     "napster": "TYPE=napster node index",
     "amazon": "TYPE=amazon node index",
-    "reset": "git reset --hard HEAD && git clean -f && git pull",
+    "reset": "git reset --hard HEAD && git clean -fd && git pull",
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node index",
