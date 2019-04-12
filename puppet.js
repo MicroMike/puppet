@@ -6,7 +6,7 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-module.exports = async (userDataDir, noCache, socket) => {
+module.exports = async (userDataDir, noCache) => {
 
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
