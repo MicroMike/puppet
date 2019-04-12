@@ -80,8 +80,9 @@ const fct = async () => {
   const catchFct = async (e) => {
     try {
       await page.evaluate(({ account, e }) => {
-        document.querySelector('body').insertAdjacentHTML('beforeBegin', '<div>' + account + ' => ' + e + '</div>')
+        document.querySelector('body').insertAdjacentHTML('beforeBegin', '<div style="background-color:white;">' + account + ' => ' + e + '</div>')
       }, { account, e })
+      shell.exec('rm ' + login + '_screenshot.png')
       await page.screenshot({ path: login + '_screenshot.png' });
       await page.waitFor(5000 + rand(2000))
       // await page.cls()
