@@ -598,13 +598,20 @@ const fct = async () => {
           freeze = 0
 
           if (player === 'napster') {
+            await page.jClk('.player-play-button .icon-pause2')
+            await page.jClk('.player-play-button .icon-play-button')
+            await page.waitFor(1000 * 5)
+
+            try {
+              t1 = await page.evaluate(({ timeLine, style }) => {
+                return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
+              }, { timeLine, style })
+            }
+            catch (e) { }
+
             if (t1 === '0%') {
               await page.gotoUrl(album())
               await page.clk(playBtn, 'loop play ' + player)
-            }
-            else {
-              await page.jClk('.player-play-button .icon-pause2')
-              await page.jClk('.player-play-button .icon-play-button')
             }
           }
           else if (!t1) {
