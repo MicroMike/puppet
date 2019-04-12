@@ -44,7 +44,7 @@ const fct = async () => {
   const pass = accountInfo[2]
 
   let noCache = player === 'napster' || player === 'spotify'
-  let page = await puppet('save/' + player + '_' + login, noCache)
+  let page = await puppet('save/' + player + '_' + login, noCache, socket)
 
   const exit = async (code) => {
     try {
@@ -57,6 +57,22 @@ const fct = async () => {
   }
 
   if (!page) { exit(1) }
+
+  const inter = async () => {
+    try {
+      const html = await page.evaluate(() => {
+        return document.children[0].innerHTML
+      })
+
+      socket.emit('html', { clientId, html })
+      await page.waitFor(1000 * 5)
+
+      inter()
+    }
+    catch (e) { }
+  }
+
+  inter()
 
   let username
   let password
