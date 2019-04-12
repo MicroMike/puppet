@@ -8,7 +8,7 @@ let clientId
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
-const max = process.env.TYPE ? 3 : 10
+const max = process.env.TYPE ? 3 : 20
 const pause = check ? 10 : 60
 
 const getTime = () => {
