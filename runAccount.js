@@ -94,6 +94,7 @@ const fct = async () => {
     code = e === 'crashed' ? 10 : code
 
     const imgPath = login + '_screenshot.png'
+    console.log(getTime() + " ERR ", account, e)
 
     try {
       if (e === 'first play' && player === "spotify") {
@@ -114,8 +115,6 @@ const fct = async () => {
       await page.cls()
     }
     catch (e) { }
-
-    console.log(getTime() + " ERR ", account, e)
 
     exit(code)
   }
