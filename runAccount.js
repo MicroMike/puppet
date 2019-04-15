@@ -116,7 +116,7 @@ const fct = async () => {
     }
     catch (e) { }
 
-    exit(code)
+    exit(e)
   }
 
   page.on('error', function (err) {

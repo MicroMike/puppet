@@ -46,7 +46,7 @@ const main = async (account, isCheck) => {
     errorMsg = code === 10 ? 'Crashed' : errorMsg
     errorMsg = code === 11 ? 'Used' : errorMsg
 
-    if (code === 4) {
+    if (code === 'del') {
       // 4 = DEL
       socket.emit('delete', account)
 
@@ -59,12 +59,12 @@ const main = async (account, isCheck) => {
         });
       });
     }
-    else if (code === 5) {
+    else if (code === 'retry') {
       // 5 = RETRY
       main(account)
     }
     else {
-      socket.emit('loop', { errorMsg, account })
+      socket.emit('loop', { errorMsg: code, account })
     }
 
     process.stdout.write(getTime() + " " + accountsValid.length + "\r");
