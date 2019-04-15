@@ -81,7 +81,6 @@ const fct = async () => {
 
   const catchFct = async (e) => {
     const imgPath = login + '_screenshot.png'
-    shell.exec('rm ' + imgPath, { silent: true })
 
     try {
       await page.screenshot({ path: imgPath });
