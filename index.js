@@ -8,7 +8,7 @@ let clientId
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
 const max = process.env.BIG ? 40 : 20
-const pause = false
+let pause = false
 
 const getTime = () => {
   const date = new Date
