@@ -80,10 +80,10 @@ const fct = async () => {
   let suppressed = false
 
   const catchFct = async (e) => {
-    try {
-      const imgPath = login + '_screenshot.png'
+    const imgPath = login + '_screenshot.png'
+    shell.exec('rm ' + imgPath, { silent: true })
 
-      shell.exec('rm ' + imgPath, { silent: true })
+    try {
       await page.screenshot({ path: imgPath });
       await page.waitFor(5000 + rand(2000))
       await page.cls()
