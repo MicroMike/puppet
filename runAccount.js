@@ -5,6 +5,7 @@ const puppet = require('./puppet')
 const request = require('ajax-request');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
+const image2base64 = require('image-to-base64');
 
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
@@ -85,6 +86,14 @@ const fct = async () => {
       await page.screenshot({ path: login + '_screenshot.png' });
       await page.waitFor(5000 + rand(2000))
       await page.cls()
+
+      try {
+        const img = await image2base64(login + '_screenshot.png')
+        if (img && code !== 1) {
+          socket.emit('screen', { img, log: getTime() + " ERR ", account, e })
+        }
+      }
+      catch (e) { }
     }
     catch (e) { }
 
@@ -95,7 +104,6 @@ const fct = async () => {
     code = del ? 4 : code
     code = retry ? 5 : code
 
-    socket.emit('log', getTime() + " ERR ", account, e)
     console.log(getTime() + " ERR ", account, e)
 
     exit(code)

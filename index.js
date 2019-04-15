@@ -3,7 +3,6 @@ process.setMaxListeners(0)
 var fs = require('fs');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
-const image2base64 = require('image-to-base64');
 let clientId
 
 const check = process.env.CHECK || process.env.TYPE
@@ -45,14 +44,6 @@ const main = async (account) => {
     else {
       socket.emit('loop', account)
     }
-
-    try {
-      const img = await image2base64(login + '_screenshot.png')
-      if (img && code !== 1) {
-        socket.emit('screen', { img, login, player })
-      }
-    }
-    catch (e) { }
 
     process.stdout.write(getTime() + " " + accountsValid.length + "\r");
   })
