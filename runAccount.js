@@ -81,9 +81,6 @@ const fct = async () => {
 
   const catchFct = async (e) => {
     try {
-      await page.evaluate(({ account, e }) => {
-        document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:white;">' + account + ' => ' + e + '</div>')
-      }, { account, e })
       shell.exec('rm ' + login + '_screenshot.png', { silent: true })
       await page.screenshot({ path: login + '_screenshot.png' });
       await page.waitFor(5000 + rand(2000))
@@ -348,6 +345,9 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
+
+          catchFct('Tidal needLog')
+          return
 
           // if (check) {
           //   await page.gotoUrl('https://my.tidal.com/login')
