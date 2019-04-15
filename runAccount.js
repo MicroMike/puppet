@@ -92,10 +92,14 @@ const fct = async () => {
 
     let code = 10
 
+    code = e === 'first play' ? 2 : code
+    code = e === 'loop play' ? 3 : code
     code = e === 'del' ? 4 : code
     code = e === 'retry' ? 5 : code
     code = e === 'tidal' ? 6 : code
     code = e === 'fillForm' ? 7 : code
+    code = e === 'login' ? 8 : code
+    code = e === 'no bar' ? 9 : code
 
     console.log(getTime() + " ERR ", account, e)
 
@@ -443,7 +447,7 @@ const fct = async () => {
         if (player !== 'napster' || suppressed.match(/password/)) {
           throw 'del'
         }
-        throw 'error login'
+        throw 'login'
       }
     }
 
@@ -491,7 +495,7 @@ const fct = async () => {
       if (player === "spotify") {
         await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
-      exit(1)
+      throw e
     }
 
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
@@ -612,7 +616,7 @@ const fct = async () => {
 
             if (t1 === '0%') {
               await page.gotoUrl(album())
-              await page.clk(playBtn, 'loop play ' + player)
+              await page.clk(playBtn, 'loop play')
             }
           }
           else if (!t1) {
@@ -625,7 +629,7 @@ const fct = async () => {
 
         t2 = t1
 
-        await page.waitFor(1000 * 5)
+        await page.waitFor(1000 * 10)
         loop()
       }
       catch (e) {

@@ -33,12 +33,16 @@ const main = async (account) => {
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
-    let errorMsg = ''
+    let errorMsg = 'Loop'
 
+    errorMsg = code === 2 ? 'First play' : errorMsg
+    errorMsg = code === 3 ? 'Loop play' : errorMsg
     errorMsg = code === 4 ? 'Del' : errorMsg
     errorMsg = code === 5 ? 'Retry' : errorMsg
     errorMsg = code === 6 ? 'Tidal' : errorMsg
     errorMsg = code === 7 ? 'FillForm' : errorMsg
+    errorMsg = code === 8 ? 'Login' : errorMsg
+    errorMsg = code === 9 ? 'No bar' : errorMsg
 
     if (code === 4) {
       // 4 = DEL
