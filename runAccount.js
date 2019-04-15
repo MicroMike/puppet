@@ -5,7 +5,6 @@ const puppet = require('./puppet')
 const request = require('ajax-request');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
-const image2base64 = require('image-to-base64');
 
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
@@ -88,20 +87,15 @@ const fct = async () => {
       await page.screenshot({ path: imgPath });
       await page.waitFor(5000 + rand(2000))
       await page.cls()
-
-      const img = await image2base64(imgPath)
-      if (img) {
-        socket.emit('screen', { img, log: getTime() + ' ERR ' + account + ' ' + e })
-      }
     }
     catch (e) { }
 
-    const del = e === 'del'
-    const retry = e === 'retry'
-    let code = 6
+    let code = 10
 
-    code = del ? 4 : code
-    code = retry ? 5 : code
+    code = e === 'del' ? 4 : code
+    code = e === 'retry' ? 5 : code
+    code = e === 'tidal' ? 6 : code
+    code = e === 'fillForm' ? 7 : code
 
     console.log(getTime() + " ERR ", account, e)
 
@@ -353,8 +347,7 @@ const fct = async () => {
 
         if (needLog) {
 
-          catchFct('Tidal needLog')
-          return
+          throw 'tidal'
 
           // if (check) {
           //   await page.gotoUrl('https://my.tidal.com/login')
@@ -436,7 +429,7 @@ const fct = async () => {
         const passFill = await page.get(password, 'value')
 
         if (!loginFill || !passFill) {
-          catchFct('fillForm')
+          throw 'fillForm'
         }
       }
 

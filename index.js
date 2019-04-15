@@ -33,6 +33,13 @@ const main = async (account) => {
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
+    let errorMsg = ''
+
+    errorMsg = code === 4 ? 'del' : errorMsg
+    errorMsg = code === 5 ? 'retry' : errorMsg
+    errorMsg = code === 6 ? 'tidal' : errorMsg
+    errorMsg = code === 7 ? 'fillForm' : errorMsg
+
     if (code === 4) {
       // 4 = DEL
       socket.emit('delete', account)
@@ -53,6 +60,14 @@ const main = async (account) => {
     else {
       socket.emit('loop', account)
     }
+
+    try {
+      const img = await image2base64(login + '_screenshot.png')
+      if (img && code !== 1) {
+        socket.emit('screen', { img, log: account + ' => ' + errorMsg })
+      }
+    }
+    catch (e) { }
 
     process.stdout.write(getTime() + " " + accountsValid.length + "\r");
   })
