@@ -63,15 +63,14 @@ const main = async (account) => {
       // 5 = RETRY
       main(account)
     }
+    else {
+      socket.emit('loop', { errorMsg, account })
+    }
 
     try {
-      if (code < 11) {
-        socket.emit('loop', { errorMsg, account })
-
-        const img = await image2base64(login + '_screenshot.png')
-        if (img && code > 1) {
-          socket.emit('screen', { img, log: account + ' => ' + errorMsg })
-        }
+      const img = await image2base64(login + '_screenshot.png')
+      if (img && code > 1 && code < 11) {
+        socket.emit('screen', { img, log: account + ' => ' + errorMsg })
       }
     }
     catch (e) { }
