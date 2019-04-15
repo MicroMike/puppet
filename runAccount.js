@@ -90,7 +90,7 @@ const fct = async () => {
       try {
         const img = await image2base64(login + '_screenshot.png')
         if (img && code !== 1) {
-          socket.emit('screen', { img, log: getTime() + " ERR ", account, e })
+          socket.emit('screen', { img, log: getTime() + " ERR " + ' ' + account + ' ' + e })
         }
       }
       catch (e) { }
@@ -429,21 +429,17 @@ const fct = async () => {
 
       usernameInput = await page.ext(username)
 
-      const fillForm = async () => {
-        await page.inst(usernameInput ? username : password, login)
-        await page.inst(password, pass)
+      await page.inst(usernameInput ? username : password, login)
+      await page.inst(password, pass)
 
-        if (player !== 'amazon') {
-          const loginFill = await page.get(username, 'value')
-          const passFill = await page.get(password, 'value')
+      if (player !== 'amazon') {
+        const loginFill = await page.get(username, 'value')
+        const passFill = await page.get(password, 'value')
 
-          if (!loginFill || !passFill) {
-            await fillForm()
-          }
+        if (!loginFill || !passFill) {
+          catchFct('fillForm')
         }
       }
-
-      await fillForm()
 
       await page.jClk(remember)
       await page.clk(loginBtn)
