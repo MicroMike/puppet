@@ -44,6 +44,7 @@ const main = async (account) => {
     errorMsg = code === 8 ? 'Login' : errorMsg
     errorMsg = code === 9 ? 'No bar' : errorMsg
     errorMsg = code === 10 ? 'Crashed' : errorMsg
+    errorMsg = code === 11 ? 'Used' : errorMsg
 
     if (code === 4) {
       // 4 = DEL
@@ -62,7 +63,7 @@ const main = async (account) => {
       // 5 = RETRY
       main(account)
     }
-    else {
+    else if (code < 11) {
       socket.emit('loop', { errorMsg, account })
     }
 
