@@ -35,10 +35,10 @@ const main = async (account) => {
 
     let errorMsg = ''
 
-    errorMsg = code === 4 ? 'del' : errorMsg
-    errorMsg = code === 5 ? 'retry' : errorMsg
-    errorMsg = code === 6 ? 'tidal' : errorMsg
-    errorMsg = code === 7 ? 'fillForm' : errorMsg
+    errorMsg = code === 4 ? 'Del' : errorMsg
+    errorMsg = code === 5 ? 'Retry' : errorMsg
+    errorMsg = code === 6 ? 'Tidal' : errorMsg
+    errorMsg = code === 7 ? 'FillForm' : errorMsg
 
     if (code === 4) {
       // 4 = DEL
@@ -58,7 +58,7 @@ const main = async (account) => {
       main(account)
     }
     else {
-      socket.emit('loop', account)
+      socket.emit('loop', { errorMsg, account })
     }
 
     try {
@@ -81,7 +81,7 @@ socket.on('activate', (id) => {
   clientId = id
   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
     if (err) return console.log(err);
-    socket.emit('ok', { accountsValid, max, env: process.env, del, pause: 1000 * pause })
+    socket.emit('ok', { accountsValid, max, env: process.env, del })
   })
 })
 
