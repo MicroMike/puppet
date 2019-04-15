@@ -36,6 +36,15 @@ const main = async (account) => {
     if (code === 4) {
       // 4 = DEL
       socket.emit('delete', account)
+
+      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
+        if (err) return console.log(err);
+        data = data.split(',').filter(e => e)
+        if (data.indexOf(account) < 0) { data.push(account) }
+        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
+          if (err) return console.log(err);
+        });
+      });
     }
     else if (code === 5) {
       // 5 = RETRY

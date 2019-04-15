@@ -140,9 +140,9 @@ const fct = async () => {
         'https://app.napster.com/artist/lapilluledors/album/red-beast',
         'https://app.napster.com/artist/dj-reid/album/satisfaction-spell',
         'https://app.napster.com/artist/xondes/album/the-last-heat',
-        // 'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
-        // 'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
-        // 'https://app.napster.com/artist/xondes/album/wicked-344744668',
+        'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
+        'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
+        'https://app.napster.com/artist/xondes/album/wicked-344744668',
       ]
 
       usedDom = '.player-error-box'
@@ -170,9 +170,9 @@ const fct = async () => {
         'https://music.amazon.fr/albums/B07MTV7JYS',
         'https://music.amazon.fr/albums/B07PGN58LX',
         'https://music.amazon.fr/albums/B07QCBN3Z4',
-        // 'https://music.amazon.fr/albums/B07M75PR8X',
-        // 'https://music.amazon.fr/albums/B07LGWP7SX',
-        // 'https://music.amazon.fr/albums/B07MBH9D43',
+        'https://music.amazon.fr/albums/B07M75PR8X',
+        'https://music.amazon.fr/albums/B07LGWP7SX',
+        'https://music.amazon.fr/albums/B07MBH9D43',
       ]
 
       usedDom = '.concurrentStreamsPopover'
@@ -202,9 +202,9 @@ const fct = async () => {
         'https://listen.tidal.com/album/102564740',
         'https://listen.tidal.com/album/102503463',
         'https://listen.tidal.com/album/105237098',
-        // 'https://listen.tidal.com/album/101962381',
-        // 'https://listen.tidal.com/album/101352536',
-        // 'https://listen.tidal.com/album/101844025',
+        'https://listen.tidal.com/album/101962381',
+        'https://listen.tidal.com/album/101352536',
+        'https://listen.tidal.com/album/101844025',
       ]
 
       usedDom = '.WARN'
@@ -234,9 +234,9 @@ const fct = async () => {
         'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',
         'https://open.spotify.com/album/2kFEMTIWWw0jXD57Ewr7go',
         'https://open.spotify.com/album/4BR7o0DwEPj1wF1nfcypiY',
-        // 'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
-        // 'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
-        // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
+        'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
+        'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
+        'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
       ]
       usedDom = '.ConnectBar'
     }
