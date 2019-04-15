@@ -96,6 +96,10 @@ const fct = async () => {
     const imgPath = login + '_screenshot.png'
 
     try {
+      if (e === 'first play' && player === "spotify") {
+        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
+      }
+
       await page.screenshot({ path: imgPath });
 
       try {
@@ -462,15 +466,7 @@ const fct = async () => {
       if (stopBeforePlay) { exit(11) }
     }
 
-    try {
-      await page.clk(playBtn, 'first play')
-    }
-    catch (e) {
-      if (player === "spotify") {
-        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
-      }
-      throw e
-    }
+    await page.clk(playBtn, 'first play')
 
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
@@ -516,6 +512,7 @@ const fct = async () => {
     let used
     let timeLine
     let style
+    let retry = false
 
     const loop = async () => {
       try {
@@ -574,6 +571,10 @@ const fct = async () => {
         if (freeze > 2) {
           freeze = 0
 
+          if (retry) {
+            throw 'retry'
+          }
+
           if (player === 'napster') {
             await page.jClk('.player-play-button .icon-pause2')
             await page.jClk('.player-play-button .icon-play-button')
@@ -587,15 +588,19 @@ const fct = async () => {
             catch (e) { return exit(0) }
 
             if (t1 === '0%') {
-              await page.gotoUrl(album())
-              await page.clk(playBtn, 'loop play')
+              retry = true
             }
           }
           else if (!t1) {
             throw 'no bar'
           }
           else {
-            throw 'retry'
+            retry = true
+          }
+
+          if (retry) {
+            await page.gotoUrl(album())
+            await page.clk(playBtn, 'loop play')
           }
         }
 
