@@ -90,7 +90,7 @@ const fct = async () => {
       try {
         const img = await image2base64(login + '_screenshot.png')
         if (img && code !== 1) {
-          socket.emit('screen', { img, log: getTime() + " ERR " + ' ' + account + ' ' + e })
+          socket.emit('screen', { img, log: getTime() + ' ERR ' + account + ' ' + e })
         }
       }
       catch (e) { }
