@@ -82,18 +82,17 @@ const fct = async () => {
 
   const catchFct = async (e) => {
     try {
-      shell.exec('rm ' + login + '_screenshot.png', { silent: true })
-      await page.screenshot({ path: login + '_screenshot.png' });
+      const imgPath = login + '_screenshot.png'
+
+      shell.exec('rm ' + imgPath, { silent: true })
+      await page.screenshot({ path: imgPath });
       await page.waitFor(5000 + rand(2000))
       await page.cls()
 
-      try {
-        const img = await image2base64(login + '_screenshot.png')
-        if (img && code !== 1) {
-          socket.emit('screen', { img, log: getTime() + ' ERR ' + account + ' ' + e })
-        }
+      const img = await image2base64(imgPath)
+      if (img) {
+        socket.emit('screen', { img, log: getTime() + ' ERR ' + account + ' ' + e })
       }
-      catch (e) { }
     }
     catch (e) { }
 
