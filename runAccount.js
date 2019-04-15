@@ -56,7 +56,7 @@ const fct = async () => {
     process.exit(code)
   }
 
-  if (!page) { exit(1) }
+  if (!page) { exit(0) }
 
   let username
   let password
@@ -89,7 +89,7 @@ const fct = async () => {
     }
     catch (e) { }
 
-    let code = 10
+    let code = 0
 
     code = e === 'first play' ? 2 : code
     code = e === 'loop play' ? 3 : code
@@ -99,6 +99,7 @@ const fct = async () => {
     code = e === 'fillForm' ? 7 : code
     code = e === 'login' ? 8 : code
     code = e === 'no bar' ? 9 : code
+    code = e === 'crashed' ? 10 : code
 
     console.log(getTime() + " ERR ", account, e)
 
@@ -110,7 +111,7 @@ const fct = async () => {
   });
 
   page.on('close', function (err) {
-    exit(1)
+    exit(0)
   });
 
   try {
@@ -484,7 +485,7 @@ const fct = async () => {
     if (player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
       const stopBeforePlay = await page.ext(usedDom)
-      if (stopBeforePlay) { exit(1) }
+      if (stopBeforePlay) { exit(11) }
     }
 
     try {
@@ -560,15 +561,15 @@ const fct = async () => {
               await page.jClk('#wimp > div > div > div > div > div > button')
             }
             else {
-              exit(1)
+              exit(11)
             }
           }
           else {
-            exit(1)
+            exit(11)
           }
         }
       }
-      catch (e) { return exit(1) }
+      catch (e) { return exit(0) }
 
       try {
         if (player === 'napster') {
@@ -593,7 +594,7 @@ const fct = async () => {
             return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
           }, { timeLine, style })
         }
-        catch (e) { return exit(1) }
+        catch (e) { return exit(0) }
 
         if (t1 === t2) { ++freeze }
         else { freeze = 0 }
@@ -611,7 +612,7 @@ const fct = async () => {
                 return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
               }, { timeLine, style })
             }
-            catch (e) { }
+            catch (e) { return exit(0) }
 
             if (t1 === '0%') {
               await page.gotoUrl(album())

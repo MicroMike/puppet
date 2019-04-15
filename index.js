@@ -33,7 +33,7 @@ const main = async (account) => {
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
-    let errorMsg = 'Loop'
+    let errorMsg = code === 1 ? 'Loop' : 'KO'
 
     errorMsg = code === 2 ? 'First play' : errorMsg
     errorMsg = code === 3 ? 'Loop play' : errorMsg
@@ -43,6 +43,7 @@ const main = async (account) => {
     errorMsg = code === 7 ? 'FillForm' : errorMsg
     errorMsg = code === 8 ? 'Login' : errorMsg
     errorMsg = code === 9 ? 'No bar' : errorMsg
+    errorMsg = code === 10 ? 'Crashed' : errorMsg
 
     if (code === 4) {
       // 4 = DEL
@@ -67,7 +68,7 @@ const main = async (account) => {
 
     try {
       const img = await image2base64(login + '_screenshot.png')
-      if (img && code !== 1) {
+      if (img && code > 1 && code < 11) {
         socket.emit('screen', { img, log: account + ' => ' + errorMsg })
       }
     }
