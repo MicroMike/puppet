@@ -84,10 +84,10 @@ const fct = async () => {
       await page.evaluate(({ account, e }) => {
         document.querySelector('body').insertAdjacentHTML('afterBegin', '<div style="background-color:white;">' + account + ' => ' + e + '</div>')
       }, { account, e })
-      shell.exec('rm ' + login + '_screenshot.png')
+      shell.exec('rm ' + login + '_screenshot.png', { silent: true })
       await page.screenshot({ path: login + '_screenshot.png' });
       await page.waitFor(5000 + rand(2000))
-      // await page.cls()
+      await page.cls()
     }
     catch (e) { }
 
@@ -98,6 +98,7 @@ const fct = async () => {
     code = del ? 4 : code
     code = retry ? 5 : code
 
+    socket.emit('log', getTime() + " ERR ", account, e)
     console.log(getTime() + " ERR ", account, e)
 
     exit(code)
