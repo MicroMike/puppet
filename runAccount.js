@@ -360,36 +360,8 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
+          if (!check) { throw 'tidal' }
 
-          throw 'tidal'
-
-          // if (check) {
-          //   await page.gotoUrl('https://my.tidal.com/login')
-          //   await page.inst('#Login .login-email', login)
-          //   await page.inst('#Login [type="password"]', pass)
-          //   await page.clk('#Login .login-cta')
-
-          //   const inputLogin = await page.jClk('#Login .login-cta', true)
-          //   if (inputLogin) { throw 'del' }
-
-          //   await page.gotoUrl(album())
-
-          //   const validCallback = await resolveCaptcha('https://login.tidal.com')
-          //   if (validCallback === 'error') { throw validCallback }
-
-          //   await page.jClk(goToLogin)
-          //   await page.inst(username, login)
-
-          //   if (validCallback === 'click') {
-          //     await page.clk('#recap-invisible')
-          //   }
-          //   else {
-          //     await log(validCallback)
-          //   }
-
-          //   await page.inst(password, pass)
-          // }
-          // else {
           await page.inst(username, login)
           await page.clk('#recap-invisible')
 
@@ -406,8 +378,6 @@ const fct = async () => {
           }
 
           await waitForPassword()
-
-          // }
 
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
@@ -427,9 +397,6 @@ const fct = async () => {
     }
 
     if (!connected && player !== 'tidal') {
-      if (player === 'spotify' && process.env.RAND) {
-        // throw 'Spotify relog ' + login
-      }
       await page.waitFor(2000 + rand(2000))
       await page.gotoUrl(url)
 
@@ -454,20 +421,17 @@ const fct = async () => {
       suppressed = await page.get(loginError)
 
       if (suppressed) {
-        if (player !== 'napster' || suppressed.match(/password/)) {
+        if (player !== 'napster' || String(suppressed).match(/password/)) {
           throw 'del'
         }
         throw 'login'
       }
     }
 
-    if (player === 'spotify' && check) {
+    if (player === 'spotify') {
       await page.gotoUrl('https://www.spotify.com/account/overview')
-      const free = await page.evaluate(() => {
-        const typeAccount = document.querySelector('.product-name')
-        return typeAccount && /Free|free/.test(typeAccount.innerHTML)
-      })
-      if (free) { throw 'del' }
+      const productName = await page.get('.product-name')
+      if (String(productName).match(/Free|free/)) { throw 'del' }
 
       await page.gotoUrl(album())
     }
@@ -475,7 +439,7 @@ const fct = async () => {
       const issueAccount = await page.ext('.account-issue')
       const issueRadio = await page.ext('.unradio')
       if (issueAccount || issueRadio) { throw 'del' }
-      const reload = await page.ext('#main-container .not-found')
+      // const reload = await page.ext('#main-container .not-found')
       await page.gotoUrl(album())
     }
     else if (player !== 'tidal') {
@@ -525,10 +489,8 @@ const fct = async () => {
     }
 
     if (player === 'tidal') {
-      const delTidal = await page.evaluate(() => {
-        return document.querySelector('.ReactModal__Overlay') && document.querySelector('.ReactModal__Overlay').innerText
-      })
-      if (typeof delTidal === 'string' && delTidal.match(/expired/)) {
+      const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
+      if (String(delTidal).match(/expired/)) {
         throw 'del'
       }
     }
@@ -565,7 +527,7 @@ const fct = async () => {
               return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
             }, usedDom)
 
-            used = typeof used === 'string' && used.match(/currently/) ? used : false
+            used = String(used).match(/currently/) ? used : false
 
             if (!used) {
               await page.jClk('#wimp > div > div > div > div > div > button')
