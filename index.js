@@ -3,6 +3,7 @@ process.setMaxListeners(0)
 var fs = require('fs');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
+const image2base64 = require('image-to-base64');
 let clientId
 
 const check = process.env.CHECK || process.env.TYPE
