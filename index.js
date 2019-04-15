@@ -8,7 +8,7 @@ let clientId
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
 const max = process.env.BIG ? 40 : 20
-const pause = check ? 10 : 60
+const pause = false
 
 const getTime = () => {
   const date = new Date
@@ -17,12 +17,12 @@ const getTime = () => {
   return hour + 'H' + minute
 }
 
-const main = async (account) => {
+const main = async (account, isCheck) => {
   accountsValid.push(account)
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
   let cmd = 'ACCOUNT=' + account + ' node runAccount'
-  cmd = check ? 'CHECK=' + check + ' ' + cmd : cmd
+  cmd = check || isCheck ? 'CHECK=' + check + ' ' + cmd : cmd
   cmd = clientId ? 'CLIENTID=' + clientId + ' ' + cmd : cmd
 
   const accountInfo = account.split(':')
@@ -87,12 +87,26 @@ socket.on('run', account => {
   main(account)
 });
 
+socket.on('runCheck', account => {
+  main(account, true)
+});
+
 socket.on('goPlay', () => {
-  socket.emit('play')
+  if (!pause) { socket.emit('play') }
+  else { socket.emit('playCheck') }
 });
 
 socket.on('reStart', () => {
   console.log('reset')
   socket.emit('disconnect')
   process.exit()
+});
+
+socket.on('check', () => {
+  pause = true
+});
+
+socket.on('endCheck', () => {
+  pause = false
+  socket.emit('play')
 });
