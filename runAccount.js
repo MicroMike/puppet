@@ -16,7 +16,7 @@ socket.on('activate', id => {
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
-let streamOff = true
+let streamOn = false
 
 let over = false
 
@@ -71,22 +71,22 @@ const fct = async () => {
     try {
       const img = await image2base64('stream_' + account + '.png')
       if (img) {
-        socket.emit('stream', { streamOff, streamId, img })
+        socket.emit('stream', { streamOn, streamId, img })
       }
     }
     catch (e) { }
     await page.waitFor(5000)
 
-    if (!streamOff) { stream() }
+    if (streamOn) { stream() }
   }
 
   socket.on('streamOn', () => {
-    streamOff = false
+    streamOn = true
     stream()
   })
 
   socket.on('streamOff', () => {
-    streamOff = true
+    streamOn = false
   })
 
   let username
@@ -136,7 +136,7 @@ const fct = async () => {
       try {
         const img = await image2base64(login + '_screenshot.png')
         if (img && code !== 1 && code !== 11) {
-          socket.emit('screen', { streamOff, streamId, img, log: account + ' => ' + e })
+          socket.emit('screen', { streamOn, streamId, img, log: account + ' => ' + e })
         }
       }
       catch (e) { }
@@ -639,7 +639,7 @@ const fct = async () => {
             try {
               const img = await image2base64('retry_' + account + '.png')
               if (img) {
-                socket.emit('screen', { streamOff, streamId, img, log: account + ' => retry' })
+                socket.emit('screen', { streamOn, streamId, img, log: account + ' => retry' })
               }
             }
             catch (e) { }
