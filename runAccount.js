@@ -598,6 +598,10 @@ const fct = async () => {
           }
 
           if (retry) {
+            await page.evaluate(() => {
+              document.querySelector('body').insertAdjacentHTML('afterbegin', '<div style="width:100%;height:100px;background:red;color:white;">RETRY</div>')
+            })
+            return
             await page.gotoUrl(album())
             await page.clk(playBtn, 'loop play')
           }
