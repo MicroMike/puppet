@@ -7,16 +7,26 @@ var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 const image2base64 = require('image-to-base64');
 let streamId
+let streamOn = false
+let stream
 
 socket.on('activate', id => {
   streamId = id
   socket.emit('runner')
 })
 
+socket.on('streamOn', () => {
+  streamOn = true
+  stream()
+})
+
+socket.on('streamOff', () => {
+  streamOn = false
+})
+
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
-let streamOn = false
 
 let over = false
 
@@ -66,7 +76,7 @@ const fct = async () => {
 
   if (!page) { exit(0) }
 
-  const stream = async () => {
+  stream = async () => {
     await page.screenshot({ path: 'stream_' + account + '.png' })
     try {
       const img = await image2base64('stream_' + account + '.png')
@@ -79,15 +89,6 @@ const fct = async () => {
 
     if (streamOn) { stream() }
   }
-
-  socket.on('streamOn', () => {
-    streamOn = true
-    stream()
-  })
-
-  socket.on('streamOff', () => {
-    streamOn = false
-  })
 
   let username
   let password
@@ -630,9 +631,6 @@ const fct = async () => {
 
           if (retry && !retryDom) {
             retryDom = true
-            await page.evaluate(() => {
-              document.querySelector('body').insertAdjacentHTML('afterbegin', '<div style="width:100%;height:100px;background:red;color:white;">RETRY</div>')
-            })
 
             await page.screenshot({ path: 'retry_' + account + '.png' });
 
