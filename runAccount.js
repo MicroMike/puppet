@@ -542,6 +542,7 @@ const fct = async () => {
     let timeLine
     let style
     let retry = false
+    let retryDom = false
 
     const loop = async () => {
       try {
@@ -628,9 +629,12 @@ const fct = async () => {
           }
 
           if (retry) {
-            await page.evaluate(() => {
-              document.querySelector('body').insertAdjacentHTML('afterbegin', '<div style="width:100%;height:100px;background:red;color:white;">RETRY</div>')
-            })
+            if (!retryDom) {
+              retryDom = true
+              await page.evaluate(() => {
+                document.querySelector('body').insertAdjacentHTML('afterbegin', '<div style="width:100%;height:100px;background:red;color:white;">RETRY</div>')
+              })
+            }
 
             await page.screenshot({ path: 'retry_' + account + '.png' });
 
