@@ -75,7 +75,7 @@ const fct = async () => {
       }
     }
     catch (e) { }
-    await page.waitFor(1000)
+    await page.waitFor(5000)
 
     if (!streamOff) { stream() }
   }
