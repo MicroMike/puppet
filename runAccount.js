@@ -85,7 +85,7 @@ const fct = async () => {
       }
     }
     catch (e) { }
-    await page.waitFor(5000)
+    await page.waitFor(3000)
 
     if (streamOn) { stream() }
   }
@@ -607,16 +607,18 @@ const fct = async () => {
           // }
 
           if (player === 'napster') {
-            await page.jClk('.player-play-button .icon-pause2')
-            await page.jClk('.player-play-button .icon-play-button')
-            await page.waitFor(1000 * 15)
+            if (!retry) {
+              await page.jClk('.player-play-button .icon-pause2')
+              await page.jClk('.player-play-button .icon-play-button')
+              await page.waitFor(1000 * 15)
 
-            try {
-              t1 = await page.evaluate(({ timeLine, style }) => {
-                return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
-              }, { timeLine, style })
+              try {
+                t1 = await page.evaluate(({ timeLine, style }) => {
+                  return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
+                }, { timeLine, style })
+              }
+              catch (e) { return exit(0) }
             }
-            catch (e) { return exit(0) }
 
             if (t1 === '0%') {
               retry = true
