@@ -16,6 +16,7 @@ socket.on('activate', id => {
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
+let streamOff = true
 
 let over = false
 
@@ -64,8 +65,6 @@ const fct = async () => {
   }
 
   if (!page) { exit(0) }
-
-  let streamOff
 
   const stream = async () => {
     await page.screenshot({ path: 'stream_' + account + '.png' })
@@ -137,7 +136,7 @@ const fct = async () => {
       try {
         const img = await image2base64(login + '_screenshot.png')
         if (img && code !== 1 && code !== 11) {
-          socket.emit('screen', { streamId, img, log: account + ' => ' + e })
+          socket.emit('screen', { streamOff, streamId, img, log: account + ' => ' + e })
         }
       }
       catch (e) { }
@@ -638,7 +637,7 @@ const fct = async () => {
             try {
               const img = await image2base64('retry_' + account + '.png')
               if (img) {
-                socket.emit('screen', { streamId, img, log: account + ' => retry' })
+                socket.emit('screen', { streamOff, streamId, img, log: account + ' => retry' })
               }
             }
             catch (e) { }
