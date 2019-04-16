@@ -601,9 +601,9 @@ const fct = async () => {
         if (freeze > 5) {
           freeze = 0
 
-          if (retry) {
-            throw 'retry'
-          }
+          // if (retry) {
+          //   throw 'retry'
+          // }
 
           if (player === 'napster') {
             await page.jClk('.player-play-button .icon-pause2')
@@ -632,8 +632,18 @@ const fct = async () => {
             await page.evaluate(() => {
               document.querySelector('body').insertAdjacentHTML('afterbegin', '<div style="width:100%;height:100px;background:red;color:white;">RETRY</div>')
             })
-            await page.gotoUrl(album())
-            await page.clk(playBtn, 'loop play')
+
+            await page.screenshot({ path: 'retry_' + account + '.png' });
+
+            try {
+              const img = await image2base64('retry_' + account + '.png')
+              if (img) {
+                socket.emit('screen', { streamId, img, log: account + ' => retry' })
+              }
+            }
+            catch (e) { }
+            // await page.gotoUrl(album())
+            // await page.clk(playBtn, 'loop play')
           }
         }
 
