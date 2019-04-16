@@ -33,7 +33,8 @@ const main = async (account, isCheck) => {
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
-    let errorMsg = code === 0 ? 'KO' : ''
+    let errorMsg = 'Other'
+    errorMsg = code === 0 ? 'KO' : errorMsg
     errorMsg = code === 1 ? 'Loop' : errorMsg
     errorMsg = code === 2 ? 'First play' : errorMsg
     errorMsg = code === 3 ? 'Loop play' : errorMsg
@@ -46,7 +47,7 @@ const main = async (account, isCheck) => {
     errorMsg = code === 10 ? 'Crashed' : errorMsg
     errorMsg = code === 11 ? 'Used' : errorMsg
 
-    if (code === 'del') {
+    if (code === 4) {
       // 4 = DEL
       socket.emit('delete', account)
 
@@ -59,7 +60,7 @@ const main = async (account, isCheck) => {
         });
       });
     }
-    else if (code === 'retry') {
+    else if (code === 5) {
       // 5 = RETRY
       main(account)
     }

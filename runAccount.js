@@ -97,7 +97,7 @@ const fct = async () => {
     console.log(getTime() + " ERR ", account, e)
 
     try {
-      if (e === 'first play' && player === "spotify") {
+      if (code === 2 && player === "spotify") {
         await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
 
@@ -116,7 +116,7 @@ const fct = async () => {
     }
     catch (e) { }
 
-    exit(e)
+    exit(code)
   }
 
   page.on('error', function (err) {
