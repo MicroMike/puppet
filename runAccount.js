@@ -71,7 +71,7 @@ const fct = async () => {
     try {
       const img = await image2base64('stream_' + account + '.png')
       if (img) {
-        socket.emit('stream', { img, streamId })
+        socket.emit('stream', { streamOff, streamId, img })
       }
     }
     catch (e) { }
@@ -628,13 +628,11 @@ const fct = async () => {
             retry = true
           }
 
-          if (retry) {
-            if (!retryDom) {
-              retryDom = true
-              await page.evaluate(() => {
-                document.querySelector('body').insertAdjacentHTML('afterbegin', '<div style="width:100%;height:100px;background:red;color:white;">RETRY</div>')
-              })
-            }
+          if (retry && !retryDom) {
+            retryDom = true
+            await page.evaluate(() => {
+              document.querySelector('body').insertAdjacentHTML('afterbegin', '<div style="width:100%;height:100px;background:red;color:white;">RETRY</div>')
+            })
 
             await page.screenshot({ path: 'retry_' + account + '.png' });
 
@@ -645,6 +643,7 @@ const fct = async () => {
               }
             }
             catch (e) { }
+            // await page.gotoUrl(album())
             // await page.gotoUrl(album())
             // await page.clk(playBtn, 'loop play')
           }
