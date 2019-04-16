@@ -6,6 +6,12 @@ const request = require('ajax-request');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 const image2base64 = require('image-to-base64');
+let streamId
+
+socket.on('activate', id => {
+  streamId = id
+  socket.emit('runner')
+})
 
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
@@ -59,6 +65,31 @@ const fct = async () => {
 
   if (!page) { exit(0) }
 
+  let streamOff
+
+  const stream = async () => {
+    await page.screenshot({ path: 'stream_' + account + '.png' })
+    try {
+      const img = await image2base64('stream_' + account + '.png')
+      if (img) {
+        socket.emit('stream', { img, streamId })
+      }
+    }
+    catch (e) { }
+    await page.waitFor(1000)
+
+    if (!streamOff) { stream() }
+  }
+
+  socket.on('streamOn', () => {
+    streamOff = false
+    stream()
+  })
+
+  socket.on('streamOff', () => {
+    streamOff = true
+  })
+
   let username
   let password
   let url
@@ -106,7 +137,7 @@ const fct = async () => {
       try {
         const img = await image2base64(login + '_screenshot.png')
         if (img && code !== 1 && code !== 11) {
-          socket.emit('screen', { img, log: account + ' => ' + e })
+          socket.emit('screen', { streamId, img, log: account + ' => ' + e })
         }
       }
       catch (e) { }
@@ -567,7 +598,7 @@ const fct = async () => {
         if (t1 === t2) { ++freeze }
         else { freeze = 0 }
 
-        if (freeze > 2) {
+        if (freeze > 5) {
           freeze = 0
 
           if (retry) {
@@ -577,7 +608,7 @@ const fct = async () => {
           if (player === 'napster') {
             await page.jClk('.player-play-button .icon-pause2')
             await page.jClk('.player-play-button .icon-play-button')
-            await page.waitFor(1000 * 5)
+            await page.waitFor(1000 * 15)
 
             try {
               t1 = await page.evaluate(({ timeLine, style }) => {
@@ -601,7 +632,6 @@ const fct = async () => {
             await page.evaluate(() => {
               document.querySelector('body').insertAdjacentHTML('afterbegin', '<div style="width:100%;height:100px;background:red;color:white;">RETRY</div>')
             })
-            return
             await page.gotoUrl(album())
             await page.clk(playBtn, 'loop play')
           }
