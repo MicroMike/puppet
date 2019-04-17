@@ -608,6 +608,7 @@ const fct = async () => {
           freeze = 0
           retry = false
           retryDom = false
+          streamOn = false
           socket.emit('retryOk')
         }
 
