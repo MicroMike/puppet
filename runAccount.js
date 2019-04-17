@@ -599,33 +599,28 @@ const fct = async () => {
         if (t1 === t2) { ++freeze }
         else { freeze = 0 }
 
-        if (freeze > 5) {
+        if (freeze > 3) {
           freeze = 0
 
           // if (retry) {
           //   throw 'retry'
           // }
 
-          if (player === 'napster') {
-            if (!retry) {
-              await page.jClk('.player-play-button .icon-pause2')
-              await page.jClk('.player-play-button .icon-play-button')
-              await page.waitFor(1000 * 15)
-
-              try {
-                t1 = await page.evaluate(({ timeLine, style }) => {
-                  return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
-                }, { timeLine, style })
-              }
-              catch (e) { return exit(0) }
-            }
+          if (!t1) {
+            throw 'no bar'
+          }
+          else if (player === 'napster') {
+            await page.jClk('.player-play-button .icon-pause2')
+            await page.jClk('.player-play-button .icon-play-button')
+            await page.waitFor(1000 * 15)
 
             if (t1 === '0%') {
               retry = true
             }
           }
-          else if (!t1) {
-            throw 'no bar'
+          else if (player === 'tidal') {
+            await page.clk(playBtn, 'loop play')
+            retry = true
           }
           else {
             retry = true
@@ -643,7 +638,6 @@ const fct = async () => {
               }
             }
             catch (e) { }
-            // await page.gotoUrl(album())
             // await page.gotoUrl(album())
             // await page.clk(playBtn, 'loop play')
           }
