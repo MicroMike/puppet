@@ -9,6 +9,8 @@ const image2base64 = require('image-to-base64');
 let streamId
 let streamOn = false
 let stream
+let maxStream = 10
+let countStream = 0
 
 socket.on('activate', id => {
   streamId = id
@@ -16,6 +18,7 @@ socket.on('activate', id => {
 })
 
 socket.on('streamOn', () => {
+  countStream = 0
   streamOn = true
   stream()
 })
@@ -86,6 +89,10 @@ const fct = async () => {
     }
     catch (e) { }
     await page.waitFor(3000)
+
+    if (++countStream > maxStream) {
+      streamOn = false
+    }
 
     if (streamOn) { stream() }
   }
@@ -597,14 +604,15 @@ const fct = async () => {
         catch (e) { return exit(0) }
 
         if (t1 === t2) { ++freeze }
-        else { freeze = 0 }
+        else {
+          freeze = 0
+          retry = false
+          retryDom = false
+          socket.emit('retryOk')
+        }
 
         if (freeze > 3) {
           freeze = 0
-
-          // if (retry) {
-          //   throw 'retry'
-          // }
 
           if (!t1) {
             throw 'no bar'
@@ -655,7 +663,7 @@ const fct = async () => {
 
     loop()
 
-    let restartTime = 1000 * 60 * 15 + rand(1000 * 60 * 15)
+    let restartTime = 1000 * 60 * 15 + 1000 * rand(60 * 15)
     await page.waitFor(restartTime)
     exit(1)
   }
