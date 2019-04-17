@@ -99,7 +99,7 @@ socket.on('goPlay', () => {
 
 socket.on('reStart', () => {
   console.log('reset')
-  socket.emit('disconnect')
+  socket.emit('disconnect', accountsValid.length)
   process.exit()
 });
 
