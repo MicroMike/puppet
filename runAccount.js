@@ -31,9 +31,13 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-const disconnect = () => {
+const disconnect = (code = 0) => {
   socket.emit('customDisconnect')
   socket.emit('disconnect')
+
+  setTimeout(() => {
+    process.exit(code)
+  }, 1000 * 5);
 }
 
 let over = false
@@ -45,7 +49,6 @@ socket.on('reStart', () => {
 process.on('SIGINT', function (code) {
   over = true
   disconnect()
-  process.exit()
 });
 
 const getTime = () => {
@@ -85,8 +88,7 @@ const fct = async () => {
     }
     catch (e) { }
 
-    disconnect()
-    process.exit(code)
+    disconnect(code)
   }
 
   if (!page) { exit(0) }
