@@ -12,9 +12,13 @@ let stream
 let maxStream = 10
 let countStream = 0
 
+const account = process.env.ACCOUNT
+const check = process.env.CHECK
+const clientId = process.env.CLIENTID
+
 socket.on('activate', id => {
   streamId = id
-  socket.emit('runner')
+  socket.emit('runner', account)
 })
 
 socket.on('streamOn', () => {
@@ -27,14 +31,11 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-const account = process.env.ACCOUNT
-const check = process.env.CHECK
-const clientId = process.env.CLIENTID
-
 let over = false
 
 process.on('SIGINT', function (code) {
   over = true
+  socket.emit('player', clientId)
   process.exit()
 });
 
@@ -74,6 +75,8 @@ const fct = async () => {
       }
     }
     catch (e) { }
+
+    socket.emit('player', clientId)
     process.exit(code)
   }
 

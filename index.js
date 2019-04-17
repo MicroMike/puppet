@@ -80,7 +80,7 @@ socket.on('activate', (id) => {
   clientId = id
   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
     if (err) return console.log(err);
-    socket.emit('ok', { accountsValid, max, env: process.env, del })
+    socket.emit('ok', { max, env: process.env, del })
   })
 })
 
@@ -93,7 +93,7 @@ socket.on('runCheck', account => {
 });
 
 socket.on('goPlay', () => {
-  if (!pause) { socket.emit('play') }
+  if (!pause) { socket.emit('play', accountsValid.length) }
   else { socket.emit('playCheck') }
 });
 
