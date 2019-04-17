@@ -98,11 +98,15 @@ socket.on('goPlay', () => {
 });
 
 socket.on('reStart', () => {
+  socket.emit('customDisconnect', accountsValid.length)
+});
+
+socket.on('exitRun', () => {
   console.log('reset')
-  socket.emit('retrieve', accountsValid.length)
   socket.emit('disconnect')
   process.exit()
 });
+
 
 socket.on('check', () => {
   pause = true

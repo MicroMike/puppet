@@ -31,11 +31,20 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
+const disconnect = () => {
+  socket.emit('customDisconnect', clientId)
+  socket.emit('disconnect')
+}
+
 let over = false
+
+socket.on('reStart', () => {
+  disconnect()
+});
 
 process.on('SIGINT', function (code) {
   over = true
-  socket.emit('disconnect')
+  disconnect()
   process.exit()
 });
 
@@ -76,8 +85,7 @@ const fct = async () => {
     }
     catch (e) { }
 
-    socket.emit('player', clientId)
-    socket.emit('disconnect')
+    disconnect()
     process.exit(code)
   }
 
