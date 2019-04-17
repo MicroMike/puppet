@@ -136,7 +136,7 @@ const fct = async () => {
     let code = 0
 
     code = e === 'first play' ? 2 : code
-    code = e === 'loop play' ? 3 : code
+    code = e === 'loop' ? 3 : code
     code = e === 'del' ? 4 : code
     code = e === 'retry' ? 5 : code
     code = e === 'tidal' ? 6 : code
@@ -642,7 +642,7 @@ const fct = async () => {
             }
           }
           else if (player === 'tidal') {
-            await page.clk(playBtn, 'loop play')
+            await page.clk(playBtn, 'loop')
             retry = true
           }
           else {
@@ -677,6 +677,18 @@ const fct = async () => {
     }
 
     loop()
+
+    const albumLoop = async () => {
+      let loopTime = 1000 * 60 * 5 + 1000 * rand(60 * 10)
+      await page.waitFor(loopTime)
+
+      await page.gotoUrl(album())
+      await page.clk(playBtn, 'loop')
+
+      albumLoop()
+    }
+
+    albumLoop()
 
     let restartTime = 1000 * 60 * 15 + 1000 * rand(60 * 15)
     await page.waitFor(restartTime)
