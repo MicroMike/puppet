@@ -93,12 +93,12 @@ socket.on('runCheck', account => {
 });
 
 socket.on('goPlay', () => {
-  if (!pause) { socket.emit('play', accountsValid.length) }
+  if (!pause) { socket.emit('play', accountsValid) }
   else { socket.emit('playCheck') }
 });
 
 socket.on('reStart', () => {
-  socket.emit('customDisconnect', accountsValid.length)
+  socket.emit('customDisconnect', accountsValid)
 });
 
 socket.on('exitRun', () => {
@@ -106,7 +106,6 @@ socket.on('exitRun', () => {
   socket.emit('disconnect')
   process.exit()
 });
-
 
 socket.on('check', () => {
   pause = true
