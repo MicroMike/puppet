@@ -35,7 +35,6 @@ let over = false
 
 process.on('SIGINT', function (code) {
   over = true
-  socket.emit('player', clientId)
   socket.emit('disconnect')
   process.exit()
 });
