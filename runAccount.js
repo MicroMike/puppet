@@ -32,7 +32,7 @@ socket.on('streamOff', () => {
 })
 
 const disconnect = () => {
-  socket.emit('customDisconnect', clientId)
+  socket.emit('customDisconnect')
   socket.emit('disconnect')
 }
 
