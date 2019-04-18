@@ -31,7 +31,7 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-const disconnect = (code = 0, loop) => {
+const disconnect = (code = 0, loop = false) => {
   socket.emit('customDisconnect', { clientId, loop })
 
   setTimeout(() => {
