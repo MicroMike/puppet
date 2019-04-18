@@ -394,7 +394,7 @@ const fct = async () => {
     const tidalConnect = async () => {
       let notConnected = true
 
-      await page.gotoUrl(album())
+      await page.gotoUrl(album(), player === 'spotify')
       notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
@@ -445,7 +445,7 @@ const fct = async () => {
     }
 
     if (player === 'amazon') {
-      await page.gotoUrl(album())
+      await page.gotoUrl(album(), player === 'spotify')
       connected = await page.ext(loggedDom)
     }
 
@@ -486,18 +486,18 @@ const fct = async () => {
       const productName = await page.get('.product-name')
       if (String(productName).match(/Free|free/)) { throw 'del' }
 
-      await page.gotoUrl(album(), true)
+      await page.gotoUrl(album(), player === 'spotify')
     }
     else if (player === 'napster') {
       const issueAccount = await page.ext('.account-issue')
       const issueRadio = await page.ext('.unradio')
       if (issueAccount || issueRadio) { throw 'del' }
       // const reload = await page.ext('#main-container .not-found')
-      await page.gotoUrl(album())
+      await page.gotoUrl(album(), player === 'spotify')
     }
     else if (player !== 'tidal') {
       await page.waitFor(1000 * 3)
-      await page.gotoUrl(album())
+      await page.gotoUrl(album(), player === 'spotify')
     }
 
     // ***************************************************************************************************************************************************************
@@ -656,7 +656,7 @@ const fct = async () => {
               }
             }
             catch (e) { }
-            // await page.gotoUrl(album())
+            // await page.gotoUrl(album(), player==='spotify')
             // await page.clk(playBtn, 'loop play')
           }
         }
@@ -677,7 +677,7 @@ const fct = async () => {
       let loopTime = 1000 * 60 * 5 + 1000 * rand(60 * 10)
       await page.waitFor(loopTime)
 
-      await page.gotoUrl(album())
+      await page.gotoUrl(album(), player === 'spotify')
       await page.clk(playBtn, 'loop')
 
       albumLoop()
