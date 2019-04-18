@@ -533,6 +533,12 @@ const fct = async () => {
       clickLoop()
     }
 
+    if (player === 'spotify') {
+      await page.evaluate(() => {
+        window.stop()
+      })
+    }
+
     if (player === 'tidal') {
       const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
       if (String(delTidal).match(/expired/)) {
