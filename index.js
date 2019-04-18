@@ -103,6 +103,7 @@ socket.on('reStart', () => {
 
 socket.on('exitRun', () => {
   console.log('reset')
+  socket.emit('customDisconnect', { accountsValid })
   socket.emit('disconnect')
   process.exit()
 });
