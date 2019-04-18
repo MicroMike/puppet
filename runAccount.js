@@ -644,9 +644,6 @@ const fct = async () => {
             }
           }
           else {
-            if (player === 'spotify') {
-              await page.gotoUrl(album(), player === 'spotify')
-            }
             await page.clk(playBtn, 'loop')
             retry = true
           }
