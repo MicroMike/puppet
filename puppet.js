@@ -59,16 +59,14 @@ module.exports = async (userDataDir, noCache) => {
   //   request.continue();
   // });
 
-  page.gotoUrl = async (url, domcontentloaded = false) => {
+  page.gotoUrl = async (url) => {
     try {
-      await page.goto(url, { timeout: 1000 * 60 * 5, waitUntil: domcontentloaded ? 'domcontentloaded' : 'load' })
-      await page.waitFor(1000 + rand(2000))
+      await page.goto(url, { timeout: 1000 * 60 * 5, waitUntil: 'domcontentloaded' })
+      await page.waitFor(3000 + rand(2000))
 
-      if (domcontentloaded) {
-        await page.evaluate(() => {
-          window.stop()
-        })
-      }
+      await page.evaluate(() => {
+        window.stop()
+      })
 
       return true
     } catch (e) {

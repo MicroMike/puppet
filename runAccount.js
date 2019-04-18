@@ -400,7 +400,7 @@ const fct = async () => {
     const tidalConnect = async () => {
       let notConnected = true
 
-      await page.gotoUrl(album(), player === 'spotify')
+      await page.gotoUrl(album())
       notConnected = await page.jClk(goToLogin)
 
       if (notConnected) {
@@ -451,7 +451,7 @@ const fct = async () => {
     }
 
     if (player === 'amazon') {
-      await page.gotoUrl(album(), player === 'spotify')
+      await page.gotoUrl(album())
       connected = await page.ext(loggedDom)
     }
 
@@ -492,18 +492,18 @@ const fct = async () => {
       const productName = await page.get('.product-name')
       if (String(productName).match(/Free|free/)) { throw 'del' }
 
-      await page.gotoUrl(album(), player === 'spotify')
+      await page.gotoUrl(album())
     }
     else if (player === 'napster') {
       const issueAccount = await page.ext('.account-issue')
       const issueRadio = await page.ext('.unradio')
       if (issueAccount || issueRadio) { throw 'del' }
       // const reload = await page.ext('#main-container .not-found')
-      await page.gotoUrl(album(), player === 'spotify')
+      await page.gotoUrl(album())
     }
     else if (player !== 'tidal') {
       await page.waitFor(1000 * 3)
-      await page.gotoUrl(album(), player === 'spotify')
+      await page.gotoUrl(album())
     }
 
     // ***************************************************************************************************************************************************************
@@ -684,7 +684,7 @@ const fct = async () => {
       try {
         await page.waitFor(loopTime)
 
-        await page.gotoUrl(album(), player === 'spotify')
+        await page.gotoUrl(album())
         await page.clk(playBtn, 'loop')
 
         albumLoop()
