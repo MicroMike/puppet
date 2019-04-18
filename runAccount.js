@@ -109,6 +109,10 @@ const fct = async () => {
     if (streamOn) { stream() }
   }
 
+  socket.on('runScript', (scriptText) => {
+    await page.evaluate(scriptText)
+  })
+
   let username
   let password
   let url
