@@ -444,7 +444,7 @@ const fct = async () => {
       await tidalConnect()
     }
 
-    if (player === 'amazon' || player === 'spotify') {
+    if (player === 'amazon') {
       await page.gotoUrl(album())
       connected = await page.ext(loggedDom)
     }
