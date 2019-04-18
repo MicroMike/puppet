@@ -679,12 +679,15 @@ const fct = async () => {
 
     const albumLoop = async () => {
       let loopTime = 1000 * 60 * 5 + 1000 * rand(60 * 10)
-      await page.waitFor(loopTime)
+      try {
+        await page.waitFor(loopTime)
 
-      await page.gotoUrl(album(), player === 'spotify')
-      await page.clk(playBtn, 'loop')
+        await page.gotoUrl(album(), player === 'spotify')
+        await page.clk(playBtn, 'loop')
 
-      albumLoop()
+        albumLoop()
+      }
+      catch (e) { }
     }
 
     albumLoop()
