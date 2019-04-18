@@ -31,24 +31,22 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-const disconnect = (code = 0) => {
-  socket.emit('customDisconnect', clientId)
+const disconnect = (code = 0, end) => {
+  socket.emit('customDisconnect', end ? false : clientId)
   socket.emit('disconnect')
 
-  setTimeout(() => {
-    process.exit(code)
-  }, 1000 * 5);
+  process.exit(code)
 }
 
 let over = false
 
 socket.on('reStart', () => {
-  disconnect()
+  disconnect(0, true)
 });
 
 process.on('SIGINT', function (code) {
   over = true
-  disconnect()
+  disconnect(0, true)
 });
 
 const getTime = () => {
@@ -680,15 +678,12 @@ const fct = async () => {
 
     const albumLoop = async () => {
       let loopTime = 1000 * 60 * 5 + 1000 * rand(60 * 10)
-      try {
-        await page.waitFor(loopTime)
+      await page.waitFor(loopTime)
 
-        await page.gotoUrl(album())
-        await page.clk(playBtn, 'loop')
+      await page.gotoUrl(album())
+      await page.clk(playBtn, 'loop')
 
-        albumLoop()
-      }
-      catch (e) { }
+      albumLoop()
     }
 
     albumLoop()
