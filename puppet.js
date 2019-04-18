@@ -59,9 +59,9 @@ module.exports = async (userDataDir, noCache) => {
   //   request.continue();
   // });
 
-  page.gotoUrl = async (url) => {
+  page.gotoUrl = async (url, domcontentloaded = false) => {
     try {
-      await page.goto(url, { timeout: 1000 * 60 * 5 })
+      await page.goto(url, { timeout: 1000 * 60 * 5, waitUntil: domcontentloaded ? 'domcontentloaded' : 'load' })
       await page.waitFor(1000 + rand(2000))
       return true
     } catch (e) {

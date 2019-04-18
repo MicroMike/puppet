@@ -486,7 +486,7 @@ const fct = async () => {
       const productName = await page.get('.product-name')
       if (String(productName).match(/Free|free/)) { throw 'del' }
 
-      await page.gotoUrl(album())
+      await page.gotoUrl(album(), true)
     }
     else if (player === 'napster') {
       const issueAccount = await page.ext('.account-issue')
@@ -531,12 +531,6 @@ const fct = async () => {
       }
 
       clickLoop()
-    }
-
-    if (player === 'spotify') {
-      await page.evaluate(() => {
-        window.stop()
-      })
     }
 
     if (player === 'tidal') {
