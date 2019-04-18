@@ -639,11 +639,8 @@ const fct = async () => {
               retry = true
             }
           }
-          else if (player === 'tidal') {
-            await page.clk(playBtn, 'loop')
-            retry = true
-          }
           else {
+            await page.clk(playBtn, 'loop')
             retry = true
           }
 
