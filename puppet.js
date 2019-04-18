@@ -63,6 +63,13 @@ module.exports = async (userDataDir, noCache) => {
     try {
       await page.goto(url, { timeout: 1000 * 60 * 5, waitUntil: domcontentloaded ? 'domcontentloaded' : 'load' })
       await page.waitFor(1000 + rand(2000))
+
+      if (domcontentloaded) {
+        await page.evaluate(() => {
+          window.stop()
+        })
+      }
+
       return true
     } catch (e) {
       throw 'error load'
