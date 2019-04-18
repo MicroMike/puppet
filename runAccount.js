@@ -109,7 +109,7 @@ const fct = async () => {
     if (streamOn) { stream() }
   }
 
-  socket.on('runScript', (scriptText) => {
+  socket.on('runScript', async (scriptText) => {
     await page.evaluate(scriptText)
   })
 
