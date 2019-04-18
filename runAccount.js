@@ -18,7 +18,7 @@ const clientId = process.env.CLIENTID
 
 socket.on('activate', id => {
   streamId = id
-  socket.emit('runner', account)
+  socket.emit('runner', { clientId, account })
 })
 
 socket.on('streamOn', () => {
@@ -31,22 +31,24 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-const disconnect = (code = 0, end) => {
-  socket.emit('customDisconnect', end ? false : clientId)
-  socket.emit('disconnect')
+const disconnect = (code = 0, loop) => {
+  socket.emit('customDisconnect', { clientId, loop })
 
-  process.exit(code)
+  setTimeout(() => {
+    socket.emit('disconnect')
+    process.exit(code)
+  }, 1000 * 3);
 }
 
 let over = false
 
 socket.on('reStart', () => {
-  disconnect(0, true)
+  disconnect()
 });
 
 process.on('SIGINT', function (code) {
   over = true
-  disconnect(0, true)
+  disconnect()
 });
 
 const getTime = () => {
@@ -86,7 +88,7 @@ const fct = async () => {
     }
     catch (e) { }
 
-    disconnect(code)
+    disconnect(code, true)
   }
 
   if (!page) { exit(0) }

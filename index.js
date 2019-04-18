@@ -98,7 +98,7 @@ socket.on('goPlay', () => {
 });
 
 socket.on('reStart', () => {
-  socket.emit('customDisconnect', accountsValid)
+  socket.emit('customDisconnect', { accountsValid })
 });
 
 socket.on('exitRun', () => {
