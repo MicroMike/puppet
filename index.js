@@ -73,8 +73,8 @@ const main = async (account, isCheck) => {
 }
 
 process.on('SIGINT', () => {
-  socket.emit('customDisconnect', { accountsValid })
-  socket.emit('disconnect', clientId)
+  socket.emit('Cdisconnect', accountsValid)
+  socket.emit('disconnect')
   process.exit()
 });
 
@@ -101,7 +101,8 @@ socket.on('goPlay', () => {
 
 socket.on('restartClient', () => {
   console.log('reset')
-  socket.emit('disconnect', accountsValid)
+  socket.emit('Cdisconnect', accountsValid)
+  socket.emit('disconnect')
   process.exit()
 });
 
