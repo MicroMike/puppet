@@ -31,8 +31,8 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-const disconnect = (code = 0, loop = false) => {
-  socket.emit('customDisconnect', { clientId, loop })
+const disconnect = (code = 0) => {
+  socket.emit('customDisconnect', { clientId })
 
   setTimeout(() => {
     socket.emit('disconnect', streamId)
@@ -88,7 +88,9 @@ const fct = async () => {
     }
     catch (e) { }
 
-    disconnect(code, true)
+    socket.emit('player', clientId)
+
+    disconnect(code)
   }
 
   if (!page) { exit(0) }
