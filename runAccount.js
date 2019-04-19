@@ -32,7 +32,7 @@ socket.on('streamOff', () => {
 })
 
 const disconnect = (code = 0) => {
-  socket.emit('disconnect')
+  socket.emit('disconnect', clientId)
   process.exit(code)
 }
 
@@ -83,8 +83,6 @@ const fct = async () => {
       }
     }
     catch (e) { }
-
-    socket.emit('player', clientId)
 
     disconnect(code)
   }
@@ -194,6 +192,7 @@ const fct = async () => {
       playBtn = '.track-list-header .shuffle-button'
       repeatBtn = '.repeat-button'
       repeatBtnOk = '.repeat-button.repeat'
+      nextBtn = '.player-advance-button.icon-next2'
 
       albums = [
         'https://app.napster.com/artist/honey/album/just-another-emotion',
@@ -225,6 +224,7 @@ const fct = async () => {
       pauseBtn = '.playerIconPauseRing'
       shuffleBtn = '.shuffleButton:not(.on)'
       repeatBtn = '.repeatButton:not(.on)'
+      nextBtn = '.nextButton'
 
       albums = [
         'https://music.amazon.fr/albums/B07G9RM2MG',
@@ -256,6 +256,7 @@ const fct = async () => {
       pauseBtn = '.playerIconPauseRing'
       repeatBtn = '[class*="repeatButton"]'
       repeatBtnOk = '[class*="repeatStateIcon"][class*="all"]'
+      nextBtn = '[data-test="next"]'
 
       keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
 
@@ -288,6 +289,7 @@ const fct = async () => {
       repeatBtn = '[class*="spoticon-repeat"]'
       repeatBtnOk = '.spoticon-repeat-16.control-button--active'
       shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
+      nextBtn = '.spoticon-skip-forward-16'
 
       keyCaptcha = '6LeIZkQUAAAAANoHuYD1qz5bV_ANGCJ7n7OAW3mo'
 
@@ -499,7 +501,9 @@ const fct = async () => {
       // const reload = await page.ext('#main-container .not-found')
       await page.gotoUrl(album())
     }
-    else if (check && player === 'amazon') {
+    else if (player === 'amazon') {
+      if (!check) { throw 'tidal' }
+
       console.log('amazon check')
       const waitForLogged = async () => {
         try {
