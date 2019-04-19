@@ -14,5 +14,5 @@ socket.on('runStart', () => {
   shell.exec('npm run rm', { silent: true })
   shell.exec('git clean -fd && git reset --hard origin/master')
   shell.exec('git pull')
-  shell.exec('npm run big')
+  shell.exec('FILE=napsterAccount.txt RAND=true BIG=true node index')
 })
