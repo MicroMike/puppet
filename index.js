@@ -115,5 +115,4 @@ socket.on('check', () => {
 
 socket.on('endCheck', () => {
   pause = false
-  socket.emit('play')
 });
