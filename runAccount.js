@@ -692,7 +692,7 @@ const fct = async () => {
 
     loop()
 
-    let restartTime = 1000 * 60 * 15 + 1000 * rand(60 * 15)
+    let restartTime = 1000 * 60 * 30 + 1000 * rand(60 * 30)
     await page.waitFor(restartTime)
     exit(1)
   }
