@@ -512,6 +512,7 @@ const fct = async () => {
       }
 
       await waitForLogged()
+      await page.gotoUrl(album())
     }
     else if (player !== 'tidal') {
       await page.waitFor(1000 * 3)
