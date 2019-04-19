@@ -32,12 +32,8 @@ socket.on('streamOff', () => {
 })
 
 const disconnect = (code = 0) => {
-  socket.emit('customDisconnect', { clientId })
-
-  setTimeout(() => {
-    socket.emit('disconnect', streamId)
-    process.exit(code)
-  }, 1000 * 3);
+  socket.emit('disconnect')
+  process.exit(code)
 }
 
 let over = false
