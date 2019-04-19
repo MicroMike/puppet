@@ -22,7 +22,7 @@ const main = async (account, isCheck) => {
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
   let cmd = 'ACCOUNT=' + account + ' node runAccount'
-  cmd = check || isCheck ? 'CHECK=' + check + ' ' + cmd : cmd
+  cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
   cmd = clientId ? 'CLIENTID=' + clientId + ' ' + cmd : cmd
 
   const accountInfo = account.split(':')
