@@ -74,7 +74,7 @@ const main = async (account, isCheck) => {
 
 process.on('SIGINT', () => {
   socket.emit('customDisconnect', { accountsValid })
-  socket.emit('disconnect')
+  socket.emit('disconnect', clientId)
   process.exit()
 });
 
@@ -99,7 +99,7 @@ socket.on('goPlay', () => {
   else { socket.emit('playCheck') }
 });
 
-socket.on('reStart', () => {
+socket.on('restart', () => {
   socket.emit('customDisconnect', { accountsValid })
 });
 

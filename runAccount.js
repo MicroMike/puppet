@@ -35,7 +35,7 @@ const disconnect = (code = 0, loop = false) => {
   socket.emit('customDisconnect', { clientId, loop })
 
   setTimeout(() => {
-    socket.emit('disconnect')
+    socket.emit('disconnect', streamId)
     process.exit(code)
   }, 1000 * 3);
 }
@@ -565,7 +565,7 @@ const fct = async () => {
     }
 
     socket.emit('player', clientId)
-    
+
     if (check) {
       await page.waitFor(1000 * 60)
       exit(1)
