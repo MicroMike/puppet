@@ -679,21 +679,6 @@ const fct = async () => {
 
     loop()
 
-    const albumLoop = async () => {
-      let loopTime = 1000 * 60 * 5 + 1000 * rand(60 * 10)
-      try {
-        await page.waitFor(loopTime)
-
-        await page.gotoUrl(album())
-        await page.clk(playBtn, 'loop')
-
-        albumLoop()
-      }
-      catch (e) { }
-    }
-
-    albumLoop()
-
     let restartTime = 1000 * 60 * 15 + 1000 * rand(60 * 15)
     await page.waitFor(restartTime)
     exit(1)
