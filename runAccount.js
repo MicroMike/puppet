@@ -501,6 +501,18 @@ const fct = async () => {
       // const reload = await page.ext('#main-container .not-found')
       await page.gotoUrl(album())
     }
+    else if (check && player === 'amazon') {
+      const waitForLogged = async () => {
+        try {
+          await page.wfs(loggedDom, true)
+        }
+        catch (e) {
+          await waitForLogged()
+        }
+      }
+
+      await waitForLogged()
+    }
     else if (player !== 'tidal') {
       await page.waitFor(1000 * 3)
       await page.gotoUrl(album())
