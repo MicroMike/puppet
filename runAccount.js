@@ -503,9 +503,9 @@ const fct = async () => {
       await page.gotoUrl(album())
     }
     else if (player === 'amazon') {
-      if (!check) { throw 'tidal' }
+      // if (!check) { throw 'tidal' }
 
-      console.log('amazon check')
+      // console.log('amazon check')
       const waitForLogged = async () => {
         try {
           await page.wfs(loggedDom, true)
