@@ -97,8 +97,7 @@ socket.on('runCheck', account => {
 });
 
 socket.on('goPlay', () => {
-  if (!pause) { socket.emit('play', accountsValid) }
-  else { socket.emit('playCheck') }
+  socket.emit('play', accountsValid)
 });
 
 socket.on('restartClient', () => {
@@ -106,12 +105,4 @@ socket.on('restartClient', () => {
   socket.emit('Cdisconnect', accountsValid)
   socket.emit('disconnect')
   process.exit()
-});
-
-socket.on('check', () => {
-  pause = true
-});
-
-socket.on('endCheck', () => {
-  pause = false
 });
