@@ -33,7 +33,6 @@ socket.on('streamOff', () => {
 
 const disconnect = (code = 0) => {
   socket.emit('Cdisconnect', clientId)
-  socket.emit('disconnect')
   process.exit(code)
 }
 

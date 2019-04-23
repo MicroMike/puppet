@@ -75,7 +75,6 @@ const main = async (account, isCheck) => {
 
 process.on('SIGINT', () => {
   socket.emit('Cdisconnect', accountsValid)
-  socket.emit('disconnect')
   process.exit()
 });
 
