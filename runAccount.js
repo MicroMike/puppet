@@ -154,7 +154,7 @@ const fct = async () => {
       try {
         const img = await image2base64(login + '_screenshot.png')
         if (img && code !== 1 && code !== 11) {
-          socket.emit('screen', { streamOn, streamId, img, log: account + ' => ' + e })
+          socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + e })
         }
       }
       catch (e) { }
@@ -721,9 +721,9 @@ const fct = async () => {
       exit(1)
     })
 
-    // let restartTime = 1000 * 60 * 30 + 1000 * rand(60 * 30)
-    // await page.waitFor(restartTime)
-    // exit(1)
+    let restartTime = 1000 * 60 * 30 + 1000 * rand(60 * 30)
+    await page.waitFor(restartTime)
+    exit(1)
   }
   catch (e) {
     catchFct(e)

@@ -35,17 +35,7 @@ const main = async (account, isCheck) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
     let errorMsg = 'Other'
-    errorMsg = code === 0 ? 'KO' : errorMsg
     errorMsg = code === 1 ? 'Loop' : errorMsg
-    errorMsg = code === 2 ? 'First play' : errorMsg
-    errorMsg = code === 3 ? 'Loop play' : errorMsg
-    errorMsg = code === 4 ? 'Del' : errorMsg
-    errorMsg = code === 5 ? 'Retry' : errorMsg
-    errorMsg = code === 6 ? 'Tidal' : errorMsg
-    errorMsg = code === 7 ? 'FillForm' : errorMsg
-    errorMsg = code === 8 ? 'Login' : errorMsg
-    errorMsg = code === 9 ? 'No bar' : errorMsg
-    errorMsg = code === 10 ? 'Crashed' : errorMsg
     errorMsg = code === 11 ? 'Used' : errorMsg
 
     if (code === 4) {
