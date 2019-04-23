@@ -418,8 +418,8 @@ const fct = async () => {
         if (needLog) {
           if (!check) { throw 'tidal' }
 
-          await page.inst(username, login)
-          await page.clk('#recap-invisible')
+          // await page.inst(username, login)
+          // await page.clk('#recap-invisible')
 
           // socket.emit('player', clientId)
           tidalCaptcha = true
@@ -435,7 +435,8 @@ const fct = async () => {
 
           // await waitForPassword()
           const captcha = await resolveCaptcha(url)
-          await page.gotoUrl(url)
+          await page.rload()
+          await page.inst(username, login)
           await log(captcha)
 
           await page.inst(password, pass)
