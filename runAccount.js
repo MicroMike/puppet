@@ -18,7 +18,7 @@ const clientId = process.env.CLIENTID
 
 socket.on('activate', id => {
   streamId = id
-  socket.emit('runner', { clientId, account })
+  socket.emit('runner', { clientId, account, id })
 })
 
 socket.on('streamOn', () => {

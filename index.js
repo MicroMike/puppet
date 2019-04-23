@@ -83,7 +83,7 @@ socket.on('activate', (id) => {
   clientId = id
   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
     if (err) return console.log(err);
-    socket.emit('ok', { accountsValid, max, env: process.env, del, first })
+    socket.emit('ok', { accountsValid, max, env: process.env, del, first, id })
     first = false
   })
 })
