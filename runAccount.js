@@ -421,11 +421,11 @@ const fct = async () => {
           await page.inst(username, login)
           await page.clk('#recap-invisible')
 
-          socket.emit('player', clientId)
+          // socket.emit('player', clientId)
+          tidalCaptcha = true
 
           const waitForPassword = async () => {
             try {
-              tidalCaptcha = true
               await page.inst(password, pass)
             }
             catch (e) {
@@ -433,8 +433,12 @@ const fct = async () => {
             }
           }
 
-          await waitForPassword()
+          // await waitForPassword()
+          const captcha = await resolveCaptcha(url)
+          await page.gotoUrl(url)
+          await log(captcha)
 
+          await page.inst(password, pass)
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
           const logged = await page.wfs(loggedDom)
