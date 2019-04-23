@@ -695,6 +695,7 @@ const fct = async () => {
 
         t2 = t1
 
+        socket.emit('stayAlive')
         await page.waitFor(1000 * 10)
         loop()
       }
