@@ -706,7 +706,7 @@ const fct = async () => {
 
     loop()
 
-    socket.on('loop', () => {
+    socket.on('runnerLoop', () => {
       exit(1)
     })
 
