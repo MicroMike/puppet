@@ -102,6 +102,5 @@ socket.on('goPlay', () => {
 socket.on('restartClient', () => {
   console.log('reset')
   socket.emit('Cdisconnect', accountsValid)
-  socket.emit('disconnect')
   process.exit()
 });
