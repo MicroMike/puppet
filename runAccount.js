@@ -17,8 +17,8 @@ const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 
 socket.on('activate', id => {
-  streamId = id
-  socket.emit('runner', { clientId, account, id })
+  if (!streamId) { streamId = id }
+  socket.emit('runner', { clientId, account, id: streamId })
 })
 
 socket.on('streamOn', () => {
