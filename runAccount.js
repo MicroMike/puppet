@@ -39,10 +39,6 @@ const disconnect = (code = 0) => {
 
 let over = false
 
-socket.on('reStart', () => {
-  disconnect()
-});
-
 process.on('SIGINT', function (code) {
   over = true
   disconnect()
@@ -503,9 +499,6 @@ const fct = async () => {
       await page.gotoUrl(album())
     }
     else if (player === 'amazon') {
-      // if (!check) { throw 'tidal' }
-
-      // console.log('amazon check')
       const waitForLogged = async () => {
         try {
           await page.wfs(loggedDom, true)
@@ -516,10 +509,6 @@ const fct = async () => {
       }
 
       await waitForLogged()
-      await page.gotoUrl(album())
-    }
-    else if (player !== 'tidal') {
-      await page.waitFor(1000 * 3)
       await page.gotoUrl(album())
     }
 
@@ -538,7 +527,23 @@ const fct = async () => {
       if (stopBeforePlay) { exit(11) }
     }
 
-    await page.clk(playBtn, 'first play')
+    try {
+      await page.clk(playBtn, 'first play')
+    }
+    catch (e) {
+      await page.screenshot({ path: 'firstPlay_' + account + '.png' });
+
+      try {
+        const img = await image2base64('firstPlay_' + account + '.png')
+        if (img) {
+          socket.emit('screen', { streamOn, streamId, img, log: account + ' => firstPlay' })
+        }
+      }
+      catch (e) { }
+
+      await page.gotoUrl(album())
+      await page.clk(playBtn, 'first play')
+    }
 
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
       await page.waitFor(2000 + rand(2000))

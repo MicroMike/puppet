@@ -29,7 +29,7 @@ const main = async (account, isCheck) => {
   const player = accountInfo[0]
   const login = accountInfo[1]
 
-  shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
+  // shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
