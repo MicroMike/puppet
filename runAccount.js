@@ -673,9 +673,7 @@ const fct = async () => {
             }
           }
           else {
-            if (player !== 'tidal') {
-              await page.gotoUrl(album())
-            }
+            await page.gotoUrl(album())
             await page.clk(playBtn, 'failedLoop')
             retry = true
           }
