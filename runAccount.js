@@ -85,15 +85,20 @@ const fct = async () => {
 
   if (!page) { exit(0) }
 
-  stream = async () => {
-    await page.screenshot({ path: 'stream_' + account + '.png' })
+  const takeScreenshot = async (name, e) => {
+    await page.screenshot({ path: name + '_' + account + '.png' });
+
     try {
-      const img = await image2base64('stream_' + account + '.png')
+      const img = await image2base64(name + '_' + account + '.png')
       if (img) {
-        socket.emit('stream', { streamOn, streamId, img })
+        socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + name })
       }
     }
     catch (e) { }
+  }
+
+  stream = async () => {
+    await takeScreenshot('stream')
     await page.waitFor(3000)
 
     if (++countStream > maxStream) {
@@ -141,7 +146,6 @@ const fct = async () => {
     code = e === 'no bar' ? 9 : code
     code = e === 'crashed' ? 10 : code
 
-    const imgPath = login + '_screenshot.png'
     console.log(getTime() + " ERR ", account, e)
 
     try {
@@ -149,15 +153,9 @@ const fct = async () => {
         await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
 
-      await page.screenshot({ path: imgPath });
-
-      try {
-        const img = await image2base64(login + '_screenshot.png')
-        if (img && code !== 1 && code !== 11) {
-          socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + e })
-        }
+      if (code !== 1 && code !== 11) {
+        await takeScreenshot(login, e)
       }
-      catch (e) { }
 
       await page.waitFor(5000 + rand(2000))
       await page.cls()
@@ -534,27 +532,30 @@ const fct = async () => {
       if (stopBeforePlay) { exit(11) }
     }
 
-    try {
-      await page.clk(playBtn, 'first play')
-    }
-    catch (e) {
-      await page.screenshot({ path: 'firstPlay_' + account + '.png' });
-
+    let firstWait = true
+    const waitForPlayBtn = async () => {
       try {
-        const img = await image2base64('firstPlay_' + account + '.png')
-        if (img) {
-          socket.emit('screen', { streamOn, streamId, img, log: account + ' => firstPlay' })
+        await page.ext(playBtn)
+        if (!firstWait) {
+          socket.emit('retryOk')
         }
       }
-      catch (e) { }
-
-      if (player === 'napster') {
-        throw 'first play'
+      catch (e) {
+        await takeScreenshot('firstPlay')
+        await page.rload()
+        if (firstWait) {
+          firstWait = false
+          await waitForPlayBtn()
+        }
+        else {
+          throw 'first play'
+        }
       }
-
-      await page.gotoUrl(album())
-      await page.clk(playBtn, 'first play')
     }
+
+    await waitForPlayBtn()
+
+    await page.clk(playBtn, 'first play')
 
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
@@ -695,18 +696,7 @@ const fct = async () => {
 
           if (retry && !retryDom) {
             retryDom = true
-
-            await page.screenshot({ path: 'retry_' + account + '.png' });
-
-            try {
-              const img = await image2base64('retry_' + account + '.png')
-              if (img) {
-                socket.emit('screen', { streamOn, streamId, img, log: account + ' => retry' })
-              }
-            }
-            catch (e) { }
-            // await page.gotoUrl(album())
-            // await page.clk(playBtn, 'loop play')
+            await takeScreenshot('retry')
           }
         }
 
