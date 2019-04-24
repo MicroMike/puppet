@@ -682,10 +682,7 @@ const fct = async () => {
             }
           }
           else {
-            const btnExist = await page.ext(playBtn)
-            if (!btnExist) {
-              await page.gotoUrl(album())
-            }
+            await page.gotoUrl(album())
             await page.clk(playBtn, 'loop')
             retry = true
           }
