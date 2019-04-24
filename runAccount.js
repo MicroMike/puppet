@@ -137,14 +137,9 @@ const fct = async () => {
     let code = 0
 
     code = e === 'first play' ? 2 : code
-    code = e === 'loop' ? 3 : code
+    code = e === 'failedLoop' ? 3 : code
     code = e === 'del' ? 4 : code
     code = e === 'retry' ? 5 : code
-    code = e === 'tidal' ? 6 : code
-    code = e === 'fillForm' ? 7 : code
-    code = e === 'login' ? 8 : code
-    code = e === 'no bar' ? 9 : code
-    code = e === 'crashed' ? 10 : code
 
     console.log(getTime() + " ERR ", account, e)
 
@@ -153,9 +148,7 @@ const fct = async () => {
         await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
 
-      if (code !== 1 && code !== 11) {
-        await takeScreenshot(login, e)
-      }
+      await takeScreenshot(login, code !== 4 ? e : false)
 
       await page.waitFor(5000 + rand(2000))
       await page.cls()
@@ -690,7 +683,7 @@ const fct = async () => {
             if (player !== 'tidal') {
               await page.gotoUrl(album())
             }
-            await page.clk(playBtn, 'loop')
+            await page.clk(playBtn, 'failedLoop')
             retry = true
           }
 
