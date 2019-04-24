@@ -86,9 +86,9 @@ const fct = async () => {
   if (!page) { exit(0) }
 
   const takeScreenshot = async (name, e) => {
-    await page.screenshot({ path: name + '_' + account + '.png' });
-
     try {
+      await page.screenshot({ path: name + '_' + account + '.png' });
+
       const img = await image2base64(name + '_' + account + '.png')
       if (img) {
         socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + name })
@@ -148,7 +148,7 @@ const fct = async () => {
         await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
 
-      await takeScreenshot('throw', code !== 4 ? e : false)
+      await takeScreenshot('throw', e)
 
       await page.waitFor(5000 + rand(2000))
       await page.cls()
