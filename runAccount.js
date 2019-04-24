@@ -311,7 +311,7 @@ const fct = async () => {
           method: 'POST',
           json: true,
           data: {
-            clientKey: '0cab7e41bab98900c321592426ec2183',
+            clientKey: '1598b04fcee925998a78c2b75fd4dbd0',
             task: {
               type: 'NoCaptchaTaskProxyless',
               websiteURL,
@@ -333,7 +333,7 @@ const fct = async () => {
               method: 'POST',
               json: true,
               data: {
-                clientKey: '0cab7e41bab98900c321592426ec2183',
+                clientKey: '1598b04fcee925998a78c2b75fd4dbd0',
                 taskId: response.taskId
               }
             }, function (err, res, response) {
