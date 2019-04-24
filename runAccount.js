@@ -148,7 +148,7 @@ const fct = async () => {
         await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
 
-      await takeScreenshot(login, code !== 4 ? e : false)
+      await takeScreenshot('throw', code !== 4 ? e : false)
 
       await page.waitFor(5000 + rand(2000))
       await page.cls()
@@ -525,24 +525,19 @@ const fct = async () => {
       if (stopBeforePlay) { exit(11) }
     }
 
-    let firstWait = true
     const waitForPlayBtn = async () => {
       try {
-        await page.ext(playBtn)
-        if (!firstWait) {
-          socket.emit('retryOk')
-        }
+        await page.clk(playBtn, 'first play')
+        socket.emit('retryOk')
       }
       catch (e) {
+        firstWait = false
         await takeScreenshot('firstPlay')
-        await page.rload()
-        if (firstWait) {
-          firstWait = false
-          await waitForPlayBtn()
-        }
-        else {
+        if (player === 'napster') {
           throw 'first play'
         }
+        await page.rload()
+        await waitForPlayBtn()
       }
     }
 
