@@ -721,7 +721,7 @@ const fct = async () => {
       exit(1)
     })
 
-    let restartTime = 1000 * 60 * 30 + 1000 * rand(60 * 30)
+    let restartTime = 1000 * 60 * 40 + 1000 * rand(60 * 20)
     await page.waitFor(restartTime)
     exit(1)
   }
