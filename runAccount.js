@@ -525,17 +525,15 @@ const fct = async () => {
       if (stopBeforePlay) { exit(11) }
     }
 
+    let trys = 0
     const waitForPlayBtn = async () => {
       try {
-        await page.clk(playBtn, 'first play')
+        await page.ext(playBtn)
         socket.emit('retryOk')
       }
       catch (e) {
-        firstWait = false
         await takeScreenshot('firstPlay')
-        if (player === 'napster') {
-          throw 'first play'
-        }
+        if (++trys >= 3) { throw 'first play' }
         await page.rload()
         await waitForPlayBtn()
       }
