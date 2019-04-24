@@ -415,7 +415,7 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
-          if (!check) { throw 'tidal' }
+          if (!check) { throw 'tidal not log' }
 
           // await page.inst(username, login)
           // await page.clk('#recap-invisible')
@@ -547,6 +547,10 @@ const fct = async () => {
         }
       }
       catch (e) { }
+
+      if (player === 'napster') {
+        throw 'first play'
+      }
 
       await page.gotoUrl(album())
       await page.clk(playBtn, 'first play')
