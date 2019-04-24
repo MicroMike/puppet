@@ -34,7 +34,7 @@ const main = async (account, isCheck) => {
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
 
-    let errorMsg = 'Other'
+    let errorMsg = null
     errorMsg = code === 0 ? 'KO' : errorMsg
     errorMsg = code === 1 ? 'Loop' : errorMsg
     errorMsg = code === 11 ? 'Used' : errorMsg
