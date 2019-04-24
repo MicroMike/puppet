@@ -707,7 +707,7 @@ const fct = async () => {
           }
         }
 
-        socket.emit('stayAlive')
+        // socket.emit('stayAlive')
         loop()
       }
       catch (e) {
