@@ -91,7 +91,7 @@ const fct = async () => {
 
       const img = await image2base64(name + '_' + account + '.png')
       if (img) {
-        socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + name })
+        socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + (e || name) })
       }
     }
     catch (e) { }
