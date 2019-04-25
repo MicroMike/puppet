@@ -142,7 +142,7 @@ const fct = async () => {
     code = e === 'retry' ? 5 : code
     code = e === 'crashed' ? 6 : code
     code = e === 'error' ? 7 : code
-    code = e === 'fillForm' ? 8 : code
+    code = e === 'fillForm' ? 5 : code
     code = e === 'login' ? 9 : code
     code = e === 'no bar' ? 10 : code
     code = e === 'used' ? 11 : code
@@ -416,7 +416,7 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
-          if (!check) { throw 'tidal not log' }
+          // if (!check) { throw 'tidal not log' }
 
           // await page.inst(username, login)
           // await page.clk('#recap-invisible')
@@ -577,6 +577,9 @@ const fct = async () => {
     }
 
     if (tidalCaptcha) {
+      await page.waitFor(1000 * 60 * 2)
+      await page.gotoUrl(album())
+      await page.clk(playBtn, 'tidalPush')
       shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
     }
 
