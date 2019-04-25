@@ -562,7 +562,8 @@ const fct = async () => {
       if (stopBeforePlay) { throw 'used' }
 
       const spotErr = await page.get('.ErrorPage__inner', 'innerText')
-      if (String(spotErr).match(/limit/)) {
+      if (String(spotErr).match(/limit/) || true) {
+        await takeScreenshot('firstPlay')
         await page.cls()
         page = await puppet('save/' + player + '_' + login, false, true)
         await page.gotoUrl(album())
