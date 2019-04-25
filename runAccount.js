@@ -472,13 +472,20 @@ const fct = async () => {
       await page.inst(password, pass)
 
       if (player !== 'amazon') {
-        const loginFill = await page.get(username, 'value')
-        const passFill = await page.get(password, 'value')
+        let loginFill = await page.get(username, 'value')
+        let passFill = await page.get(password, 'value')
 
         if (!loginFill || !passFill) {
-          // await page.inst(usernameInput ? username : password, login, true)
-          // await page.inst(password, pass, true)
-          throw 'fillForm'
+          await takeScreenshot('fillForm')
+          await page.inst(username, login, true)
+          await page.inst(password, pass, true)
+
+          loginFill = await page.get(username, 'value')
+          passFill = await page.get(password, 'value')
+
+          if (!loginFill || !passFill) {
+            throw 'fillForm'
+          }
         }
       }
 
