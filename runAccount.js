@@ -154,7 +154,7 @@ const fct = async () => {
         await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
 
-      if (code !== 1) {
+      if (code !== 1 && code !== 11) {
         await takeScreenshot('throw', e)
       }
 

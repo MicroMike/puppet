@@ -37,7 +37,7 @@ const main = async (account, isCheck) => {
     let errorMsg = null
     errorMsg = code === 0 ? 'KO' : errorMsg
     errorMsg = code === 1 ? 'Loop' : errorMsg
-    errorMsg = code === 11 && player !== 'spotify' ? 'Used' : errorMsg
+    errorMsg = code === 11 ? 'Used' : errorMsg
 
     if (code === 4) {
       // 4 = DEL
