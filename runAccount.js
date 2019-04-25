@@ -31,10 +31,6 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-socket.on('disconnect', () => {
-  console.log('OOOUT')
-})
-
 const disconnect = (code = 0) => {
   socket.emit('Cdisconnect', clientId)
   process.exit(code)
@@ -72,6 +68,7 @@ const fct = async () => {
   const player = accountInfo[0]
   const login = accountInfo[1]
   const pass = accountInfo[2]
+  let code = 0
 
   let noCache = player === 'napster' || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
@@ -88,6 +85,18 @@ const fct = async () => {
   }
 
   if (!page) { exit(0) }
+
+  socket.on('Sdisconnect', () => {
+    console.log('OOOUT')
+    code = 100
+
+    try {
+      await page.cls()
+    }
+    catch (e) { }
+
+    exit(code)
+  })
 
   const takeScreenshot = async (name, e) => {
     try {
@@ -136,7 +145,6 @@ const fct = async () => {
 
   let connected = false
   let suppressed = false
-  let code = 0
 
   const catchFct = async (e) => {
     code = e === 'loop' ? 1 : code
