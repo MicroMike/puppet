@@ -2,7 +2,6 @@ process.setMaxListeners(0)
 
 const fs = require('fs');
 const puppet = require('./puppet')
-const puppet2 = require('./puppet')
 const request = require('ajax-request');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
@@ -73,7 +72,6 @@ const fct = async () => {
 
   let noCache = player === 'napster'// || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
-  let page2
 
   const exit = async (code) => {
     try {
@@ -100,9 +98,9 @@ const fct = async () => {
     exit(code)
   })
 
-  const takeScreenshot = async (name, e, pagex = page) => {
+  const takeScreenshot = async (name, e) => {
     try {
-      await pagex.screenshot({ path: name + '_' + account + '.png' });
+      await page.screenshot({ path: name + '_' + account + '.png' });
 
       const img = await image2base64(name + '_' + account + '.png')
       if (img) {
@@ -563,15 +561,20 @@ const fct = async () => {
       const stopBeforePlay = await page.ext(usedDom)
       if (stopBeforePlay) { throw 'used' }
 
+      const currentUA = await page.evaluate(() => {
+        return navigator.userAgent
+      })
+      const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
+
       const spotErr = await page.get('.ErrorPage__inner', 'innerText')
       if (String(spotErr).match(/limit/) || true) {
         await takeScreenshot('firstPlay')
-        page2 = await puppet2('save/' + player + '_' + login, false, true)
-        await page2.gotoUrl(album())
-        takeScreenshot('mobile', null, page2)
-        await page2.clk('[class*="Metronome"]')
-        await page2.waitFor(1000 * 60)
-        await page2.cls()
+        await page.setUserAgent(ua)
+        await page.gotoUrl(album())
+        takeScreenshot('mobile')
+        await page.clk('[class*="Metronome"]')
+        await page.waitFor(1000 * 60)
+        await page.setUserAgent(currentUA)
         await page.gotoUrl(album())
       }
     }
