@@ -160,7 +160,9 @@ const fct = async () => {
     code = e === 'no bar' ? 10 : code
     code = e === 'used' ? 11 : code
 
-    console.log(getTime() + " ERR ", account, e)
+    if (code !== 1 && code !== 11) {
+      console.log(getTime() + " ERR ", account, e)
+    }
 
     try {
       if (code !== 1 && code !== 11) {
@@ -567,7 +569,7 @@ const fct = async () => {
       const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
 
       const spotErr = await page.get('.ErrorPage__inner', 'innerText')
-      if (String(spotErr).match(/limit/)) {
+      if (String(spotErr).match(/limit/) || true) {
         await takeScreenshot('firstPlay')
         await page.setUserAgent(ua)
         await page.gotoUrl(album())
