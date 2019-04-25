@@ -31,6 +31,10 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
+socket.on('disconnect', () => {
+  console.log('OOOUT')
+})
+
 const disconnect = (code = 0) => {
   socket.emit('Cdisconnect', clientId)
   process.exit(code)
