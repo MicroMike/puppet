@@ -681,6 +681,13 @@ const fct = async () => {
             await page.jClk('.player-play-button .icon-play-button')
             await page.waitFor(1000 * 15)
 
+            try {
+              t1 = await page.evaluate(({ timeLine, style }) => {
+                return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
+              }, { timeLine, style })
+            }
+            catch (e) { return exit(0) }
+
             if (t1 === '0%') {
               retry = true
             }
