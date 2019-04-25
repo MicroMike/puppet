@@ -86,7 +86,7 @@ const fct = async () => {
 
   if (!page) { exit(0) }
 
-  socket.on('Sdisconnect', () => {
+  socket.on('Sdisconnect', async () => {
     console.log('OOOUT')
     code = 100
 
