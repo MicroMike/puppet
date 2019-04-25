@@ -156,14 +156,21 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
-  page.inst = async (selector, text) => {
+  page.inst = async (selector, text, force) => {
     try {
       await page.wfs(selector, true)
-      await page.evaluate(selector => {
-        document.querySelector(selector).value = ''
-        document.querySelector(selector).focus()
-      }, selector)
-      await page.type(selector, text, { delay: 150 });
+      if (force) {
+        await page.evaluate(({ selector, text }) => {
+          document.querySelector(selector).value = text
+        }, { selector, text })
+      }
+      else {
+        await page.evaluate(selector => {
+          document.querySelector(selector).value = ''
+          document.querySelector(selector).focus()
+        }, selector)
+        await page.type(selector, text, { delay: 150 });
+      }
       return true
     }
     catch (e) {

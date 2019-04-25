@@ -461,9 +461,14 @@ const fct = async () => {
       await page.waitFor(2000 + rand(2000))
       await page.gotoUrl(url)
 
-      usernameInput = await page.ext(username)
+      if (player === 'amazon') {
+        usernameInput = await page.ext(username)
+        await page.inst(usernameInput ? username : password, login)
+      }
+      else {
+        await page.inst(username, login)
+      }
 
-      await page.inst(usernameInput ? username : password, login)
       await page.inst(password, pass)
 
       if (player !== 'amazon') {
@@ -471,6 +476,8 @@ const fct = async () => {
         const passFill = await page.get(password, 'value')
 
         if (!loginFill || !passFill) {
+          // await page.inst(usernameInput ? username : password, login, true)
+          // await page.inst(password, pass, true)
           throw 'fillForm'
         }
       }
