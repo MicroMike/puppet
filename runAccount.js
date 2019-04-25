@@ -572,7 +572,7 @@ const fct = async () => {
         await page.setUserAgent(ua)
         await page.gotoUrl(album())
         takeScreenshot('mobile')
-        await page.clk('[class*="Metronome"]')
+        await page.clk('[data-log-action="play-spotify"]')
         await page.waitFor(1000 * 60)
         await page.setUserAgent(currentUA)
         await page.gotoUrl(album())
