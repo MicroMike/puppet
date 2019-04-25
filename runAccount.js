@@ -569,13 +569,13 @@ const fct = async () => {
       const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
 
       const spotErr = await page.get('.ErrorPage__inner', 'innerText')
-      if (String(spotErr).match(/limit/) || true) {
+      if (String(spotErr).match(/limit/)) {
         await takeScreenshot('firstPlay')
         await page.setUserAgent(ua)
         await page.gotoUrl(album())
-        takeScreenshot('mobile')
+        await takeScreenshot('mobile')
         await page.clk('[data-log-action="play-spotify"]')
-        await page.waitFor(1000 * 60)
+        await page.waitFor(1000 * 30)
         await page.setUserAgent(currentUA)
         await page.gotoUrl(album())
       }
