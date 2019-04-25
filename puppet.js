@@ -65,9 +65,12 @@ module.exports = async (userDataDir, noCache) => {
       await page.waitFor(3000 + rand(2000))
 
       setTimeout(async () => {
-        await page.evaluate(() => {
-          window.stop()
-        })
+        try {
+          await page.evaluate(() => {
+            window.stop()
+          })
+        }
+        catch (e) { }
       }, 1000 * 60);
 
       return true
