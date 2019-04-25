@@ -562,7 +562,7 @@ const fct = async () => {
       catch (e) {
         await takeScreenshot('firstPlay')
         if (++trys >= 3) { throw 'first play' }
-        await page.rload()
+        await page.gotoUrl(album())
         await waitForPlayBtn()
       }
     }
