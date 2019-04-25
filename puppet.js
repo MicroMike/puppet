@@ -6,7 +6,7 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-module.exports = async (userDataDir, noCache) => {
+module.exports = async (userDataDir, noCache, cspot) => {
 
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
@@ -23,7 +23,12 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
-  if (noCache) {
+  if (cspot) {
+    const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
+    params.args.push(ua)
+  }
+
+  if (noCache && !cspot) {
     delete params.userDataDir
   }
 

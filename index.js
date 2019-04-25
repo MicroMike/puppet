@@ -30,9 +30,12 @@ const main = async (account, isCheck) => {
   const player = accountInfo[0]
   const login = accountInfo[1]
 
-  // shell.exec('find save/' + player + '_' + login + ' -type f ! -iname "Cookies" -delete', { silent: true })
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
+
+    if (player === 'spotify') {
+      shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+    }
 
     let errorMsg = null
     errorMsg = code === 0 ? 'KO' : errorMsg
@@ -54,7 +57,7 @@ const main = async (account, isCheck) => {
     }
     else if (code === 5) {
       // 5 = RETRY
-      main(account)
+      main(account, null)
     }
     else {
       socket.emit('loop', { errorMsg, account })

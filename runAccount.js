@@ -70,7 +70,7 @@ const fct = async () => {
   const pass = accountInfo[2]
   let code = 0
 
-  let noCache = player === 'napster' || player === 'spotify'
+  let noCache = player === 'napster'// || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
   const exit = async (code) => {
@@ -152,6 +152,7 @@ const fct = async () => {
     code = e === 'tidal not log' ? 3 : code
     code = e === 'del' ? 4 : code
     code = e === 'retry' ? 5 : code
+    code = e === 'retry2' ? 55 : code
     code = e === 'crashed' ? 6 : code
     code = e === 'error' ? 7 : code
     code = e === 'fillForm' ? 5 : code
@@ -559,6 +560,19 @@ const fct = async () => {
       await page.waitFor(2000 + rand(2000))
       const stopBeforePlay = await page.ext(usedDom)
       if (stopBeforePlay) { throw 'used' }
+
+      const spotErr = await page.get('.ErrorPage__inner', 'innerText')
+      if (String(spotErr).match(/limit/)) {
+        await page.cls()
+        page = await puppet('save/' + player + '_' + login, false, true)
+        await page.gotoUrl(album())
+        await takeScreenshot('mobile')
+        await page.clk('[class*="Metronome"]')
+        await page.waitFor(1000 * 60)
+        await page.cls()
+        page = await puppet('save/' + player + '_' + login, false)
+        await page.gotoUrl(album())
+      }
     }
 
     let trys = 0
