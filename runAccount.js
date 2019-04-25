@@ -150,12 +150,12 @@ const fct = async () => {
     console.log(getTime() + " ERR ", account, e)
 
     try {
-      if (code === 2 && player === "spotify") {
-        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
-      }
-
       if (code !== 1 && code !== 11) {
         await takeScreenshot('throw', e)
+      }
+
+      if (code === 2 && player === "spotify") {
+        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
 
       await page.waitFor(5000 + rand(2000))
