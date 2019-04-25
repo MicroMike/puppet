@@ -132,14 +132,20 @@ const fct = async () => {
 
   let connected = false
   let suppressed = false
+  let code = 0
 
   const catchFct = async (e) => {
-    let code = 0
-
+    code = e === 'loop' ? 1 : code
     code = e === 'first play' ? 2 : code
-    code = e === 'failedLoop' ? 3 : code
+    code = e === 'tidal not log' ? 3 : code
     code = e === 'del' ? 4 : code
     code = e === 'retry' ? 5 : code
+    code = e === 'crashed' ? 6 : code
+    code = e === 'error' ? 7 : code
+    code = e === 'fillForm' ? 8 : code
+    code = e === 'login' ? 9 : code
+    code = e === 'no bar' ? 10 : code
+    code = e === 'used' ? 11 : code
 
     console.log(getTime() + " ERR ", account, e)
 
@@ -148,7 +154,9 @@ const fct = async () => {
         await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
       }
 
-      await takeScreenshot('throw', e)
+      if (code !== 1) {
+        await takeScreenshot('throw', e)
+      }
 
       await page.waitFor(5000 + rand(2000))
       await page.cls()
@@ -158,15 +166,17 @@ const fct = async () => {
     exit(code)
   }
 
-  page.on('error', function (err) {
-    catchFct('crashed')
-  });
-
-  page.on('close', function (err) {
-    exit(0)
-  });
-
   try {
+    page.on('error', function (err) {
+      throw 'crashed'
+    });
+
+    page.on('close', function (err) {
+      if (code === 0) {
+        exit(0)
+      }
+    });
+
     if (player === 'napster') {
       url = 'https://app.napster.com/login/'
       loggedDom = '.track-list-header .shuffle-button'
@@ -191,9 +201,9 @@ const fct = async () => {
         'https://app.napster.com/artist/lapilluledors/album/red-beast',
         'https://app.napster.com/artist/dj-reid/album/satisfaction-spell',
         'https://app.napster.com/artist/xondes/album/the-last-heat',
-        'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
-        'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
-        'https://app.napster.com/artist/xondes/album/wicked-344744668',
+        // 'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
+        // 'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
+        // 'https://app.napster.com/artist/xondes/album/wicked-344744668',
       ]
 
       usedDom = '.player-error-box'
@@ -222,9 +232,9 @@ const fct = async () => {
         'https://music.amazon.fr/albums/B07MTV7JYS',
         'https://music.amazon.fr/albums/B07PGN58LX',
         'https://music.amazon.fr/albums/B07QCBN3Z4',
-        'https://music.amazon.fr/albums/B07M75PR8X',
-        'https://music.amazon.fr/albums/B07LGWP7SX',
-        'https://music.amazon.fr/albums/B07MBH9D43',
+        // 'https://music.amazon.fr/albums/B07M75PR8X',
+        // 'https://music.amazon.fr/albums/B07LGWP7SX',
+        // 'https://music.amazon.fr/albums/B07MBH9D43',
       ]
 
       usedDom = '.concurrentStreamsPopover'
@@ -255,9 +265,9 @@ const fct = async () => {
         'https://listen.tidal.com/album/102564740',
         'https://listen.tidal.com/album/102503463',
         'https://listen.tidal.com/album/105237098',
-        'https://listen.tidal.com/album/101962381',
-        'https://listen.tidal.com/album/101352536',
-        'https://listen.tidal.com/album/101844025',
+        // 'https://listen.tidal.com/album/101962381',
+        // 'https://listen.tidal.com/album/101352536',
+        // 'https://listen.tidal.com/album/101844025',
       ]
 
       usedDom = '.WARN'
@@ -288,9 +298,9 @@ const fct = async () => {
         'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',
         'https://open.spotify.com/album/2kFEMTIWWw0jXD57Ewr7go',
         'https://open.spotify.com/album/4BR7o0DwEPj1wF1nfcypiY',
-        'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
-        'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
-        'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
+        // 'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
+        // 'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
+        // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
       ]
       usedDom = '.ConnectBar'
     }
@@ -522,7 +532,7 @@ const fct = async () => {
     if (player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
       const stopBeforePlay = await page.ext(usedDom)
-      if (stopBeforePlay) { exit(11) }
+      if (stopBeforePlay) { throw 'used' }
     }
 
     let trys = 0
@@ -574,7 +584,7 @@ const fct = async () => {
 
     if (check) {
       await page.waitFor(1000 * 60)
-      exit(1)
+      throw 'loop'
     }
 
 
@@ -607,11 +617,11 @@ const fct = async () => {
               await page.jClk('#wimp > div > div > div > div > div > button')
             }
             else {
-              exit(11)
+              throw 'used'
             }
           }
           else {
-            exit(11)
+            throw 'used'
           }
         }
       }
@@ -640,7 +650,7 @@ const fct = async () => {
             return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
           }, { timeLine, style })
 
-          await page.waitFor(1000 * 5)
+          await page.waitFor(1000 * 10)
 
           t2 = await page.evaluate(({ timeLine, style }) => {
             return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
@@ -695,12 +705,17 @@ const fct = async () => {
     loop()
 
     socket.on('runnerLoop', () => {
-      exit(1)
+      throw 'loop'
     })
 
-    let restartTime = 1000 * 60 * 40 + 1000 * rand(60 * 20)
+    let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
+    await page.waitFor(changeTime)
+    await page.gotoUrl(album())
+    await page.clk(playBtn, 'changeLoop')
+
+    let restartTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
     await page.waitFor(restartTime)
-    exit(1)
+    throw 'loop'
   }
   catch (e) {
     catchFct(e)
