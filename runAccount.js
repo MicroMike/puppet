@@ -72,6 +72,7 @@ const fct = async () => {
 
   let noCache = player === 'napster'// || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
+  let page2 = page
 
   const exit = async (code) => {
     try {
@@ -564,14 +565,16 @@ const fct = async () => {
       const spotErr = await page.get('.ErrorPage__inner', 'innerText')
       if (String(spotErr).match(/limit/) || true) {
         await takeScreenshot('firstPlay')
-        await page.cls()
         page = await puppet('save/' + player + '_' + login, false, true)
+        await page2.cls()
+        page2 = page
         await page.gotoUrl(album())
         await takeScreenshot('mobile')
         await page.clk('[class*="Metronome"]')
         await page.waitFor(1000 * 60)
-        await page.cls()
         page = await puppet('save/' + player + '_' + login, false)
+        await page2.cls()
+        page2 = page
         await page.gotoUrl(album())
       }
     }
