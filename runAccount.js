@@ -194,7 +194,7 @@ const fct = async () => {
 
     if (player === 'napster') {
       url = 'https://app.napster.com/login/'
-      loggedDom = '.track-list-header .shuffle-button'
+      loggedDom = '.nav-settings'
 
       username = '#username'
       password = '#password'
@@ -739,6 +739,7 @@ const fct = async () => {
             }
           }
           else {
+            await page.wfs(loggedDom, true)
             if (player !== 'tidal') {
               await page.gotoUrl(album())
             }
