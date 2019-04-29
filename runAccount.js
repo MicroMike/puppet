@@ -577,9 +577,9 @@ const fct = async () => {
         await takeScreenshot('firstPlay')
         await page.setUserAgent(ua)
         await page.gotoUrl(album())
-        await page.clk('[data-log-action="play-spotify"]')
+        await page.clk('.play-pause.middle-align')
         takeScreenshot('mobile')
-        await page.waitFor(1000 * 60)
+        await page.waitFor(1000 * 45)
         await page.setUserAgent(currentUA)
         await page.gotoUrl(album())
       }
