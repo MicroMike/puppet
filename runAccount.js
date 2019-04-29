@@ -784,7 +784,7 @@ const fct = async () => {
         if (++tryChange < 3) {
           loopChange()
         }
-        throw e
+        catchFct(e)
       }
     }
 
