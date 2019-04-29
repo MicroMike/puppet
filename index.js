@@ -31,10 +31,14 @@ const main = async (account, isCheck) => {
   const login = accountInfo[1]
 
   shell.exec(cmd, async (code, b, c) => {
-    accountsValid = accountsValid.filter(a => a !== account)
-
     if (player === 'spotify') {
       shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+    }
+
+    accountsValid = accountsValid.filter(a => a !== account)
+    if (accountsValid.length === 0 && code === 100) {
+      socket.emit('Cdisconnect', accountsValid)
+      process.exit()
     }
 
     let errorMsg = null
@@ -59,7 +63,7 @@ const main = async (account, isCheck) => {
       // 5 = RETRY
       main(account, null)
     }
-    else {
+    else if (code !== 100) {
       socket.emit('loop', { errorMsg, account })
     }
 

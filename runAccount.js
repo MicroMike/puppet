@@ -84,11 +84,7 @@ const fct = async () => {
     disconnect(code)
   }
 
-  if (!page) {
-    setTimeout(() => {
-      exit(100)
-    }, 1000 * 30);
-  }
+  if (!page) { exit(50) }
 
   socket.on('Sdisconnect', async () => {
     console.log('OOOUT')
