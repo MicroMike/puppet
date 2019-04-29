@@ -160,7 +160,9 @@ const fct = async () => {
     code = e === 'no bar' ? 10 : code
     code = e === 'used' ? 11 : code
 
-    console.log(getTime() + " ERR ", account, e)
+    if (code !== 1 && code !== 11) {
+      console.log(getTime() + " ERR ", account, e)
+    }
 
     try {
       if (code !== 1 && code !== 11) {
