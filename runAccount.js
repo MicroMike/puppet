@@ -768,8 +768,22 @@ const fct = async () => {
 
     let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
     await page.waitFor(changeTime)
-    await page.gotoUrl(album())
-    await page.clk(playBtn, 'changeLoop')
+
+    let tryChange = 0
+    const loopChange = async () => {
+      try {
+        await page.gotoUrl(album())
+        await page.clk(playBtn, 'changeLoop')
+      }
+      catch (e) {
+        if (++tryChange < 3) {
+          loopChange()
+        }
+        throw e
+      }
+    }
+
+    loopChange()
 
     let restartTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
     await page.waitFor(restartTime)
