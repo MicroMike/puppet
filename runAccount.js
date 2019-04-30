@@ -18,9 +18,28 @@ const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 
 const exit = (code = 0) => {
-  socket.emit('Cdisconnect', clientId)
+  socket.emit('disconnect')
   process.exit(code)
 }
+
+socket.on('disconnect', async () => {
+  console.log('off')
+  close = true
+
+  try {
+    await page.cls(true)
+  }
+  catch (e) { }
+
+  exit(100)
+})
+
+process.on('SIGINT', function (code) {
+  over = true
+  close = true
+  console.log('exit')
+  exit(100)
+});
 
 socket.on('activate', id => {
   if (!streamId) { streamId = id }
@@ -37,25 +56,7 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-socket.on('Sdisconnect', async () => {
-  console.log('OOOUT')
-  close = true
-
-  try {
-    await page.cls(true)
-  }
-  catch (e) { }
-
-  exit(100)
-})
-
 let over = false
-
-process.on('SIGINT', function (code) {
-  over = true
-  close = true
-  exit(100)
-});
 
 const getTime = () => {
   const date = new Date

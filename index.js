@@ -73,6 +73,12 @@ process.on('SIGINT', () => {
   process.exit()
 });
 
+socket.on('restart', () => {
+  console.log('reset')
+  socket.emit('disconnect')
+  process.exit()
+});
+
 socket.on('activate', (id) => {
   if (!clientId) { clientId = id }
   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
@@ -92,10 +98,4 @@ socket.on('runCheck', account => {
 
 socket.on('goPlay', () => {
   socket.emit('play', accountsValid)
-});
-
-socket.on('restart', () => {
-  console.log('reset')
-  socket.emit('disconnect')
-  process.exit()
 });
