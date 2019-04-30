@@ -115,17 +115,15 @@ const fct = async () => {
   })
 
   const takeScreenshot = async (name, e) => {
+    let img
+
     try {
       await page.screenshot({ path: name + '_' + account + '.png' });
+      img = await image2base64(name + '_' + account + '.png')
+    }
+    catch (e) { }
 
-      const img = await image2base64(name + '_' + account + '.png')
-      if (img) {
-        socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + (e || name) })
-      }
-    }
-    catch (e) {
-      socket.emit('log', { errorMsg: e, account })
-    }
+    socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + (e || name) })
   }
 
   stream = async () => {
