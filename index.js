@@ -36,10 +36,6 @@ const main = async (account, isCheck) => {
     }
 
     accountsValid = accountsValid.filter(a => a !== account)
-    if (accountsValid.length === 0 && code === 100) {
-      socket.emit('Cdisconnect', accountsValid)
-      process.exit()
-    }
 
     let errorMsg = null
     errorMsg = code === 0 ? 'KO' : errorMsg
@@ -100,4 +96,5 @@ socket.on('goPlay', () => {
 socket.on('restartClient', () => {
   console.log('reset')
   socket.emit('Cdisconnect', accountsValid)
+  process.exit()
 });
