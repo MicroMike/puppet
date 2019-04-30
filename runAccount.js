@@ -31,7 +31,7 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-const disconnect = (code = 0) => {
+const exit = (code = 0) => {
   socket.emit('Cdisconnect', clientId)
   process.exit(code)
 }
@@ -40,7 +40,7 @@ let over = false
 
 process.on('SIGINT', function (code) {
   over = true
-  disconnect()
+  exit()
 });
 
 const getTime = () => {
@@ -95,15 +95,13 @@ const fct = async () => {
   let noCache = player === 'napster'// || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
-  const exit = async (code) => {
-    if (player === 'spotify') {
-      await page.gotoUrl('https://spotify.com/logout', true)
-    }
-
-    disconnect(code)
-  }
-
   if (!page) { exit(50) }
+
+  page.on('close', function (err) {
+    if (code === 0) {
+      exit(0)
+    }
+  });
 
   socket.on('Sdisconnect', async () => {
     console.log('OOOUT')
@@ -175,16 +173,6 @@ const fct = async () => {
   }
 
   try {
-    page.on('error', function (err) {
-      throw 'crashed'
-    });
-
-    page.on('close', function (err) {
-      if (code === 0) {
-        exit(0)
-      }
-    });
-
     if (player === 'napster') {
       url = 'https://app.napster.com/login/'
       loggedDom = '.nav-settings'

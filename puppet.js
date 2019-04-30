@@ -211,5 +211,13 @@ module.exports = async (userDataDir, noCache, cspot) => {
     }
   }
 
+  page.onCls(callback => {
+    callback()
+  })
+
+  page.on('error', function (err) {
+    throw 'crashed'
+  });
+
   return page
 }
