@@ -53,7 +53,8 @@ let over = false
 
 process.on('SIGINT', function (code) {
   over = true
-  exit()
+  close = true
+  exit(100)
 });
 
 const getTime = () => {
