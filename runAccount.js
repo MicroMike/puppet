@@ -70,16 +70,35 @@ const fct = async () => {
   const pass = accountInfo[2]
   let code = 0
 
+  let username
+  let password
+  let url
+  let remember
+  let loginBtn
+  let playBtn
+  let nextBtn
+  let pauseBtn
+  let shuffleBtn
+  let repeatBtn
+  let repeatBtnOk
+  let loggedDom
+  let usernameInput
+  let goToLogin
+  let keyCaptcha
+  let usedDom
+  let reLog
+  let loginError
+
+  let connected = false
+  let suppressed = false
+
   let noCache = player === 'napster'// || player === 'spotify'
   let page = await puppet('save/' + player + '_' + login, noCache)
 
   const exit = async (code) => {
-    try {
-      if (player === 'spotify') {
-        await page.gotoUrl('https://spotify.com/logout')
-      }
+    if (player === 'spotify') {
+      await page.gotoUrl('https://spotify.com/logout', true)
     }
-    catch (e) { }
 
     disconnect(code)
   }
@@ -90,10 +109,7 @@ const fct = async () => {
     console.log('OOOUT')
     code = 100
 
-    try {
-      await page.cls()
-    }
-    catch (e) { }
+    await page.cls(true)
 
     exit(code)
   })
@@ -125,27 +141,6 @@ const fct = async () => {
     await page.evaluate(scriptText)
   })
 
-  let username
-  let password
-  let url
-  let remember
-  let loginBtn
-  let playBtn
-  let pauseBtn
-  let shuffleBtn
-  let repeatBtn
-  let repeatBtnOk
-  let loggedDom
-  let usernameInput
-  let goToLogin
-  let keyCaptcha
-  let usedDom
-  let reLog
-  let loginError
-
-  let connected = false
-  let suppressed = false
-
   const catchFct = async (e) => {
     code = e === 'loop' ? 1 : code
     code = e === 'first play' ? 2 : code
@@ -160,23 +155,21 @@ const fct = async () => {
     code = e === 'no bar' ? 10 : code
     code = e === 'used' ? 11 : code
 
+    if (code === 1 || code === 11) {
+      socket.emit('retryOk')
+    }
+
     if (code !== 1 && code !== 11) {
       console.log(getTime() + " ERR ", account, e)
+      await takeScreenshot('throw', e)
     }
 
-    try {
-      if (code !== 1 && code !== 11) {
-        await takeScreenshot('throw', e)
-      }
-
-      if (code === 2 && player === "spotify") {
-        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions')
-      }
-
-      await page.waitFor(5000 + rand(2000))
-      await page.cls()
+    if (code === 2 && player === "spotify") {
+      await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
+      await page.gotoUrl('https://spotify.com/logout', true)
     }
-    catch (e) { }
+
+    await page.cls(true)
 
     exit(code)
   }

@@ -67,7 +67,7 @@ const main = async (account, isCheck) => {
       socket.emit('loop', { errorMsg, account })
     }
 
-    process.stdout.write(getTime() + " " + accountsValid.length + "\r");
+    process.stdout.write(getTime() + " " + accountsValid.length + "  \r");
   })
 }
 

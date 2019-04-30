@@ -64,7 +64,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   //   request.continue();
   // });
 
-  page.gotoUrl = async (url) => {
+  page.gotoUrl = async (url, noError) => {
     try {
       await page.goto(url, {
         timeout: 1000 * 60 * 5,
@@ -83,7 +83,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
 
       return true
     } catch (e) {
-      throw 'error load'
+      if (!noError) { throw 'error load' }
     }
   }
 
@@ -201,13 +201,13 @@ module.exports = async (userDataDir, noCache, cspot) => {
     }
   }
 
-  page.cls = async () => {
+  page.cls = async (noError) => {
     try {
       await page.goto('about:blank')
       await browserContext.browser().close()
     }
     catch (e) {
-      throw 'Can\'t close', e
+      if (!noError) { throw ('Can\'t close', e) }
     }
   }
 
