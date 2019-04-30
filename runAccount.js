@@ -123,7 +123,9 @@ const fct = async () => {
         socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + (e || name) })
       }
     }
-    catch (e) { }
+    catch (e) {
+      socket.emit('log', { errorMsg: e, account })
+    }
   }
 
   stream = async () => {
