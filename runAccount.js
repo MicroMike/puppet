@@ -632,30 +632,30 @@ const fct = async () => {
     let retryDom = false
 
     const loop = async () => {
-      try {
-        used = await page.ext(usedDom)
+      used = await page.ext(usedDom)
 
-        if (used) {
-          if (player === 'tidal') {
+      if (used) {
+        if (player === 'tidal') {
+          try {
             used = await page.evaluate((usedDom) => {
               return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
             }, usedDom)
+          }
+          catch (e) { return exit(0) }
 
-            used = String(used).match(/currently/) ? used : false
+          used = String(used).match(/currently/) ? used : false
 
-            if (!used) {
-              await page.jClk('#wimp > div > div > div > div > div > button')
-            }
-            else {
-              throw 'used'
-            }
+          if (!used) {
+            await page.jClk('#wimp > div > div > div > div > div > button')
           }
           else {
             throw 'used'
           }
         }
+        else {
+          throw 'used'
+        }
       }
-      catch (e) { return exit(0) }
 
       try {
         if (player === 'napster') {
