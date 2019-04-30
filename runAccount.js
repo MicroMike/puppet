@@ -1,6 +1,5 @@
 process.setMaxListeners(0)
 
-const fs = require('fs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
 var shell = require('shelljs');
@@ -12,10 +11,16 @@ let stream
 let maxStream = 10
 let countStream = 0
 let close = false
+let page
 
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
+
+const exit = (code = 0) => {
+  socket.emit('Cdisconnect', clientId)
+  process.exit(code)
+}
 
 socket.on('activate', id => {
   if (!streamId) { streamId = id }
@@ -32,10 +37,17 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
-const exit = (code = 0) => {
-  socket.emit('Cdisconnect', clientId)
-  process.exit(code)
-}
+socket.on('Sdisconnect', async () => {
+  console.log('OOOUT')
+  close = true
+
+  try {
+    await page.cls(true)
+  }
+  catch (e) { }
+
+  exit(100)
+})
 
 let over = false
 
@@ -94,7 +106,7 @@ const fct = async () => {
   let suppressed = false
 
   let noCache = player === 'napster'// || player === 'spotify'
-  let page = await puppet('save/' + player + '_' + login, noCache)
+  page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) { exit(50) }
 
@@ -103,15 +115,6 @@ const fct = async () => {
       exit(0)
     }
   });
-
-  socket.on('Sdisconnect', async () => {
-    console.log('OOOUT')
-    close = true
-
-    await page.cls(true)
-
-    exit(100)
-  })
 
   const takeScreenshot = async (name, e) => {
     let img
