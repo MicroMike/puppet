@@ -11,6 +11,7 @@ let streamOn = false
 let stream
 let maxStream = 10
 let countStream = 0
+let close = false
 
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
@@ -98,18 +99,18 @@ const fct = async () => {
   if (!page) { exit(50) }
 
   page.on('close', function (err) {
-    if (code === 0) {
+    if (!close) {
       exit(0)
     }
   });
 
   socket.on('Sdisconnect', async () => {
     console.log('OOOUT')
-    code = 100
+    close = true
 
     await page.cls(true)
 
-    exit(code)
+    exit(100)
   })
 
   const takeScreenshot = async (name, e) => {
@@ -140,6 +141,8 @@ const fct = async () => {
   })
 
   const catchFct = async (e) => {
+    close = true
+
     code = e === 'loop' ? 1 : code
     code = e === 'first play' ? 2 : code
     code = e === 'tidal not log' ? 3 : code
