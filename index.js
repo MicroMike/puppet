@@ -93,8 +93,11 @@ socket.on('goPlay', () => {
   socket.emit('play', accountsValid)
 });
 
-socket.on('restartClient', () => {
+socket.on('disconnect', () => {
   console.log('reset')
-  socket.emit('Cdisconnect', accountsValid)
   process.exit()
+});
+
+socket.on('restartClient', () => {
+  socket.emit('Cdisconnect', accountsValid)
 });
