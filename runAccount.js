@@ -19,25 +19,23 @@ const clientId = process.env.CLIENTID
 
 const exit = (code = 0) => {
   socket.emit('disconnect')
+  close = true
+
+  await page.cls(true)
+
   process.exit(code)
 }
 
 socket.on('disconnect', async () => {
   console.log('off')
-  close = true
-
-  try {
-    await page.cls(true)
-  }
-  catch (e) { }
-
+  logError('off')
   exit(100)
 })
 
 process.on('SIGINT', function (code) {
   over = true
-  close = true
   console.log('exit')
+  logError('exit')
   exit(100)
 });
 
@@ -85,6 +83,10 @@ const fct = async () => {
   const pass = accountInfo[2]
   let code = 0
 
+  const logError = (e) => {
+    socket.emit('log', account + ' => ' + e)
+  }
+
   let username
   let password
   let url
@@ -110,7 +112,10 @@ const fct = async () => {
   let noCache = player === 'napster'// || player === 'spotify'
   page = await puppet('save/' + player + '_' + login, noCache)
 
-  if (!page) { exit(50) }
+  if (!page) {
+    close = true
+    exit(50)
+  }
 
   page.on('close', function (err) {
     if (!close) {
@@ -148,12 +153,13 @@ const fct = async () => {
   const catchFct = async (e) => {
     close = true
 
+    logError(e)
+
     code = e === 'loop' ? 1 : code
     code = e === 'first play' ? 2 : code
     code = e === 'tidal not log' ? 3 : code
     code = e === 'del' ? 4 : code
     code = e === 'retry' ? 5 : code
-    code = e === 'retry2' ? 55 : code
     code = e === 'crashed' ? 6 : code
     code = e === 'error' ? 7 : code
     code = e === 'fillForm' ? 5 : code
@@ -756,26 +762,27 @@ const fct = async () => {
       throw 'loop'
     })
 
-    let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
-    await page.waitFor(changeTime)
+    // let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
+    // await page.waitFor(changeTime)
 
-    let tryChange = 0
-    const loopChange = async () => {
-      try {
-        await page.gotoUrl(album())
-        await page.clk(playBtn, 'changeLoop')
-      }
-      catch (e) {
-        if (++tryChange < 3) {
-          loopChange()
-        }
-        catchFct(e)
-      }
-    }
+    // let tryChange = 0
+    // const loopChange = async () => {
+    //   try {
+    //     await page.gotoUrl(album())
+    //     await page.clk(playBtn, 'changeLoop')
+    //     tryChange = 0
+    //   }
+    //   catch (e) {
+    //     if (++tryChange < 3) {
+    //       loopChange()
+    //     }
+    //     catchFct(e)
+    //   }
+    // }
 
-    loopChange()
+    // loopChange()
 
-    let restartTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
+    let restartTime = 1000 * 60 * 30 + 1000 * rand(60 * 30)
     await page.waitFor(restartTime)
     throw 'loop'
   }
