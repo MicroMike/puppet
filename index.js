@@ -31,10 +31,6 @@ const main = async (account, isCheck) => {
   const login = accountInfo[1]
 
   shell.exec(cmd, async (code, b, c) => {
-    if (player === 'spotify') {
-      shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
-    }
-
     accountsValid = accountsValid.filter(a => a !== account)
 
     let errorMsg = null

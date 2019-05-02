@@ -108,6 +108,11 @@ const fct = async () => {
   let suppressed = false
 
   let noCache = player === 'napster'// || player === 'spotify'
+
+  if (player === 'spotify') {
+    shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+  }
+
   const page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) {
