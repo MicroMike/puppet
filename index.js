@@ -67,16 +67,18 @@ const main = async (account, isCheck) => {
   })
 }
 
+socket.on('disconnect', () => {
+  process.exit()
+})
+
 process.on('SIGINT', () => {
   console.log('exit')
-  socket.emit('disconnect')
-  process.exit()
+  socket.emit('Cdisconnect')
 });
 
 socket.on('restart', () => {
   console.log('reset')
-  socket.emit('disconnect')
-  process.exit()
+  socket.emit('Cdisconnect')
 });
 
 socket.on('activate', (id) => {

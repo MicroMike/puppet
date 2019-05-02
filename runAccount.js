@@ -18,18 +18,17 @@ const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 
 const exit = async (code = 0) => {
-  socket.emit('disconnect')
+  socket.emit('Cdisconnect')
   close = true
 
   await page.cls(true)
-
-  process.exit(code)
 }
 
 socket.on('disconnect', async () => {
   console.log('off')
   logError('off')
   exit(100)
+  process.exit(code)
 })
 
 process.on('SIGINT', function (code) {
