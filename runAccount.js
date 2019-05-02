@@ -17,7 +17,7 @@ const account = process.env.ACCOUNT
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 
-const exit = (code = 0) => {
+const exit = async (code = 0) => {
   socket.emit('disconnect')
   close = true
 
