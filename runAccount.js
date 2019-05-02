@@ -50,18 +50,15 @@ const fct = async () => {
     close = true
 
     page && await page.cls(true)
+
+    console.log('off')
+    logError('off')
+    process.exit(code)
   }
 
   const logError = (e) => {
     socket.emit('log', account + ' => ' + e)
   }
-
-  socket.on('disconnect', async () => {
-    console.log('off')
-    logError('off')
-    exit(100)
-    process.exit(code)
-  })
 
   process.on('SIGINT', function (code) {
     over = true
