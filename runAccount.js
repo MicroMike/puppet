@@ -597,9 +597,18 @@ const fct = async () => {
 
     await page.clk(playBtn, 'first play')
 
+    let shuffle
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
-      await page.jClk(shuffleBtn)
+
+      const shuffleLoop = async () => {
+        shuffle = await page.jClk(shuffleBtn)
+        if (!shuffle) {
+          shuffleLoop()
+        }
+      }
+
+      shuffleLoop()
 
       const clickLoop = async () => {
         await page.waitFor(2000 + rand(2000))
