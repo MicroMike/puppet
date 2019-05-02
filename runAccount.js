@@ -11,47 +11,10 @@ let stream
 let maxStream = 10
 let countStream = 0
 let close = false
-let page
 
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
-
-const exit = async (code = 0) => {
-  socket.emit('Cdisconnect')
-  close = true
-
-  await page.cls(true)
-}
-
-socket.on('disconnect', async () => {
-  console.log('off')
-  logError('off')
-  exit(100)
-  process.exit(code)
-})
-
-process.on('SIGINT', function (code) {
-  over = true
-  console.log('exit')
-  logError('exit')
-  exit(100)
-});
-
-socket.on('activate', id => {
-  if (!streamId) { streamId = id }
-  socket.emit('runner', { clientId, account, id: streamId })
-})
-
-socket.on('streamOn', () => {
-  countStream = 0
-  streamOn = true
-  stream()
-})
-
-socket.on('streamOff', () => {
-  streamOn = false
-})
 
 let over = false
 
@@ -82,9 +45,45 @@ const fct = async () => {
   const pass = accountInfo[2]
   let code = 0
 
+  const exit = async (code = 0) => {
+    socket.emit('Cdisconnect')
+    close = true
+
+    page && await page.cls(true)
+  }
+
   const logError = (e) => {
     socket.emit('log', account + ' => ' + e)
   }
+
+  socket.on('disconnect', async () => {
+    console.log('off')
+    logError('off')
+    exit(100)
+    process.exit(code)
+  })
+
+  process.on('SIGINT', function (code) {
+    over = true
+    console.log('exit')
+    logError('exit')
+    exit(100)
+  });
+
+  socket.on('activate', id => {
+    if (!streamId) { streamId = id }
+    socket.emit('runner', { clientId, account, id: streamId })
+  })
+
+  socket.on('streamOn', () => {
+    countStream = 0
+    streamOn = true
+    stream()
+  })
+
+  socket.on('streamOff', () => {
+    streamOn = false
+  })
 
   let username
   let password
@@ -109,7 +108,7 @@ const fct = async () => {
   let suppressed = false
 
   let noCache = player === 'napster'// || player === 'spotify'
-  page = await puppet('save/' + player + '_' + login, noCache)
+  const page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) {
     close = true
