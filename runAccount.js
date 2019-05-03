@@ -709,10 +709,14 @@ const fct = async () => {
         }
         catch (e) { return exit(0) }
 
-        const matchTime = t1.match(/\d*\.\d*/)
+        let matchTime = t1.match(/\d*\.\d*/)
+        matchTime = matchTime ? matchTime[0] : null
+        let percent
 
-        if (player === 'tidal' && matchTime) {
+        if (matchTime) {
           logError(t1 + '=>' + matchTime[0])
+
+          if (player === 'tidal') { percent = Number(matchTime) / 730 }
         }
 
         if (t1 === t2) { ++freeze }
