@@ -32,9 +32,9 @@ const main = async () => {
 
   await page.inst('input#new-password', email)
   await page.inst('input#password2', email)
-  await page.select('select#tbi-day', rand(25, 1))
-  await page.select('select#tbi-month', rand(12, 1))
-  await page.select('select#tbi-year', 1954 + rand(47))
+  await page.select('select#tbi-day', String(rand(25, 1)))
+  await page.select('select#tbi-month', String(rand(12, 1)))
+  await page.select('select#tbi-year', String(1954 + rand(47)))
 
   await page.click('#registration-step-2 > button > div')
 }
