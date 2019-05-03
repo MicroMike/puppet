@@ -25,6 +25,7 @@ const main = async () => {
 
   await mailPage.gotoUrl('https://temp-mail.org/fr/option/delete/')
   const email = await mailPage.get('#mail', 'value')
+  console.log(email)
 
   await mailPage.cls(true)
 
@@ -39,7 +40,11 @@ const main = async () => {
   await page.jClk('#terms1')
   await page.clk('#registration-step-2 > button > div')
 
+  await page.waitFor(2000 + rand(2000))
+
   await page.jClk('#premium > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > button', true)
+
+  await page.waitFor(2000 + rand(2000))
 
   await page.inst('#ccname', 'Assoune Mike')
   await page.inst('#cardnumber', '5273462800749229')
