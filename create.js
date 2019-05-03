@@ -21,7 +21,7 @@ const main = async () => {
   if (!page) { return }
 
   await page.gotoUrl(url)
-  await page.click('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
+  await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
   await mailPage.gotoUrl('https://temp-mail.org/fr/option/delete/')
   const email = await mailPage.get('#mail', 'value')
@@ -36,7 +36,18 @@ const main = async () => {
   await page.select('select#tbi-month', String(rand(12, 1)))
   await page.select('select#tbi-year', String(1954 + rand(47)))
 
-  await page.click('#registration-step-2 > button > div')
+  await page.jClk('#terms1')
+  await page.clk('#registration-step-2 > button > div')
+
+  await page.jClk('#premium > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > button', true)
+
+  await page.inst('#ccname', 'Assoune Mike')
+  await page.inst('#cardnumber', '5273462800749229')
+  await page.inst('#ccmonth', '04')
+  await page.inst('#ccyear', '24')
+  await page.inst('#cvc', '474')
+
+  await page.clk('#card-form > button')
 }
 
 main()
