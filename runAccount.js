@@ -714,7 +714,9 @@ const fct = async () => {
 
         if (matchTime) {
           if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
-          logError(matchTime)
+          if (Number(matchTime) > 50 && rand(10) > 7) {
+            logError(matchTime)
+          }
         }
 
         if (t1 === t2) { ++freeze }
