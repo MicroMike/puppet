@@ -102,6 +102,8 @@ const fct = async () => {
   let usedDom
   let reLog
   let loginError
+  let timeLine
+  let style
 
   let connected = false
   let suppressed = false
@@ -576,8 +578,6 @@ const fct = async () => {
     let t2
     let freeze = 0
     let used
-    let timeLine
-    let style
     let retry = false
     let retryDom = false
 
