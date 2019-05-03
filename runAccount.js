@@ -661,9 +661,7 @@ const fct = async () => {
         if (used) {
           if (player === 'tidal') {
             try {
-              used = await page.evaluate((usedDom) => {
-                return document.querySelector(usedDom) && document.querySelector(usedDom).innerHTML
-              }, usedDom)
+              used = await page.get(usedDom)
             }
             catch (e) { return exit(0) }
 
@@ -710,6 +708,8 @@ const fct = async () => {
           }, { timeLine, style })
         }
         catch (e) { return exit(0) }
+
+        logError(t1)
 
         if (t1 === t2) { ++freeze }
         else {
