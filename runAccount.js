@@ -5,6 +5,8 @@ const request = require('ajax-request');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 const image2base64 = require('image-to-base64');
+const captcha = require('./captcha')
+
 let streamId
 let streamOn = false
 let stream
@@ -217,6 +219,9 @@ const fct = async () => {
       ]
 
       usedDom = '.player-error-box'
+
+      timeLine = 'span.ui-slider-handle'
+      style = 'left'
     }
     if (player === 'amazon') {
       url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
@@ -248,6 +253,9 @@ const fct = async () => {
       ]
 
       usedDom = '.concurrentStreamsPopover'
+
+      timeLine = '.scrubberBackground'
+      style = 'width'
     }
     if (player === 'tidal') {
       url = 'https://listen.tidal.com/'
@@ -282,6 +290,9 @@ const fct = async () => {
 
       usedDom = '.WARN'
       reLog = 'body > div > div.main > div > div > div > div > div > button'
+
+      timeLine = '[class*="fillingBlock"] > div:first-child'
+      style = 'transform'
     }
     if (player === 'spotify') {
       url = 'https://accounts.spotify.com/login'
@@ -313,90 +324,9 @@ const fct = async () => {
         // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
       ]
       usedDom = '.ConnectBar'
-    }
 
-    const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
-      return new Promise((resolve, reject) => {
-        request({
-          url: 'https://api.anti-captcha.com/createTask',
-          method: 'POST',
-          json: true,
-          data: {
-            clientKey: '1598b04fcee925998a78c2b75fd4dbd0',
-            task: {
-              type: 'NoCaptchaTaskProxyless',
-              websiteURL,
-              websiteKey,
-              invisible
-            }
-          }
-        }, function (err, res, response) {
-          if (!response || !response.taskId) {
-            console.log(response || 'no response')
-            resolve('error')
-            return;
-          }
-
-          const interval = setInterval(() => {
-            if (over) { return clearInterval(interval) }
-            request({
-              url: 'https://api.anti-captcha.com/getTaskResult',
-              method: 'POST',
-              json: true,
-              data: {
-                clientKey: '1598b04fcee925998a78c2b75fd4dbd0',
-                taskId: response.taskId
-              }
-            }, function (err, res, response) {
-              try {
-                if (response && response.status !== 'processing') {
-                  clearInterval(interval)
-                  resolve(response.solution.gRecaptchaResponse)
-                }
-                else if (!response) {
-                  throw 'error'
-                }
-              }
-              catch (e) {
-                console.log(response || 'no response B')
-                clearInterval(interval)
-                resolve('error')
-                return;
-              }
-            });
-          }, 1000 * 30)
-        });
-      })
-    }
-
-    const resolveCaptcha = async (captchaUrl) => {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const captcha = await anticaptcha(captchaUrl, keyCaptcha, true)
-          if (captcha === 'error') { return resolve('error') }
-
-          resolve(captcha)
-        }
-        catch (e) {
-          console.log(e)
-          resolve('error')
-        }
-      })
-    }
-
-    const log = async (captcha) => {
-      await page.evaluate((captcha) => {
-        setTimeout(() => {
-          let clients = window.___grecaptcha_cfg.clients[0]
-          Object.keys(clients).map(key => {
-            let client = clients[key]
-            Object.keys(client).map(k => {
-              let l = client[k]
-              l && l.callback && l.callback(captcha)
-            })
-          })
-        }, 5000);
-      }, captcha)
+      timeLine = '.progress-bar__fg'
+      style = 'transform'
     }
 
     // ***************************************************************************************************************************************************************
@@ -444,10 +374,7 @@ const fct = async () => {
           }
 
           // await waitForPassword()
-          const captcha = await resolveCaptcha(url)
-          await page.rload()
-          await page.inst(username, login)
-          await log(captcha)
+          await captcha(page, url, keyCaptcha, username, login)
 
           await page.inst(password, pass)
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
@@ -677,23 +604,6 @@ const fct = async () => {
           else {
             throw 'used'
           }
-        }
-
-        if (player === 'napster') {
-          timeLine = 'span.ui-slider-handle'
-          style = 'left'
-        }
-        else if (player === 'tidal') {
-          timeLine = '[class*="fillingBlock"] > div:first-child'
-          style = 'transform'
-        }
-        else if (player === 'amazon') {
-          timeLine = '.scrubberBackground'
-          style = 'width'
-        }
-        else if (player === 'spotify') {
-          timeLine = '.progress-bar__fg'
-          style = 'transform'
         }
 
         try {
