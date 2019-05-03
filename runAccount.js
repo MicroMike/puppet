@@ -714,7 +714,7 @@ const fct = async () => {
 
         if (matchTime) {
           if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
-          logError(t1 + '=>' + matchTime)
+          logError(matchTime)
         }
 
         if (t1 === t2) { ++freeze }
