@@ -711,8 +711,8 @@ const fct = async () => {
 
         const matchTime = t1.match(/\d*\.\d*/)
 
-        if (player === 'tidal') {
-          logError(t1 + '=>' + matchTime && matchTime[0])
+        if (player === 'tidal' && matchTime) {
+          logError(t1 + '=>' + matchTime[0])
         }
 
         if (t1 === t2) { ++freeze }
