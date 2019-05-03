@@ -711,12 +711,10 @@ const fct = async () => {
 
         let matchTime = t1.match(/\d*\.\d*/)
         matchTime = matchTime ? matchTime[0] : null
-        let percent
 
         if (matchTime) {
+          if (player === 'tidal') { matchTime = Number(matchTime) / 730 }
           logError(t1 + '=>' + matchTime)
-
-          if (player === 'tidal') { percent = Number(matchTime) / 730 }
         }
 
         if (t1 === t2) { ++freeze }
