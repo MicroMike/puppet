@@ -624,7 +624,7 @@ const fct = async () => {
 
         if (matchTime) {
           if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
-          if (Number(matchTime) > 50 && rand(10) < 1) {
+          if (Number(matchTime) > 50 && rand(10) < 1 && rand(2)) {
             logError(matchTime)
             await page.jClk(nextBtn)
           }
