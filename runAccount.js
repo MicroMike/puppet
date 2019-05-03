@@ -713,7 +713,7 @@ const fct = async () => {
         matchTime = matchTime ? matchTime[0] : null
 
         if (matchTime) {
-          if (player === 'tidal') { matchTime = Number(matchTime) / 730 }
+          if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
           logError(t1 + '=>' + matchTime)
         }
 
