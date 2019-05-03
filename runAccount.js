@@ -714,7 +714,7 @@ const fct = async () => {
         let percent
 
         if (matchTime) {
-          logError(t1 + '=>' + matchTime[0])
+          logError(t1 + '=>' + matchTime)
 
           if (player === 'tidal') { percent = Number(matchTime) / 730 }
         }
