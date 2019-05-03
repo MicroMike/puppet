@@ -472,14 +472,14 @@ const fct = async () => {
       await page.gotoUrl(url)
 
       if (player === 'amazon') {
+        await page.jClk('a.cvf-widget-btn-verify-account-switcher')
         usernameInput = await page.ext(username)
         await page.inst(usernameInput ? username : password, login)
       }
       else {
         await page.inst(username, login)
+        await page.inst(password, pass)
       }
-
-      await page.inst(password, pass)
 
       if (player !== 'amazon') {
         let loginFill = await page.get(username, 'value')
