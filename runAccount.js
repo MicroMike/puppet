@@ -709,7 +709,8 @@ const fct = async () => {
         }
         catch (e) { return exit(0) }
 
-        logError(t1.match(/\d*\.\d*/)[0])
+        const matchTime = t1.match(/\d*\.\d*/)
+        logError(matchTime && matchTime[0])
 
         if (t1 === t2) { ++freeze }
         else {
