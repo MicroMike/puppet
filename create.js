@@ -23,7 +23,7 @@ const main = async () => {
   await page.gotoUrl(url)
   await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
-  await mailPage.gotoUrl('https://temp-mail.org/fr/option/delete/')
+  await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
   const email = await mailPage.get('#mail', 'value')
   console.log(email)
 
@@ -33,10 +33,14 @@ const main = async () => {
 
   await page.inst('input#new-password', email)
   await page.inst('input#password2', email)
+  await page.waitFor(2000 + rand(2000))
   await page.select('select#tbi-day', String(rand(25, 1)))
+  await page.waitFor(2000 + rand(2000))
   await page.select('select#tbi-month', String(rand(12, 1)))
+  await page.waitFor(2000 + rand(2000))
   await page.select('select#tbi-year', String(1954 + rand(47)))
 
+  await page.waitFor(2000 + rand(2000))
   await page.jClk('#terms1')
   await page.clk('#registration-step-2 > button > div')
 
