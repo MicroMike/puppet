@@ -26,6 +26,8 @@ const main = async () => {
   await mailPage.gotoUrl('https://temp-mail.org/fr/option/delete/')
   const email = await mailPage.get('#mail', 'value')
 
+  await mailPage.cls(true)
+
   await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
 
   await page.inst('input#new-password', email)
