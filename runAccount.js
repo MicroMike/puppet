@@ -157,8 +157,6 @@ const fct = async () => {
   const catchFct = async (e) => {
     close = true
 
-    logError(e)
-
     code = e === 'loop' ? 1 : code
     code = e === 'first play' ? 2 : code
     code = e === 'tidal not log' ? 3 : code
@@ -176,6 +174,7 @@ const fct = async () => {
     }
 
     if (code !== 1 && code !== 11) {
+      logError(e)
       console.log(getTime() + " ERR ", account, e)
       await takeScreenshot('throw', e)
     }
@@ -321,6 +320,7 @@ const fct = async () => {
         'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',
         'https://open.spotify.com/album/2kFEMTIWWw0jXD57Ewr7go',
         'https://open.spotify.com/album/4BR7o0DwEPj1wF1nfcypiY',
+        'https://open.spotify.com/album/6045wkKBhEx1DBoqn3aXSe',
         // 'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
         // 'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
         // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
