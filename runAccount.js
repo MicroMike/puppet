@@ -96,7 +96,6 @@ const fct = async () => {
   let repeatBtn
   let repeatBtnOk
   let loggedDom
-  let usernameInput
   let goToLogin
   let keyCaptcha
   let usedDom
@@ -105,6 +104,7 @@ const fct = async () => {
   let timeLine
   let style
 
+  let usernameInput = true
   let connected = false
   let suppressed = false
 
@@ -403,12 +403,13 @@ const fct = async () => {
       if (player === 'amazon') {
         await page.jClk('a.cvf-widget-btn-verify-account-switcher')
         usernameInput = await page.ext(username)
-        await page.inst(usernameInput ? username : password, login)
       }
-      else {
+
+      if (usernameInput) {
         await page.inst(username, login)
-        await page.inst(password, pass)
       }
+
+      await page.inst(password, pass)
 
       if (player !== 'amazon') {
         let loginFill = await page.get(username, 'value')
