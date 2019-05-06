@@ -46,6 +46,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
     return false
   }
 
+  let closed
   const pages = await browserContext.pages()
   const page = pages[0]
 
@@ -65,6 +66,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   // });
 
   page.gotoUrl = async (url, noError) => {
+    if (closed) { return }
     try {
       await page.goto(url, {
         timeout: 1000 * 60 * 5,
@@ -88,6 +90,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.rload = async () => {
+    if (closed) { return }
     try {
       await page.waitFor(5000 + rand(2000))
       await page.reload({ timeout: 1000 * 60 * 5 })
@@ -98,6 +101,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.wfs = async (selector, error) => {
+    if (closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       await page.waitForSelector(selector, { timeout: 1000 * 60 })
@@ -113,6 +117,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.ext = async (selector) => {
+    if (closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       const exist = await page.evaluate(selector => {
@@ -125,6 +130,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.clk = async (selector, error) => {
+    if (closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       await page.wfs(selector, true)
@@ -140,6 +146,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.jClk = async (selector, wait) => {
+    if (closed) { return }
     try {
       let exist
 
@@ -165,6 +172,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.inst = async (selector, text, force) => {
+    if (closed) { return }
     try {
       await page.wfs(selector, true)
       if (force) {
@@ -187,6 +195,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.get = async (selector, getter = 'innerHTML') => {
+    if (closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       const html = await page.evaluate(({ selector, getter }) => {
@@ -202,6 +211,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.getTime = async (timeLine, style) => {
+    if (closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       const time = await page.evaluate(({ timeLine, style }) => {
@@ -217,6 +227,8 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   page.cls = async (noError) => {
+    closed = true
+
     try {
       await page.goto('about:blank')
       await browserContext.browser().close()
