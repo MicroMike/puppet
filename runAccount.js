@@ -697,7 +697,7 @@ const fct = async () => {
 
     // loopChange()
 
-    let restartTime = 1000 * 60 * 30 + 1000 * rand(60 * 30)
+    let restartTime = 1000 * 60 * 15 + 1000 * rand(60 * 15)
     await page.waitFor(restartTime)
     throw 'loop'
   }
