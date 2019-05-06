@@ -221,7 +221,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
       return time
     }
     catch (e) {
-      console.log('Get error ' + selector)
+      console.log('getTime error')
       return false
     }
   }
