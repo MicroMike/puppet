@@ -523,18 +523,10 @@ const fct = async () => {
 
     await page.clk(playBtn, 'first play')
 
-    let shuffle
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
 
-      const shuffleLoop = async () => {
-        shuffle = await page.jClk(shuffleBtn)
-        if (!shuffle) {
-          shuffleLoop()
-        }
-      }
-
-      shuffleLoop()
+      shuffle = await page.jClk(shuffleBtn)
 
       const clickLoop = async () => {
         await page.waitFor(2000 + rand(2000))
@@ -580,9 +572,11 @@ const fct = async () => {
     let used
     let retry = false
     let retryDom = false
+    let nextMusic = false
 
     const loop = async () => {
       used = await page.ext(usedDom)
+      await page.jClk(shuffleBtn)
 
       try {
         if (used) {
@@ -624,9 +618,18 @@ const fct = async () => {
 
         if (matchTime) {
           if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
-          if (Number(matchTime) > 50 && rand(10) < 1 && rand(2)) {
-            logError(matchTime)
-            await page.jClk(nextBtn)
+          if (Number(matchTime) > 50) {
+            if (rand(10) < 1 && rand(2)) {
+              await page.jClk(nextBtn)
+            }
+            if (!nextMusic) {
+              nextMusic = true
+              socket.emit('plays')
+            }
+            // logError(matchTime)
+          }
+          else {
+            nextMusic = false
           }
         }
 
