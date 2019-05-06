@@ -677,27 +677,18 @@ const fct = async () => {
       throw 'loop'
     })
 
-    // let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
-    // await page.waitFor(changeTime)
 
-    // let tryChange = 0
-    // const loopChange = async () => {
-    //   try {
-    //     await page.gotoUrl(album())
-    //     await page.clk(playBtn, 'changeLoop')
-    //     tryChange = 0
-    //   }
-    //   catch (e) {
-    //     if (++tryChange < 3) {
-    //       loopChange()
-    //     }
-    //     catchFct(e)
-    //   }
-    // }
+    const loopChange = async () => {
+      let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
+      await page.waitFor(changeTime)
+      await page.gotoUrl(album())
+      await page.clk(playBtn, 'changeLoop')
+      await loopChange()
+    }
 
-    // loopChange()
+    loopChange()
 
-    let restartTime = 1000 * 60 * 15 + 1000 * rand(60 * 15)
+    let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
     await page.waitFor(restartTime)
     throw 'loop'
   }
