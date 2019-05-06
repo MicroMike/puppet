@@ -284,6 +284,7 @@ const fct = async () => {
         'https://listen.tidal.com/album/102564740',
         'https://listen.tidal.com/album/102503463',
         'https://listen.tidal.com/album/105237098',
+        'https://listen.tidal.com/album/108790098',
         // 'https://listen.tidal.com/album/101962381',
         // 'https://listen.tidal.com/album/101352536',
         // 'https://listen.tidal.com/album/101844025',
