@@ -583,14 +583,7 @@ const fct = async () => {
       try {
         if (used) {
           if (player === 'tidal') {
-            try {
-              used = await page.get(usedDom)
-            }
-            catch (e) {
-              if (closed) { return }
-              return exit(0)
-            }
-
+            used = await page.get(usedDom)
             used = String(used).match(/currently/) ? used : false
 
             if (!used) {
@@ -605,21 +598,9 @@ const fct = async () => {
           }
         }
 
-        try {
-          t1 = await page.evaluate(({ timeLine, style }) => {
-            return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
-          }, { timeLine, style })
-
-          await page.waitFor(1000 * 10)
-
-          t2 = await page.evaluate(({ timeLine, style }) => {
-            return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
-          }, { timeLine, style })
-        }
-        catch (e) {
-          if (closed) { return }
-          return exit(0)
-        }
+        t1 = await page.getTime(timeLine, style)
+        await page.waitFor(1000 * 10)
+        t2 = await page.getTime(timeLine, style)
 
         let matchTime = t1.match(/\d*\.\d*/)
         matchTime = matchTime ? matchTime[0] : null
@@ -661,15 +642,7 @@ const fct = async () => {
             await page.jClk('.player-play-button .icon-play-button')
             await page.waitFor(1000 * 15)
 
-            try {
-              t1 = await page.evaluate(({ timeLine, style }) => {
-                return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
-              }, { timeLine, style })
-            }
-            catch (e) {
-              if (closed) { return }
-              return exit(0)
-            }
+            t1 = await page.getTime(timeLine, style)
 
             if (t1 === '0%') {
               retry = true

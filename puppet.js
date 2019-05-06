@@ -201,6 +201,21 @@ module.exports = async (userDataDir, noCache, cspot) => {
     }
   }
 
+  page.getTime = async (timeLine, style) => {
+    try {
+      await page.waitFor(1000 + rand(2000))
+      const time = await page.evaluate(({ timeLine, style }) => {
+        return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
+      }, { timeLine, style })
+
+      return time
+    }
+    catch (e) {
+      console.log('Get error ' + selector)
+      return false
+    }
+  }
+
   page.cls = async (noError) => {
     try {
       await page.goto('about:blank')
