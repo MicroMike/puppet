@@ -586,7 +586,10 @@ const fct = async () => {
             try {
               used = await page.get(usedDom)
             }
-            catch (e) { return exit(0) }
+            catch (e) {
+              if (closed) { return }
+              return exit(0)
+            }
 
             used = String(used).match(/currently/) ? used : false
 
@@ -613,7 +616,10 @@ const fct = async () => {
             return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
           }, { timeLine, style })
         }
-        catch (e) { return exit(0) }
+        catch (e) {
+          if (closed) { return }
+          return exit(0)
+        }
 
         let matchTime = t1.match(/\d*\.\d*/)
         matchTime = matchTime ? matchTime[0] : null
@@ -660,7 +666,10 @@ const fct = async () => {
                 return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
               }, { timeLine, style })
             }
-            catch (e) { return exit(0) }
+            catch (e) {
+              if (closed) { return }
+              return exit(0)
+            }
 
             if (t1 === '0%') {
               retry = true
