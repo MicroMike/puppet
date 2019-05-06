@@ -602,7 +602,7 @@ const fct = async () => {
         await page.waitFor(1000 * 10)
         t2 = await page.getTime(timeLine, style)
 
-        let matchTime = t1.match(/\d*\.\d*/)
+        let matchTime = t1 && t1.match(/\d*\.\d*/)
         matchTime = matchTime ? matchTime[0] : null
 
         if (matchTime) {
