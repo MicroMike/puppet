@@ -584,7 +584,7 @@ const fct = async () => {
             used = String(used).match(/currently/) ? used : false
 
             if (!used) {
-              await page.jClk('.WARN button[data-test="notification-close"]')
+              await page.jClk('.WARN + div + button[data-test="notification-close"]')
             }
             else {
               throw 'used'
