@@ -673,22 +673,19 @@ const fct = async () => {
 
     loop()
 
-    socket.on('runnerLoop', () => {
-      throw 'loop'
-    })
-
-
     const loopChange = async () => {
-      let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
+      let changeTime = 1000 * 60 * 5 + 1000 * rand(60 * 5)
       await page.waitFor(changeTime)
-      if (rand(2)) {
-        await page.gotoUrl(album())
-        await page.clk(playBtn, 'changeLoop')
-      }
+      socket.emit('change')
       await loopChange()
     }
 
     loopChange()
+
+    socket.on('change', () => {
+      await page.gotoUrl(album())
+      await page.clk(playBtn, 'changeLoop')
+    })
 
     let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
     await page.waitFor(restartTime)
