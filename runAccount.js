@@ -509,20 +509,17 @@ const fct = async () => {
     let trys = 0
     const waitForPlayBtn = async () => {
       try {
-        await page.ext(playBtn)
+        await page.clk(playBtn, 'first play')
         socket.emit('retryOk')
       }
       catch (e) {
-        await takeScreenshot('firstPlay')
-        if (++trys >= 3) { throw 'first play' }
+        if (++trys >= 3) { catchFct(e) }
         await page.gotoUrl(album())
         await waitForPlayBtn()
       }
     }
 
     await waitForPlayBtn()
-
-    await page.clk(playBtn, 'first play')
 
     if (player === 'napster' || player === 'tidal' || player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
