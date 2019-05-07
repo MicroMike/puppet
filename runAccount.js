@@ -682,6 +682,7 @@ const fct = async () => {
 
     socket.on('change', async (time) => {
       setTimeout(async () => {
+        if (close) { return }
         await page.gotoUrl(album())
         await page.clk(playBtn, 'changeLoop')
         await loopChange()
