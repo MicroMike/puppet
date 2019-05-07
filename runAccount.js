@@ -681,9 +681,11 @@ const fct = async () => {
 
     loopChange()
 
-    socket.on('change', async () => {
-      await page.gotoUrl(album())
-      await page.clk(playBtn, 'changeLoop')
+    socket.on('change', async (time) => {
+      setTimeout(() => {
+        await page.gotoUrl(album())
+        await page.clk(playBtn, 'changeLoop')
+      }, time);
     })
 
     let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
