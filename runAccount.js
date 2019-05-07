@@ -19,6 +19,7 @@ const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 
 let over = false
+let page
 
 const getTime = () => {
   const date = new Date
@@ -114,7 +115,7 @@ const fct = async () => {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
-  const page = await puppet('save/' + player + '_' + login, noCache)
+  page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) {
     close = true
@@ -675,8 +676,6 @@ const fct = async () => {
       socket.emit('change')
     }
 
-    loopChange()
-
     socket.on('change', async (time) => {
       setTimeout(async () => {
         if (close) { return }
@@ -684,6 +683,10 @@ const fct = async () => {
         await page.clk(playBtn, 'changeLoop')
         await loopChange()
       }, time);
+    })
+
+    socket.on('startChange', () => {
+      loopChange()
     })
 
     let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
