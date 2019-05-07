@@ -359,27 +359,26 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
-          // if (!check) { throw 'tidal not log' }
-
-          // await page.inst(username, login)
-          // await page.clk('#recap-invisible')
-
-          // socket.emit('player', clientId)
           tidalCaptcha = true
 
+          let tryTidal
           const waitForPassword = async () => {
             try {
+              await captcha(page, url, keyCaptcha, username, login)
               await page.inst(password, pass)
             }
             catch (e) {
-              await waitForPassword()
+              if (!tryTidal) {
+                tryTidal = true
+                await waitForPassword()
+              }
+              else {
+                throw e
+              }
             }
           }
 
-          // await waitForPassword()
-          await captcha(page, url, keyCaptcha, username, login)
-
-          await page.inst(password, pass)
+          await waitForPassword()
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
           const logged = await page.wfs(loggedDom)
