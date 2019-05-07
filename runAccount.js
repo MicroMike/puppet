@@ -605,7 +605,7 @@ const fct = async () => {
         if (matchTime) {
           if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
           if (Number(matchTime) > 50) {
-            if (rand(10) < 1 && rand(2)) {
+            if (rand(10) < 1) {
               await page.jClk(nextBtn)
             }
             if (!nextMusic) {
