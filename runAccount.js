@@ -676,7 +676,6 @@ const fct = async () => {
       let changeTime = 1000 * 60 * 5 + 1000 * rand(60 * 5)
       await page.waitFor(changeTime)
       socket.emit('change')
-      await loopChange()
     }
 
     loopChange()
@@ -685,6 +684,7 @@ const fct = async () => {
       setTimeout(async () => {
         await page.gotoUrl(album())
         await page.clk(playBtn, 'changeLoop')
+        await loopChange()
       }, time);
     })
 
