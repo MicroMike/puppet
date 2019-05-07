@@ -546,14 +546,14 @@ const fct = async () => {
       }
     }
 
+    socket.emit('player', clientId)
+
     if (tidalCaptcha) {
       await page.waitFor(1000 * 60 * 2)
       await page.gotoUrl(album())
       await page.clk(playBtn, 'tidalPush')
       shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
     }
-
-    socket.emit('player', clientId)
 
     if (check) {
       await page.waitFor(1000 * 60)
