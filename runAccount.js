@@ -13,6 +13,12 @@ let stream
 let maxStream = 10
 let countStream = 0
 let close = false
+let albums = []
+
+const accountInfo = account.split(':')
+const player = accountInfo[0]
+const login = accountInfo[1]
+const pass = accountInfo[2]
 
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
@@ -30,8 +36,17 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
+socket.on('activate', id => {
+  if (!streamId) { streamId = id }
+  socket.emit('runner', { clientId, account, id: streamId, player })
+})
+
+socket.on('albums', albs => {
+  albums = albs
+  fct()
+})
+
 const fct = async () => {
-  let albums = []
   let currentAlbum
   const album = () => {
     let albumUrl = albums[rand(albums.length)]
@@ -41,11 +56,6 @@ const fct = async () => {
     currentAlbum = albumUrl
     return albumUrl
   }
-
-  const accountInfo = account.split(':')
-  const player = accountInfo[0]
-  const login = accountInfo[1]
-  const pass = accountInfo[2]
   let code = 0
 
   const exit = async (code = 0) => {
@@ -67,15 +77,6 @@ const fct = async () => {
     logError('exit')
     exit(100)
   });
-
-  socket.on('activate', id => {
-    if (!streamId) { streamId = id }
-    socket.emit('runner', { clientId, account, id: streamId, player })
-  })
-
-  socket.on('albums', albs => {
-    albums = albs
-  })
 
   socket.on('streamOn', () => {
     countStream = 0
@@ -520,7 +521,6 @@ const fct = async () => {
       throw 'loop'
     }
 
-
     // ***************************************************************************************************************************************************************
     // *************************************************************************** LOOP ******************************************************************************
     // ***************************************************************************************************************************************************************
@@ -657,5 +657,3 @@ const fct = async () => {
     catchFct(e)
   }
 }
-
-fct()
