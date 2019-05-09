@@ -698,7 +698,7 @@ const fct = async () => {
     //   }, time);
     // })
 
-    socket.on('startChange', () => {
+    socket.on('startChange', async () => {
       // loopChange()
 
       let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
