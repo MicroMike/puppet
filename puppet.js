@@ -8,7 +8,7 @@ const rand = (max, min) => {
 
 const addFcts = async (page) => {
   page.gotoUrl = async (url, noError) => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       await page.goto(url, {
         timeout: 1000 * 60 * 5,
@@ -32,7 +32,7 @@ const addFcts = async (page) => {
   }
 
   page.rload = async () => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       await page.waitFor(5000 + rand(2000))
       await page.reload({ timeout: 1000 * 60 * 5 })
@@ -43,7 +43,7 @@ const addFcts = async (page) => {
   }
 
   page.wfs = async (selector, error) => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       await page.waitForSelector(selector, { timeout: 1000 * 60 })
@@ -59,7 +59,7 @@ const addFcts = async (page) => {
   }
 
   page.ext = async (selector) => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       const exist = await page.evaluate(selector => {
@@ -72,7 +72,7 @@ const addFcts = async (page) => {
   }
 
   page.clk = async (selector, error) => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       await page.wfs(selector, true)
@@ -88,7 +88,7 @@ const addFcts = async (page) => {
   }
 
   page.jClk = async (selector, wait) => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       let exist
 
@@ -114,7 +114,7 @@ const addFcts = async (page) => {
   }
 
   page.inst = async (selector, text, force) => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       await page.wfs(selector, true)
       if (force) {
@@ -137,7 +137,7 @@ const addFcts = async (page) => {
   }
 
   page.get = async (selector, getter = 'innerHTML') => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       const html = await page.evaluate(({ selector, getter }) => {
@@ -153,7 +153,7 @@ const addFcts = async (page) => {
   }
 
   page.getTime = async (timeLine, style) => {
-    if (closed) { return }
+    if (page.closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
       const time = await page.evaluate(({ timeLine, style }) => {
@@ -169,7 +169,7 @@ const addFcts = async (page) => {
   }
 
   page.cls = async (noError) => {
-    closed = true
+    page.closed = true
 
     try {
       await page.goto('about:blank')
@@ -190,6 +190,7 @@ const addFcts = async (page) => {
 
 
   page.np = async () => {
+    if (page.closed) { return }
     const page2 = await browserContext.newPage()
     page2 = addFcts(page2)
     return page2
@@ -238,7 +239,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
     return false
   }
 
-  let closed
   const pages = await browserContext.pages()
   let page = pages[0]
 
