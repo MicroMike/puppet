@@ -68,7 +68,7 @@ const fct = async () => {
     page && await page.cls(true)
 
     if (code !== 1 && code !== 11) {
-      console.log('off')
+      console.log(code + ' off')
     }
 
     process.exit(code)
