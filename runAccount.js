@@ -598,7 +598,6 @@ const fct = async () => {
           }
           else {
             await page.wfs(loggedDom, true)
-            await page.waitFor(1000 * 30)
             await page.gotoUrl(album())
             await page.clk(playBtn, 'failedLoop')
             retry = true
