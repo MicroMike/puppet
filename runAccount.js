@@ -169,6 +169,7 @@ const fct = async () => {
     code = e === 'login' ? 9 : code
     code = e === 'no bar' ? 10 : code
     code = e === 'used' ? 11 : code
+    code = e === 'check' ? 12 : code
 
     if (code === 1 || code === 11) {
       socket.emit('retryOk')
@@ -444,11 +445,23 @@ const fct = async () => {
       }
     }
 
-    if (player === 'spotify') {
-      await page.gotoUrl('https://www.spotify.com/account/overview')
-      const productName = await page.get('.product-name')
-      if (String(productName).match(/Free|free/)) { throw 'del' }
+    const spotCheck = async () => {
+      try {
+        const spotCheck = await page.np()
+        await spotCheck.gotoUrl('https://www.spotify.com/account/overview')
+        const productName = await spotCheck.get('.product-name')
+        if (String(productName).match(/Free|free/)) { throw 'del' }
 
+        await spotCheck.close()
+      }
+      catch (e) {
+        console.log(e)
+        throw 'check'
+      }
+    }
+
+    if (player === 'spotify') {
+      spotCheck()
       await page.gotoUrl(album())
     }
     else if (player === 'napster') {
@@ -670,28 +683,28 @@ const fct = async () => {
 
     loop()
 
-    const loopChange = async () => {
-      let changeTime = 1000 * 60 * 5 + 1000 * rand(60 * 5)
-      await page.waitFor(changeTime)
-      socket.emit('change')
-    }
+    // const loopChange = async () => {
+    //   let changeTime = 1000 * 60 * 5 + 1000 * rand(60 * 5)
+    //   await page.waitFor(changeTime)
+    //   socket.emit('change')
+    // }
 
-    socket.on('change', async (time) => {
-      setTimeout(async () => {
-        if (close) { return }
-        await page.gotoUrl(album())
-        await page.clk(playBtn, 'changeLoop')
-        await loopChange()
-      }, time);
-    })
+    // socket.on('change', async (time) => {
+    //   setTimeout(async () => {
+    //     if (close) { return }
+    //     await page.gotoUrl(album())
+    //     await page.clk(playBtn, 'changeLoop')
+    //     await loopChange()
+    //   }, time);
+    // })
 
     socket.on('startChange', () => {
-      loopChange()
-    })
+      // loopChange()
 
-    let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
-    await page.waitFor(restartTime)
-    throw 'loop'
+      let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
+      await page.waitFor(restartTime)
+      throw 'loop'
+    })
   }
   catch (e) {
     catchFct(e)

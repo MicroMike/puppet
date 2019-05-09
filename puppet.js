@@ -6,65 +6,7 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-module.exports = async (userDataDir, noCache, cspot) => {
-
-  const params = {
-    executablePath: '/usr/bin/google-chrome-stable',
-    userDataDir,
-    headless: false,
-    args: [
-      // '--no-sandbox',
-      // '--disable-setuid-sandbox',
-      '--disable-translate',
-    ],
-    defaultViewport: {
-      width: 720,
-      height: 450,
-    }
-  }
-
-  if (cspot) {
-    const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
-    params.args.push(ua)
-  }
-
-  if (noCache && !cspot) {
-    delete params.userDataDir
-  }
-
-  let browserContext
-
-  // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-
-  try {
-    const launch = await puppeteer.launch(params);
-    browserContext = launch.defaultBrowserContext()
-  }
-  catch (e) {
-    // console.log('BROWSER FAIL')
-    //process.exit()
-    return false
-  }
-
-  let closed
-  const pages = await browserContext.pages()
-  const page = pages[0]
-
-  await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
-    });
-  });
-
-  // await page.setRequestInterception(true);
-  // page.on('request', async request => {
-  //   const requestUrl = await request.url()
-  //   if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
-  //     return request.abort(['blockedbyclient']);
-  //   }
-  //   request.continue();
-  // });
-
+const addFcts = async (page) => {
   page.gotoUrl = async (url, noError) => {
     if (closed) { return }
     try {
@@ -245,6 +187,77 @@ module.exports = async (userDataDir, noCache, cspot) => {
   page.on('error', function (err) {
     throw 'crashed'
   });
+
+
+  page.np = async () => {
+    const page2 = await browserContext.newPage()
+    page2 = addFcts(page2)
+    return page2
+  }
+
+  return page
+}
+
+module.exports = async (userDataDir, noCache, cspot) => {
+
+  const params = {
+    executablePath: '/usr/bin/google-chrome-stable',
+    userDataDir,
+    headless: false,
+    args: [
+      // '--no-sandbox',
+      // '--disable-setuid-sandbox',
+      '--disable-translate',
+    ],
+    defaultViewport: {
+      width: 720,
+      height: 450,
+    }
+  }
+
+  if (cspot) {
+    const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
+    params.args.push(ua)
+  }
+
+  if (noCache && !cspot) {
+    delete params.userDataDir
+  }
+
+  let browserContext
+
+  // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+
+  try {
+    const launch = await puppeteer.launch(params);
+    browserContext = launch.defaultBrowserContext()
+  }
+  catch (e) {
+    // console.log('BROWSER FAIL')
+    //process.exit()
+    return false
+  }
+
+  let closed
+  const pages = await browserContext.pages()
+  const page = pages[0]
+
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
+    });
+  });
+
+  page = addFcts(page)
+
+  // await page.setRequestInterception(true);
+  // page.on('request', async request => {
+  //   const requestUrl = await request.url()
+  //   if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
+  //     return request.abort(['blockedbyclient']);
+  //   }
+  //   request.continue();
+  // });
 
   return page
 }
