@@ -242,7 +242,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   const pages = await browserContext.pages()
   let page = pages[0]
 
-  page.bc = browserContext
+  page.bc = launch
 
   await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
