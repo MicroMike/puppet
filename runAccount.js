@@ -54,8 +54,6 @@ const fct = async () => {
 
     page && await page.cls(true)
 
-    console.log('off')
-    logError('off')
     process.exit(code)
   }
 
@@ -72,7 +70,11 @@ const fct = async () => {
 
   socket.on('activate', id => {
     if (!streamId) { streamId = id }
-    socket.emit('runner', { clientId, account, id: streamId })
+    socket.emit('runner', { clientId, account, id: streamId, player })
+  })
+
+  socket.on('albums', albs => {
+    albums = albs
   })
 
   socket.on('streamOn', () => {
@@ -206,21 +208,6 @@ const fct = async () => {
       repeatBtnOk = '.repeat-button.repeat'
       nextBtn = '.player-advance-button.icon-next2'
 
-      albums = [
-        'https://app.napster.com/artist/honey/album/just-another-emotion',
-        'https://app.napster.com/artist/yokem/album/boombeats',
-        'https://app.napster.com/artist/hanke/album/new-york-story',
-        'https://app.napster.com/artist/hanke/album/100-revenge',
-        'https://app.napster.com/artist/mahone/album/stone-distraction',
-        'https://app.napster.com/artist/hazel/album/electric-nature',
-        'https://app.napster.com/artist/lapilluledors/album/red-beast',
-        'https://app.napster.com/artist/dj-reid/album/satisfaction-spell',
-        'https://app.napster.com/artist/xondes/album/the-last-heat',
-        // 'https://app.napster.com/artist/perlaimpinin/album/broken-sunset',
-        // 'https://app.napster.com/artist/hazel-rockpop/album/blizzard-of-violence',
-        // 'https://app.napster.com/artist/xondes/album/wicked-344744668',
-      ]
-
       usedDom = '.player-error-box'
 
       timeLine = 'span.ui-slider-handle'
@@ -240,20 +227,6 @@ const fct = async () => {
       shuffleBtn = '.shuffleButton:not(.on)'
       repeatBtn = '.repeatButton:not(.on)'
       nextBtn = '.nextButton'
-
-      albums = [
-        'https://music.amazon.fr/albums/B07G9RM2MG',
-        'https://music.amazon.fr/albums/B07CZDXC9B',
-        'https://music.amazon.fr/albums/B07D3NQ235',
-        'https://music.amazon.fr/albums/B07G5PPYSY',
-        'https://music.amazon.fr/albums/B07D3PGSR4',
-        'https://music.amazon.fr/albums/B07MTV7JYS',
-        'https://music.amazon.fr/albums/B07PGN58LX',
-        'https://music.amazon.fr/albums/B07QCBN3Z4',
-        // 'https://music.amazon.fr/albums/B07M75PR8X',
-        // 'https://music.amazon.fr/albums/B07LGWP7SX',
-        // 'https://music.amazon.fr/albums/B07MBH9D43',
-      ]
 
       usedDom = '.concurrentStreamsPopover'
 
@@ -278,20 +251,6 @@ const fct = async () => {
 
       keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
 
-      albums = [
-        'https://listen.tidal.com/album/93312939',
-        'https://listen.tidal.com/album/93087422',
-        'https://listen.tidal.com/album/88716570',
-        'https://listen.tidal.com/album/101927847',
-        'https://listen.tidal.com/album/102564740',
-        'https://listen.tidal.com/album/102503463',
-        'https://listen.tidal.com/album/105237098',
-        'https://listen.tidal.com/album/108790098',
-        // 'https://listen.tidal.com/album/101962381',
-        // 'https://listen.tidal.com/album/101352536',
-        // 'https://listen.tidal.com/album/101844025',
-      ]
-
       usedDom = '.WARN'
       reLog = 'body > div > div.main > div > div > div > div > div > button'
 
@@ -315,20 +274,6 @@ const fct = async () => {
 
       keyCaptcha = '6LeIZkQUAAAAANoHuYD1qz5bV_ANGCJ7n7OAW3mo'
 
-      albums = [
-        'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
-        'https://open.spotify.com/album/5509gS9cZUrbTFege0fpTk',
-        'https://open.spotify.com/album/2jmPHLM2be2g19841vHjWE',
-        'https://open.spotify.com/album/5CPIRky6BGgl3CCdzMYAXZ',
-        'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',
-        'https://open.spotify.com/album/2kFEMTIWWw0jXD57Ewr7go',
-        'https://open.spotify.com/album/4BR7o0DwEPj1wF1nfcypiY',
-        'https://open.spotify.com/album/6045wkKBhEx1DBoqn3aXSe',
-        'https://open.spotify.com/album/7Jh67aHTA9ly7R1OTbzqGF',
-        // 'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
-        // 'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
-        // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',
-      ]
       usedDom = '.ConnectBar'
 
       timeLine = '.progress-bar__fg'
@@ -500,8 +445,9 @@ const fct = async () => {
 
     if (player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
-      const stopBeforePlay = await page.ext(usedDom)
-      if (stopBeforePlay) { throw 'used' }
+      const check1 = await page.ext(usedDom)
+      const check2 = await page.ext('.Root__now-playing-bar .control-button.spoticon-pause-16.control-button--circled')
+      if (check1 && check2) { throw 'used' }
 
       const currentUA = await page.evaluate(() => {
         return navigator.userAgent
@@ -610,7 +556,7 @@ const fct = async () => {
         }
 
         t1 = await page.getTime(timeLine, style)
-        await page.waitFor(1000 * 10)
+        await page.waitFor(1000 * 5)
         t2 = await page.getTime(timeLine, style)
 
         let matchTime = t1 && t1.match(/\d*\.\d*/)
@@ -619,8 +565,9 @@ const fct = async () => {
         if (matchTime) {
           if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
           if (Number(matchTime) > 50) {
-            if (rand(10) < 1) {
+            if (rand(7) < 1) {
               await page.jClk(nextBtn)
+              socket.emit('plays', true)
             }
             if (!nextMusic) {
               nextMusic = true
@@ -661,9 +608,8 @@ const fct = async () => {
           }
           else {
             await page.wfs(loggedDom, true)
-            if (player !== 'tidal') {
-              await page.gotoUrl(album())
-            }
+            await page.waitFor(1000 * 30)
+            await page.gotoUrl(album())
             await page.clk(playBtn, 'failedLoop')
             retry = true
           }
