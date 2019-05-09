@@ -41,8 +41,10 @@ socket.on('activate', id => {
   socket.emit('runner', { clientId, account, id: streamId, player })
 })
 
+let ok
 socket.on('albums', albs => {
-  if (albums) { return }
+  if (ok) { return }
+  ok = true
   albums = albs
   fct()
 })
