@@ -13,7 +13,7 @@ let stream
 let maxStream = 10
 let countStream = 0
 let close = false
-let albums = []
+let albums
 
 const account = process.env.ACCOUNT
 const check = process.env.CHECK
@@ -42,7 +42,7 @@ socket.on('activate', id => {
 })
 
 socket.on('albums', albs => {
-  if (albums.length > 0) { return }
+  if (albums) { return }
   albums = albs
   fct()
 })
