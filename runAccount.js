@@ -515,6 +515,7 @@ const fct = async () => {
     let retry = false
     let retryDom = false
     let nextMusic = false
+    let loop = false
 
     const loop = async () => {
       const existRepeatBtnOk = await page.ext(repeatBtnOk)
@@ -597,6 +598,7 @@ const fct = async () => {
             }
           }
           else {
+            throw 'failedLoop'
             await page.wfs(loggedDom, true)
             await page.waitFor(1000 * 30)
             if ((player === 'tidal' && rand(2)) || player !== 'tidal') {
@@ -640,9 +642,13 @@ const fct = async () => {
     socket.on('startChange', async () => {
       // loopChange()
 
-      let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
-      await page.waitFor(restartTime)
-      throw 'loop'
+      if (!loop) {
+        loop = true
+        let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
+        await page.waitFor(restartTime)
+        throw 'loop'
+      }
+
     })
   }
   catch (e) {
