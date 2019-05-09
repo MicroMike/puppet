@@ -546,7 +546,7 @@ const fct = async () => {
         }
 
         t1 = await page.getTime(timeLine, style)
-        await page.waitFor(1000 * 5)
+        await page.waitFor(1000 * 10)
         t2 = await page.getTime(timeLine, style)
 
         let matchTime = t1 && t1.match(/\d*\.\d*/)
@@ -598,7 +598,10 @@ const fct = async () => {
           }
           else {
             await page.wfs(loggedDom, true)
-            await page.gotoUrl(album())
+            await page.waitFor(1000 * 30)
+            if ((player === 'tidal' && rand(2)) || player !== 'tidal') {
+              await page.gotoUrl(album())
+            }
             await page.clk(playBtn, 'failedLoop')
             retry = true
           }
