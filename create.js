@@ -28,13 +28,14 @@ const main = async () => {
   if (!page) { return }
 
   await page.gotoUrl(url)
-  await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
   await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
   const email = await mailPage.get('#mail', 'value')
   console.log(email)
 
   if (type === 'tidal') {
+    await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
+
     await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
 
     await page.inst('input#new-password', email)
@@ -69,12 +70,16 @@ const main = async () => {
     await page.clk('.button.extra-large')
     await page.inst('input#txtEmail', email)
     await page.inst('input#txtPassword', '20192019')
-    await page.inst('input#txtConfirmPassword', '20192019')
-    await page.clk('#chkTermsOfUse')
+    // await page.inst('input#txtConfirmPassword', '20192019')
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#age', String(20 + rand(50)))
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#gender', 'U')
+    // await page.clk('#chkTermsOfUse')
     await page.clk('#signupSubmitButton')
 
     const payPage = await puppet('', true)
-    await payPage.gotoUrl('https://payments.amazon.com/us/jr/your-account/')
+    await payPage.gotoUrl('https://payments.amazon.com/jr/your-account/')
     await payPage.clk('#createAccountSubmit')
     await payPage.inst('input#ap_customer_name', email)
     await payPage.inst('input#ap_email', email)
@@ -82,15 +87,29 @@ const main = async () => {
     await payPage.inst('input#ap_password_check', email)
     await payPage.clk('#continue')
 
-    await mailPage.clk('.col-box a')
+    const waitForMail = async () => {
+      try {
+        await mailPage.clk('.col-box a')
+      }
+      catch (e) {
+        await waitForMail()
+      }
+    }
+
+    await waitForMail()
+
+    await mailPage.wfs('.inbox-data-content-intro')
+    await page.waitFor(2000 + rand(2000))
     let code = await mailPage.get('.inbox-data-content-intro', 'innerText')
     code = code && code.match(/\d+/g)[0]
 
+    console.log(code)
+
     await payPage.inst('input[name="code"]', code)
 
-    5144720700853723
-    04
-    23
+    // 5144720700853723
+    // 04
+    // 23
 
   }
 
