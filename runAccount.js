@@ -59,7 +59,10 @@ const fct = async () => {
   let code = 0
 
   const exit = async (code = 0) => {
-    socket.emit('Cdisconnect')
+    if (code !== 100) {
+      socket.emit('Cdisconnect')
+    }
+
     close = true
 
     page && await page.cls(true)
