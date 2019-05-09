@@ -227,7 +227,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
 
   let browserContext
 
-  params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+  // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
   let launch
 
   try {
