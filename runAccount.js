@@ -399,7 +399,7 @@ const fct = async () => {
     const spotCheck = async () => {
       try {
         const spotCheck = await page.np()
-        await spotCheck.gotoUrl('https://www.spotify.com/account/overview')
+        await spotCheck.gotoUrl('https://www.spotify.com/en/account/overview')
         const productName = await spotCheck.get('.product-name')
         if (String(productName).match(/Free|free/)) { throw 'del' }
 
