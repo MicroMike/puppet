@@ -601,7 +601,7 @@ const fct = async () => {
             }
           }
           else {
-            throw 'failedLoop'
+            // throw 'failedLoop'
             await page.wfs(loggedDom, true)
             await page.waitFor(1000 * 30)
             if ((player === 'tidal' && rand(2)) || player !== 'tidal') {
@@ -647,7 +647,7 @@ const fct = async () => {
 
       if (!startLoop) {
         startLoop = true
-        let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
+        let restartTime = 1000 * 60 * 5 + 1000 * rand(60 * 5)
         await page.waitFor(restartTime)
         throw 'loop'
       }
