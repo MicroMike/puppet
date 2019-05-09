@@ -324,6 +324,7 @@ const fct = async () => {
         'https://open.spotify.com/album/2kFEMTIWWw0jXD57Ewr7go',
         'https://open.spotify.com/album/4BR7o0DwEPj1wF1nfcypiY',
         'https://open.spotify.com/album/6045wkKBhEx1DBoqn3aXSe',
+        'https://open.spotify.com/album/7Jh67aHTA9ly7R1OTbzqGF',
         // 'https://open.spotify.com/album/5AZ5oMPCgi9f7mQcStkg60',
         // 'https://open.spotify.com/album/5TeKj5BhfY6nuz8KIJK9zM',
         // 'https://open.spotify.com/album/5KmnlbKwwQ09bDrAnH9kDZ',

@@ -191,7 +191,7 @@ const addFcts = async (page) => {
 
   page.np = async () => {
     if (page.closed) { return }
-    const page2 = await page.bc.newPage()
+    let page2 = await page.bc.newPage()
     page2 = addFcts(page2)
     return page2
   }
