@@ -487,6 +487,7 @@ const fct = async () => {
     }
 
     // await waitForPlayBtn()
+    socket.emit('player', clientId)
     await page.clk(playBtn, 'first play')
 
     if (player === 'tidal') {
@@ -495,8 +496,6 @@ const fct = async () => {
         throw 'del'
       }
     }
-
-    socket.emit('player', clientId)
 
     if (tidalCaptcha) {
       await page.waitFor(1000 * 60 * 2)

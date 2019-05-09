@@ -106,6 +106,7 @@ const main = async () => {
     console.log(code)
 
     await payPage.inst('input[name="code"]', code)
+    await payPage.clk('input[type="submit"]')
 
     // 5144720700853723
     // 04
