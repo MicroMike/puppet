@@ -515,7 +515,7 @@ const fct = async () => {
     let retry = false
     let retryDom = false
     let nextMusic = false
-    let loop = false
+    let startLoop = false
 
     const loop = async () => {
       const existRepeatBtnOk = await page.ext(repeatBtnOk)
@@ -642,8 +642,8 @@ const fct = async () => {
     socket.on('startChange', async () => {
       // loopChange()
 
-      if (!loop) {
-        loop = true
+      if (!startLoop) {
+        startLoop = true
         let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
         await page.waitFor(restartTime)
         throw 'loop'
