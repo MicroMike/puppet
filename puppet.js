@@ -228,9 +228,10 @@ module.exports = async (userDataDir, noCache, cspot) => {
   let browserContext
 
   // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+  let launch
 
   try {
-    const launch = await puppeteer.launch(params);
+    launch = await puppeteer.launch(params);
     browserContext = launch.defaultBrowserContext()
   }
   catch (e) {
