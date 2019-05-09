@@ -651,9 +651,8 @@ const fct = async () => {
         startLoop = true
         let restartTime = 1000 * 60 * 5 + 1000 * rand(60 * 5)
         await page.waitFor(restartTime)
-        throw 'loop'
+        catchFct('loop')
       }
-
     })
   }
   catch (e) {
