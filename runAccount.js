@@ -42,6 +42,7 @@ socket.on('activate', id => {
 })
 
 socket.on('albums', albs => {
+  if (albums.length > 0) { return }
   albums = albs
   fct()
 })
