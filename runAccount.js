@@ -15,14 +15,14 @@ let countStream = 0
 let close = false
 let albums = []
 
+const account = process.env.ACCOUNT
+const check = process.env.CHECK
+const clientId = process.env.CLIENTID
+
 const accountInfo = account.split(':')
 const player = accountInfo[0]
 const login = accountInfo[1]
 const pass = accountInfo[2]
-
-const account = process.env.ACCOUNT
-const check = process.env.CHECK
-const clientId = process.env.CLIENTID
 
 let over = false
 let page
