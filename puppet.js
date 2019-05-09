@@ -188,14 +188,6 @@ const addFcts = async (page) => {
     throw 'crashed'
   });
 
-
-  page.np = async () => {
-    if (page.closed) { return }
-    const page2 = await browserContext.newPage()
-    page2 = addFcts(page2)
-    return page2
-  }
-
   return page
 }
 
@@ -249,6 +241,13 @@ module.exports = async (userDataDir, noCache, cspot) => {
   });
 
   page = addFcts(page)
+
+  page.np = async () => {
+    if (page.closed) { return }
+    const page2 = await browserContext.newPage()
+    page2 = addFcts(page2)
+    return page2
+  }
 
   // await page.setRequestInterception(true);
   // page.on('request', async request => {
