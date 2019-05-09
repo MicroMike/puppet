@@ -443,33 +443,28 @@ const fct = async () => {
     // *************************************************************************** PLAY ******************************************************************************
     // ***************************************************************************************************************************************************************
 
-    if (player === 'amazon') {
-      await page.jClk(shuffleBtn)
-      await page.jClk(repeatBtn)
-    }
-
     if (player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
       const check1 = await page.ext(usedDom)
       const check2 = await page.ext('.Root__now-playing-bar .control-button.spoticon-pause-16.control-button--circled')
       if (check1 && check2) { throw 'used' }
 
-      const currentUA = await page.evaluate(() => {
-        return navigator.userAgent
-      })
-      const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
+      // const currentUA = await page.evaluate(() => {
+      //   return navigator.userAgent
+      // })
+      // const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
 
-      const spotErr = await page.get('.ErrorPage__inner', 'innerText')
-      if (String(spotErr).match(/limit/)) {
-        await takeScreenshot('firstPlay')
-        await page.setUserAgent(ua)
-        await page.gotoUrl(album())
-        await page.clk('.play-pause.middle-align')
-        takeScreenshot('mobile')
-        await page.waitFor(1000 * 45)
-        await page.setUserAgent(currentUA)
-        await page.gotoUrl(album())
-      }
+      // const spotErr = await page.get('.ErrorPage__inner', 'innerText')
+      // if (String(spotErr).match(/limit/)) {
+      //   await takeScreenshot('firstPlay')
+      //   await page.setUserAgent(ua)
+      //   await page.gotoUrl(album())
+      //   await page.clk('.play-pause.middle-align')
+      //   takeScreenshot('mobile')
+      //   await page.waitFor(1000 * 45)
+      //   await page.setUserAgent(currentUA)
+      //   await page.gotoUrl(album())
+      // }
     }
 
     let trys = 0
@@ -485,24 +480,8 @@ const fct = async () => {
       }
     }
 
-    await waitForPlayBtn()
-
-    if (player === 'napster' || player === 'tidal' || player === 'spotify') {
-      await page.waitFor(2000 + rand(2000))
-
-      shuffle = await page.jClk(shuffleBtn)
-
-      const clickLoop = async () => {
-        await page.waitFor(2000 + rand(2000))
-        const existRepeatBtnOk = await page.ext(repeatBtnOk)
-        if (!existRepeatBtnOk) {
-          await page.jClk(repeatBtn)
-          clickLoop()
-        }
-      }
-
-      clickLoop()
-    }
+    // await waitForPlayBtn()
+    await page.clk(playBtn, 'first play')
 
     if (player === 'tidal') {
       const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
@@ -538,8 +517,15 @@ const fct = async () => {
     let nextMusic = false
 
     const loop = async () => {
-      used = await page.ext(usedDom)
+      const existRepeatBtnOk = await page.ext(repeatBtnOk)
+
+      if (!existRepeatBtnOk || !repeatBtnOk) {
+        await page.jClk(repeatBtn)
+      }
+
       await page.jClk(shuffleBtn)
+
+      used = await page.ext(usedDom)
 
       try {
         if (used) {
