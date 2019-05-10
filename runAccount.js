@@ -66,23 +66,7 @@ const fct = async () => {
     close = true
     page && await page.cls(true)
 
-    if (code === 4) {
-      // 4 = DEL
-      socket.emit('delete', account)
-
-      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
-        if (err) return console.log(err);
-        data = data.split(',').filter(e => e)
-        if (data.indexOf(account) < 0) { data.push(account) }
-        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
-          if (err) return console.log(err);
-        });
-      });
-    }
-    else {
-      socket.emit('loop', { errorMsg, account })
-      socket.emit('Cdisconnect', code)
-    }
+    socket.emit('Cdisconnect', code)
 
     process.exit(code)
   }
@@ -214,6 +198,23 @@ const fct = async () => {
     if (code === 2 && player === "spotify") {
       await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
       await page.gotoUrl('https://spotify.com/logout', true)
+    }
+
+    if (code === 4) {
+      // 4 = DEL
+      socket.emit('delete', account)
+
+      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
+        if (err) return console.log(err);
+        data = data.split(',').filter(e => e)
+        if (data.indexOf(account) < 0) { data.push(account) }
+        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
+          if (err) return console.log(err);
+        });
+      });
+    }
+    else {
+      socket.emit('loop', { errorMsg: e, account })
     }
 
     exit(code)
