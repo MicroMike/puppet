@@ -188,7 +188,6 @@ const addFcts = async (page) => {
     throw 'crashed'
   });
 
-
   page.np = async () => {
     if (page.closed) { return }
     let page2 = await page.bc.newPage()
@@ -253,14 +252,13 @@ module.exports = async (userDataDir, noCache, cspot) => {
 
   page = addFcts(page)
 
-  // await page.setRequestInterception(true);
-  // page.on('request', async request => {
-  //   const requestUrl = await request.url()
-  //   if (request.resourceType() === 'image' && !/svg$/.test(requestUrl)) {
-  //     return request.abort(['blockedbyclient']);
-  //   }
-  //   request.continue();
-  // });
+  await page.setRequestInterception(true);
+  page.on('request', interceptedRequest => {
+    if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
+      interceptedRequest.abort();
+    else
+      interceptedRequest.continue();
+  });
 
   return page
 }

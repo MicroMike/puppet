@@ -23,7 +23,7 @@ else if (type === 'napster') {
 
 const main = async () => {
   const page = await puppet('', true)
-  const mailPage = await puppet('', true)
+  const mailPage = await page.np()
 
   if (!page) { return }
 
@@ -78,20 +78,32 @@ const main = async () => {
     // await page.clk('#chkTermsOfUse')
     await page.clk('#signupSubmitButton')
 
-    const payPage = await puppet('', true)
+    const payPage = await page.np()
     await payPage.gotoUrl('https://payments.amazon.com/jr/your-account/')
     await payPage.clk('#createAccountSubmit')
-    await payPage.inst('input#ap_customer_name', email)
-    await payPage.inst('input#ap_email', email)
-    await payPage.inst('input#ap_password', email)
-    await payPage.inst('input#ap_password_check', email)
-    await payPage.clk('#continue')
+
+    const amazonCaptcha = false
+    const fillForm = async () => {
+      await payPage.inst('input#ap_customer_name', email)
+      await payPage.inst('input#ap_email', email)
+      await payPage.inst('input#ap_password', email)
+      await payPage.inst('input#ap_password_check', email)
+      if (!amazonCaptcha) {
+        await payPage.clk('#continue')
+      }
+    }
+
+    await fillForm()
 
     const waitForMail = async () => {
       try {
         await mailPage.clk('.col-box a')
       }
       catch (e) {
+        if (!amazonCaptcha) {
+          amazonCaptcha = true
+          await fillForm()
+        }
         await waitForMail()
       }
     }
@@ -102,8 +114,6 @@ const main = async () => {
     await page.waitFor(2000 + rand(2000))
     let code = await mailPage.get('.inbox-data-content-intro', 'innerText')
     code = code && code.match(/\d+/g)[0]
-
-    console.log(code)
 
     await payPage.inst('input[name="code"]', code)
     await payPage.clk('input[type="submit"]')

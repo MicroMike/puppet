@@ -1,5 +1,6 @@
 process.setMaxListeners(0)
 
+var fs = require('fs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
 var shell = require('shelljs');
@@ -51,6 +52,7 @@ socket.on('albums', albs => {
 
 const fct = async () => {
   let currentAlbum
+
   const album = () => {
     let albumUrl = albums[rand(albums.length)]
     while (currentAlbum === albumUrl) {
@@ -59,19 +61,27 @@ const fct = async () => {
     currentAlbum = albumUrl
     return albumUrl
   }
-  let code = 0
 
   const exit = async (code = 0) => {
-    if (code !== 100) {
-      socket.emit('Cdisconnect')
-    }
-
     close = true
-
     page && await page.cls(true)
 
-    if (code !== 1 && code !== 11) {
-      console.log(code + ' off')
+    if (code === 4) {
+      // 4 = DEL
+      socket.emit('delete', account)
+
+      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
+        if (err) return console.log(err);
+        data = data.split(',').filter(e => e)
+        if (data.indexOf(account) < 0) { data.push(account) }
+        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
+          if (err) return console.log(err);
+        });
+      });
+    }
+    else {
+      socket.emit('loop', { errorMsg, account })
+      socket.emit('Cdisconnect', code)
     }
 
     process.exit(code)
@@ -141,6 +151,11 @@ const fct = async () => {
     }
   });
 
+  page.on('console', msg => {
+    for (let i = 0; i < msg.args().length; ++i)
+      logError(`${account} => ${i}: ${msg.args()[i]}`)
+  });
+
   const takeScreenshot = async (name, e) => {
     let img
 
@@ -171,24 +186,26 @@ const fct = async () => {
   const catchFct = async (e) => {
     close = true
 
+    let code = 5
     code = e === 'loop' ? 1 : code
+    code = e === 'used' ? 1 : code
     code = e === 'first play' ? 2 : code
-    code = e === 'tidal not log' ? 3 : code
-    code = e === 'del' ? 4 : code
-    code = e === 'retry' ? 5 : code
-    code = e === 'crashed' ? 6 : code
-    code = e === 'error' ? 7 : code
-    code = e === 'fillForm' ? 5 : code
-    code = e === 'login' ? 9 : code
-    code = e === 'no bar' ? 10 : code
-    code = e === 'used' ? 11 : code
-    code = e === 'check' ? 12 : code
 
-    if (code === 1 || code === 11) {
+    // code = e === 'tidal not log' ? 3 : code
+    // code = e === 'del' ? 4 : code
+    // code = e === 'retry' ? 5 : code
+    // code = e === 'crashed' ? 6 : code
+    // code = e === 'error' ? 7 : code
+    // code = e === 'fillForm' ? 5 : code
+    // code = e === 'login' ? 9 : code
+    // code = e === 'no bar' ? 10 : code
+    // code = e === 'check' ? 12 : code
+
+    if (code === 1) {
       socket.emit('retryOk')
     }
 
-    if (code !== 1 && code !== 11) {
+    if (code !== 1) {
       logError(e)
       console.log(getTime() + " ERR ", account, e)
       await takeScreenshot('throw', e)
@@ -198,8 +215,6 @@ const fct = async () => {
       await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
       await page.gotoUrl('https://spotify.com/logout', true)
     }
-
-    await page.cls(true)
 
     exit(code)
   }
@@ -629,23 +644,10 @@ const fct = async () => {
 
     loop()
 
-    // const loopChange = async () => {
-    //   let changeTime = 1000 * 60 * 5 + 1000 * rand(60 * 5)
-    //   await page.waitFor(changeTime)
-    //   socket.emit('change')
-    // }
-
-    // socket.on('change', async (time) => {
-    //   setTimeout(async () => {
-    //     if (close) { return }
-    //     await page.gotoUrl(album())
-    //     await page.clk(playBtn, 'changeLoop')
-    //     await loopChange()
-    //   }, time);
-    // })
-
-    // socket.on('startChange', async () => {
-    // loopChange()
+    let changeTime = 1000 * 60 * 5 + 1000 * rand(60 * 10)
+    await page.waitFor(changeTime)
+    await page.gotoUrl(album())
+    await page.clk(playBtn, 'changeLoop')
 
     // if (!startLoop) {
     // startLoop = true
