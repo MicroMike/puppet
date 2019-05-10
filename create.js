@@ -79,9 +79,9 @@ const main = async () => {
       console.log(tMail)
 
       await page.clk('.icon.icon-plus')
-      await page.inst('[name"email"]', tMail)
-      await page.inst('[name"emailConfirm"]', tMail)
-      await page.inst('[name"password"]', tMail)
+      await page.inst('[name="email"]', tMail)
+      await page.inst('[name="emailConfirm"]', tMail)
+      await page.inst('[name="password"]', tMail)
       await page.clk('.btn-full')
     }
 
