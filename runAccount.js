@@ -174,9 +174,9 @@ const fct = async () => {
     code = e === 'loop' ? 1 : code
     code = e === 'used' ? 1 : code
     code = e === 'first play' ? 2 : code
+    code = e === 'del' ? 4 : code
 
     // code = e === 'tidal not log' ? 3 : code
-    // code = e === 'del' ? 4 : code
     // code = e === 'retry' ? 5 : code
     // code = e === 'crashed' ? 6 : code
     // code = e === 'error' ? 7 : code
