@@ -27,7 +27,7 @@ const addFcts = async (page) => {
 
       return true
     } catch (e) {
-      if (!noError) { throw 'error load' }
+      if (!noError) { throw 'error load ' + e }
     }
   }
 
