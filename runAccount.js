@@ -645,14 +645,14 @@ const fct = async () => {
 
     loop()
 
-    let changeTime = 1000 * 60 * 5 + 1000 * rand(60 * 10)
+    let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
     await page.waitFor(changeTime)
     await page.gotoUrl(album())
     await page.clk(playBtn, 'changeLoop')
 
     // if (!startLoop) {
     // startLoop = true
-    let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
+    let restartTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
     await page.waitFor(restartTime)
     catchFct('loop')
     // }
