@@ -116,10 +116,10 @@ const fct = async () => {
   let connected = false
   let suppressed = false
 
-  let noCache = player === 'napster'// || player === 'spotify'
+  let noCache = player === 'napster' || player === 'spotify'
 
   if (player === 'spotify') {
-    // shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+    shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
   page = await puppet('save/' + player + '_' + login, noCache)
@@ -135,10 +135,10 @@ const fct = async () => {
     }
   });
 
-  page.on('console', msg => {
-    for (let i = 0; i < msg.args().length; ++i)
-      logError(`${account} => ${i}: ${msg.args()[i]}`)
-  });
+  // page.on('console', msg => {
+  //   for (let i = 0; i < msg.args().length; ++i)
+  //     logError(`${account} => ${i}: ${msg.args()[i]}`)
+  // });
 
   const takeScreenshot = async (name, e) => {
     let img
@@ -366,7 +366,7 @@ const fct = async () => {
       await tidalConnect()
     }
 
-    if (player !== 'tidal' && player !== 'napster') {
+    if (player === 'amazon') {
       await page.gotoUrl(album())
       connected = await page.ext(loggedDom)
     }
