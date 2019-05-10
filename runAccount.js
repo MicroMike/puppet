@@ -644,16 +644,16 @@ const fct = async () => {
     //   }, time);
     // })
 
-    socket.on('startChange', async () => {
-      // loopChange()
+    // socket.on('startChange', async () => {
+    // loopChange()
 
-      if (!startLoop) {
-        startLoop = true
-        let restartTime = 1000 * 60 * 5 + 1000 * rand(60 * 5)
-        await page.waitFor(restartTime)
-        catchFct('loop')
-      }
-    })
+    // if (!startLoop) {
+    // startLoop = true
+    let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 20)
+    await page.waitFor(restartTime)
+    catchFct('loop')
+    // }
+    // })
   }
   catch (e) {
     catchFct(e)
