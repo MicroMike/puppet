@@ -29,47 +29,43 @@ const main = async () => {
 
   await page.gotoUrl(url)
 
-  // await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
-  // const email = await mailPage.get('#mail', 'value')
-  // console.log(email)
-  const email = 'topuhoya@cyber-host.net'
-  const log = true
+  await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
+  const email = await mailPage.get('#mail', 'value')
+  console.log(email)
 
   if (type === 'tidal') {
-    if (!log) {
-      await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
+    await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
-      await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
+    await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
 
-      await page.inst('input#new-password', email)
-      await page.inst('input#password2', email)
-      await page.waitFor(2000 + rand(2000))
-      await page.select('select#tbi-day', String(rand(25, 1)))
-      await page.waitFor(2000 + rand(2000))
-      await page.select('select#tbi-month', String(rand(12, 1)))
-      await page.waitFor(2000 + rand(2000))
-      await page.select('select#tbi-year', String(1954 + rand(47)))
+    await page.inst('input#new-password', email)
+    await page.inst('input#password2', email)
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#tbi-day', String(rand(25, 1)))
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#tbi-month', String(rand(12, 1)))
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#tbi-year', String(1954 + rand(47)))
 
-      await page.waitFor(2000 + rand(2000))
-      await page.jClk('#terms1')
-      await page.clk('#registration-step-2 > button > div')
+    await page.waitFor(2000 + rand(2000))
+    await page.jClk('#terms1')
+    await page.clk('#registration-step-2 > button > div')
 
-      await page.waitFor(2000 + rand(2000))
+    await page.waitFor(2000 + rand(2000))
 
-      await page.jClk('#premium > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > button', true)
+    await page.jClk('#premium > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > button', true)
 
-      await page.waitFor(2000 + rand(2000))
+    await page.waitFor(2000 + rand(2000))
 
-      await page.inst('#ccname', 'Assoune Mike')
-      await page.inst('#cardnumber', '5273462800749229')
-      await page.inst('#ccmonth', '04')
-      await page.inst('#ccyear', '24')
-      await page.inst('#cvc', '474')
-      await page.inst('#postalCode', '10001')
+    await page.inst('#ccname', 'Assoune Mike')
+    await page.inst('#cardnumber', '5273462800749229')
+    await page.inst('#ccmonth', '04')
+    await page.inst('#ccyear', '24')
+    await page.inst('#cvc', '474')
+    await page.inst('#postalCode', '10001')
 
-      await page.clk('#card-form > button')
-      await page.waitFor(5000 + rand(2000))
-    }
+    await page.clk('#card-form > button')
+    await page.waitFor(5000 + rand(2000))
 
     await page.gotoUrl('https://my.tidal.com/')
     await page.inst('.login-email', email)
