@@ -250,8 +250,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
     });
   });
 
-  page = addFcts(page)
-
   await page.setRequestInterception(true);
   page.on('request', interceptedRequest => {
     if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
@@ -259,6 +257,8 @@ module.exports = async (userDataDir, noCache, cspot) => {
     else
       interceptedRequest.continue();
   });
+
+  page = addFcts(page)
 
   return page
 }
