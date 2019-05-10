@@ -12,7 +12,7 @@ const addFcts = async (page) => {
     try {
       await page.goto(url, {
         timeout: 1000 * 60 * 5,
-        waitUntil: 'domcontentloaded'
+        // waitUntil: 'domcontentloaded'
       })
       await page.waitFor(3000 + rand(2000))
 
