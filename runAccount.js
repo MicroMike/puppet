@@ -116,7 +116,7 @@ const fct = async () => {
   let connected = false
   let suppressed = false
 
-  let noCache = false//player === 'napster' || player === 'spotify'
+  let noCache = player === 'napster'// || player === 'spotify'
 
   if (player === 'spotify') {
     // shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
@@ -366,7 +366,7 @@ const fct = async () => {
       await tidalConnect()
     }
 
-    if (player !== 'tidal') {
+    if (player !== 'tidal' && player !== 'napster') {
       await page.gotoUrl(album())
       connected = await page.ext(loggedDom)
     }
@@ -621,11 +621,12 @@ const fct = async () => {
           else {
             // throw 'failedLoop'
             await page.wfs(loggedDom, true)
-            await page.waitFor(1000 * 30)
+            await page.waitFor(1000 * 5)
             if ((player === 'tidal' && rand(2)) || player !== 'tidal') {
               await page.gotoUrl(album())
             }
             await page.clk(playBtn, 'failedLoop')
+            socket.emit('retryOk')
             retry = true
           }
 
