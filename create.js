@@ -65,6 +65,31 @@ const main = async () => {
     await page.inst('#postalCode', '10001')
 
     await page.clk('#card-form > button')
+    await page.waitFor(5000 + rand(2000))
+
+    await page.gotoUrl('https://my.tidal.com/')
+    await page.inst('.login-email', email)
+    await page.inst('[name="password"]', email)
+    await page.clk('.btn.action.login-cta')
+    await page.clk('.box-family a')
+
+    const addTidal = async () => {
+      await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
+      const tMail = await mailPage.get('#mail', 'value')
+      console.log(tMail)
+
+      await page.clk('.icon.icon-plus')
+      await page.inst('[name"email"]', tMail)
+      await page.inst('[name"emailConfirm"]', tMail)
+      await page.inst('[name"password"]', tMail)
+      await page.clk('.btn-full')
+    }
+
+    await addTidal()
+    await addTidal()
+    await addTidal()
+    await addTidal()
+    await addTidal()
   }
   else if (type === 'napster') {
     await page.clk('.button.extra-large')
