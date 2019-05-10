@@ -5,5 +5,6 @@ while (true) {
   shell.exec('npm run rm && npm run clear', { silent: true })
   shell.exec('git reset --hard origin/master')
   shell.exec('git pull')
-  shell.exec('npm run big')
+  shell.exec('npm run run')
+  shell.exec('npm run run')
 }
