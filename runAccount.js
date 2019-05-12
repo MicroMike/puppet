@@ -66,6 +66,7 @@ const fct = async () => {
     close = true
     page && await page.cls(true)
 
+    console.log(account)
     socket.emit('Cdisconnect', account)
 
     process.exit(code)
