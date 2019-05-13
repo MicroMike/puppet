@@ -105,7 +105,7 @@ const main = async () => {
 
     await page.clk('#rdbPaymentMethodsAmazon')
     await page.waitFor(5000 + rand(2000))
-    await page.clk('#btn-amazon')
+    await page.clk('#OffAmazonPaymentsWidgets1')
 
     setInterval(async () => {
       await page.bcPages()
