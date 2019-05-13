@@ -104,12 +104,12 @@ const main = async () => {
     await page.clk('#signupSubmitButton')
 
     await page.clk('#rdbPaymentMethodsAmazon')
-    await page.wfs('#btn-amazon')
-    await page.jClk('#btn-amazon')
-
     await page.waitFor(5000 + rand(2000))
+    await page.clk('#btn-amazon')
 
-    await page.bcPages()
+    setInterval(() => {
+      await page.bcPages()
+    }, 5000);
 
     // const payPage = await page.np()
     // await payPage.gotoUrl('https://payments.amazon.com/jr/your-account/')
