@@ -139,8 +139,8 @@ const main = async () => {
     await payPage.clk('input[type="submit"]')
     await payPage.clk('#amazonpay-accept-button-consent input')
 
-    await page.wfs('#OffAmazonPaymentsWidgets0IFrame')
-    await page.waitFor(2000 + rand(2000))
+    await page.wfs('iframe')
+    await page.waitFor(5000 + rand(2000))
     await page.evaluate(() => {
       const el = document.querySelector('iframe').contentDocument.querySelector('.add-new-payment')
       el && el.click()
