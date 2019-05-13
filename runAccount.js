@@ -195,7 +195,7 @@ const fct = async () => {
       await takeScreenshot('throw', e)
     }
 
-    if (code === 2 && player === "spotify") {
+    if (player === "spotify") {
       await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
       await page.gotoUrl('https://spotify.com/logout', true)
     }
@@ -646,18 +646,13 @@ const fct = async () => {
 
     loop()
 
-    // let changeTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
-    // await page.waitFor(changeTime)
-    // await page.gotoUrl(album())
-    // await page.clk(playBtn, 'changeLoop')
+    socket.on('outOk', () => {
+      throw 'loop'
+    })
 
-    // if (!startLoop) {
-    // startLoop = true
     let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 40)
     await page.waitFor(restartTime)
-    catchFct('loop')
-    // }
-    // })
+    socket.emit('out', clientId)
   }
   catch (e) {
     catchFct(e)
