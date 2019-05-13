@@ -115,8 +115,8 @@ const main = async () => {
 
     await payPage.inst('input#ap_customer_name', email)
     await payPage.inst('input#ap_email', email)
-    await payPage.inst('input#ap_password', email)
-    await payPage.inst('input#ap_password_check', email)
+    await payPage.inst('input#ap_password', '20192019')
+    await payPage.inst('input#ap_password_check', '20192019')
     await payPage.clk('#continue')
 
     const waitForMail = async () => {
@@ -137,11 +137,15 @@ const main = async () => {
 
     await payPage.inst('input[name="code"]', code)
     await payPage.clk('input[type="submit"]')
+    await payPage.clk('#amazonpay-accept-button-consent input')
 
-    // 5144720700853723
-    // 04
-    // 23
+    await page.clk('.add-new-payment')
 
+    payPage = await page.lastPage()
+    await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
+    await payPage.inst('input[name="addCreditCardNumber"]', '5144720700853723')
+    await payPage.select('select[name="ppw-expirationDate_month"]', '4')
+    await payPage.select('select[name="ppw-expirationDate_year"]', '2023')
   }
 
   // await page.cls(true)
