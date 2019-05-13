@@ -103,12 +103,24 @@ const main = async () => {
     // await page.clk('#chkTermsOfUse')
     await page.clk('#signupSubmitButton')
 
-    // await page.clk('#rdbPaymentMethodsAmazon')
     await page.waitFor(2000 + rand(2000))
+    await page.clk('#rdbPaymentMethodsAmazon')
     await page.clk('#OffAmazonPaymentsWidgets1')
-    await page.waitFor(2000 + rand(2000))
 
-    const payPage = await page.bcPages()
+    let payPage
+
+    const waitForPage = async () => {
+      try {
+        payPage = await page.bcPages()
+        payPage = payPage[2]
+      }
+      catch (e) {
+        await waitForPage()
+      }
+    }
+
+    await waitForPage()
+
     await payPage.clk('#createAccountSubmit')
 
     await payPage.inst('input#ap_customer_name', email)
