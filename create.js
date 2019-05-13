@@ -103,22 +103,20 @@ const main = async () => {
     // await page.clk('#chkTermsOfUse')
     await page.clk('#signupSubmitButton')
 
-    const payPage = await page.np()
-    await payPage.gotoUrl('https://payments.amazon.com/jr/your-account/')
-    await payPage.clk('#createAccountSubmit')
-
-    await payPage.clk('#rdbPaymentMethodsAmazon')
-    await payPage.clk('#btn-amazon')
+    await page.clk('#rdbPaymentMethodsAmazon')
+    await page.clk('#btn-amazon')
 
     await page.bcPages()
 
-    const amazonCaptcha = false
+    // const payPage = await page.np()
+    // await payPage.gotoUrl('https://payments.amazon.com/jr/your-account/')
+    // await payPage.clk('#createAccountSubmit')
 
-    await payPage.inst('input#ap_customer_name', email)
-    await payPage.inst('input#ap_email', email)
-    await payPage.inst('input#ap_password', email)
-    await payPage.inst('input#ap_password_check', email)
-    await payPage.clk('#continue')
+    // await payPage.inst('input#ap_customer_name', email)
+    // await payPage.inst('input#ap_email', email)
+    // await payPage.inst('input#ap_password', email)
+    // await payPage.inst('input#ap_password_check', email)
+    // await payPage.clk('#continue')
 
     const waitForMail = async () => {
       try {
