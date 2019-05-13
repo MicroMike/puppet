@@ -646,13 +646,17 @@ const fct = async () => {
 
     loop()
 
-    socket.on('outOk', () => {
-      throw 'loop'
+    socket.on('outOk', ok => {
+      if (ok) { throw 'loop' }
+
+      let loopExit = 1000 * 60 * 5 + 1000 * rand(60 * 5)
+      await page.waitFor(loopExit)
+      socket.emit('out')
     })
 
     let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 40)
     await page.waitFor(restartTime)
-    socket.emit('out', clientId)
+    socket.emit('out')
   }
   catch (e) {
     catchFct(e)
