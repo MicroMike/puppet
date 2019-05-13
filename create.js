@@ -107,6 +107,11 @@ const main = async () => {
     await payPage.gotoUrl('https://payments.amazon.com/jr/your-account/')
     await payPage.clk('#createAccountSubmit')
 
+    await payPage.clk('#rdbPaymentMethodsAmazon')
+    await payPage.clk('#btn-amazon')
+
+    await page.bcPages()
+
     const amazonCaptcha = false
 
     await payPage.inst('input#ap_customer_name', email)
