@@ -245,7 +245,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   page.bc = launch
   page.bcPages = async () => {
     const pages = await launch.pages()
-    console.log(pages.length)
+    return pages[pages.length - 1]
   }
 
   await page.evaluateOnNewDocument(() => {

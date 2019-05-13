@@ -107,19 +107,14 @@ const main = async () => {
     await page.waitFor(5000 + rand(2000))
     await page.clk('#OffAmazonPaymentsWidgets1')
 
-    setInterval(async () => {
-      await page.bcPages()
-    }, 5000);
+    const payPage = await page.bcPages()
+    await payPage.clk('#createAccountSubmit')
 
-    // const payPage = await page.np()
-    // await payPage.gotoUrl('https://payments.amazon.com/jr/your-account/')
-    // await payPage.clk('#createAccountSubmit')
-
-    // await payPage.inst('input#ap_customer_name', email)
-    // await payPage.inst('input#ap_email', email)
-    // await payPage.inst('input#ap_password', email)
-    // await payPage.inst('input#ap_password_check', email)
-    // await payPage.clk('#continue')
+    await payPage.inst('input#ap_customer_name', email)
+    await payPage.inst('input#ap_email', email)
+    await payPage.inst('input#ap_password', email)
+    await payPage.inst('input#ap_password_check', email)
+    await payPage.clk('#continue')
 
     const waitForMail = async () => {
       try {
