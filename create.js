@@ -93,6 +93,7 @@ const main = async () => {
   }
   else if (type === 'napster') {
     await page.clk('.button.extra-large')
+    await page.waitFor(2000 + rand(2000))
     await page.inst('input#txtEmail', email)
     await page.inst('input#txtPassword', '20192019')
     // await page.inst('input#txtConfirmPassword', '20192019')
