@@ -107,9 +107,10 @@ const main = async () => {
     await page.clk('#rdbPaymentMethodsAmazon')
     await page.clk('#OffAmazonPaymentsWidgets1')
 
-    let payPage
 
     const waitForPage = async () => {
+      let payPage
+
       try {
         payPage = await page.bcPages()
         payPage = payPage[2]
@@ -117,9 +118,11 @@ const main = async () => {
       catch (e) {
         await waitForPage()
       }
+
+      return payPage
     }
 
-    await waitForPage()
+    const payPage = await waitForPage()
 
     await payPage.clk('#createAccountSubmit')
 
