@@ -108,12 +108,9 @@ const main = async () => {
     await page.clk('#rdbPaymentMethodsAmazon')
     await page.clk('#OffAmazonPaymentsWidgets1')
 
-    await page.waitFor(5000 + rand(2000))
+    await page.waitFor(2000 + rand(2000))
 
     let payPage = await page.bcPages()
-    console.log(payPage.length)
-    payPage = payPage[2]
-
     await payPage.clk('#createAccountSubmit')
 
     await payPage.inst('input#ap_customer_name', email)
