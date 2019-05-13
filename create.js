@@ -149,8 +149,8 @@ const main = async () => {
 
   }
 
-  await page.cls(true)
-  await mailPage.cls(true)
+  // await page.cls(true)
+  // await mailPage.cls(true)
 }
 
 main()
