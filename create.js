@@ -139,8 +139,12 @@ const main = async () => {
     await payPage.clk('input[type="submit"]')
     await payPage.clk('#amazonpay-accept-button-consent input')
 
+    await page.wfs('#OffAmazonPaymentsWidgets0IFrame')
     await page.waitFor(2000 + rand(2000))
-    await page.clk('.add-new-payment')
+    await page.evaluate(() => {
+      const el = document.querySelector('#OffAmazonPaymentsWidgets0IFrame').contentDocument.querySelector('.add-new-payment')
+      el && el.click()
+    })
 
     payPage = await page.lastPage()
     await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
