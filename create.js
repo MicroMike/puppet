@@ -123,10 +123,6 @@ const main = async () => {
         await mailPage.clk('.col-box a')
       }
       catch (e) {
-        if (!amazonCaptcha) {
-          amazonCaptcha = true
-          await fillForm()
-        }
         await waitForMail()
       }
     }
