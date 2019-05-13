@@ -174,6 +174,7 @@ const fct = async () => {
     code = e === 'loop' ? 1 : code
     code = e === 'used' ? 1 : code
     code = e === 'first play' ? 2 : code
+    code = e === 'failedLoop' ? 2 : code
     code = e === 'del' ? 4 : code
 
     // code = e === 'tidal not log' ? 3 : code
@@ -196,7 +197,9 @@ const fct = async () => {
     }
 
     if (player === "spotify") {
-      await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
+      if (code === 2) {
+        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
+      }
       await page.gotoUrl('https://spotify.com/logout', true)
     }
 
