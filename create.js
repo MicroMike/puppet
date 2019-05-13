@@ -108,17 +108,12 @@ const main = async () => {
     await payPage.clk('#createAccountSubmit')
 
     const amazonCaptcha = false
-    const fillForm = async () => {
-      await payPage.inst('input#ap_customer_name', email)
-      await payPage.inst('input#ap_email', email)
-      await payPage.inst('input#ap_password', email)
-      await payPage.inst('input#ap_password_check', email)
-      if (!amazonCaptcha) {
-        await payPage.clk('#continue')
-      }
-    }
 
-    await fillForm()
+    await payPage.inst('input#ap_customer_name', email)
+    await payPage.inst('input#ap_email', email)
+    await payPage.inst('input#ap_password', email)
+    await payPage.inst('input#ap_password_check', email)
+    await payPage.clk('#continue')
 
     const waitForMail = async () => {
       try {
