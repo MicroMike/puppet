@@ -104,7 +104,10 @@ const main = async () => {
     await page.clk('#signupSubmitButton')
 
     await page.clk('#rdbPaymentMethodsAmazon')
-    await page.clk('#btn-amazon')
+    await page.wfs('#btn-amazon')
+    await page.jClk('#btn-amazon')
+
+    await page.waitFor(5000 + rand(2000))
 
     await page.bcPages()
 
