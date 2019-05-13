@@ -142,7 +142,7 @@ const main = async () => {
     await page.wfs('#OffAmazonPaymentsWidgets0IFrame')
     await page.waitFor(2000 + rand(2000))
     await page.evaluate(() => {
-      const el = document.querySelector('#OffAmazonPaymentsWidgets0IFrame').contentDocument.querySelector('.add-new-payment')
+      const el = document.querySelector('iframe').contentDocument.querySelector('.add-new-payment')
       el && el.click()
     })
 
