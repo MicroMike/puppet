@@ -146,6 +146,8 @@ const main = async () => {
       el && el.click()
     })
 
+    await page.waitFor(2000 + rand(2000))
+
     payPage = await page.lastPage()
     await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
     await payPage.inst('input[name="addCreditCardNumber"]', '5144720700853723')
