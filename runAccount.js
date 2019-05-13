@@ -646,7 +646,7 @@ const fct = async () => {
 
     loop()
 
-    socket.on('outOk', ok => {
+    socket.on('outOk', async (ok) => {
       if (ok) { throw 'loop' }
 
       let loopExit = 1000 * 60 * 5 + 1000 * rand(60 * 5)
