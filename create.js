@@ -139,6 +139,7 @@ const main = async () => {
     await payPage.clk('input[type="submit"]')
     await payPage.clk('#amazonpay-accept-button-consent input')
 
+    await page.waitFor(2000 + rand(2000))
     await page.clk('.add-new-payment')
 
     payPage = await page.lastPage()
