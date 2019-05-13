@@ -110,7 +110,7 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    let payPage = await page.bcPages()
+    let payPage = await page.lastPage()
     await payPage.clk('#createAccountSubmit')
 
     await payPage.inst('input#ap_customer_name', email)

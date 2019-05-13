@@ -195,6 +195,13 @@ const addFcts = async (page) => {
     return page2
   }
 
+  page.lastPage = async () => {
+    const bcPages = await page.bc.pages()
+    let page2 = bcPages[bcPages.length - 1]
+    page2 = addFcts(page2)
+    return page2
+  }
+
   return page
 }
 
@@ -243,12 +250,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
   let page = pages[0]
 
   page.bc = launch
-  page.bcPages = async () => {
-    const bcPages = await launch.pages()
-    let page2 = bcPages[bcPages.length - 1]
-    page2 = addFcts(page2)
-    return pages
-  }
 
   await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
