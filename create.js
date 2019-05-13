@@ -150,9 +150,9 @@ const main = async () => {
 
     payPage = await page.lastPage()
     await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
-    await payPage.inst('input[name="addCreditCardNumber"]', '5144720700853723')
+    await payPage.inst('input[name="addCreditCardNumber"]', '4979938904321965')
     await payPage.select('select[name="ppw-expirationDate_month"]', '4')
-    await payPage.select('select[name="ppw-expirationDate_year"]', '2023')
+    await payPage.select('select[name="ppw-expirationDate_year"]', '2021')
   }
 
   // await page.cls(true)
