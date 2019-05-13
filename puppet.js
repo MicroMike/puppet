@@ -244,8 +244,8 @@ module.exports = async (userDataDir, noCache, cspot) => {
 
   page.bc = launch
   page.bcPages = async () => {
-    const pages = await launch.pages()
-    let page2 = pages[pages.length - 1]
+    const bcPages = await launch.pages()
+    let page2 = bcPages[bcPages.length - 1]
     page2 = addFcts(page2)
     return pages
   }
