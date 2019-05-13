@@ -108,19 +108,14 @@ const main = async () => {
     await page.clk('#rdbPaymentMethodsAmazon')
     await page.clk('#OffAmazonPaymentsWidgets1')
 
-
     const waitForPage = async () => {
-      let payPage
-
       try {
-        payPage = await page.bcPages()
-        payPage = payPage[2]
+        const payPage = await page.bcPages()
+        return payPage[2]
       }
       catch (e) {
         await waitForPage()
       }
-
-      return payPage
     }
 
     const payPage = await waitForPage()
