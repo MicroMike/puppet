@@ -107,7 +107,7 @@ const main = async () => {
     await page.waitFor(5000 + rand(2000))
     await page.clk('#btn-amazon')
 
-    setInterval(() => {
+    setInterval(async () => {
       await page.bcPages()
     }, 5000);
 
