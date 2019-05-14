@@ -652,12 +652,12 @@ const fct = async () => {
     socket.on('outOk', async (ok) => {
       if (ok) { return catchFct('loop') }
 
-      let loopExit = 1000 * 60 * 1 + 1000 * rand(60 * 5)
+      let loopExit = 1000 * 60 * 5 + 1000 * rand(60 * 5)
       await page.waitFor(loopExit)
       socket.emit('out', clientId)
     })
 
-    let restartTime = 1000 * 60 * 20 + 1000 * rand(60 * 40)
+    let restartTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
     await page.waitFor(restartTime)
     socket.emit('out', clientId)
   }
