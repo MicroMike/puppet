@@ -540,6 +540,7 @@ const fct = async () => {
     let retryDom = false
     let nextMusic = false
     let startLoop = false
+    let exitLoop = false
 
     const loop = async () => {
       const existRepeatBtnOk = await page.ext(repeatBtnOk)
@@ -640,6 +641,7 @@ const fct = async () => {
         }
 
         // socket.emit('stayAlive')
+        if (exitLoop) { throw 'loop' }
         loop()
       }
       catch (e) {
@@ -650,7 +652,7 @@ const fct = async () => {
     loop()
 
     socket.on('outOk', async (ok) => {
-      if (ok) { return catchFct('loop') }
+      if (ok) { return exitLoop = true }
 
       let loopExit = 1000 * 60 * 5 + 1000 * rand(60 * 5)
       await page.waitFor(loopExit)
