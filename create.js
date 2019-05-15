@@ -67,15 +67,15 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    await page.inst('#ccname', 'Assoune Mike')
-    await page.inst('#cardnumber', '5273462800749229')
-    await page.inst('#ccmonth', '04')
-    await page.inst('#ccyear', '24')
-    await page.inst('#cvc', '474')
-    await page.inst('#postalCode', '10001')
+    // await page.inst('#ccname', 'Assoune Mike')
+    // await page.inst('#cardnumber', '5273462800749229')
+    // await page.inst('#ccmonth', '04')
+    // await page.inst('#ccyear', '24')
+    // await page.inst('#cvc', '474')
+    // await page.inst('#postalCode', '10001')
 
-    await page.clk('#card-form > button')
-    await page.waitFor(5000 + rand(2000))
+    // await page.clk('#card-form > button')
+    await page.waitFor(60000 + rand(2000))
 
     await page.gotoUrl('https://my.tidal.com/')
     await page.inst('.login-email', email)
