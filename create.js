@@ -36,9 +36,19 @@ const main = async () => {
   if (type === 'tidal') {
     await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
-    await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
+    // await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
+    await page.inst('input#email', email)
 
-    await page.inst('input#new-password', email)
+    const waitForPass = async () => {
+      try {
+        await page.inst('input#new-password', email)
+      }
+      catch (e) {
+        await waitForPass()
+      }
+    }
+
+    await waitForPass()
     await page.inst('input#password2', email)
     await page.waitFor(2000 + rand(2000))
     await page.select('select#tbi-day', String(rand(25, 1)))
@@ -90,6 +100,12 @@ const main = async () => {
     await addTidal()
     await addTidal()
     await addTidal()
+
+    await page.waitFor(5000 + rand(2000))
+
+    await page.gotoUrl('https://my.tidal.com/account/subscription')
+    await page.clk('a.cancel-subscription')
+    await page.clk('.cancel-cta a + a')
   }
   else if (type === 'napster') {
     await page.clk('.button.extra-large')
