@@ -22,6 +22,7 @@ else if (type === 'napster') {
 }
 
 const main = async () => {
+  shell.exec('expressvpn disconnect', { silent: true })
   const page = await puppet('', true)
   const mailPage = await page.np()
 
@@ -34,6 +35,8 @@ const main = async () => {
   console.log(email)
 
   if (type === 'tidal') {
+    shell.exec('expressvpn connect dk', { silent: true })
+
     await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
     // await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
@@ -108,6 +111,8 @@ const main = async () => {
     await page.clk('.cancel-cta a + a')
   }
   else if (type === 'napster') {
+    shell.exec('expressvpn connect nl', { silent: true })
+
     await page.clk('.button.extra-large')
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#txtEmail', email)
