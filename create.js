@@ -129,10 +129,17 @@ const main = async () => {
     await page.clk('#rdbPaymentMethodsAmazon')
     await page.clk('#OffAmazonPaymentsWidgets1')
 
-    await page.waitFor(2000 + rand(2000))
+    const waitForPopup = async () => {
+      try {
+        let payPage = await page.lastPage()
+        await payPage.clk('#createAccountSubmit')
+      }
+      catch (e) {
+        await waitForPopup()
+      }
+    }
 
-    let payPage = await page.lastPage()
-    await payPage.clk('#createAccountSubmit')
+    await waitForPopup()
 
     await payPage.inst('input#ap_customer_name', email)
     await payPage.inst('input#ap_email', email)
@@ -160,17 +167,18 @@ const main = async () => {
     await payPage.clk('input[type="submit"]')
     await payPage.clk('#amazonpay-accept-button-consent input')
 
-    await page.wfs('iframe')
-    await page.waitFor(5000 + rand(2000))
-    await page.evaluate(() => {
-      const el = document.querySelector('iframe').contentDocument.querySelector('.add-new-payment')
-      el && el.click()
-    })
+    const waitForAmazon = async () => {
+      try {
+        payPage = await page.lastPage()
+        await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
+      }
+      catch (e) {
+        await waitForAmazon()
+      }
+    }
 
-    await page.waitFor(2000 + rand(2000))
+    await waitForAmazon()
 
-    payPage = await page.lastPage()
-    await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
     await payPage.inst('input[name="addCreditCardNumber"]', '4979938904321965')
     await payPage.select('select[name="ppw-expirationDate_month"]', '4')
     await payPage.select('select[name="ppw-expirationDate_year"]', '2021')
