@@ -187,6 +187,14 @@ const main = async () => {
     await payPage.inst('input[name="addCreditCardNumber"]', '4979938904321965')
     await payPage.select('select[name="ppw-expirationDate_month"]', '4')
     await payPage.select('select[name="ppw-expirationDate_year"]', '2021')
+    await payPage.clk('input[name="ppw-widgetEvent:AddCreditCardEvent"]')
+
+    await payPage.inst('input[name="ppw-line1"]', '23 56st')
+    await payPage.inst('input[name="ppw-city"]', 'New-York')
+    await payPage.inst('input[name="ppw-stateOrRegion"]', 'New-York')
+    await payPage.inst('input[name="ppw-postalCode"]', '10001')
+    await payPage.inst('input[name="ppw-phoneNumber"]', '0645789458')
+    await payPage.clk('input[name="ppw-widgetEvent:AddAdressEvent"]')
   }
 
   // await page.cls(true)
