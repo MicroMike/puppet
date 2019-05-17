@@ -124,6 +124,7 @@ const main = async () => {
     // await page.waitFor(2000 + rand(2000))
     // await page.select('select#gender', 'U')
     // await page.clk('#chkTermsOfUse')
+    await page.clk('#chkTermsOfUse')
     await page.clk('#signupSubmitButton')
 
     await page.waitFor(2000 + rand(2000))
@@ -180,5 +181,5 @@ const main = async () => {
   // await page.cls(true)
   // await mailPage.cls(true)
 }
-
+//5273 4628 0074 9229 04/24 474
 main()
