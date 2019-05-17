@@ -23,7 +23,7 @@ else if (type === 'napster') {
 
 const main = async () => {
   shell.exec('expressvpn disconnect', { silent: true })
-  const page = await puppet('', true)
+  const page = await puppet(Date.now(), true)
   const mailPage = await page.np()
 
   if (!page) { return }
