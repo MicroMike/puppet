@@ -129,6 +129,7 @@ const main = async () => {
     await page.clk('#rdbPaymentMethodsAmazon')
     await page.clk('#OffAmazonPaymentsWidgets1')
 
+    let payPage
     const waitForPopup = async () => {
       try {
         let payPage = await page.lastPage()
