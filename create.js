@@ -118,7 +118,6 @@ const main = async () => {
     await page.inst('input#txtEmail', email)
     await page.inst('input#txtPassword', '20192019')
     // await page.inst('input#txtConfirmPassword', '20192019')
-    await page.inst('input#txtConfirmPassword', '20192019')
     await page.waitFor(2000 + rand(2000))
     await page.select('select#age', String(20 + rand(50)))
     await page.waitFor(2000 + rand(2000))
