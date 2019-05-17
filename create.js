@@ -132,7 +132,7 @@ const main = async () => {
     let payPage
     const waitForPopup = async () => {
       try {
-        let payPage = await page.lastPage()
+        payPage = await page.lastPage()
         await payPage.clk('#createAccountSubmit')
       }
       catch (e) {
