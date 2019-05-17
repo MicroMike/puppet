@@ -133,7 +133,8 @@ const main = async () => {
     const waitForPopup = async () => {
       try {
         payPage = await page.lastPage()
-        await payPage.clk('#createAccountSubmit')
+        const exist = await payPage.ext('#createAccountSubmit')
+        if (!exist) { throw 'Failed' }
       }
       catch (e) {
         await waitForPopup()
@@ -142,6 +143,7 @@ const main = async () => {
 
     await waitForPopup()
 
+    await payPage.clk('#createAccountSubmit')
     await payPage.inst('input#ap_customer_name', email)
     await payPage.inst('input#ap_email', email)
     await payPage.inst('input#ap_password', '20192019')
@@ -171,7 +173,8 @@ const main = async () => {
     const waitForAmazon = async () => {
       try {
         payPage = await page.lastPage()
-        await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
+        const exist = await payPage.ext('input[name="ppw-accountHolderName"]')
+        if (!exist) { throw 'Failed' }
       }
       catch (e) {
         await waitForAmazon()
@@ -180,6 +183,7 @@ const main = async () => {
 
     await waitForAmazon()
 
+    await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
     await payPage.inst('input[name="addCreditCardNumber"]', '4979938904321965')
     await payPage.select('select[name="ppw-expirationDate_month"]', '4')
     await payPage.select('select[name="ppw-expirationDate_year"]', '2021')
