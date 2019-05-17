@@ -111,7 +111,7 @@ const main = async () => {
     await page.clk('.cancel-cta a + a')
   }
   else if (type === 'napster') {
-    shell.exec('expressvpn connect nl', { silent: true })
+    shell.exec('expressvpn connect uklo', { silent: true })
 
     await page.clk('.button.extra-large')
     await page.waitFor(2000 + rand(2000))
