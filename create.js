@@ -111,19 +111,19 @@ const main = async () => {
     await page.clk('.cancel-cta a + a')
   }
   else if (type === 'napster') {
-    shell.exec('expressvpn connect uklo', { silent: true })
+    shell.exec('expressvpn connect us', { silent: true })
 
     await page.clk('.button.extra-large')
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#txtEmail', email)
     await page.inst('input#txtPassword', '20192019')
-    await page.inst('input#txtConfirmPassword', '20192019')
     // await page.inst('input#txtConfirmPassword', '20192019')
-    // await page.waitFor(2000 + rand(2000))
-    // await page.select('select#age', String(20 + rand(50)))
-    // await page.waitFor(2000 + rand(2000))
-    // await page.select('select#gender', 'U')
-    // await page.clk('#chkTermsOfUse')
+    await page.inst('input#txtConfirmPassword', '20192019')
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#age', String(20 + rand(50)))
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#gender', 'U')
+    await page.clk('#chkTermsOfUse')
     await page.clk('#chkTermsOfUse')
     await page.clk('#signupSubmitButton')
 
