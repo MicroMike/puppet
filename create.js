@@ -122,8 +122,7 @@ const main = async () => {
     await page.select('select#age', String(20 + rand(50)))
     await page.waitFor(2000 + rand(2000))
     await page.select('select#gender', 'U')
-    await page.clk('#chkTermsOfUse')
-    await page.clk('#chkTermsOfUse')
+    // await page.clk('#chkTermsOfUse')
     await page.clk('#signupSubmitButton')
 
     await page.waitFor(2000 + rand(2000))
