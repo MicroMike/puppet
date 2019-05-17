@@ -194,7 +194,8 @@ const main = async () => {
     await payPage.inst('input[name="ppw-stateOrRegion"]', 'New-York')
     await payPage.inst('input[name="ppw-postalCode"]', '10001')
     await payPage.inst('input[name="ppw-phoneNumber"]', '0645789458')
-    await payPage.clk('input[name="ppw-widgetEvent:AddAdressEvent"]')
+    await payPage.clk('input[name="ppw-widgetEvent:AddAddressEvent"]')
+    await payPage.clk('input[name="ppw-widgetEvent:UseSuggestedAddressEvent"]')
   }
 
   // await page.cls(true)
