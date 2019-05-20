@@ -115,17 +115,19 @@ const main = async () => {
 
     await page.clk('.button.extra-large')
     await page.waitFor(2000 + rand(2000))
-    await page.clk('#OffAmazonPaymentsWidgets0')
+    await page.inst('input#txtEmail', email)
+    await page.inst('input#txtPassword', '20192019')
+    // await page.inst('input#txtConfirmPassword', '20192019')
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#age', String(20 + rand(50)))
+    await page.waitFor(2000 + rand(2000))
+    await page.select('select#gender', 'U')
+    // await page.clk('#chkTermsOfUse')
+    await page.clk('#signupSubmitButton')
 
-    // await page.inst('input#txtEmail', email)
-    // await page.inst('input#txtPassword', '20192019')
-    // // await page.inst('input#txtConfirmPassword', '20192019')
-    // await page.waitFor(2000 + rand(2000))
-    // await page.select('select#age', String(20 + rand(50)))
-    // await page.waitFor(2000 + rand(2000))
-    // await page.select('select#gender', 'U')
-    // // await page.clk('#chkTermsOfUse')
-    // await page.clk('#signupSubmitButton')
+    await page.waitFor(2000 + rand(2000))
+    await page.clk('#rdbPaymentMethodsAmazon')
+    await page.clk('#OffAmazonPaymentsWidgets1')
 
     let payPage
     const waitForPopup = async () => {
@@ -170,29 +172,7 @@ const main = async () => {
     await payPage.clk('#amazonpay-accept-button-consent input', null, true)
     await payPage.clk('input[type="submit"]', null, true)
 
-    await page.rload()
-    await page.waitFor(2000 + rand(2000))
-    await page.clk('#rdbPaymentMethodsAmazon')
-    await page.clk('#OffAmazonPaymentsWidgets1')
-
-    let waitForAmazon = async () => {
-      try {
-        payPage = await page.lastPage()
-        const exist = await payPage.ext('input#ap_email')
-        if (!exist) { throw 'Failed' }
-      }
-      catch (e) {
-        await waitForAmazon()
-      }
-    }
-
-    await waitForAmazon()
-
-    await payPage.inst('input#ap_email', email)
-    await payPage.inst('input#ap_password', '20192019')
-    await payPage.clk('#signInSubmit')
-
-    waitForAmazon = async () => {
+    const waitForAmazon = async () => {
       try {
         payPage = await page.lastPage()
         const exist = await payPage.ext('input[name="ppw-accountHolderName"]')
