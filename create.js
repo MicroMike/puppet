@@ -167,17 +167,32 @@ const main = async () => {
     await payPage.inst('input[name="code"]', code)
     await payPage.clk('input[type="submit"]')
 
-    // try {
-    //   await payPage.clk('#amazonpay-accept-button-consent input', null, true)
-    //   await payPage.clk('input[type="submit"]', null, true)
-    // }
-    // catch (e) { }
+    await payPage.clk('#amazonpay-accept-button-consent input', null, true)
+    await payPage.clk('input[type="submit"]', null, true)
 
+    await page.rload()
     await page.waitFor(2000 + rand(2000))
     await page.clk('#rdbPaymentMethodsAmazon')
     await page.clk('#OffAmazonPaymentsWidgets1')
 
-    const waitForAmazon = async () => {
+    let waitForAmazon = async () => {
+      try {
+        payPage = await page.lastPage()
+        const exist = await payPage.ext('input#ap_email')
+        if (!exist) { throw 'Failed' }
+      }
+      catch (e) {
+        await waitForAmazon()
+      }
+    }
+
+    await waitForAmazon()
+
+    await payPage.inst('input#ap_email', email)
+    await payPage.inst('input#ap_password', '20192019')
+    await payPage.clk('#signInSubmit')
+
+    waitForAmazon = async () => {
       try {
         payPage = await page.lastPage()
         const exist = await payPage.ext('input[name="ppw-accountHolderName"]')
