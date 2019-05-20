@@ -113,23 +113,23 @@ const main = async () => {
   else if (type === 'napster') {
     shell.exec('expressvpn connect us')
 
-    await page.waitFor(30000 + rand(2000))
-
     await page.clk('.button.extra-large')
     await page.waitFor(2000 + rand(2000))
-    await page.inst('input#txtEmail', email)
-    await page.inst('input#txtPassword', '20192019')
-    // await page.inst('input#txtConfirmPassword', '20192019')
-    await page.waitFor(2000 + rand(2000))
-    await page.select('select#age', String(20 + rand(50)))
-    await page.waitFor(2000 + rand(2000))
-    await page.select('select#gender', 'U')
-    // await page.clk('#chkTermsOfUse')
-    await page.clk('#signupSubmitButton')
+    await page.clk('#OffAmazonPaymentsWidgets0')
 
-    await page.waitFor(2000 + rand(2000))
-    await page.clk('#rdbPaymentMethodsAmazon')
-    await page.clk('#OffAmazonPaymentsWidgets1')
+    // await page.inst('input#txtEmail', email)
+    // await page.inst('input#txtPassword', '20192019')
+    // // await page.inst('input#txtConfirmPassword', '20192019')
+    // await page.waitFor(2000 + rand(2000))
+    // await page.select('select#age', String(20 + rand(50)))
+    // await page.waitFor(2000 + rand(2000))
+    // await page.select('select#gender', 'U')
+    // // await page.clk('#chkTermsOfUse')
+    // await page.clk('#signupSubmitButton')
+
+    // await page.waitFor(2000 + rand(2000))
+    // await page.clk('#rdbPaymentMethodsAmazon')
+    // await page.clk('#OffAmazonPaymentsWidgets1')
 
     let payPage
     const waitForPopup = async () => {
