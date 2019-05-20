@@ -659,7 +659,7 @@ const fct = async () => {
       socket.emit('out', clientId)
     })
 
-    let restartTime = 1000 * 60 * 10 + 1000 * rand(60 * 10)
+    let restartTime = 1000 * 60 * 15 + 1000 * rand(60 * 45)
     await page.waitFor(restartTime)
     socket.emit('out', clientId)
   }
