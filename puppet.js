@@ -71,11 +71,11 @@ const addFcts = async (page) => {
     }
   }
 
-  page.clk = async (selector, error) => {
+  page.clk = async (selector, error, noError) => {
     if (page.closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
-      await page.wfs(selector, true)
+      !noError && await page.wfs(selector, true)
       await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
       }, selector)
@@ -83,7 +83,9 @@ const addFcts = async (page) => {
       return true
     }
     catch (e) {
-      throw error || 'Click error ' + selector
+      if (!noError) {
+        throw error || 'Click error ' + selector
+      }
     }
   }
 

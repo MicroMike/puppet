@@ -113,6 +113,8 @@ const main = async () => {
   else if (type === 'napster') {
     shell.exec('expressvpn connect us')
 
+    await page.waitFor(30000 + rand(2000))
+
     await page.clk('.button.extra-large')
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#txtEmail', email)
@@ -176,8 +178,8 @@ const main = async () => {
     await payPage.clk('input[type="submit"]')
 
     try {
-      await payPage.clk('#amazonpay-accept-button-consent input')
-      await payPage.clk('input[type="submit"]')
+      await payPage.ext('#amazonpay-accept-button-consent input') && await payPage.clk('#amazonpay-accept-button-consent input')
+      await payPage.ext('input[type="submit"]') && await payPage.clk('input[type="submit"]')
     }
     catch (e) { }
 
