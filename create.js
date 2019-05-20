@@ -169,8 +169,8 @@ const main = async () => {
     await payPage.inst('input[name="code"]', code)
     await payPage.clk('input[type="submit"]')
 
-    await payPage.clk('#amazonpay-accept-button-consent input', null, true)
-    await payPage.clk('input[type="submit"]', null, true)
+    await payPage.jClk('#amazonpay-accept-button-consent input')
+    await payPage.jClk('input[type="submit"]')
 
     const waitForAmazon = async () => {
       try {
