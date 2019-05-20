@@ -127,10 +127,6 @@ const main = async () => {
     // // await page.clk('#chkTermsOfUse')
     // await page.clk('#signupSubmitButton')
 
-    // await page.waitFor(2000 + rand(2000))
-    // await page.clk('#rdbPaymentMethodsAmazon')
-    // await page.clk('#OffAmazonPaymentsWidgets1')
-
     let payPage
     const waitForPopup = async () => {
       try {
@@ -152,12 +148,6 @@ const main = async () => {
     await payPage.inst('input#ap_password_check', '20192019')
     await payPage.clk('#continue')
 
-    try {
-      await payPage.inst('input#ap_password', '20192019')
-      await payPage.inst('input#ap_password_check', '20192019')
-    }
-    catch (e) { }
-
     const waitForMail = async () => {
       try {
         await mailPage.clk('.col-box a')
@@ -177,11 +167,15 @@ const main = async () => {
     await payPage.inst('input[name="code"]', code)
     await payPage.clk('input[type="submit"]')
 
-    try {
-      await payPage.clk('#amazonpay-accept-button-consent input', null, true)
-      await payPage.clk('input[type="submit"]', null, true)
-    }
-    catch (e) { }
+    // try {
+    //   await payPage.clk('#amazonpay-accept-button-consent input', null, true)
+    //   await payPage.clk('input[type="submit"]', null, true)
+    // }
+    // catch (e) { }
+
+    await page.waitFor(2000 + rand(2000))
+    await page.clk('#rdbPaymentMethodsAmazon')
+    await page.clk('#OffAmazonPaymentsWidgets1')
 
     const waitForAmazon = async () => {
       try {
