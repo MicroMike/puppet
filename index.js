@@ -7,7 +7,7 @@ let clientId
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
-const max = process.env.BIG ? 40 : 20
+const max = process.env.BIG ? 60 : 20
 let pause = false
 let first = true
 
