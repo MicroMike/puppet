@@ -623,12 +623,9 @@ const fct = async () => {
             }
           }
           else {
-            // throw 'failedLoop'
             await page.wfs(loggedDom, true)
             await page.waitFor(1000 * 5)
-            if ((player === 'tidal' && rand(2)) || player !== 'tidal') {
-              await page.gotoUrl(album())
-            }
+            await page.gotoUrl(album())
             await page.clk(playBtn, 'failedLoop')
             socket.emit('retryOk')
             retry = true
