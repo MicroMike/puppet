@@ -573,7 +573,7 @@ const fct = async () => {
         }
 
         t1 = await page.getTime(timeLine, callback)
-        // socket.emit('stayAlive', { login, player, time: t1 })
+        socket.emit('playerInfos', { account, time: t1 })
         await page.waitFor(1000 * 10)
         t2 = await page.getTime(timeLine, callback)
 
