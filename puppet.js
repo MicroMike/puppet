@@ -154,13 +154,15 @@ const addFcts = async (page) => {
     }
   }
 
-  page.getTime = async (timeLine, style) => {
+  page.getTime = async (timeLine, callback) => {
     if (page.closed) { return }
     try {
       await page.waitFor(1000 + rand(2000))
-      const time = await page.evaluate(({ timeLine, style }) => {
-        return document.querySelector(timeLine) && document.querySelector(timeLine).style[style]
-      }, { timeLine, style })
+      let time = await page.evaluate(timeLine => {
+        return document.querySelector(timeLine) && document.querySelector(timeLine).innerText
+      }, timeLine)
+
+      time = callback(time)
 
       return time
     }

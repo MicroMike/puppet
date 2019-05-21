@@ -111,6 +111,7 @@ const fct = async () => {
   let loginError
   let timeLine
   let style
+  let callback
 
   let usernameInput = true
   let connected = false
@@ -240,8 +241,8 @@ const fct = async () => {
 
       usedDom = '.player-error-box'
 
-      timeLine = 'span.ui-slider-handle'
-      style = 'left'
+      timeLine = '.player-time'
+      callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
     }
     if (player === 'amazon') {
       url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
@@ -260,8 +261,8 @@ const fct = async () => {
 
       usedDom = '.concurrentStreamsPopover'
 
-      timeLine = '.scrubberBackground'
-      style = 'width'
+      timeLine = '.listViewDuration'
+      callback = a => (70 - a.split(':').reduce((a, b) => Math.abs(a * 60) + Number(b)))
     }
     if (player === 'tidal') {
       url = 'https://listen.tidal.com/'
@@ -284,8 +285,8 @@ const fct = async () => {
       usedDom = '.WARN'
       reLog = 'body > div > div.main > div > div > div > div > div > button'
 
-      timeLine = '[class*="fillingBlock"] > div:first-child'
-      style = 'transform'
+      timeLine = '[class*="currentTime"]'
+      callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
     }
     if (player === 'spotify') {
       url = 'https://accounts.spotify.com/login'
@@ -306,8 +307,8 @@ const fct = async () => {
 
       usedDom = '.ConnectBar'
 
-      timeLine = '.progress-bar__fg'
-      style = 'transform'
+      timeLine = '.playback-bar__progress-time'
+      callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
     }
 
     // ***************************************************************************************************************************************************************
@@ -571,9 +572,9 @@ const fct = async () => {
           }
         }
 
-        t1 = await page.getTime(timeLine, style)
+        t1 = await page.getTime(timeLine, callback)
         await page.waitFor(1000 * 10)
-        t2 = await page.getTime(timeLine, style)
+        t2 = await page.getTime(timeLine, callback)
 
         let matchTime = t1 && t1.match(/\d*\.\d*/)
         matchTime = matchTime ? matchTime[0] : null
@@ -616,7 +617,7 @@ const fct = async () => {
             await page.jClk('.player-play-button .icon-play-button')
             await page.waitFor(1000 * 15)
 
-            t1 = await page.getTime(timeLine, style)
+            t1 = await page.getTime(timeLine, callback)
 
             if (t1 === '0%') {
               retry = true
