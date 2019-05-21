@@ -575,11 +575,11 @@ const fct = async () => {
         t1 = await page.getTime(timeLine, callback)
         await page.waitFor(1000 * 5)
         t2 = await page.getTime(timeLine, callback)
-        
+
         let matchTime = Number(t1)
         // let matchTime = t1 && t1.match(/\d*\.\d*/)
         // matchTime = matchTime ? matchTime[0] : null
-        
+
         if (matchTime > 40) {
           if (rand(7) < 1) {
             await page.jClk(nextBtn)
@@ -594,21 +594,21 @@ const fct = async () => {
         else {
           nextMusic = false
         }
-        
+
         if (t1 === t2) { ++freeze }
         else {
-          socket.emit('playerInfos', { account, time: t1 })
           freeze = 0
           retry = false
           retryDom = false
           streamOn = false
-          // socket.emit('retryOk')
+          socket.emit('playerInfos', { account, time: t1 })
+          socket.emit('retryOk')
         }
 
         if (freeze > 6) {
-          // freeze = 0
-          await takeScreenshot('freeze')
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
+          await takeScreenshot('freeze')
+          await page.jClk(nextBtn)
 
           // if (!t1 && t1 !== 0) {
           //   throw 'nobar'
