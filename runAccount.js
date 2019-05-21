@@ -574,7 +574,7 @@ const fct = async () => {
 
         t1 = await page.getTime(timeLine, callback)
         socket.emit('playerInfos', { account, time: t1 })
-        await page.waitFor(1000 * 10)
+        await page.waitFor(1000 * 5)
         t2 = await page.getTime(timeLine, callback)
 
         let matchTime = Number(t1)
@@ -605,7 +605,7 @@ const fct = async () => {
           // socket.emit('retryOk')
         }
 
-        if (freeze > 3) {
+        if (freeze > 6) {
           freeze = 0
           await takeScreenshot('freeze')
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
