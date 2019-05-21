@@ -606,7 +606,7 @@ const fct = async () => {
         }
 
         if (freeze > 3) {
-          if (isNaN(t1)) { throw 'noBar' }
+          if (typeof t1 === 'boolean') { throw 'noBar' }
 
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
           await takeScreenshot('freeze')
