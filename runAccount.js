@@ -602,13 +602,13 @@ const fct = async () => {
           retry = false
           retryDom = false
           streamOn = false
-          socket.emit('retryOk')
+          // socket.emit('retryOk')
         }
 
         if (freeze > 3) {
+          freeze = 0
           await takeScreenshot('freeze')
           socket.emit('playerInfos', { account, time: t1, freeze: true })
-          // freeze = 0
 
           // if (!t1 && t1 !== 0) {
           //   throw 'nobar'
