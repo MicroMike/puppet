@@ -576,11 +576,12 @@ const fct = async () => {
         await page.waitFor(1000 * 10)
         t2 = await page.getTime(timeLine, callback)
 
-        let matchTime = t1 && t1.match(/\d*\.\d*/)
-        matchTime = matchTime ? matchTime[0] : null
+        let matchTime = t1
+        // let matchTime = t1 && t1.match(/\d*\.\d*/)
+        // matchTime = matchTime ? matchTime[0] : null
 
         if (matchTime) {
-          if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
+          // if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
           if (Number(matchTime) > 40) {
             if (rand(7) < 1) {
               await page.jClk(nextBtn)
