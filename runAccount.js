@@ -581,7 +581,7 @@ const fct = async () => {
 
         if (matchTime) {
           if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
-          if (Number(matchTime) > 50) {
+          if (Number(matchTime) > 40) {
             if (rand(7) < 1) {
               await page.jClk(nextBtn)
               socket.emit('plays', true)
