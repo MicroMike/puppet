@@ -184,7 +184,7 @@ const fct = async () => {
     // code = e === 'error' ? 7 : code
     // code = e === 'fillForm' ? 5 : code
     // code = e === 'login' ? 9 : code
-    // code = e === 'no bar' ? 10 : code
+    // code = e === 'nobar' ? 10 : code
     // code = e === 'check' ? 12 : code
 
     if (code === 1) {
@@ -577,26 +577,23 @@ const fct = async () => {
         await page.waitFor(1000 * 10)
         t2 = await page.getTime(timeLine, callback)
 
-        let matchTime = t1
+        let matchTime = Number(t1)
         // let matchTime = t1 && t1.match(/\d*\.\d*/)
         // matchTime = matchTime ? matchTime[0] : null
 
-        if (matchTime) {
-          // if (player === 'tidal') { matchTime = Number(matchTime) / 730 * 100 }
-          if (Number(matchTime) > 40) {
-            if (rand(7) < 1) {
-              await page.jClk(nextBtn)
-              socket.emit('plays', true)
-            }
-            if (!nextMusic) {
-              nextMusic = true
-              socket.emit('plays')
-            }
-            // logError(matchTime)
+        if (matchTime > 40) {
+          if (rand(7) < 1) {
+            await page.jClk(nextBtn)
+            socket.emit('plays', true)
           }
-          else {
-            nextMusic = false
+          if (!nextMusic) {
+            nextMusic = true
+            socket.emit('plays')
           }
+          // logError(matchTime)
+        }
+        else {
+          nextMusic = false
         }
 
         if (t1 === t2) { ++freeze }
@@ -611,19 +608,17 @@ const fct = async () => {
         if (freeze > 3) {
           freeze = 0
 
-          if (!t1) {
-            logError(t1)
-            await takeScreenshot('nobar')
-            throw 'no bar'
+          if (!t1 && t1 !== 0) {
+            throw 'nobar'
           }
           else if (player === 'napster') {
             await page.jClk('.player-play-button .icon-pause2')
             await page.jClk('.player-play-button .icon-play-button')
-            await page.waitFor(1000 * 15)
+            await page.waitFor(1000 * 5)
 
             t1 = await page.getTime(timeLine, callback)
 
-            if (t1 === '0%') {
+            if (t1 === 0) {
               retry = true
             }
           }
