@@ -640,7 +640,7 @@ const fct = async () => {
 
         // socket.emit('stayAlive')
         if (exitLoop) { throw 'loop' }
-        loop()
+        else { loop() }
       }
       catch (e) {
         catchFct(e)
