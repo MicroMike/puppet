@@ -219,7 +219,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
       // '--no-sandbox',
       // '--disable-setuid-sandbox',
       '--disable-translate',
-      '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'
+      '--user-agent=Mozilla/10.0 (Windows NT 10.0) AppleWebKit/538.36 (KHTML, like Gecko) Chrome/69.420 Safari/537.36'
     ],
     defaultViewport: {
       width: 720,
