@@ -26,11 +26,11 @@ const main = async () => {
   if (type === 'tidal') {
     shell.exec('expressvpn connect us')
   }
-  else if () {
+  else if(type === 'napster') {
     shell.exec('expressvpn connect dk')
   }
 
-  const page = await puppet(Date.now(), true)
+    const page = await puppet(Date.now(), true)
   const mailPage = await page.np()
 
   if (!page) { return }
