@@ -605,7 +605,7 @@ const fct = async () => {
           socket.emit('retryOk')
         }
 
-        if (freeze > 6) {
+        if (freeze > 3) {
           if (isNaN(t1)) { throw 'noBar' }
 
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
