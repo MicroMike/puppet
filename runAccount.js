@@ -606,7 +606,7 @@ const fct = async () => {
         }
 
         if (freeze > 6) {
-          freeze = 0
+          // freeze = 0
           await takeScreenshot('freeze')
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
 
