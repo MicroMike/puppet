@@ -606,6 +606,8 @@ const fct = async () => {
         }
 
         if (freeze > 6) {
+          if (isNaN(t1)) { throw 'noBar' }
+
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
           await takeScreenshot('freeze')
           await page.jClk(nextBtn)
