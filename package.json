@@ -13,7 +13,6 @@
     "cnapster": "TYPE=napster node create",
     "reset": "git reset --hard HEAD && git clean -fd && git pull",
     "all": "FILE=napsterAccount.txt RAND=true node index",
-    "xall": "X=true FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node index",
     "clean": "find save/ -type f ! -iname \"Cookies\" -delete",
