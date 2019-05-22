@@ -233,9 +233,9 @@ module.exports = async (userDataDir, noCache, cspot) => {
     // params.args.push(ua)
   }
 
-  // if (noCache && !cspot) {
-  //   delete params.userDataDir
-  // }
+  if (noCache) {
+    delete params.userDataDir
+  }
 
   let browserContext
 
