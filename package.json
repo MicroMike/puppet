@@ -10,7 +10,7 @@
     "napster": "TYPE=napster node index",
     "amazon": "TYPE=amazon node index",
     "ctidal": "TYPE=tidal node create",
-    "cnapster": "cross-env TYPE=napster node create",
+    "cnapster": "TYPE=napster node create",
     "reset": "git reset --hard HEAD && git clean -fd && git pull",
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",

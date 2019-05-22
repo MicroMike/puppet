@@ -30,7 +30,7 @@ const main = async () => {
     shell.exec('expressvpn connect us')
   }
 
-  const page = await puppet(Date.now(), true)
+  const page = await puppet(Date.now(), true, true)
   const mailPage = await page.np()
 
   if (!page) { return }

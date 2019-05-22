@@ -228,17 +228,17 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   if (cspot) {
-    const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
-    params.args.push(ua)
+    params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+    // const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
+    // params.args.push(ua)
   }
 
-  if (noCache && !cspot) {
-    delete params.userDataDir
-  }
+  // if (noCache && !cspot) {
+  //   delete params.userDataDir
+  // }
 
   let browserContext
 
-  // params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
   let launch
 
   try {
