@@ -123,7 +123,7 @@ const fct = async () => {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
-  page = await puppet('save/' + player + '_' + login, noCache)
+  page = await puppet('save/' + player + '_' + login, noCache, false)
 
   if (!page) {
     close = true
