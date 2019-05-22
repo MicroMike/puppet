@@ -6,6 +6,7 @@ var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 let clientId
 
 const check = process.env.CHECK || process.env.TYPE
+const x = process.env.X
 let accountsValid = []
 const max = process.env.BIG ? 60 : 20
 let pause = false
@@ -25,6 +26,7 @@ const main = async (account, isCheck) => {
   let cmd = 'ACCOUNT=' + account + ' node runAccount'
   cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
   cmd = clientId ? 'CLIENTID=' + clientId + ' ' + cmd : cmd
+  cmd = x ? 'xvfb-run ' + cmd : cmd
 
   const accountInfo = account.split(':')
 
