@@ -246,7 +246,9 @@ module.exports = async (userDataDir, noCache, cspot) => {
     browserContext = launch.defaultBrowserContext()
   }
   catch (e) {
-    // console.log('BROWSER FAIL')
+    if (cspot) {
+      console.log('e')
+    }
     //process.exit()
     return false
   }
