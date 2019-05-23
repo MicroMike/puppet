@@ -51,6 +51,8 @@ socket.on('albums', albs => {
 })
 
 const fct = async () => {
+  socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED', freeze: true })
+
   let currentAlbum
 
   const album = () => {
