@@ -22,10 +22,9 @@ else if (type === 'napster') {
 }
 
 const main = async () => {
-  shell.exec('git reset --hard origin/master', { silent: true })
   shell.exec('expressvpn disconnect', { silent: true })
   if (type === 'tidal') {
-    shell.exec('expressvpn connect se')
+    shell.exec('expressvpn connect dk')
   }
   else if (type === 'napster') {
     shell.exec('expressvpn connect us')
@@ -76,22 +75,19 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    // await page.inst('#ccname', 'Assoune Mike')
-    // await page.inst('#cardnumber', '5273462800749229')
-    // await page.inst('#ccmonth', '04')
-    // await page.inst('#ccyear', '24')
-    // await page.inst('#cvc', '474')
-    // await page.inst('#postalCode', '10001')
-    
-    await page.clk('button[type="button"]')
-    await page.inst('input#email', 'micro.musics.mix@gmail.com')
-    await page.inst('input#password', '055625f74300')
-    await page.clk('button#btnLogin')
-    
+    await page.inst('#ccname', 'Assoune Mike')
+    await page.inst('#cardnumber', '5273462800749229')
+    await page.inst('#ccmonth', '04')
+    await page.inst('#ccyear', '24')
+    await page.inst('#cvc', '474')
+    await page.inst('#postalCode', '10001')
+
+    await page.clk('#card-form > button')
+
     const waitForFinishPay = async () => {
       try {
-        await page.inst('.login-email', email)
-        if (!exist) { throw 'wait' }
+        const exist = await page.ext('#card-form > button')
+        if (exist) { throw 'wait' }
       }
       catch (e) {
         await waitForFinishPay()
