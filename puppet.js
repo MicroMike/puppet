@@ -214,7 +214,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
     userDataDir,
-    headless: cspot,
+    headless: false,
     args: [
       // '--no-sandbox',
       // '--disable-setuid-sandbox',
