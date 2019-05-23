@@ -25,7 +25,7 @@ const main = async () => {
   shell.exec('expressvpn disconnect', { silent: true })
   shell.exec('expressvpn connect us')
 
-  const page = await puppet('save/' + type, type === 'napster', true)
+  const page = await puppet('', true, true)
   const mailPage = await page.np()
 
   if (!page) { return }
