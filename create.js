@@ -87,8 +87,8 @@ const main = async () => {
 
     const waitForFinishPay = async () => {
       try {
-        const exist = await page.ext('button[type="button"]')
-        if (exist) { throw 'wait' }
+        await page.inst('.login-email', email)
+        if (!exist) { throw 'wait' }
       }
       catch (e) {
         await waitForFinishPay()
