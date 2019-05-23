@@ -84,6 +84,19 @@ const main = async () => {
 
     await page.clk('#card-form > button')
 
+    const waitForFinishPay = async () => {
+      try {
+        const exist = await page.ext('#card-form > button')
+        if (exist) { throw 'wait' }
+      }
+      catch (e) {
+        await waitForFinishPay()
+      }
+    }
+
+    await waitForFinishPay()
+    await page.waitFor(2000 + rand(2000))
+
     await page.gotoUrl('https://my.tidal.com/')
     await page.inst('.login-email', email)
     await page.inst('[name="password"]', email)
