@@ -543,6 +543,9 @@ const fct = async () => {
     let startLoop = false
     let exitLoop = false
 
+    let countPlays = 0
+    let changePlay = 5 + rand(5)
+
     const loop = async () => {
       const existRepeatBtnOk = await page.ext(repeatBtnOk)
 
@@ -587,12 +590,20 @@ const fct = async () => {
           }
           if (!nextMusic) {
             nextMusic = true
+            countPlays++
             socket.emit('plays')
           }
           // logError(matchTime)
         }
         else {
           nextMusic = false
+        }
+
+        if (countPlays > changePlay) {
+          countPlays = 0
+          changePlay = 5 + rand(5)
+          await page.gotoUrl(album())
+          await page.clk(playBtn, 'failedLoop')
         }
 
         if (t1 === t2) { ++freeze }
