@@ -82,11 +82,11 @@ const main = async () => {
     // await page.inst('#cvc', '474')
     // await page.inst('#postalCode', '10001')
 
-    // await page.clk('#card-form > button')
+    await page.clk('button[type="button"]')
 
     const waitForFinishPay = async () => {
       try {
-        const exist = await page.ext('#card-form > button')
+        const exist = await page.ext('button[type="button"]')
         if (exist) { throw 'wait' }
       }
       catch (e) {
