@@ -136,10 +136,10 @@ const fct = async () => {
     }
   });
 
-  page.on('console', msg => {
-    for (let i = 0; i < msg.args().length; ++i)
-      logError(`${account} => ${i}: ${msg.args()[i]}`)
-  });
+  // page.on('console', msg => {
+  //   for (let i = 0; i < msg.args().length; ++i)
+  //     logError(`${account} => ${i}: ${msg.args()[i]}`)
+  // });
 
   const takeScreenshot = async (name, e) => {
     let img
