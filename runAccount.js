@@ -176,7 +176,7 @@ const fct = async () => {
     let code = 5
     code = e === 'loop' ? 1 : code
     code = e === 'used' ? 1 : code
-    code = e === 'first play' ? 2 : code
+    code = e === 'firstPlay' ? 2 : code
     code = e === 'failedLoop' ? 2 : code
     code = e === 'del' ? 4 : code
 
@@ -496,22 +496,22 @@ const fct = async () => {
     }
 
     let trys = 0
-    const waitForPlayBtn = async () => {
+    const waitForPlayBtn = async (playError) => {
       try {
-        await page.clk(playBtn, 'first play')
+        await page.clk(playBtn)
         socket.emit('retryOk')
       }
       catch (e) {
-        if (++trys >= 3) { catchFct(e) }
+        if (++trys >= 3) { catchFct(playError) }
         await page.gotoUrl(album())
         await waitForPlayBtn()
       }
     }
 
-    // await waitForPlayBtn()
     socket.emit('player', clientId)
     socket.emit('playerInfos', { account: player + ':' + login, time: 'LOADING', freeze: true })
-    await page.clk(playBtn, 'first play')
+    await waitForPlayBtn('firstPlay')
+    // await page.clk(playBtn, 'firstPlay')
 
     if (player === 'tidal') {
       const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
@@ -606,7 +606,7 @@ const fct = async () => {
           countPlays = 0
           changePlay = 5 + rand(5)
           await page.gotoUrl(album())
-          await page.clk(playBtn, 'failedLoop')
+          await waitForPlayBtn('failedLoop')
         }
 
         if (t1 === t2) {
