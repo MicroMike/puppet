@@ -57,11 +57,6 @@ socket.on('activate', (id) => {
 
 socket.on('run', account => {
   main(account)
-  if (process.env.BIG) {
-    setTimeout(() => {
-      main(account)
-    }, 1000 * 15);
-  }
 });
 
 socket.on('runCheck', account => {
