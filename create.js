@@ -30,8 +30,11 @@ const main = async () => {
     shell.exec('expressvpn connect us')
   }
 
-  const page = await puppet(Date.now(), true, true)
+  const page = await puppet(type, type === 'napster', true)
   const mailPage = await page.np()
+
+  await mailPage.gotoUrl('https://paypal.com')
+  return
 
   if (!page) { return }
 
