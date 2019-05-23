@@ -606,7 +606,10 @@ const fct = async () => {
           await page.clk(playBtn, 'failedLoop')
         }
 
-        if (t1 === t2) { ++freeze }
+        if (t1 === t2) {
+          ++freeze
+          socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
+        }
         else {
           freeze = 0
           retry = false
