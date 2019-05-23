@@ -254,6 +254,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   let page = pages[0]
 
   page.bc = launch
+  page = addFcts(page)
 
   await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
@@ -270,9 +271,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
         interceptedRequest.continue();
     });
   }
-
-
-  page = addFcts(page)
 
   return page
 }
