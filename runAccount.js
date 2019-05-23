@@ -508,6 +508,7 @@ const fct = async () => {
 
     // await waitForPlayBtn()
     socket.emit('player', clientId)
+    socket.emit('playerInfos', { account: player + ':' + login, time: 'LOADING', freeze: true })
     await page.clk(playBtn, 'first play')
 
     if (player === 'tidal') {
