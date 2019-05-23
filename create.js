@@ -22,6 +22,7 @@ else if (type === 'napster') {
 }
 
 const main = async () => {
+  shell.exec('git reset --hard origin/master', { silent: true })
   shell.exec('expressvpn disconnect', { silent: true })
   if (type === 'tidal') {
     shell.exec('expressvpn connect dk')
