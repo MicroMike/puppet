@@ -504,7 +504,7 @@ const fct = async () => {
       catch (e) {
         if (++trys >= 3) { catchFct(playError) }
         await page.gotoUrl(album())
-        await waitForPlayBtn()
+        await waitForPlayBtn(playError)
       }
     }
 
