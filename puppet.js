@@ -228,7 +228,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   if (cspot) {
-    params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
     // const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
     // params.args.push(ua)
   }
@@ -246,7 +245,12 @@ module.exports = async (userDataDir, noCache, cspot) => {
     browserContext = launch.defaultBrowserContext()
   }
   catch (e) {
-    //process.exit()
+    try {
+      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+      launch = await puppeteer.launch(params);
+      browserContext = launch.defaultBrowserContext()
+    }
+    catch (e) { }
     return false
   }
 
