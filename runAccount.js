@@ -572,7 +572,7 @@ const fct = async () => {
           }
         }
         const timeget = await page.get(timeLine)
-        console.log(timeget)
+        console.log(player, timeget)
 
         t1 = await page.getTime(timeLine, callback)
         await page.waitFor(1000 * 10)
