@@ -82,9 +82,12 @@ const main = async () => {
     // await page.inst('#ccyear', '24')
     // await page.inst('#cvc', '474')
     // await page.inst('#postalCode', '10001')
-
+    
     await page.clk('button[type="button"]')
-
+    await page.inst('input#email', 'micro.musics.mix@gmail.com')
+    await page.inst('input#password', '055625f74300')
+    await page.clk('button#btnLogin')
+    
     const waitForFinishPay = async () => {
       try {
         await page.inst('.login-email', email)
