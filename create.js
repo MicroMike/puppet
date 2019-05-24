@@ -87,6 +87,11 @@ const main = async () => {
 
     // await page.clk('#card-form > button')
 
+    await page.clk('button[type="button"]')
+    await page.inst('input#email', 'belhassen.yn@gmail.com')
+    await page.inst('input#password', 'cassecouille&2')
+    await page.clk('button#btnLogin')
+
     const waitForFinishPay = async () => {
       try {
         const exist = await page.inst('.login-email', email)
