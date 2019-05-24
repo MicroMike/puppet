@@ -340,14 +340,15 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
+          await page.inst(username, login)
           const waitForPassword = async () => {
             try {
-              await captcha(page, url, keyCaptcha, username, login)
+              // await captcha(page, url, keyCaptcha, username, login)
               await page.inst(password, pass)
               tidalCaptcha = true
             }
             catch (e) {
-              throw 'tidalError'
+              await waitForPassword()
             }
           }
 
