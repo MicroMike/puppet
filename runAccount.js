@@ -525,7 +525,7 @@ const fct = async () => {
       await page.gotoUrl(album())
       await page.clk(playBtn, 'tidalPush')
       shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
-      socket.emit('tidalOk', account)
+      // socket.emit('tidalOk', account)
     }
 
     if (check) {
