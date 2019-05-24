@@ -23,7 +23,12 @@ else if (type === 'napster') {
 
 const main = async () => {
   shell.exec('expressvpn disconnect', { silent: true })
-  shell.exec('expressvpn connect us')
+  if (type === 'tidal') {
+    shell.exec('expressvpn connect dk')
+  }
+  else {
+    shell.exec('expressvpn connect us')
+  }
 
   const page = await puppet('', true, true)
   try {
