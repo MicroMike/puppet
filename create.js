@@ -75,22 +75,22 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    await page.inst('#ccname', 'Assoune Mike')
-    await page.inst('#cardnumber', '5273462879953488')
-    await page.inst('#ccmonth', '05')
-    await page.inst('#ccyear', '24')
-    await page.inst('#cvc', '437')
-    try {
-      await page.inst('#postalCode', '10001')
-    }
-    catch (e) { }
+    // await page.inst('#ccname', 'Assoune Mike')
+    // await page.inst('#cardnumber', '5273462879953488')
+    // await page.inst('#ccmonth', '05')
+    // await page.inst('#ccyear', '24')
+    // await page.inst('#cvc', '437')
+    // try {
+    //   await page.inst('#postalCode', '10001')
+    // }
+    // catch (e) { }
 
-    await page.clk('#card-form > button')
+    // await page.clk('#card-form > button')
 
     const waitForFinishPay = async () => {
       try {
-        const exist = await page.ext('#card-form > button')
-        if (exist) { throw 'wait' }
+        const exist = await page.inst('.login-email', email)
+        if (!exist) { throw 'wait' }
       }
       catch (e) {
         await waitForFinishPay()
