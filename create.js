@@ -133,7 +133,7 @@ const main = async () => {
 
     await page.gotoUrl('https://my.tidal.com/account/subscription')
     await page.clk('a.cancel-subscription')
-    await page.clk('.cancel-cta a + a')
+    await page.clk('.btn-gray')
   }
   else if (type === 'napster') {
     await page.clk('.button.extra-large')
