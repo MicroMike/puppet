@@ -521,7 +521,7 @@ const fct = async () => {
     }
 
     if (tidalCaptcha) {
-      await page.waitFor(1000 * 60 * 2)
+      await page.waitFor(1000 * 60 * 35)
       await page.gotoUrl(album())
       await page.clk(playBtn, 'tidalPush')
       shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
