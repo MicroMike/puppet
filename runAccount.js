@@ -346,6 +346,7 @@ const fct = async () => {
               // await captcha(page, url, keyCaptcha, username, login)
               await page.inst(password, pass)
               tidalCaptcha = true
+              socket.emit('tidalOk')
             }
             catch (e) {
               await waitForPassword()
@@ -518,7 +519,6 @@ const fct = async () => {
       await page.gotoUrl(album())
       await page.clk(playBtn, 'tidalPush')
       shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
-      // socket.emit('tidalOk', account)
     }
 
     if (check) {
