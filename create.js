@@ -26,7 +26,12 @@ const main = async () => {
   shell.exec('expressvpn connect us')
 
   const page = await puppet('', true, true)
-  const mailPage = await page.np()
+  try {
+    const mailPage = await page.np()
+  }
+  catch (e) {
+    console.log(page)
+  }
 
   if (!page) { return }
 

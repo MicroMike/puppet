@@ -237,7 +237,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
   }
 
   let browserContext
-
   let launch
 
   try {
