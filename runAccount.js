@@ -346,7 +346,6 @@ const fct = async () => {
               // await captcha(page, url, keyCaptcha, username, login)
               await page.inst(password, pass)
               tidalCaptcha = true
-              socket.emit('tidalOk')
             }
             catch (e) {
               await waitForPassword()
@@ -359,14 +358,12 @@ const fct = async () => {
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw 'del' }
         }
-        else {
-          socket.emit('tidalOk')
-        }
       }
     }
 
     if (player === 'tidal') {
       await tidalConnect()
+      socket.emit('tidalOk')
     }
 
     if (player === 'amazon') {
