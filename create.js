@@ -80,7 +80,10 @@ const main = async () => {
     await page.inst('#ccmonth', '05')
     await page.inst('#ccyear', '24')
     await page.inst('#cvc', '437')
-    await page.inst('#postalCode', '10001')
+    try {
+      await page.inst('#postalCode', '10001')
+    }
+    catch (e) { }
 
     await page.clk('#card-form > button')
 
