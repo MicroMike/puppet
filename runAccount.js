@@ -179,8 +179,8 @@ const fct = async () => {
     code = e === 'firstPlay' ? 2 : code
     code = e === 'failedLoop' ? 2 : code
     code = e === 'del' ? 4 : code
+    code = e === 'tidalError' ? 5 : code
 
-    // code = e === 'tidal not log' ? 3 : code
     // code = e === 'retry' ? 5 : code
     // code = e === 'crashed' ? 6 : code
     // code = e === 'error' ? 7 : code
@@ -340,22 +340,13 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
-          tidalCaptcha = true
-
-          let tryTidal
           const waitForPassword = async () => {
             try {
               await captcha(page, url, keyCaptcha, username, login)
               await page.inst(password, pass)
             }
             catch (e) {
-              if (!tryTidal) {
-                tryTidal = true
-                await waitForPassword()
-              }
-              else {
-                throw e
-              }
+              throw 'tidalError'
             }
           }
 
