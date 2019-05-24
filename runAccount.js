@@ -344,6 +344,7 @@ const fct = async () => {
             try {
               await captcha(page, url, keyCaptcha, username, login)
               await page.inst(password, pass)
+              tidalCaptcha = true
             }
             catch (e) {
               throw 'tidalError'
