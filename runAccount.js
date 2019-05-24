@@ -359,6 +359,9 @@ const fct = async () => {
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw 'del' }
         }
+        else {
+          socket.emit('tidalOk')
+        }
       }
     }
 
