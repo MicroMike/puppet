@@ -31,12 +31,7 @@ const main = async () => {
   }
 
   const page = await puppet('', true, true)
-  try {
-    const mailPage = await page.np()
-  }
-  catch (e) {
-    console.log(page)
-  }
+  const mailPage = await page.np()
 
   if (!page) { return }
 
