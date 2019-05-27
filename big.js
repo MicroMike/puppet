@@ -8,5 +8,9 @@ while (true) {
   shell.exec('npm run all', () => { })
   shell.exec('npm run all', () => { })
   shell.exec('npm run all', () => { })
+  shell.exec('npm run all', () => { })
+  shell.exec('npm run all', () => { })
+  shell.exec('npm run all', () => { })
+  shell.exec('npm run all', () => { })
   shell.exec('npm run all')
 }
