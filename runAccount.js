@@ -363,7 +363,6 @@ const fct = async () => {
 
     if (player === 'tidal') {
       await tidalConnect()
-      socket.emit('tidalOk')
     }
 
     if (player === 'amazon') {
