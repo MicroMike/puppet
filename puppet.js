@@ -264,15 +264,15 @@ module.exports = async (userDataDir, noCache, cspot) => {
     });
   });
 
-  if (!cspot) {
-    await page.setRequestInterception(true);
-    page.on('request', interceptedRequest => {
-      if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
-        interceptedRequest.abort();
-      else
-        interceptedRequest.continue();
-    });
-  }
+  // if (!cspot) {
+  //   await page.setRequestInterception(true);
+  //   page.on('request', interceptedRequest => {
+  //     if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
+  //       interceptedRequest.abort();
+  //     else
+  //       interceptedRequest.continue();
+  //   });
+  // }
 
   page = addFcts(page)
 
