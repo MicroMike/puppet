@@ -170,6 +170,10 @@ const fct = async () => {
     await page.evaluate(scriptText)
   })
 
+  socket.on('screenshot', () => {
+    await takeScreenshot('getScreen')
+  })
+
   const catchFct = async (e) => {
     close = true
 
