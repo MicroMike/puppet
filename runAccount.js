@@ -345,19 +345,20 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
-          await page.inst(username, login)
-          const waitForPassword = async () => {
+          // await page.inst(username, login)
+          // const waitForPassword = async () => {
             try {
-              // await captcha(page, url, keyCaptcha, username, login)
+              if (check) { await captcha(page, url, keyCaptcha, username, login) }
+              else { await page.inst(username, login) }
               await page.inst(password, pass)
               tidalCaptcha = true
             }
             catch (e) {
-              await waitForPassword()
+              throw 'tidalError'
             }
-          }
+          // }
 
-          await waitForPassword()
+          // await waitForPassword()
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
           const logged = await page.wfs(loggedDom)
