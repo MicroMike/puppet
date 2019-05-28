@@ -65,6 +65,8 @@ const fct = async () => {
   }
 
   const exit = async (code = 0) => {
+    socket.emit('playerInfos', { account: player + ':' + login, out: true })
+
     close = true
     page && await page.cls(true)
 
@@ -182,7 +184,6 @@ const fct = async () => {
   })
 
   const catchFct = async (e) => {
-    socket.emit('playerInfos', { account: player + ':' + login, out: true })
     close = true
 
     let code = 5
