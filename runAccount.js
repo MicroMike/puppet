@@ -509,7 +509,11 @@ const fct = async () => {
         socket.emit('retryOk')
       }
       catch (e) {
-        if (++trys >= 3) { catchFct(playError) }
+        const logged = await page.ext(loggedDom)
+
+        if (!logged) { return catchFct('notLogged/' + playError) }
+        if (++trys >= 3) { return catchFct(playError) }
+
         await page.gotoUrl(album())
         await waitForPlayBtn(playError)
       }
