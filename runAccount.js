@@ -175,6 +175,7 @@ const fct = async () => {
   })
 
   const catchFct = async (e) => {
+    socket.emit('playerInfos', { account: player + ':' + login })
     close = true
 
     let code = 5
@@ -622,7 +623,6 @@ const fct = async () => {
         if (freeze > 3) {
           if (t1 === false) {
             await takeScreenshot('noBar')
-            socket.emit('playerInfos', { account: player + ':' + login })
             throw 'noBar'
           }
 
