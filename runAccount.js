@@ -624,7 +624,7 @@ const fct = async () => {
           retry = false
           retryDom = false
           streamOn = false
-          socket.emit('playerInfos', { account, time: t1, ok: true })
+          socket.emit('playerInfos', { account: player + ':' + login, time: t1, ok: true })
           socket.emit('retryOk')
         }
 
