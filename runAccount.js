@@ -51,7 +51,7 @@ socket.on('albums', albs => {
 })
 
 const fct = async () => {
-  // socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED' })
+  socket.emit('playerInfos', { account: player + ':' + login, other: 'STARTED' })
 
   let currentAlbum
 
@@ -515,7 +515,7 @@ const fct = async () => {
     }
 
     socket.emit('player', clientId)
-    // socket.emit('playerInfos', { account: player + ':' + login, time: 'LOADING' })
+    socket.emit('playerInfos', { account: player + ':' + login, other: 'LOADING' })
     await waitForPlayBtn('firstPlay')
     // await page.clk(playBtn, 'firstPlay')
 
