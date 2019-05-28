@@ -84,6 +84,13 @@ const fct = async () => {
     exit(100)
   });
 
+  socket.on('forceOut', () => {
+    over = true
+    console.log('forceOut')
+    logError('forceOut')
+    exit(100)
+  })
+
   socket.on('streamOn', () => {
     countStream = 0
     streamOn = true
