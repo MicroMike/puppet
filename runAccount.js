@@ -329,8 +329,6 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
-    let tidalCaptcha
-
     const tidalConnect = async () => {
       let notConnected = true
 
@@ -531,15 +529,9 @@ const fct = async () => {
       }
     }
 
-    if (tidalCaptcha) {
-      await page.waitFor(1000 * 20)
-      await page.gotoUrl(album())
-      await page.clk(playBtn, 'tidalPush')
-      shell.exec('git add save/tidal_' + login + ' && git commit -m "add tidal account"')
-    }
-
     if (check) {
-      await page.waitFor(1000 * 20)
+      shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account"')
+      await page.waitFor(1000 * 35)
       throw 'loop'
     }
 
