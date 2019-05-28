@@ -175,7 +175,7 @@ const fct = async () => {
   })
 
   const catchFct = async (e) => {
-    socket.emit('playerInfos', { account: player + ':' + login })
+    socket.emit('playerInfos', { account: player + ':' + login, out: true })
     close = true
 
     let code = 5
@@ -347,15 +347,15 @@ const fct = async () => {
         if (needLog) {
           // await page.inst(username, login)
           // const waitForPassword = async () => {
-            try {
-              if (check) { await captcha(page, url, keyCaptcha, username, login) }
-              else { await page.inst(username, login) }
-              await page.inst(password, pass)
-              tidalCaptcha = true
-            }
-            catch (e) {
-              throw 'tidalError'
-            }
+          try {
+            if (check) { await captcha(page, url, keyCaptcha, username, login) }
+            else { await page.inst(username, login) }
+            await page.inst(password, pass)
+            tidalCaptcha = true
+          }
+          catch (e) {
+            throw 'tidalError'
+          }
           // }
 
           // await waitForPassword()
