@@ -6,6 +6,9 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
+let browserContext
+let launch
+
 const addFcts = async (page) => {
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
@@ -236,9 +239,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
     delete params.userDataDir
   }
 
-  let browserContext
-  let launch
-
   try {
     launch = await puppeteer.launch(params);
     browserContext = launch.defaultBrowserContext()
@@ -249,8 +249,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
       launch = await puppeteer.launch(params);
       browserContext = launch.defaultBrowserContext()
     }
-    catch (e) { }
-    return false
+    catch (e) { return false }
   }
 
   const pages = await browserContext.pages()
