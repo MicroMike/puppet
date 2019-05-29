@@ -103,7 +103,10 @@ const main = async () => {
     })
 
     await page.gotoUrl(url)
-    await page.inst('input#ap_email', email)
+    try {
+      await page.inst('input#ap_email', email)
+    }
+    catch (e) { }
     await page.inst('input#ap_password', '20192019')
     await page.clk('#signInSubmit')
 
