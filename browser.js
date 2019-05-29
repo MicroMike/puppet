@@ -10,14 +10,12 @@ const main = async () => {
   let M = await MP.get('#mail', 'value')
   M = M.split('@')[0]
 
-  await MP.cls(true)
-
   const create = async (i) => {
     const page = await puppet('', true, true)
     await page.gotoUrl('https://music.amazon.fr/home')
     await page.clk('.createAccountLink')
 
-    const mailPage = await page.np()
+    const mailPage = await MP.np()
     await mailPage.gotoUrl('http://yopmail.com/')
 
     let mail = M + i
@@ -32,28 +30,45 @@ const main = async () => {
     await page.inst('input#ap_password_check', '20192019')
     await page.clk('#continue')
 
-    await page.waitFor(5000 + rand(2000))
-
-    await mailPage.clk('#lrefr')
-    await mailPage.evaluate(() => {
-      document.querySelector('#ifinbox').contentDocument.querySelector('#m1').click()
-    })
-
-    const nbMail = await mailPage.evaluate(() => {
-      return document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m').length
-    })
-
     await page.waitFor(2000 + rand(2000))
 
-    const code = await mailPage.evaluate(() => {
-      return document.querySelector('#ifmail').contentDocument.querySelector('.otp').innerText
-    })
+    let code
+    let nbMail
+    const waitForCode = async () => {
+      await mailPage.clk('#lrefr')
+      await page.waitFor(5000 + rand(2000))
+
+      try {
+        const mailHere = await mailPage.evaluate(() => {
+          let m = document.querySelector('#ifinbox').contentDocument.querySelector('#m1')
+          m && m.click()
+          return m
+        })
+        if (!mailHere) { throw 'fail' }
+
+        nbMail = await mailPage.evaluate(() => {
+          const selector = document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m')
+          return selector && selector.length
+        })
+        if (!code) { throw 'fail' }
+
+        code = await mailPage.evaluate(() => {
+          const selector = document.querySelector('#ifmail').contentDocument.querySelector('.otp')
+          return selector && selector.innerText
+        })
+        if (!code) { throw 'fail' }
+      }
+      catch (e) { await waitForCode() }
+    }
+
+    await waitForCode()
 
     await page.inst('input[name="code"]', code)
     await page.clk('input[type="submit"]')
 
     const compare = async () => {
       await mailPage.clk('#lrefr')
+      await page.waitFor(5000 + rand(2000))
 
       const compareNbMail = await mailPage.evaluate(() => {
         return document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m').length
@@ -68,7 +83,8 @@ const main = async () => {
     await compare()
 
     await mailPage.evaluate(() => {
-      document.querySelector('#ifinbox').contentDocument.querySelector('#m1').click()
+      let m = document.querySelector('#ifinbox').contentDocument.querySelector('#m1')
+      m && m.click()
     })
 
     await page.waitFor(2000 + rand(2000))
@@ -78,21 +94,22 @@ const main = async () => {
     })
 
     await page.gotoUrl(url)
+    await page.inst('input#ap_email', email)
     await page.inst('input#ap_password', '20192019')
     await page.clk('#signInSubmit')
 
     await page.inst('input#address-ui-widgets-enterAddressFullName', mail)
-    await page.inst('input#address-ui-widgets-enterAddressLine1', '23 56st')
+    await page.inst('input#address-ui-widgets-enterAddressLine1', rand(30, 1) + ' ' + rand(30, 1) + 'st')
     await page.inst('input#address-ui-widgets-enterAddressCity', 'New-York')
     await page.inst('input#address-ui-widgets-enterAddressStateOrRegion', 'New-York')
     await page.inst('input#address-ui-widgets-enterAddressPostalCode', '10001')
-    await page.inst('input#address-ui-widgets-enterAddressPhoneNumber', '0645789458')
+    await page.inst('input#address-ui-widgets-enterAddressPhoneNumber', '06' + rand(89, 10) + rand(89, 10) + rand(89, 10) + rand(89, 10))
     await page.clk('input.a-button-input')
     await page.clk('input[name="address-ui-widgets-saveOriginalOrSuggestedAddress"]')
     await page.clk('#confirm-button a')
   }
 
-  for (let i of 'abc') {
+  for (let i of 'defg') {
     create(i)
   }
 }
