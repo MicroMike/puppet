@@ -40,7 +40,6 @@ const main = async () => {
     let nbMail
     const waitForCode = async () => {
       await mailPage.clk('#lrefr')
-      await page.waitFor(5000 + rand(2000))
 
       try {
         nbMail = await mailPage.evaluate(() => {
@@ -65,7 +64,10 @@ const main = async () => {
         console.log('code', code)
         if (!code) { throw 'fail' }
       }
-      catch (e) { await waitForCode() }
+      catch (e) {
+        await page.waitFor(1000 * 30)
+        await waitForCode()
+      }
     }
 
     await waitForCode()
