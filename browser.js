@@ -1,10 +1,14 @@
 const puppet = require('./puppet')
+var shell = require('shelljs');
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
 const main = async () => {
+  shell.exec('expressvpn disconnect', { silent: true })
+  shell.exec('expressvpn connect us')
+
   const MP = await puppet('', true, true)
   await MP.gotoUrl('https://temp-mail.org/option/delete/')
   let M = await MP.get('#mail', 'value')
