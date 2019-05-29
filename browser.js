@@ -65,7 +65,7 @@ const main = async () => {
         if (!code) { throw 'fail' }
       }
       catch (e) {
-        await page.waitFor(1000 * 30)
+        await page.waitFor(1000 * 10 + rand(2000))
         await waitForCode()
       }
     }
