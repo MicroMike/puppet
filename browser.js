@@ -7,7 +7,7 @@ const rand = (max, min) => {
 
 const main = async () => {
   shell.exec('expressvpn disconnect', { silent: true })
-  shell.exec('expressvpn connect us')
+  shell.exec('expressvpn connect uswd')
 
   const MP = await puppet('', true, true)
   await MP.gotoUrl('https://temp-mail.org/option/delete/')
