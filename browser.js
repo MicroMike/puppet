@@ -43,6 +43,13 @@ const main = async () => {
       await page.waitFor(5000 + rand(2000))
 
       try {
+        nbMail = await mailPage.evaluate(() => {
+          const selector = document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m')
+          return selector && selector.length
+        })
+        console.log('code', code)
+        if (!nbMail) { throw 'fail' }
+
         const mailHere = await mailPage.evaluate(() => {
           let m = document.querySelector('#ifinbox').contentDocument.querySelector('#m1')
           m && m.click()
@@ -50,13 +57,6 @@ const main = async () => {
         })
         console.log('mailHere', mailHere)
         if (!mailHere) { throw 'fail' }
-
-        nbMail = await mailPage.evaluate(() => {
-          const selector = document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m')
-          return selector && selector.length
-        })
-        console.log('code', code)
-        if (!code) { throw 'fail' }
 
         code = await mailPage.evaluate(() => {
           const selector = document.querySelector('#ifmail').contentDocument.querySelector('.otp')
