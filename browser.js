@@ -39,8 +39,6 @@ const main = async () => {
     let code
     let nbMail
     const waitForCode = async () => {
-      await mailPage.clk('#lrefr')
-
       try {
         nbMail = await mailPage.evaluate(() => {
           const selector = document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m')
@@ -66,6 +64,7 @@ const main = async () => {
       }
       catch (e) {
         await page.waitFor(1000 * 10 + rand(2000))
+        await mailPage.rload()
         await waitForCode()
       }
     }
