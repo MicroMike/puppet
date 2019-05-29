@@ -19,14 +19,19 @@ const main = async () => {
     await page.gotoUrl('https://music.amazon.fr/home')
     await page.clk('.createAccountLink')
 
-    const mailPage = await MP.np()
-    await mailPage.gotoUrl('http://yopmail.com/')
+    let mailPage = await MP.np()
+    const mail = M + i
+    const email = mail + '@mega.zik.dj'
 
-    let mail = M + i
-    let email = mail + '@mega.zik.dj'
+    const getMail = async () => {
+      mailPage = await MP.np()
+      await mailPage.gotoUrl('http://yopmail.com/')
 
-    await mailPage.inst('.scpt', mail)
-    await mailPage.clk('.sbut')
+      await mailPage.inst('.scpt', mail)
+      await mailPage.clk('.sbut')
+    }
+
+    getMail()
 
     await page.inst('input#ap_customer_name', mail)
     await page.inst('input#ap_email', email)
