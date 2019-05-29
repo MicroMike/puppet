@@ -47,7 +47,7 @@ const main = async () => {
           const selector = document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m')
           return selector && selector.length
         })
-        console.log('code', code)
+        console.log('nbMail', nbMail)
         if (!nbMail) { throw 'fail' }
 
         const mailHere = await mailPage.evaluate(() => {
