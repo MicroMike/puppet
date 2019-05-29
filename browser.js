@@ -48,18 +48,21 @@ const main = async () => {
           m && m.click()
           return m
         })
+        console.log('mailHere', mailHere)
         if (!mailHere) { throw 'fail' }
 
         nbMail = await mailPage.evaluate(() => {
           const selector = document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m')
           return selector && selector.length
         })
+        console.log('code', code)
         if (!code) { throw 'fail' }
 
         code = await mailPage.evaluate(() => {
           const selector = document.querySelector('#ifmail').contentDocument.querySelector('.otp')
           return selector && selector.innerText
         })
+        console.log('code', code)
         if (!code) { throw 'fail' }
       }
       catch (e) { await waitForCode() }
