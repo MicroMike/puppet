@@ -614,7 +614,7 @@ const fct = async () => {
 
         if (t1 === t2) {
           ++freeze
-          socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
+          socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true, warn: true })
         }
         else {
           freeze = 0
