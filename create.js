@@ -21,15 +21,15 @@ else if (type === 'napster') {
   url = 'https://us.napster.com/soundtracking/special'
 }
 
-const main = async () => {
-  shell.exec('expressvpn disconnect', { silent: true })
-  if (type === 'tidal') {
-    shell.exec('expressvpn connect dk')
-  }
-  else {
-    shell.exec('expressvpn connect us')
-  }
+shell.exec('expressvpn disconnect', { silent: true })
+if (type === 'tidal') {
+  shell.exec('expressvpn connect dk')
+}
+else {
+  shell.exec('expressvpn connect us')
+}
 
+const main = async () => {
   const page = await puppet('', true, true)
   const mailPage = await page.np()
 
@@ -227,4 +227,6 @@ const main = async () => {
   // await mailPage.cls(true)
 }
 //5273 4628 0074 9229 04/24 474
+main()
+main()
 main()
