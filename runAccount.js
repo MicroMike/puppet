@@ -430,18 +430,18 @@ const fct = async () => {
     }
 
     const spotCheck = async () => {
-      try {
-        const spotCheck = await page.np()
-        await spotCheck.gotoUrl('https://www.spotify.com/en/account/overview')
-        const productName = await spotCheck.get('.product-name')
-        if (String(productName).match(/Free|free/)) { throw 'del' }
+      const spotCheck = await page.np()
+      await spotCheck.gotoUrl('https://www.spotify.com/en/account/overview')
+      const productName = await spotCheck.get('.product-name')
+      if (String(productName).match(/Free|free/)) { throw 'del' }
 
-        await spotCheck.close()
-      }
-      catch (e) {
-        console.log(e)
-        throw 'check'
-      }
+      await spotCheck.close()
+    }
+
+    const napsterCheck = async () => {
+      const issueAccount = await page.ext('.account-issue')
+      const issueRadio = await page.ext('.unradio')
+      if (issueAccount || issueRadio) { throw 'del' }
     }
 
     if (player === 'spotify') {
@@ -449,9 +449,7 @@ const fct = async () => {
       await page.gotoUrl(album())
     }
     else if (player === 'napster') {
-      const issueAccount = await page.ext('.account-issue')
-      const issueRadio = await page.ext('.unradio')
-      if (issueAccount || issueRadio) { throw 'del' }
+      napsterCheck()
       // const reload = await page.ext('#main-container .not-found')
       await page.gotoUrl(album())
     }
@@ -564,6 +562,8 @@ const fct = async () => {
       used = await page.ext(usedDom)
 
       try {
+        if (player === 'napster') { napsterCheck() }
+
         if (used) {
           if (player === 'tidal') {
             used = await page.get(usedDom)

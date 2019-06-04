@@ -224,7 +224,6 @@ const main = async () => {
     await payPage.clk('input[name="ppw-widgetEvent:AddAddressEvent"]')
     await payPage.clk('input[name="ppw-widgetEvent:UseSuggestedAddressEvent"]')
 
-
     const waitForDone = async () => {
       try {
         const exist = await page.ext('#add-earn-account-successful')
