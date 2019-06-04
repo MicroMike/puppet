@@ -225,11 +225,13 @@ const main = async () => {
     await payPage.clk('input[name="ppw-widgetEvent:UseSuggestedAddressEvent"]')
   }
 
-  request('https://online-accounts.herokuapp.com/addAccount?' + type + ':' + email + ':' + (type === 'tidal' ? email : '20192019'), function (error, response, body) { })
+  request('https://online-accounts.herokuapp.com/addAccount?' + type + ':' + email + ':' + (type === 'tidal' ? email : '20192019'), function (error, response, body) {
+    main()
+    page.cls()
+  })
 
   // await page.cls(true)
   // await mailPage.cls(true)
-  main()
 }
 //5273 4628 0074 9229 04/24 474
 main()
