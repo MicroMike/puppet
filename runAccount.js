@@ -625,7 +625,7 @@ const fct = async () => {
           socket.emit('retryOk')
         }
 
-        if (freeze > 3) {
+        if (freeze > 1) {
           if (t1 === false) {
             await takeScreenshot('noBar')
             throw 'noBar'
