@@ -123,6 +123,52 @@ const main = async () => {
       await page.inst('[name="emailConfirm"]', tMail)
       await page.inst('[name="password"]', tMail)
       await page.clk('.btn-full')
+
+      const loggedDom = '[class*="userLoggedIn"]'
+      const username = 'input#email'
+      const password = '[name="password"]'
+      const goToLogin = '#sidebar section button + button'
+      const keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
+      const reLog = 'body > div > div.main > div > div > div > div > div > button'
+
+      const tidalLog = await puppet('save/tidal_' + email, false)
+      await tidalLog.gotoUrl('https://listen.tidal.com/album/93312939')
+      await tidalLog.jClk(goToLogin)
+
+      const tryClick = async () => {
+        const done = await tidalLog.jClk(reLog, true)
+        const existInput = await tidalLog.ext(username)
+
+        if (!done && !existInput) {
+          await tryClick()
+        }
+
+        return existInput
+      }
+
+      const needLog = await tryClick()
+
+      if (needLog) {
+        if (check) { await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, email) }
+        else { await tidalLog.inst(username, email) }
+
+        const waitForPass = async () => {
+          try {
+            const exist = await tidalLog.ext('password')
+            if (!exist) { throw 'failed' }
+          }
+          catch (e) {
+            await waitForPass()
+          }
+        }
+
+        await waitForPass()
+        await tidalLog.inst(password, email)
+        await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
+
+        const logged = await tidalLog.wfs(loggedDom)
+        if (!logged) { throw 'del' }
+      }
     }
 
     await addTidal()
@@ -136,6 +182,11 @@ const main = async () => {
     await page.gotoUrl('https://my.tidal.com/account/subscription')
     await page.clk('a.cancel-subscription')
     await page.clk('.btn-gray')
+
+    const tidalConnect = async () => {
+    }
+
+    await tidalConnect()
   }
   else if (type === 'napster') {
     await page.clk('.button.extra-large')
