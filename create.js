@@ -94,10 +94,12 @@ const main = async () => {
     await page.inst('input#password', 'cassecouille&2')
     await page.clk('button#btnLogin')
 
+    await page.waitFor(2000 + rand(2000))
+
     const waitForFinishPay = async () => {
       try {
-        const exist = await page.inst('.login-email', email)
-        if (!exist) { throw 'wait' }
+        const exist = await page.ext('.login-email')
+        if (exist) { throw 'wait' }
       }
       catch (e) {
         await waitForFinishPay()
