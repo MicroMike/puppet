@@ -11,7 +11,7 @@ const rand = (max, min) => {
 }
 
 const type = process.env.TYPE
-
+let check = false
 let url
 
 if (type === 'tidal') {
