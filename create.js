@@ -36,8 +36,6 @@ const main = async () => {
 
   if (!page) { return }
 
-  if (++count < 3) { main() }
-
   await page.gotoUrl(url)
 
   await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
@@ -228,6 +226,7 @@ const main = async () => {
 
   // await page.cls(true)
   // await mailPage.cls(true)
+  main()
 }
 //5273 4628 0074 9229 04/24 474
 main()
