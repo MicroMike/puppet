@@ -93,13 +93,12 @@ const main = async () => {
     await page.inst('input#email', 'belhassen.yn@gmail.com')
     await page.inst('input#password', 'cassecouille&2')
     await page.clk('button#btnLogin')
-
-    await page.waitFor(2000 + rand(2000))
+    await page.clk('input#confirmButtonTop')
 
     const waitForFinishPay = async () => {
       try {
-        const exist = await page.ext('.login-email')
-        if (exist) { throw 'wait' }
+        const exist = await page.ext('a[href="/download"]')
+        if (!exist) { throw 'wait' }
       }
       catch (e) {
         await waitForFinishPay()
