@@ -29,13 +29,14 @@ else {
   shell.exec('expressvpn connect us')
 }
 
+let count
 const main = async () => {
   const page = await puppet('', true, true)
   const mailPage = await page.np()
 
   if (!page) { return }
 
-  main()
+  if (++count < 3) { main() }
 
   await page.gotoUrl(url)
 
