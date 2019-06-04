@@ -223,12 +223,23 @@ const main = async () => {
     await payPage.inst('input[name="ppw-phoneNumber"]', '0645789458')
     await payPage.clk('input[name="ppw-widgetEvent:AddAddressEvent"]')
     await payPage.clk('input[name="ppw-widgetEvent:UseSuggestedAddressEvent"]')
+
+
+    const waitForDone = async () => {
+      try {
+        const exist = await page.ext('#add-earn-account-successful')
+        if (!exist) { throw 'Failed' }
+      }
+      catch (e) {
+        await waitForDone()
+      }
+    }
+
+    main()
+    await waitForDone()
+    request('https://online-accounts.herokuapp.com/addAccount?' + type + ':' + email + ':' + (type === 'tidal' ? email : '20192019'), function (error, response, body) { })
   }
 
-  request('https://online-accounts.herokuapp.com/addAccount?' + type + ':' + email + ':' + (type === 'tidal' ? email : '20192019'), function (error, response, body) {
-    main()
-    page.cls()
-  })
 
   // await page.cls(true)
   // await mailPage.cls(true)
