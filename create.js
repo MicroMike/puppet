@@ -235,6 +235,7 @@ const main = async () => {
     }
 
     await waitForDone()
+    await page.cls()
     main()
     request('https://online-accounts.herokuapp.com/addAccount?' + type + ':' + email + ':' + (type === 'tidal' ? email : '20192019'), function (error, response, body) { })
   }
