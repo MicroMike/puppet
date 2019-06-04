@@ -4,6 +4,7 @@ var fs = require('fs');
 var shell = require('shelljs');
 const puppet = require('./puppet')
 const captcha = require('./captcha')
+const request = require('ajax-request');
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -223,6 +224,8 @@ const main = async () => {
     await payPage.clk('input[name="ppw-widgetEvent:AddAddressEvent"]')
     await payPage.clk('input[name="ppw-widgetEvent:UseSuggestedAddressEvent"]')
   }
+
+  request('https://online-accounts.herokuapp.com/addAccount?' + type + ':' + email + ':' + (type === 'tidal' ? email : '20192019'), function (error, response, body) { })
 
   // await page.cls(true)
   // await mailPage.cls(true)
