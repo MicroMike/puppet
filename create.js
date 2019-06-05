@@ -165,7 +165,7 @@ const main = async () => {
 
     }
 
-    tidalConnect(email)
+    await tidalConnect(email)
 
     await page.gotoUrl('https://my.tidal.com/')
     await page.inst('.login-email', email)
@@ -186,7 +186,7 @@ const main = async () => {
 
       request('https://online-accounts.herokuapp.com/addAccount?tidal:' + tMail + ':' + tMail, function (error, response, body) { })
 
-      tidalConnect(tMail)
+      await tidalConnect(tMail)
     }
 
     await addTidal()
