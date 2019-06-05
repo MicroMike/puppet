@@ -48,6 +48,7 @@ const main = async () => {
 
     // await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
     await page.inst('input#email', email)
+    await page.clk('input#email + button')
 
     const waitForPass = async () => {
       try {
