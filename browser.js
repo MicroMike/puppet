@@ -42,17 +42,10 @@ const main = async () => {
     await page.waitFor(2000 + rand(2000))
 
     let code
-    let nbMail
-    const waitForCode = async () => {
-      try {
-        nbMail = await mailPage.evaluate(() => {
-          const iframe = document.querySelector('#ifinbox')
-          const selector = iframe && iframe.contentDocument.querySelectorAll('.m')
-          return selector && selector.length
-        })
-        console.log('nbMail', nbMail)
-        if (!nbMail) { throw 'fail' }
+    let url
 
+    const waitFor = async (isCode) => {
+      try {
         const mailHere = await mailPage.evaluate(() => {
           const iframe = document.querySelector('#ifinbox')
           const m = iframe && iframe.contentDocument.querySelector('#m1')
@@ -62,54 +55,37 @@ const main = async () => {
         console.log('mailHere', mailHere)
         if (!mailHere) { throw 'fail' }
 
-        code = await mailPage.evaluate(() => {
+        code = isCode && await mailPage.evaluate(() => {
           const iframe = document.querySelector('#ifmail')
           const selector = iframe && iframe.contentDocument.querySelector('.otp')
-          return selector && selector.innerText
+          const code = selector && selector.innerText
+
+          return code
         })
-        console.log('code', code)
-        if (!code) { throw 'fail' }
+
+        url = !isCode && await mailPage.evaluate(() => {
+          const iframe = document.querySelector('#ifmail')
+          const link = iframe && iframe.contentDocument.querySelector('table tr td a')
+          const url = link && link.href
+
+          return url
+        })
+
+        if ((isCode && !code) || (!isCode && !url)) { throw 'fail' }
       }
       catch (e) {
         await page.waitFor(1000 * 10 + rand(2000))
         await mailPage.rload()
-        await waitForCode()
+        await waitFor(isCode)
       }
     }
 
-    await waitForCode()
+    await waitFor(true)
 
     await page.inst('input[name="code"]', code)
     await page.clk('input[type="submit"]')
 
-    const compare = async () => {
-      await mailPage.clk('#lrefr')
-      await page.waitFor(5000 + rand(2000))
-
-      const compareNbMail = await mailPage.evaluate(() => {
-        const iframe = document.querySelector('#ifinbox')
-        return iframe && iframe.contentDocument.querySelectorAll('.m').length
-      })
-
-      if (compareNbMail === nbMail) {
-        await page.waitFor(2000 + rand(2000))
-        await compare()
-      }
-    }
-
-    await compare()
-
-    await mailPage.evaluate(() => {
-      const iframe = document.querySelector('#ifinbox')
-      let m = iframe && iframe.contentDocument.querySelector('#m1')
-      m && m.click()
-    })
-
-    await page.waitFor(2000 + rand(2000))
-
-    const url = await mailPage.evaluate(() => {
-      return document.querySelector('#ifmail').contentDocument.querySelector('table tr td a').href
-    })
+    await waitFor()
 
     await page.gotoUrl(url)
     await page.inst('input#ap_password', '20192019')
