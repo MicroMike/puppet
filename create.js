@@ -158,7 +158,7 @@ const main = async () => {
       }
     }
 
-    await tidalConnect(email)
+    tidalConnect(email)
 
     await page.gotoUrl('https://my.tidal.com/')
     await page.inst('.login-email', email)
@@ -177,7 +177,7 @@ const main = async () => {
       await page.inst('[name="password"]', tMail)
       await page.clk('.btn-full')
 
-      await tidalConnect(tMail)
+      tidalConnect(tMail)
     }
 
     await addTidal()
