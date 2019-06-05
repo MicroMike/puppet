@@ -199,7 +199,7 @@ const fct = async () => {
     code = e === 'firstPlay' ? 2 : code
     code = e === 'failedLoop' ? 2 : code
     code = e === 'del' ? 4 : code
-    code = e === 'tidalError' ? 5 : code
+    code = e === 'tidalError' ? 6 : code
 
     // code = e === 'retry' ? 5 : code
     // code = e === 'crashed' ? 6 : code
@@ -209,11 +209,11 @@ const fct = async () => {
     // code = e === 'nobar' ? 10 : code
     // code = e === 'check' ? 12 : code
 
-    if (code === 1 || code === 5) {
+    if (code === 1 || code === 6) {
       socket.emit('retryOk')
     }
 
-    if (code === 5) {
+    if (code === 6) {
       request('https://online-accounts.herokuapp.com/error?check/' + account, function (error, response, body) { })
     }
 
