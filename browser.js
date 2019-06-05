@@ -107,8 +107,11 @@ const main = async () => {
     await page.clk('#confirm-button a')
   }
 
+  let time = 0
   for (let i of 'defg') {
-    create(i)
+    setTimeout(() => {
+      create(i)
+    }, 1000 * 5 * (time++));
   }
 }
 
