@@ -20,6 +20,13 @@ const account = process.env.ACCOUNT
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 
+if (!check) {
+  shell.exec('npm run rm', { silent: true })
+  shell.exec('npm run clear', { silent: true })
+  shell.exec('git reset --hard origin/master', { silent: true })
+  shell.exec('git pull', { silent: true })
+}
+
 const accountInfo = account.split(':')
 const player = accountInfo[0]
 const login = accountInfo[1]
