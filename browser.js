@@ -113,8 +113,12 @@ const main = async () => {
     await page.inst('input#ap_password', '20192019')
     await page.clk('#signInSubmit')
 
-    await page.inst('input#address-ui-widgets-enterAddressFullName', mail)
+    await page.waitFor(2000 + rand(2000))
+
     await page.select('select#address-ui-widgets-countryCode-dropdown-nativeId', 'US')
+    await page.waitFor(2000 + rand(2000))
+
+    await page.inst('input#address-ui-widgets-enterAddressFullName', mail)
     await page.inst('input#address-ui-widgets-enterAddressLine1', rand(30, 1) + ' ' + rand(30, 1) + 'st')
     await page.inst('input#address-ui-widgets-enterAddressCity', 'New-York')
     await page.inst('input#address-ui-widgets-enterAddressStateOrRegion', 'New-York')
