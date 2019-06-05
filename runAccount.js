@@ -209,7 +209,7 @@ const fct = async () => {
     // code = e === 'nobar' ? 10 : code
     // code = e === 'check' ? 12 : code
 
-    if (code === 1) {
+    if (code === 1 || code === 5) {
       socket.emit('retryOk')
     }
 
