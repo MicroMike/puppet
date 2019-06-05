@@ -46,22 +46,24 @@ const main = async () => {
     const waitForCode = async () => {
       try {
         nbMail = await mailPage.evaluate(() => {
-          const selector = document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m')
+          const iframe = document.querySelector('#ifinbox')
+          const selector = iframe && iframe.contentDocument.querySelectorAll('.m')
           return selector && selector.length
         })
         console.log('nbMail', nbMail)
         if (!nbMail) { throw 'fail' }
 
         const mailHere = await mailPage.evaluate(() => {
-          let m = document.querySelector('#ifinbox').contentDocument.querySelector('#m1')
-          m && m.click()
-          return m
+          const iframe = document.querySelector('#ifinbox')
+          const m = iframe && iframe.contentDocument.querySelector('#m1')
+          return m && m.click()
         })
         console.log('mailHere', mailHere)
         if (!mailHere) { throw 'fail' }
 
         code = await mailPage.evaluate(() => {
-          const selector = document.querySelector('#ifmail').contentDocument.querySelector('.otp')
+          const iframe = document.querySelector('#ifmail')
+          const selector = iframe && iframe.contentDocument.querySelector('.otp')
           return selector && selector.innerText
         })
         console.log('code', code)
