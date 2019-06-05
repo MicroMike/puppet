@@ -294,7 +294,7 @@ const main = async () => {
     await waitForDone()
     await page.cls()
     main()
-    request('https://online-accounts.herokuapp.com/addAccount?napster:' + email + ':20192019'), function (error, response, body) { })
+    request('https://online-accounts.herokuapp.com/addAccount?napster:' + email + ':20192019', function (error, response, body) { })
   }
 
 
