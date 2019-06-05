@@ -357,9 +357,9 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
-          // if (check) { await captcha(page, url, keyCaptcha, username, login) }
-          // else { await page.inst(username, login) }
-          await page.inst(username, login)
+          if (check) { await captcha(page, url, keyCaptcha, username, login) }
+          else { await page.inst(username, login) }
+          // await page.inst(username, login)
 
           const waitForPass = async () => {
             try {
