@@ -71,11 +71,7 @@ socket.on('activate', (id) => {
 })
 
 socket.on('run', account => {
-  main(account)
-});
-
-socket.on('runCheck', account => {
-  main(account, true)
+  main(account, check)
 });
 
 socket.on('goPlay', () => {
