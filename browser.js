@@ -87,7 +87,8 @@ const main = async () => {
       await page.waitFor(5000 + rand(2000))
 
       const compareNbMail = await mailPage.evaluate(() => {
-        return document.querySelector('#ifinbox').contentDocument.querySelectorAll('.m').length
+        const iframe = document.querySelector('#ifinbox')
+        return iframe && iframe.contentDocument.querySelectorAll('.m').length
       })
 
       if (compareNbMail === nbMail) {
@@ -99,7 +100,8 @@ const main = async () => {
     await compare()
 
     await mailPage.evaluate(() => {
-      let m = document.querySelector('#ifinbox').contentDocument.querySelector('#m1')
+      const iframe = document.querySelector('#ifinbox')
+      let m = iframe && iframe.contentDocument.querySelector('#m1')
       m && m.click()
     })
 
