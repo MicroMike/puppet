@@ -156,6 +156,7 @@ const main = async () => {
         shell.exec('git add save/tidal_' + m + ' && git commit -m "add account"')
         await tidalLog.cls()
       }
+      request('https://online-accounts.herokuapp.com/addAccount?tidal:' + m + ':' + m, function (error, response, body) { })
     }
 
     tidalConnect(email)
@@ -293,7 +294,7 @@ const main = async () => {
     await waitForDone()
     await page.cls()
     main()
-    request('https://online-accounts.herokuapp.com/addAccount?' + type + ':' + email + ':' + (type === 'tidal' ? email : '20192019'), function (error, response, body) { })
+    request('https://online-accounts.herokuapp.com/addAccount?napster:' + email + ':20192019'), function (error, response, body) { })
   }
 
 
