@@ -48,6 +48,7 @@ const main = async () => {
 
     // await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
     await page.inst('input#email', email)
+    await page.clk('input#email + button')
 
     const waitForPass = async () => {
       try {
@@ -135,8 +136,9 @@ const main = async () => {
       const needLog = await tryClick()
 
       if (needLog) {
-        if (check) { await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m) }
-        else { await tidalLog.inst(username, m) }
+        // if (check) { await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m) }
+        // else { await tidalLog.inst(username, m) }
+        await tidalLog.inst(username, m)
 
         const waitForPass = async () => {
           try {
