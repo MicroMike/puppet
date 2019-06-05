@@ -74,8 +74,8 @@ const main = async () => {
         if ((isCode && !code) || (!isCode && !url)) { throw 'fail' }
       }
       catch (e) {
-        await page.waitFor(1000 * 10 + rand(2000))
-        await page.clk('#lrefr')
+        await mailPage.waitFor(1000 * 10 + rand(2000))
+        await mailPage.clk('#lrefr')
         await waitFor(isCode)
       }
     }
