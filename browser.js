@@ -56,7 +56,7 @@ const main = async () => {
         const mailHere = await mailPage.evaluate(() => {
           const iframe = document.querySelector('#ifinbox')
           const m = iframe && iframe.contentDocument.querySelector('#m1')
-          return m && m.click()
+          return m && m.click() && m
         })
         console.log('mailHere', mailHere)
         if (!mailHere) { throw 'fail' }
