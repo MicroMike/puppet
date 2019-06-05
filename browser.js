@@ -75,7 +75,7 @@ const main = async () => {
       }
       catch (e) {
         await page.waitFor(1000 * 10 + rand(2000))
-        await mailPage.rload()
+        await page.clk('#lrefr')
         await waitFor(isCode)
       }
     }
