@@ -115,6 +115,7 @@ const main = async () => {
       const goToLogin = '#sidebar section button + button'
       const keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
       const reLog = 'body > div > div.main > div > div > div > div > div > button'
+      const playBtn = '[class*="controls"] button + button'
 
       const tidalLog = await puppet('save/tidal_' + m, false)
       await tidalLog.gotoUrl('https://listen.tidal.com/')
@@ -153,9 +154,15 @@ const main = async () => {
 
         const logged = await tidalLog.wfs(loggedDom)
         if (!logged) { throw 'del' }
+
+        await tidalLog.gotoUrl('https://listen.tidal.com/album/93312939')
+        await tidalLog.clk(playBtn)
+        await tidalLog.waitFor(1000 * 45)
+
         shell.exec('git add save/tidal_' + m + ' && git commit -m "add account"')
         await tidalLog.cls()
       }
+
       request('https://online-accounts.herokuapp.com/addAccount?tidal:' + m + ':' + m, function (error, response, body) { })
     }
 
