@@ -97,7 +97,7 @@ const main = async () => {
     await page.waitFor(2000 + rand(2000))
 
     await page.inst('input#address-ui-widgets-enterAddressFullName', mail)
-    await page.inst('input#address-ui-widgets-enterAddressLine1', rand(30, 1) + ' ' + rand(30, 1) + 'st')
+    await page.inst('input#address-ui-widgets-enterAddressLine1', rand(50, 1) + ' ' + rand(10, 1) + ' avenue')
     await page.inst('input#address-ui-widgets-enterAddressCity', 'New-York')
     await page.inst('input#address-ui-widgets-enterAddressStateOrRegion', 'New-York')
     await page.inst('input#address-ui-widgets-enterAddressPostalCode', '10001')
