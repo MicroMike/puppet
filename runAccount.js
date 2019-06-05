@@ -214,7 +214,7 @@ const fct = async () => {
     }
 
     if (code === 5) {
-      request('https://online-accounts.herokuapp.com/error?' + account, function (error, response, body) { })
+      request('https://online-accounts.herokuapp.com/error?check/' + account, function (error, response, body) { })
     }
 
     if (code !== 1) {
@@ -231,6 +231,8 @@ const fct = async () => {
     }
 
     if (code === 4) {
+      request('https://online-accounts.herokuapp.com/error?del/' + account, function (error, response, body) { })
+
       // 4 = DEL
       socket.emit('delete', account)
 
