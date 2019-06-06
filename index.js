@@ -3,7 +3,7 @@ process.setMaxListeners(0)
 var fs = require('fs');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
-let clientId
+let clientId = Date.now()
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = []
@@ -11,6 +11,7 @@ const max = process.env.BIG ? 60 : 25
 let pause = false
 let first = true
 let updating
+let timeout
 
 const getTime = () => {
   const date = new Date
@@ -37,41 +38,54 @@ const main = async (account, isCheck) => {
   accountsValid.push(account)
   console.log(clientId, accountsValid.length)
 
-  let cmd = 'ACCOUNT=' + account + ' node runAccount'
+  let cmd = 'CLIENTID=' + clientId + ' ACCOUNT=' + account + ' node runAccount'
   cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
-  cmd = clientId ? 'CLIENTID=' + clientId + ' ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
     console.log(clientId, accountsValid.length)
+
+    if (code === 100 && accountsValid.length === 0) {
+      console.log('exit')
+      clearTimeout(timeout)
+      process.exit()
+    }
   })
+
+  timeout = setTimeout(() => {
+    main()
+  }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
 }
 
+main()
+
+
 process.on('SIGINT', () => {
+  clearTimeout(timeout)
   console.log('exit')
-  socket.emit('Cdisconnect')
+  // socket.emit('Cdisconnect')
   process.exit()
 });
 
-socket.on('restart', () => {
-  console.log('reset')
-  socket.emit('Cdisconnect')
-  process.exit()
-});
+// socket.on('restart', () => {
+//   console.log('reset')
+//   // socket.emit('Cdisconnect')
+//   process.exit()
+// });
 
-socket.on('activate', (id) => {
-  if (!clientId) { clientId = id }
-  fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
-    if (err) return console.log(err);
-    socket.emit('ok', { accountsValid, max, env: process.env, del, first, id: clientId, check })
-    first = false
-  })
-})
+// socket.on('activate', (id) => {
+//   if (!clientId) { clientId = id }
+//   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
+//     if (err) return console.log(err);
+//     socket.emit('ok', { accountsValid, max, env: process.env, del, first, id: clientId, check })
+//     first = false
+//   })
+// })
 
-socket.on('run', account => {
-  main(account, check)
-});
+// socket.on('run', account => {
+//   main(account, check)
+// });
 
-socket.on('goPlay', () => {
-  socket.emit('play', accountsValid)
-});
+// socket.on('goPlay', () => {
+//   socket.emit('play', accountsValid)
+// });
