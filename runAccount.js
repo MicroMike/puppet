@@ -20,6 +20,7 @@ const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 const plays = process.env.PLAYS
 
+let account
 let player
 let login
 let pass
@@ -41,8 +42,10 @@ socket.on('activate', id => {
   socket.emit('runner', { clientId, id: streamId, player, env: process.env })
 })
 
-socket.on('streams', account => {
-  const accountInfo = account.split(':')
+socket.on('streams', a => {
+  account = a
+
+  const accountInfo = a.split(':')
   player = accountInfo[0]
   login = accountInfo[1]
   pass = accountInfo[2]
