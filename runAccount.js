@@ -96,6 +96,7 @@ const fct = async () => {
 
   socket.on('forceOut', () => {
     over = true
+    socket.emit('forceOut')
     console.log('forceOut')
     // logError('forceOut')
     exit(100)
