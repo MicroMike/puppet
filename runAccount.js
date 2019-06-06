@@ -47,6 +47,8 @@ socket.on('streams', account => {
   login = accountInfo[1]
   pass = accountInfo[2]
 
+  console.log(account)
+
   request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
     const a = JSON.parse(body)
     albums = a[player]
