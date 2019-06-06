@@ -28,14 +28,14 @@ const main = async (account, isCheck) => {
   shell.exec('expressvpn disconnect', { silent: true })
 
   accountsValid.push(account)
-  console.log(clientId, accountsValid.length)
+  process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
   let cmd = 'CLIENTID=' + clientId + ' RAND=TRUE MAX=' + max + ' PLAYS=' + accountsValid.length + ' node runAccount'
   cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
-    console.log(clientId, accountsValid.length)
+    process.stdout.write(getTime() + " " + accountsValid.length + "\r");
 
     if (code === 100 && accountsValid.length === 0) {
       console.log('exit')
