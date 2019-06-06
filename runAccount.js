@@ -42,11 +42,9 @@ socket.on('activate', id => {
   socket.emit('runner', { clientId, account, id: streamId, player })
 })
 
-let ok
-socket.on('albums', albs => {
-  if (ok) { return }
-  ok = true
-  albums = albs
+request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
+  const a = JSON.parse(body)
+  albums = a[player]
   fct()
 })
 
@@ -89,7 +87,7 @@ const fct = async () => {
   socket.on('forceOut', () => {
     over = true
     console.log('forceOut')
-    logError('forceOut')
+    // logError('forceOut')
     exit(100)
   })
 
@@ -537,6 +535,7 @@ const fct = async () => {
 
     if (check) {
       shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account"')
+      request('https://online-accounts.herokuapp.com/checkOk?' + account, function (error, response, body) { })
       await page.waitFor(1000 * 35)
       throw 'loop'
     }
