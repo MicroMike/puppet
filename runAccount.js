@@ -44,13 +44,13 @@ socket.on('activate', id => {
 
 socket.on('streams', a => {
   account = a
+  console.log(account)
+  if (!account) { return }
 
   const accountInfo = a.split(':')
   player = accountInfo[0]
   login = accountInfo[1]
   pass = accountInfo[2]
-
-  console.log(account)
 
   request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
     const a = JSON.parse(body)

@@ -165,7 +165,7 @@ const addFcts = async (page) => {
         return document.querySelector(timeLine) && document.querySelector(timeLine).innerText
       }, timeLine)
 
-      time = callback(time)
+      time = time && callback(time)
 
       return time
     }
