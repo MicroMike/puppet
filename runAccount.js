@@ -402,34 +402,31 @@ const fct = async () => {
       await page.waitFor(2000 + rand(2000))
       await page.gotoUrl(url)
 
-      if (player === 'amazon') {
-        await page.jClk('a.cvf-widget-btn-verify-account-switcher')
-        usernameInput = await page.ext(username)
-      }
+      const checkFill = async () => {
+        if (player === 'amazon') {
+          await page.jClk('a.cvf-widget-btn-verify-account-switcher')
+          usernameInput = await page.ext(username)
+        }
 
-      if (usernameInput) {
-        await page.inst(username, login)
-      }
+        if (usernameInput) {
+          await page.inst(username, login)
+        }
 
-      await page.inst(password, pass)
+        await page.inst(password, pass)
 
-      if (player !== 'amazon') {
-        let loginFill = await page.get(username, 'value')
+        let loginFill = player === 'amazon' || await page.get(username, 'value')
         let passFill = await page.get(password, 'value')
 
         if (!loginFill || !passFill) {
           await takeScreenshot('fillForm')
-          await page.inst(username, login, true)
-          await page.inst(password, pass, true)
-
-          loginFill = await page.get(username, 'value')
-          passFill = await page.get(password, 'value')
-
-          if (!loginFill || !passFill) {
-            throw 'fillForm'
-          }
+          await checkFill()
+        }
+        else {
+          socket.emit('retryOk')
         }
       }
+
+      await checkFill()
 
       await page.jClk(remember)
       await page.clk(loginBtn)
