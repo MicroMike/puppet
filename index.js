@@ -25,7 +25,10 @@ const getTime = () => {
 }
 
 const main = async (account, isCheck) => {
-  shell.exec('expressvpn disconnect', { silent: true })
+  try {
+    shell.exec('expressvpn disconnect', { silent: true })
+  }
+  catch (e) { }
 
   accountsValid.push(account)
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
