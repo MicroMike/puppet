@@ -37,8 +37,7 @@ const main = async (account, isCheck) => {
   cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
-    accountsValid = accountsValid.filter(a => a !== account)
-    process.stdout.write(getTime() + " " + accountsValid + "\r");
+    process.stdout.write(getTime() + " " + --accountsValid + "\r");
 
     if (code === 100 && accountsValid === 0) {
       console.log('exit')
