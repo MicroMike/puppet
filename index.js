@@ -43,7 +43,7 @@ const main = async (account, isCheck) => {
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
-    console.log(clientId, accountsValid)
+    console.log(clientId, accountsValid.length)
   })
 }
 
