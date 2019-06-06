@@ -45,7 +45,7 @@ socket.on('activate', id => {
 request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
   const a = JSON.parse(body)
   albums = a[player]
-  console.log(a)
+  console.log(player, albums)
   fct()
 })
 
