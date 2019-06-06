@@ -35,7 +35,7 @@ const main = async (account, isCheck) => {
   // }
 
   accountsValid.push(account)
-  process.stdout.write(getTime() + " " + accountsValid.length + "\r");
+  console.log(clientId, accountsValid.length)
 
   let cmd = 'ACCOUNT=' + account + ' node runAccount'
   cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
