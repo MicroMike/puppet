@@ -22,17 +22,17 @@ const getTime = () => {
 const main = async (account, isCheck) => {
   shell.exec('expressvpn disconnect', { silent: true })
 
-  if (!check && !updating) {
-    updating = true
-    shell.exec('npm run rm', { silent: true })
-    shell.exec('npm run clear', { silent: true })
-    shell.exec('git reset --hard origin/master', { silent: true })
-    shell.exec('git pull', { silent: true })
+  // if (!check && !updating) {
+  //   updating = true
+  //   shell.exec('npm run rm', { silent: true })
+  //   shell.exec('npm run clear', { silent: true })
+  //   shell.exec('git reset --hard origin/master', { silent: true })
+  //   shell.exec('git pull', { silent: true })
 
-    setTimeout(() => {
-      updating = false
-    }, 1000 * 60);
-  }
+  //   setTimeout(() => {
+  //     updating = false
+  //   }, 1000 * 60);
+  // }
 
   accountsValid.push(account)
   process.stdout.write(getTime() + " " + accountsValid.length + "\r");
