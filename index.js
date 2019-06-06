@@ -30,7 +30,7 @@ const main = async (account, isCheck) => {
   accountsValid.push(account)
   console.log(clientId, accountsValid.length)
 
-  let cmd = 'CLIENTID=' + clientId + ' ACCOUNT=' + account + ' node runAccount'
+  let cmd = 'CLIENTID=' + clientId + ' RAND=TRUE MAX=' + max + ' PLAYS=' + accountsValid.length + ' node runAccount'
   cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
@@ -45,7 +45,7 @@ const main = async (account, isCheck) => {
   })
 
   timeout = setTimeout(() => {
-    main()
+    if (accountsValid.length < max) { main() }
   }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
 }
 

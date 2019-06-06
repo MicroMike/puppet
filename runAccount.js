@@ -16,14 +16,14 @@ let countStream = 0
 let close = false
 let albums
 
-const account = process.env.ACCOUNT
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
+const rand = process.env.RAND
+const plays = process.env.PLAYS
 
-const accountInfo = account.split(':')
-const player = accountInfo[0]
-const login = accountInfo[1]
-const pass = accountInfo[2]
+let player
+let login
+let pass
 
 let over = false
 let page
@@ -39,14 +39,20 @@ const rand = (max, min) => {
 
 socket.on('activate', id => {
   if (!streamId) { streamId = id }
-  socket.emit('runner', { clientId, account, id: streamId, player })
+  socket.emit('runner', { clientId, id: streamId, player, env: process.env })
 })
 
-request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
-  const a = JSON.parse(body)
-  albums = a[player]
-  console.log(player, albums)
-  fct()
+socket.on('streams', account => {
+  const accountInfo = account.split(':')
+  player = accountInfo[0]
+  login = accountInfo[1]
+  pass = accountInfo[2]
+
+  request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
+    const a = JSON.parse(body)
+    albums = a[player]
+    fct()
+  })
 })
 
 const fct = async () => {
