@@ -6,7 +6,7 @@ var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 let clientId = Date.now()
 
 const check = process.env.CHECK || process.env.TYPE
-let accountsValid = []
+let accountsValid = 0
 const max = process.env.BIG ? 63 : 21
 let pause = false
 let first = true
@@ -30,17 +30,17 @@ const main = async (account, isCheck) => {
   }
   catch (e) { }
 
-  accountsValid.push(account)
-  process.stdout.write(getTime() + " " + accountsValid.length + "\r");
+  accountsValid++
+  process.stdout.write(getTime() + " " + accountsValid + "\r");
 
-  let cmd = 'CLIENTID=' + clientId + ' RAND=TRUE MAX=' + max + ' PLAYS=' + accountsValid.length + ' node runAccount'
+  let cmd = 'CLIENTID=' + clientId + ' RAND=TRUE MAX=' + max + ' PLAYS=' + accountsValid + ' node runAccount'
   cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
-    process.stdout.write(getTime() + " " + accountsValid.length + "\r");
+    process.stdout.write(getTime() + " " + accountsValid + "\r");
 
-    if (code === 100 && accountsValid.length === 0) {
+    if (code === 100 && accountsValid === 0) {
       console.log('exit')
       clearTimeout(timeout)
       process.exit()
@@ -48,7 +48,7 @@ const main = async (account, isCheck) => {
   })
 
   timeout = setTimeout(() => {
-    if (accountsValid.length < max) { main() }
+    if (accountsValid < max) { main() }
   }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
 }
 
