@@ -13,6 +13,10 @@ let first = true
 let updating
 let timeout
 
+const rand = (max, min) => {
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+}
+
 const getTime = () => {
   const date = new Date
   const hour = date.getUTCHours() + 1
