@@ -519,6 +519,7 @@ const fct = async () => {
       }
       catch (e) {
         const logged = await page.ext(loggedDom)
+        await takeScreenshot('oups')
 
         if (!logged) { return catchFct('notLogged/' + playError) }
         if (++trys >= 3) { return catchFct(playError) }
