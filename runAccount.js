@@ -44,7 +44,6 @@ socket.on('activate', id => {
 
 socket.on('streams', a => {
   account = a
-  console.log(account)
   if (!account) { return }
 
   const accountInfo = a.split(':')
