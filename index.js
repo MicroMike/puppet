@@ -43,7 +43,7 @@ const main = async (account, isCheck) => {
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid = accountsValid.filter(a => a !== account)
-    process.stdout.write(getTime() + " " + accountsValid.length + "  \r");
+    console.log(clientId, accountsValid)
   })
 }
 
