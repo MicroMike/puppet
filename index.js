@@ -47,8 +47,8 @@ const main = async () => {
   })
 
   timeout = setTimeout(() => {
+    process.stdout.write(getTime() + ' Loop ' + ' max:' + accountsValid < max + '' + accountsValid + "\r");
     if (accountsValid < max) { main() }
-    else {}
   }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
 }
 
