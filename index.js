@@ -7,7 +7,7 @@ let clientId = Date.now()
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = 0
-const max = process.env.BIG ? 63 : 21
+const max = process.env.BIG ? 63 : 7
 let pause = false
 let first = true
 let updating
@@ -33,7 +33,7 @@ const main = async (account, isCheck) => {
   accountsValid++
   process.stdout.write(getTime() + " " + accountsValid + "\r");
 
-  let cmd = 'CLIENTID=' + clientId + ' RAND=TRUE MAX=' + max + ' PLAYS=' + accountsValid + ' node runAccount'
+  let cmd = 'CLIENTID=' + clientId + ' RAND=TRUE MAX=' + max + ' node runAccount'
   cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {

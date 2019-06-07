@@ -18,7 +18,6 @@ let albums
 
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
-const plays = process.env.PLAYS
 
 let account
 let player
