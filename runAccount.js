@@ -597,7 +597,7 @@ const fct = async () => {
           }
         }
 
-        const exist = await page.ext(timeline)
+        const exist = await page.ext(timeLine)
         !exist && await page.gotoUrl(album())
         await waitForPlayBtn('failedLoop')
 
