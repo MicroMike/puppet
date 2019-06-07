@@ -365,26 +365,27 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
-          if (check) { await captcha(page, url, keyCaptcha, username, login) }
-          else { await page.inst(username, login) }
-          // await page.inst(username, login)
+          throw 'tidalError'
+          // if (check) { await captcha(page, url, keyCaptcha, username, login) }
+          // else { await page.inst(username, login) }
+          // // await page.inst(username, login)
 
-          const waitForPass = async () => {
-            try {
-              const exist = await page.ext(password)
-              if (!exist) { throw 'failed' }
-            }
-            catch (e) {
-              await waitForPass()
-            }
-          }
+          // const waitForPass = async () => {
+          //   try {
+          //     const exist = await page.ext(password)
+          //     if (!exist) { throw 'failed' }
+          //   }
+          //   catch (e) {
+          //     await waitForPass()
+          //   }
+          // }
 
-          await waitForPass()
-          await page.inst(password, pass)
-          await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
+          // await waitForPass()
+          // await page.inst(password, pass)
+          // await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          const logged = await page.wfs(loggedDom)
-          if (!logged) { throw 'del' }
+          // const logged = await page.wfs(loggedDom)
+          // if (!logged) { throw 'del' }
         }
       }
     }
@@ -649,6 +650,7 @@ const fct = async () => {
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
           await takeScreenshot('freeze')
           await page.jClk(nextBtn)
+          await page.waitFor(1000 * 10)
 
           // if (!t1 && t1 !== 0) {
           //   throw 'nobar'
