@@ -25,6 +25,11 @@ const getTime = () => {
 }
 
 const main = async () => {
+  timeout = setTimeout(() => {
+    process.stdout.write(getTime() + ' Loop ' + ' max:' + accountsValid < max + '' + accountsValid + "\r");
+    if (accountsValid < max) { main() }
+  }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
+
   try {
     shell.exec('expressvpn disconnect', { silent: true })
   }
@@ -45,11 +50,6 @@ const main = async () => {
       process.exit()
     }
   })
-
-  timeout = setTimeout(() => {
-    process.stdout.write(getTime() + ' Loop ' + ' max:' + accountsValid < max + '' + accountsValid + "\r");
-    if (accountsValid < max) { main() }
-  }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
 }
 
 main()
