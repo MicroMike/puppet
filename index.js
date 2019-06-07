@@ -7,7 +7,7 @@ let clientId = Date.now()
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = 0
-const max = process.env.BIG ? 63 : 7
+const max = process.env.BIG ? 63 : 21
 let pause = false
 let first = true
 let updating
