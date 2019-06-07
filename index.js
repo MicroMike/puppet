@@ -24,7 +24,7 @@ const getTime = () => {
   return hour + 'H' + minute
 }
 
-const main = async (account, isCheck) => {
+const main = async () => {
   try {
     shell.exec('expressvpn disconnect', { silent: true })
   }
@@ -34,7 +34,7 @@ const main = async (account, isCheck) => {
   process.stdout.write(getTime() + " " + accountsValid + "\r");
 
   let cmd = 'CLIENTID=' + clientId + ' RAND=TRUE MAX=' + max + ' node runAccount'
-  cmd = check || isCheck ? 'CHECK=true ' + cmd : cmd
+  cmd = check ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
     process.stdout.write(getTime() + " " + --accountsValid + "\r");
@@ -48,6 +48,7 @@ const main = async (account, isCheck) => {
 
   timeout = setTimeout(() => {
     if (accountsValid < max) { main() }
+    else {}
   }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
 }
 

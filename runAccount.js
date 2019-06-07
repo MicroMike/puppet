@@ -597,6 +597,10 @@ const fct = async () => {
           }
         }
 
+        const exist = await page.ext(timeline)
+        !exist && await page.gotoUrl(album())
+        await waitForPlayBtn('failedLoop')
+
         t1 = await page.getTime(timeLine, callback)
         await page.waitFor(1000 * 10)
         t2 = await page.getTime(timeLine, callback)
