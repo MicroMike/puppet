@@ -85,14 +85,15 @@ const anticaptcha = (websiteURL, websiteKey, invisible = false) => {
 }
 
 let albums = [
-  { url: 'https://open.spotify.com/episode/3aDHIMOr84YCdppa6MaNiy', nb: 5 },
-  { url: 'https://open.spotify.com/episode/2bA23y9aqKgGQYVb5TfC7u', nb: 7 },
-  { url: 'https://open.spotify.com/episode/7iUTfYmzs0eWiCEbrnrKd1', nb: 10 },
-  { url: 'https://open.spotify.com/episode/6IgI03zmCk8ett8uH0kyRc', nb: 5 },
-  { url: 'https://open.spotify.com/episode/5LL15Nysx87pAOzPkbABag', nb: 6 },
-  { url: 'https://open.spotify.com/episode/77Flhb2b8PcZuuswkqQzfY', nb: 12 },
-  { url: 'https://open.spotify.com/episode/5kpHGnpr0qYphuHO4Xm7JD', nb: 15 },
-  { url: 'https://open.spotify.com/episode/5YwlHKInZK9O6So8trYhBm', nb: 20 },
+  { url: 'https://open.spotify.com/episode/5CTWjaln8LbP3JMnDfL2SR', nb: 80 },
+  { url: 'https://open.spotify.com/episode/4LNlZZiOy32VQvTGXJ9BR9', nb: 80 },
+  { url: 'https://open.spotify.com/episode/0zDeN4F8lTTrieI3IvsCiI', nb: 80 },
+  { url: 'https://open.spotify.com/episode/07AeZf0ExTxB864NZIOGRP', nb: 80 },
+  { url: 'https://open.spotify.com/episode/77PytpYZNCs6d8uyzwYn1p', nb: 80 },
+  { url: 'https://open.spotify.com/episode/5get1YOTsPf6RAPIySupcV', nb: 80 },
+  { url: 'https://open.spotify.com/episode/5QrKbluyFZsg6jJ26ye7f6', nb: 80 },
+  { url: 'https://open.spotify.com/episode/4AFzaLO87GuTdtSuIk82r2', nb: 80 },
+  { url: 'https://open.spotify.com/episode/5YwlHKInZK9O6So8trYhBm', nb: 80 },
 ]
 
 let albumNbCount = 0
