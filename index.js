@@ -48,7 +48,8 @@ const main = async () => {
 }
 
 timeout = setInterval(() => {
-  console.log(getTime(), 'max:', accountsValid >= max, accountsValid)
+  // process.stdout.write(getTime() + " " + accountsValid + "\r");
+  process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (accountsValid < max) { main() }
 }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
 
