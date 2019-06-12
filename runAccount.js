@@ -365,32 +365,26 @@ const fct = async () => {
         const needLog = await tryClick()
 
         if (needLog) {
-          if (check) {
-            await captcha(page, url, keyCaptcha, username, login)
+          if (!check) { throw 'tidalError' }
+
+          await captcha(page, url, keyCaptcha, username, login)
+
+          const waitForPass = async () => {
+            try {
+              const exist = await page.ext(password)
+              if (!exist) { throw 'failed' }
+            }
+            catch (e) {
+              await waitForPass()
+            }
           }
-          else {
-            throw 'tidalError'
-          }
 
-          // else { await page.inst(username, login) }
-          // // await page.inst(username, login)
+          await waitForPass()
+          await page.inst(password, pass)
+          await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          // const waitForPass = async () => {
-          //   try {
-          //     const exist = await page.ext(password)
-          //     if (!exist) { throw 'failed' }
-          //   }
-          //   catch (e) {
-          //     await waitForPass()
-          //   }
-          // }
-
-          // await waitForPass()
-          // await page.inst(password, pass)
-          // await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
-
-          // const logged = await page.wfs(loggedDom)
-          // if (!logged) { throw 'del' }
+          const logged = await page.wfs(loggedDom)
+          if (!logged) { throw 'del' }
         }
       }
     }
