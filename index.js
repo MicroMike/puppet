@@ -32,13 +32,16 @@ const main = async () => {
   catch (e) { }
 
   accountsValid++
-  // process.stdout.write(getTime() + " " + accountsValid + "\r");
+  process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
   let cmd = 'CLIENTID=' + clientId + ' RAND=TRUE MAX=' + max + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid--
+
+    process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
+
     if (code === 100 && accountsValid === 0) {
       console.log('exit')
       clearInterval(timeout)
