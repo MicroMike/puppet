@@ -42,7 +42,7 @@ const main = async () => {
 
     process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
-    if (code === 100 && accountsValid === 0) {
+    if (code === 100) {
       console.log('exit')
       clearInterval(timeout)
       process.exit()
