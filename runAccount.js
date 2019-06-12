@@ -43,7 +43,7 @@ socket.on('activate', id => {
 
 socket.on('streams', a => {
   account = a
-  if (!account) { return }
+  if (!account) { return process.exit(0) }
 
   const accountInfo = a.split(':')
   player = accountInfo[0]
