@@ -580,7 +580,7 @@ const fct = async () => {
         }
 
         t1 = await page.getTime(timeLine, callback)
-        await page.waitFor(1000 * 5)
+        await page.waitFor(1000 * 10)
         t2 = await page.getTime(timeLine, callback)
 
         let matchTime = Number(t1)
@@ -626,14 +626,9 @@ const fct = async () => {
         if (freeze > 2) {
           logError('t1: ' + t1)
 
-          if (t1 === false) {
-            await takeScreenshot('noBar')
-            throw 'noBar'
-          }
-
           const logged = await page.ext(loggedDom)
 
-          if (!logged) {
+          if (!logged && t1 === false) {
             throw 'logout'
           }
           else {
