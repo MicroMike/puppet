@@ -642,7 +642,7 @@ const fct = async () => {
           }
           else {
             socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
-            if (unlock) {
+            if (unlock1 && unlock2) {
               await page.clk(unlock1)
               await page.waitFor(1000 * 5)
               await page.clk(unlock2)
