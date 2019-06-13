@@ -17,7 +17,7 @@ let close = false
 let albums
 
 const check = process.env.CHECK
-const clientId = Date.now()
+const clientId = process.env.CLIENTID
 
 let account
 let player
