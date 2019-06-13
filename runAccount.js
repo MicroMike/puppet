@@ -634,7 +634,6 @@ const fct = async () => {
         if (freeze > 2) {
           // logError('t1: ' + t1)
 
-
           if (unlock1 && unlock2) {
             await takeScreenshot('freeze')
             socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
