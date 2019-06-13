@@ -326,7 +326,7 @@ const fct = async () => {
       loginBtn = '#login-button'
       loginError = '.alert.alert-warning'
 
-      playBtn = '.tracklist-play-pause.tracklist-middle-align'
+      playBtn = '.main-view-container button'
       repeatBtn = '[class*="spoticon-repeat"]'
       repeatBtnOk = '.spoticon-repeat-16.control-button--active'
       shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
