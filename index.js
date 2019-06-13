@@ -23,7 +23,7 @@ const getTime = () => {
   return hour + 'H' + minute
 }
 
-let clientId = rand(1000, 1)
+let clientId = Date.now()
 
 const main = async () => {
   try {
