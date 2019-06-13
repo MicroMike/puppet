@@ -258,7 +258,7 @@ const fct = async () => {
   try {
     if (player === 'napster') {
       url = 'https://app.napster.com/login/'
-      loggedDom = '.nav-settings'
+      loggedDom = '.icon-settings2'
 
       username = '#username'
       password = '#password'
