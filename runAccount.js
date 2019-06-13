@@ -642,9 +642,11 @@ const fct = async () => {
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
           await page.gotoUrl(album())
 
-          await takeScreenshot('freeze')
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
+          else {
+            await takeScreenshot('freeze')
+          }
         }
 
         if (exitLoop) { throw 'loop' }
