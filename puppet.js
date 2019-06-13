@@ -118,22 +118,13 @@ const addFcts = async (page) => {
     }
   }
 
-  page.inst = async (selector, text, force) => {
+  page.inst = async (selector, text) => {
     if (page.closed) { return }
     try {
       await page.wfs(selector, true)
-      if (force) {
-        await page.evaluate(({ selector, text }) => {
-          document.querySelector(selector).value = text
-        }, { selector, text })
-      }
-      else {
-        await page.evaluate(selector => {
-          document.querySelector(selector).value = ''
-          document.querySelector(selector).focus()
-        }, selector)
-        await page.type(selector, text, { delay: 150 });
-      }
+      await page.evaluate(({ selector, text }) => {
+        document.querySelector(selector).value = text
+      }, { selector, text })
       return true
     }
     catch (e) {
