@@ -612,11 +612,13 @@ const fct = async () => {
           if (rand(7) < 1) {
             await page.jClk(nextBtn)
             socket.emit('plays', true)
+            request('https://online-accounts.herokuapp.com/listen?' + currentAlbum, function (error, response, body) { })
           }
           if (!nextMusic) {
             nextMusic = true
             countPlays++
             socket.emit('plays')
+            request('https://online-accounts.herokuapp.com/listen?' + currentAlbum, function (error, response, body) { })
           }
           // logError(matchTime)
         }
