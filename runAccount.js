@@ -584,7 +584,7 @@ const fct = async () => {
         }
 
         t1 = await page.getTime(timeLine, callback)
-        await page.waitFor(1000 * 10)
+        await page.waitFor(1000 * 5)
         t2 = await page.getTime(timeLine, callback)
 
         let matchTime = Number(t1)
