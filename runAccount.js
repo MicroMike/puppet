@@ -647,6 +647,7 @@ const fct = async () => {
         }
 
         if (freeze > 1) {
+          logError('t1: ' + t1)
           if (t1 === false) {
             await takeScreenshot('noBar')
             throw 'noBar'
