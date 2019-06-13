@@ -587,8 +587,15 @@ const fct = async () => {
           }
         }
 
+        if (t1 === t2 && freeze > 0) {
+          await page.jClk(unlock1)
+          await page.waitFor(1000 * 3)
+          await page.jClk(unlock2)
+          await page.waitFor(1000 * 3)
+        }
+
         t1 = await page.getTime(timeLine, callback)
-        await page.waitFor(1000 * 5)
+        await page.waitFor(1000 * 3)
         t2 = await page.getTime(timeLine, callback)
 
         let matchTime = Number(t1)
@@ -631,19 +638,12 @@ const fct = async () => {
           socket.emit('retryOk')
         }
 
-        if (freeze > 2) {
-          if (unlock1 && unlock2) {
-            await takeScreenshot('freeze')
-            socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
-            await page.clk(unlock1)
-            await page.waitFor(1000 * 5)
-            await page.clk(unlock2)
-            await page.waitFor(1000 * 5)
-          }
-          else {
-            const logged = await page.ext(loggedDom)
-            throw logged ? 'freeze' : 'logout'
-          }
+        if (freeze > 1) {
+          socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
+
+          await takeScreenshot('freeze')
+          const logged = await page.ext(loggedDom)
+          throw logged ? 'freeze' : 'logout'
         }
 
         if (exitLoop) { throw 'loop' }
