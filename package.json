@@ -13,7 +13,7 @@
     "cnapster": "cross-env TYPE=napster node create",
     "reset": "git reset --hard HEAD && git clean -fd && git pull",
     "all": "FILE=napsterAccount.txt RAND=true node index",
-    "r": "xvfb-run -a node run",
+    "r": "xvfb-run -a node r",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node index",
     "clean": "find save/ -type f ! -iname \"Cookies\" -delete",
