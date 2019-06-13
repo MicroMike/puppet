@@ -51,39 +51,12 @@ const main = async () => {
 }
 
 timeout = setInterval(() => {
-  // process.stdout.write(getTime() + " " + accountsValid + "\r");
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (accountsValid < max) { main() }
 }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 90));
 
-main()
-
 process.on('SIGINT', () => {
   clearInterval(timeout)
   console.log('exit')
-  // socket.emit('Cdisconnect')
   process.exit()
 });
-
-// socket.on('restart', () => {
-//   console.log('reset')
-//   // socket.emit('Cdisconnect')
-//   process.exit()
-// });
-
-// socket.on('activate', (id) => {
-//   if (!clientId) { clientId = id }
-//   fs.readFile('napsterAccountDel.txt', 'utf8', async (err, del) => {
-//     if (err) return console.log(err);
-//     socket.emit('ok', { accountsValid, max, env: process.env, del, first, id: clientId, check })
-//     first = false
-//   })
-// })
-
-// socket.on('run', account => {
-//   main(account, check)
-// });
-
-// socket.on('goPlay', () => {
-//   socket.emit('play', accountsValid)
-// });

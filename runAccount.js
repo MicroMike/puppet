@@ -492,23 +492,6 @@ const fct = async () => {
       const check1 = await page.ext(usedDom)
       const check2 = await page.ext('.Root__now-playing-bar .control-button.spoticon-pause-16.control-button--circled')
       if (check1 && check2) { throw 'used' }
-
-      // const currentUA = await page.evaluate(() => {
-      //   return navigator.userAgent
-      // })
-      // const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
-
-      // const spotErr = await page.get('.ErrorPage__inner', 'innerText')
-      // if (String(spotErr).match(/limit/)) {
-      //   await takeScreenshot('firstPlay')
-      //   await page.setUserAgent(ua)
-      //   await page.gotoUrl(album())
-      //   await page.clk('.play-pause.middle-align')
-      //   takeScreenshot('mobile')
-      //   await page.waitFor(1000 * 45)
-      //   await page.setUserAgent(currentUA)
-      //   await page.gotoUrl(album())
-      // }
     }
 
     let trys = 0
@@ -563,7 +546,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 5 + rand(5)
+    let changePlay = 10 + rand(10)
 
     const loop = async () => {
       const existRepeatBtnOk = await page.ext(repeatBtnOk)
@@ -596,17 +579,11 @@ const fct = async () => {
           }
         }
 
-        // const exist = await page.ext(timeLine)
-        // !exist && await page.gotoUrl(album())
-        // await waitForPlayBtn('failedLoop')
-
         t1 = await page.getTime(timeLine, callback)
         await page.waitFor(1000 * 10)
         t2 = await page.getTime(timeLine, callback)
 
         let matchTime = Number(t1)
-        // let matchTime = t1 && t1.match(/\d*\.\d*/)
-        // matchTime = matchTime ? matchTime[0] : null
 
         if (matchTime > 40) {
           if (rand(7) < 1) {
@@ -620,17 +597,17 @@ const fct = async () => {
             socket.emit('plays')
             request('https://online-accounts.herokuapp.com/listen?' + currentAlbum, function (error, response, body) { })
           }
-          // logError(matchTime)
         }
         else {
           nextMusic = false
         }
 
         if (countPlays > changePlay) {
-          countPlays = 0
-          changePlay = 5 + rand(5)
-          await page.gotoUrl(album())
-          await waitForPlayBtn('failedLoop')
+          exitLoop = true
+          // countPlays = 0
+          // changePlay = 5 + rand(5)
+          // await page.gotoUrl(album())
+          // await waitForPlayBtn('failedLoop')
         }
 
         if (t1 === t2) {
@@ -648,43 +625,23 @@ const fct = async () => {
 
         if (freeze > 1) {
           logError('t1: ' + t1)
+
           if (t1 === false) {
             await takeScreenshot('noBar')
             throw 'noBar'
           }
 
-          socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
-          await takeScreenshot('freeze')
-          await page.jClk(nextBtn)
-          await page.waitFor(1000 * 10)
+          const logged = await page.ext(loggedDom)
 
-          // if (!t1 && t1 !== 0) {
-          //   throw 'nobar'
-          // }
-          // else if (player === 'napster') {
-          //   await page.jClk('.player-play-button .icon-pause2')
-          //   await page.jClk('.player-play-button .icon-play-button')
-          //   await page.waitFor(1000 * 5)
-
-          //   t1 = await page.getTime(timeLine, callback)
-
-          //   if (t1 === 0) {
-          //     retry = true
-          //   }
-          // }
-          // else {
-          //   await page.wfs(loggedDom, true)
-          //   await page.waitFor(1000 * 5)
-          //   await page.gotoUrl(album())
-          //   await page.clk(playBtn, 'failedLoop')
-          //   socket.emit('retryOk')
-          //   retry = true
-          // }
-
-          // if (retry && !retryDom) {
-          //   retryDom = true
-          //   await takeScreenshot('retry')
-          // }
+          if (!logged) {
+            throw 'logout'
+          }
+          else {
+            socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
+            await takeScreenshot('freeze')
+            await page.jClk(nextBtn)
+            await page.waitFor(1000 * 10)
+          }
         }
 
         if (exitLoop) { throw 'loop' }

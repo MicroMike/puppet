@@ -161,7 +161,8 @@ const addFcts = async (page) => {
       return time
     }
     catch (e) {
-      throw 'getTime'
+      console.log(e)
+      return false
     }
   }
 
