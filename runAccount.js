@@ -131,6 +131,7 @@ const fct = async () => {
   let timeLine
   let style
   let callback
+  let unlock
 
   let usernameInput = true
   let connected = false
@@ -263,6 +264,7 @@ const fct = async () => {
       loginBtn = '.signin'
       loginError = '.login-error'
 
+      unlock = '.icon-pause2, .icon-play-button'
       playBtn = '.track-list-header .shuffle-button'
       repeatBtn = '.repeat-button'
       repeatBtnOk = '.repeat-button.repeat'
@@ -303,6 +305,7 @@ const fct = async () => {
       goToLogin = '#sidebar section button + button'
       loginError = '.box-error'
 
+      unlock = '[class*="playbackToggle"]'
       playBtn = '[class*="controls"] button + button'
       pauseBtn = '.playerIconPauseRing'
       repeatBtn = '[class*="repeatButton"]'
@@ -326,6 +329,7 @@ const fct = async () => {
       loginBtn = '#login-button'
       loginError = '.alert.alert-warning'
 
+      unlock = '.spoticon-pause-16, .spoticon-play-16'
       playBtn = '.main-view-container button'
       repeatBtn = '[class*="spoticon-repeat"]'
       repeatBtnOk = '.spoticon-repeat-16.control-button--active'
@@ -633,9 +637,14 @@ const fct = async () => {
           }
           else {
             socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
-            await takeScreenshot('freeze')
-            await page.jClk(nextBtn)
-            await page.waitFor(1000 * 10)
+            if (unlock) {
+              await page.clk(unlock)
+              await page.waitFor(1000 * 3)
+              await page.clk(unlock)
+            }
+            else {
+              throw 'freeze'
+            }
           }
         }
 
