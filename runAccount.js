@@ -640,7 +640,6 @@ const fct = async () => {
 
         if (freeze > 1) {
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
-          await page.gotoUrl(album())
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
