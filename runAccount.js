@@ -633,7 +633,7 @@ const fct = async () => {
 
           const logged = await page.ext(loggedDom)
 
-          if (!logged && t1 === false) {
+          if (!logged || t1 === false) {
             throw 'logout'
           }
           else {
