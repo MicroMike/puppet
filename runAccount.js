@@ -628,7 +628,7 @@ const fct = async () => {
         }
 
         if (freeze > 2) {
-          logError('t1: ' + t1)
+          // logError('t1: ' + t1)
 
           const logged = await page.ext(loggedDom)
 
