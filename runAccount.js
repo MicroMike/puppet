@@ -633,7 +633,6 @@ const fct = async () => {
 
         if (freeze > 2) {
           // logError('t1: ' + t1)
-          await takeScreenshot('freeze')
 
           const logged = await page.ext(loggedDom)
 
@@ -641,6 +640,7 @@ const fct = async () => {
             throw 'logout'
           }
           else {
+            await takeScreenshot('freeze')
             socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
             if (unlock1 && unlock2) {
               await page.clk(unlock1)
