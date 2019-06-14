@@ -586,19 +586,22 @@ const fct = async () => {
             throw 'used'
           }
         }
-
+        let a, b, c
         if (t1 === t2 && freeze > 0) {
-          await takeScreenshot('pause')
+          a = t1 + ' ' + t2
           await page.jClk(unlock1)
           await page.waitFor(1000 * 3)
           await page.jClk(unlock2)
           await page.waitFor(1000 * 3)
-          await takeScreenshot('play')
+          b = t1 + ' ' + t2
         }
 
         t1 = await page.getTime(timeLine, callback)
         await page.waitFor(1000 * 3)
         t2 = await page.getTime(timeLine, callback)
+
+        c = t1 + ' ' + t2
+        logError(a + '/' + b + '/' + c)
 
         let matchTime = Number(t1)
 
