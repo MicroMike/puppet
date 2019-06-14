@@ -5,22 +5,26 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-const main = async () => {
-  shell.exec('expressvpn disconnect', { silent: true })
-  shell.exec('expressvpn connect uswd')
-
+const getEmail = async (i) => {
   const MP = await puppet('', true, true)
   await MP.gotoUrl('https://temp-mail.org/option/delete/')
   let M = await MP.get('#mail', 'value')
   M = M.split('@')[0]
+  await MP.cls()
+  return M + i
+}
 
-  const create = async (i) => {
+const main = async () => {
+  shell.exec('expressvpn disconnect', { silent: true })
+  shell.exec('expressvpn connect uswd')
+
+  const create = async (i = '') => {
     const page = await puppet('', true, true)
     await page.gotoUrl('https://music.amazon.fr/home')
     await page.clk('.createAccountLink')
 
-    let mailPage = await MP.np()
-    const mail = M + i
+    let mailPage = await page.np()
+    const mail = await getEmail(i)
     const email = mail + '@mega.zik.dj'
 
     const getMail = async () => {
@@ -107,8 +111,10 @@ const main = async () => {
     await page.clk('#confirm-button a')
   }
 
+  await create()
+
   let time = 0
-  for (let i of 'defg') {
+  for (let i of 'abcde') {
     setTimeout(() => {
       create(i)
     }, 1000 * 5 * (time++));
