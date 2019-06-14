@@ -593,7 +593,6 @@ const fct = async () => {
           await page.waitFor(1000 * 3)
           await page.jClk(unlock2)
           await page.waitFor(1000 * 3)
-          b = t1 + ' ' + t2
         }
 
         t1 = await page.getTime(timeLine, callback)
@@ -602,7 +601,7 @@ const fct = async () => {
 
         c = t1 + ' ' + t2
 
-        a && b && logError(a + '/' + b + '/' + c)
+        a && logError(a + '/' + b + '/' + c)
 
         let matchTime = Number(t1)
 
