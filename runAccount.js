@@ -352,6 +352,13 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
     // *************************************************************************** CONNECT ***************************************************************************
     // ***************************************************************************************************************************************************************
+
+    const napsterCheck = async () => {
+      const issueAccount = await page.ext('.account-issue')
+      const issueRadio = await page.ext('.unradio')
+      if (issueAccount || issueRadio) { throw 'del' }
+    }
+
     const connectFct = async () => {
 
       const tidalConnect = async () => {
@@ -460,12 +467,6 @@ const fct = async () => {
         if (String(productName).match(/Free|free/)) { throw 'del' }
 
         await spotCheck.close()
-      }
-
-      const napsterCheck = async () => {
-        const issueAccount = await page.ext('.account-issue')
-        const issueRadio = await page.ext('.unradio')
-        if (issueAccount || issueRadio) { throw 'del' }
       }
 
       if (player === 'spotify') {

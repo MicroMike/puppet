@@ -83,13 +83,33 @@ const main = async () => {
     await page.inst('input[name="code"]', code)
     await page.clk('input[type="submit"]')
 
-    await waitFor()
+    if (i) {
+      await waitFor()
+      await page.gotoUrl(url)
+    }
+    else {
+      await page.clk('.upsellButton')
 
-    await page.gotoUrl(url)
+    }
+
+    try {
+      await page.inst('input#ap_email', email)
+    }
+    catch (e) { }
     await page.inst('input#ap_password', '20192019')
     await page.clk('#signInSubmit')
 
-    await page.waitFor(2000 + rand(2000))
+    const waitForSelect = async () => {
+      try {
+        const exist = await page.ext('select#address-ui-widgets-countryCode-dropdown-nativeId')
+        if (!exist) { throw 'Failed' }
+      }
+      catch (e) {
+        await waitForSelect()
+      }
+    }
+
+    await waitForSelect()
 
     await page.select('select#address-ui-widgets-countryCode-dropdown-nativeId', 'US')
     await page.waitFor(2000 + rand(2000))
@@ -103,6 +123,11 @@ const main = async () => {
     await page.clk('input.a-button-input')
     await page.clk('input[name="address-ui-widgets-saveOriginalOrSuggestedAddress"]')
     await page.clk('#confirm-button a')
+    
+    if (!i) {
+      await page.clk('#HAWKFIRE_FAMILY_MONTHLY_RADIO_BUTTON')
+      await page.clk('input[name="ppw-widgetEvent:SavePaymentPreferenceEvent"]')
+    }
   }
 
   await create()
