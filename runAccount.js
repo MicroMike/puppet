@@ -554,7 +554,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 10 + rand(10)
+    let changePlay = 10 + rand(5)
 
     const loop = async () => {
       const existRepeatBtnOk = await page.ext(repeatBtnOk)
@@ -588,6 +588,7 @@ const fct = async () => {
         }
 
         if (t1 === t2 && freeze > 0) {
+          await takeScreenshot('pause')
           await page.jClk(unlock1)
           await page.waitFor(1000 * 3)
           await page.jClk(unlock2)
