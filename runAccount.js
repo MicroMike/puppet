@@ -359,140 +359,146 @@ const fct = async () => {
       if (issueAccount || issueRadio) { throw 'del' }
     }
 
-    const connectFct = async () => {
+    const tidalConnect = async () => {
+      let notConnected = true
 
-      const tidalConnect = async () => {
-        let notConnected = true
+      await page.gotoUrl(album())
+      notConnected = await page.jClk(goToLogin)
 
-        await page.gotoUrl(album())
-        notConnected = await page.jClk(goToLogin)
+      if (notConnected) {
 
-        if (notConnected) {
+        const tryClick = async () => {
+          const done = await page.jClk(reLog, true)
+          const existInput = await page.ext(username)
 
-          const tryClick = async () => {
-            const done = await page.jClk(reLog, true)
-            const existInput = await page.ext(username)
-
-            if (!done && !existInput) {
-              await tryClick()
-            }
-
-            return existInput
+          if (!done && !existInput) {
+            await tryClick()
           }
 
-          const needLog = await tryClick()
-
-          if (needLog) {
-            if (!check) { throw 'tidalError' }
-
-            await captcha(page, url, keyCaptcha, username, login)
-
-            const waitForPass = async () => {
-              try {
-                const exist = await page.ext(password)
-                if (!exist) { throw 'failed' }
-              }
-              catch (e) {
-                await waitForPass()
-              }
-            }
-
-            await waitForPass()
-            await page.inst(password, pass)
-            await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
-
-            const logged = await page.wfs(loggedDom)
-            if (!logged) { throw 'del' }
-          }
+          return existInput
         }
-      }
 
-      if (player === 'tidal') {
-        await tidalConnect()
-      }
+        const needLog = await tryClick()
 
-      if (player === 'amazon') {
-        await page.gotoUrl(album())
-        connected = await page.ext(loggedDom)
-      }
+        if (needLog) {
+          if (!check) { throw 'tidalError' }
 
-      if (!connected && player !== 'tidal') {
-        await page.waitFor(2000 + rand(2000))
-        await page.gotoUrl(url)
+          await captcha(page, url, keyCaptcha, username, login)
 
-        const checkFill = async () => {
-          if (player === 'amazon') {
-            await page.jClk('a.cvf-widget-btn-verify-account-switcher')
-            usernameInput = await page.ext(username)
+          const waitForPass = async () => {
+            try {
+              const exist = await page.ext(password)
+              if (!exist) { throw 'failed' }
+            }
+            catch (e) {
+              await waitForPass()
+            }
           }
 
-          if (usernameInput) {
-            await page.inst(username, login)
-          }
-
+          await waitForPass()
           await page.inst(password, pass)
+          await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          let loginFill = player === 'amazon' || await page.get(username, 'value')
-          let passFill = await page.get(password, 'value')
-
-          if (!loginFill || !passFill) {
-            await takeScreenshot('fillForm')
-            await checkFill()
-          }
-          else {
-            socket.emit('retryOk')
-          }
+          const logged = await page.wfs(loggedDom)
+          if (!logged) { throw 'del' }
         }
+      }
+    }
 
+    const checkFill = async () => {
+      if (player === 'amazon') {
+        await page.jClk('a.cvf-widget-btn-verify-account-switcher')
+        usernameInput = await page.ext(username)
+      }
+
+      if (usernameInput) {
+        await page.inst(username, login)
+      }
+
+      await page.inst(password, pass)
+
+      let loginFill = player === 'amazon' || await page.get(username, 'value')
+      let passFill = await page.get(password, 'value')
+
+      if (!loginFill || !passFill) {
+        await takeScreenshot('fillForm')
         await checkFill()
-
-        await page.jClk(remember)
-        await page.clk(loginBtn)
-
-        await page.waitFor(2000 + rand(2000))
-        suppressed = await page.get(loginError)
-
-        if (suppressed) {
-          if (player !== 'napster' || String(suppressed).match(/password/)) {
-            throw 'del'
-          }
-          throw 'login'
-        }
       }
-
-      const spotCheck = async () => {
-        const spotCheck = await page.np()
-        await spotCheck.gotoUrl('https://www.spotify.com/en/account/overview')
-        const productName = await spotCheck.get('.product-name')
-        if (String(productName).match(/Free|free/)) { throw 'del' }
-
-        await spotCheck.close()
+      else {
+        socket.emit('retryOk')
       }
+    }
 
-      if (player === 'spotify') {
-        spotCheck()
-        await page.gotoUrl(album())
-      }
-      else if (player === 'napster') {
-        napsterCheck()
-        // const reload = await page.ext('#main-container .not-found')
-        await page.gotoUrl(album())
-      }
-      else if (player === 'amazon') {
-        const waitForLogged = async () => {
-          try {
-            await page.wfs(loggedDom, true)
-          }
-          catch (e) {
-            await waitForLogged()
-          }
+    const spotCheck = async () => {
+      const spotCheck = await page.np()
+      await spotCheck.gotoUrl('https://www.spotify.com/en/account/overview')
+      const productName = await spotCheck.get('.product-name')
+      if (String(productName).match(/Free|free/)) { throw 'del' }
+
+      await spotCheck.close()
+    }
+
+    const connectFct = async () => {
+      try {
+        if (player === 'tidal') {
+          await tidalConnect()
         }
 
-        await waitForLogged()
+        if (player === 'amazon') {
+          await page.gotoUrl(album())
+          connected = await page.ext(loggedDom)
+        }
 
-        if (!connected) {
+        if (!connected && player !== 'tidal') {
+          await page.waitFor(2000 + rand(2000))
+          await page.gotoUrl(url)
+
+
+
+          await checkFill()
+
+          await page.jClk(remember)
+          await page.clk(loginBtn)
+
+          await page.waitFor(2000 + rand(2000))
+          suppressed = await page.get(loginError)
+
+          if (suppressed) {
+            if (player !== 'napster' || String(suppressed).match(/password/)) {
+              throw 'del'
+            }
+            throw 'login'
+          }
+        }
+
+        if (player === 'spotify') {
+          spotCheck()
           await page.gotoUrl(album())
         }
+        else if (player === 'napster') {
+          napsterCheck()
+          // const reload = await page.ext('#main-container .not-found')
+          await page.gotoUrl(album())
+        }
+        else if (player === 'amazon') {
+          const waitForLogged = async () => {
+            try {
+              await page.wfs(loggedDom, true)
+            }
+            catch (e) {
+              await waitForLogged()
+            }
+          }
+
+          await waitForLogged()
+
+          if (!connected) {
+            await page.gotoUrl(album())
+          }
+        }
+      }
+      catch (e) {
+        catchFct(e)
       }
     }
 
