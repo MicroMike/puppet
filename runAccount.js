@@ -601,7 +601,8 @@ const fct = async () => {
         t2 = await page.getTime(timeLine, callback)
 
         c = t1 + ' ' + t2
-        logError(a + '/' + b + '/' + c)
+
+        a && b && logError(a + '/' + b + '/' + c)
 
         let matchTime = Number(t1)
 
