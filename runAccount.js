@@ -604,7 +604,7 @@ const fct = async () => {
 
         b = t1 + ' ' + t2
 
-        a && logError(a + '/' + b)
+        // a && logError(a + '/' + b)
 
         let matchTime = Number(t1)
 
