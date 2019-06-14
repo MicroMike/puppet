@@ -38,7 +38,7 @@ const rand = (max, min) => {
 
 socket.on('activate', id => {
   if (!streamId) { streamId = id }
-  socket.emit('runner', { clientId, id: streamId, player, env: process.env })
+  socket.emit('runner', { clientId, id: streamId, env: process.env, account })
 })
 
 socket.on('streams', a => {
@@ -593,6 +593,7 @@ const fct = async () => {
           await page.waitFor(1000 * 3)
           await page.jClk(unlock2)
           await page.waitFor(1000 * 3)
+          await takeScreenshot('play')
         }
 
         t1 = await page.getTime(timeLine, callback)
