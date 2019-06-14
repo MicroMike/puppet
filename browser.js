@@ -88,7 +88,7 @@ const main = async () => {
       await page.gotoUrl(url)
     }
     else {
-      await page.clk('.upsellButton')
+      await page.clk('.buttonOption')
 
     }
 
