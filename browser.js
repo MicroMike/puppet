@@ -27,15 +27,9 @@ const main = async () => {
     const mail = await getEmail(i)
     const email = mail + '@mega.zik.dj'
 
-    const getMail = async () => {
-      mailPage = await MP.np()
-      await mailPage.gotoUrl('http://yopmail.com/')
-
-      await mailPage.inst('.scpt', mail)
-      await mailPage.clk('.sbut')
-    }
-
-    getMail()
+    await mailPage.gotoUrl('http://yopmail.com/')
+    await mailPage.inst('.scpt', mail)
+    await mailPage.clk('.sbut')
 
     await page.inst('input#ap_customer_name', mail)
     await page.inst('input#ap_email', email)
