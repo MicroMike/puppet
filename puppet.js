@@ -122,7 +122,7 @@ const addFcts = async (page) => {
     if (page.closed) { return }
     try {
       await page.wfs(selector, true)
-      await page.type(selector, '', { delay: 150 });
+      await page.type(selector, ' ', { delay: 150 });
       await page.evaluate(({ selector, text }) => {
         document.querySelector(selector).value = text
       }, { selector, text })
