@@ -47,11 +47,8 @@ const main = async () => {
     await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
     // await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
-    await tidalLog.waitFor(1000 + rand(2000))
-    await tidalLog.jClk('input#email');
-    await tidalLog.waitFor(1000 + rand(2000))
-    await tidalLog.type('input#email', email, { delay: 150 });
-    await page.clk('input#email + button')
+    await page.inst('input#email', email)
+    // await page.clk('input#email + button')
 
     const waitForPass = async () => {
       try {
@@ -141,10 +138,7 @@ const main = async () => {
       if (needLog) {
         // if (check) { await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m) }
         // else { await tidalLog.inst(username, m) }
-        await tidalLog.waitFor(1000 + rand(2000))
-        await tidalLog.jClk(username);
-        await tidalLog.waitFor(1000 + rand(2000))
-        await tidalLog.type(username, m, { delay: 150 });
+        await tidalLog.inst(username, m)
 
         const waitForPass = async () => {
           try {
