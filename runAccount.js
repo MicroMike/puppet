@@ -518,6 +518,8 @@ const fct = async () => {
           return catchFct('3trys/' + playError)
         }
 
+        await takeScreenshot('try')
+
         const logged = await page.ext(loggedDom)
         if (logged) {
           await page.gotoUrl(album())
