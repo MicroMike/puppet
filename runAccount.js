@@ -586,7 +586,8 @@ const fct = async () => {
             throw 'used'
           }
         }
-        let a, b, c
+
+        let a, b
         if (t1 === t2 && freeze > 0) {
           a = t1 + ' ' + t2
           await page.jClk(unlock1)
@@ -599,9 +600,9 @@ const fct = async () => {
         await page.waitFor(1000 * 3)
         t2 = await page.getTime(timeLine, callback)
 
-        c = t1 + ' ' + t2
+        b = t1 + ' ' + t2
 
-        a && logError(a + '/' + b + '/' + c)
+        a && logError(a + '/' + b)
 
         let matchTime = Number(t1)
 
