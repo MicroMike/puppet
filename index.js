@@ -6,7 +6,7 @@ var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = 0
-const max = process.env.BIG ? 63 : 21
+const max = process.env.BIG ? 63 : 7
 let pause = false
 let first = true
 let updating
