@@ -169,7 +169,6 @@ const main = async () => {
 
         doLeft()
       }
-
     }
 
     request('https://online-accounts.herokuapp.com/addAccount?tidal:' + email + ':' + email, function (error, response, body) { })
