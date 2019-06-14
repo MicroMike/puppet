@@ -557,6 +557,13 @@ const fct = async () => {
     let changePlay = 10 + rand(5)
 
     const loop = async () => {
+      if (player === 'tidal') {
+        const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
+        if (String(delTidal).match(/expired/)) {
+          throw 'del'
+        }
+      }
+
       const existRepeatBtnOk = await page.ext(repeatBtnOk)
 
       if (!existRepeatBtnOk || !repeatBtnOk) {
