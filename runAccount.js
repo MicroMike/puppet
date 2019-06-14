@@ -591,9 +591,9 @@ const fct = async () => {
         if (t1 === t2 && freeze > 0) {
           a = t1 + ' ' + t2
           await page.jClk(unlock1)
-          await page.waitFor(1000 * 3)
+          await page.waitFor(1000 * 5)
           await page.jClk(unlock2)
-          await page.waitFor(1000 * 3)
+          await page.waitFor(1000 * 5)
         }
 
         t1 = await page.getTime(timeLine, callback)
