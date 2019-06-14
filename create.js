@@ -139,6 +139,7 @@ const main = async () => {
         // if (check) { await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m) }
         // else { await tidalLog.inst(username, m) }
         await tidalLog.inst(username, m)
+        await tidalLog.type(username, ' ', { delay: 150 });
 
         const waitForPass = async () => {
           try {
