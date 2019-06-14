@@ -47,12 +47,12 @@ const main = async () => {
     await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
     // await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
-    await page.inst('input#email', email)
+    await page.inst('input#email', email, true)
     // await page.clk('input#email + button')
 
     const waitForPass = async () => {
       try {
-        await page.inst('input#new-password', email)
+        await page.inst('input#new-password', email, true)
       }
       catch (e) {
         await waitForPass()
@@ -60,7 +60,7 @@ const main = async () => {
     }
 
     await waitForPass()
-    await page.inst('input#password2', email)
+    await page.inst('input#password2', email, true)
     await page.waitFor(2000 + rand(2000))
     await page.select('select#tbi-day', String(rand(25, 1)))
     await page.waitFor(2000 + rand(2000))
@@ -91,8 +91,8 @@ const main = async () => {
     // await page.clk('#card-form > button')
 
     await page.clk('button[type="button"]')
-    await page.inst('input#email', 'belhassen.yn@gmail.com')
-    await page.inst('input#password', 'cassecouille&2')
+    await page.inst('input#email', 'belhassen.yn@gmail.com', true)
+    await page.inst('input#password', 'cassecouille&2', true)
     await page.clk('button#btnLogin')
     await page.clk('input#confirmButtonTop')
 
@@ -138,7 +138,7 @@ const main = async () => {
       if (needLog) {
         // if (check) { await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m) }
         // else { await tidalLog.inst(username, m) }
-        await tidalLog.inst(username, m)
+        await tidalLog.inst(username, m, true)
 
         const waitForPass = async () => {
           try {
@@ -151,7 +151,7 @@ const main = async () => {
         }
 
         await waitForPass()
-        await tidalLog.inst(password, m)
+        await tidalLog.inst(password, m, true)
         await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
         const logged = await tidalLog.wfs(loggedDom)
@@ -170,8 +170,8 @@ const main = async () => {
     await tidalConnect(email)
 
     await page.gotoUrl('https://my.tidal.com/')
-    await page.inst('.login-email', email)
-    await page.inst('[name="password"]', email)
+    await page.inst('.login-email', email, true)
+    await page.inst('[name="password"]', email, true)
     await page.clk('.btn.action.login-cta')
     await page.clk('.box-family a')
 
@@ -181,9 +181,9 @@ const main = async () => {
       console.log(tMail)
 
       await page.clk('.icon.icon-plus')
-      await page.inst('[name="email"]', tMail)
-      await page.inst('[name="emailConfirm"]', tMail)
-      await page.inst('[name="password"]', tMail)
+      await page.inst('[name="email"]', tMail, true)
+      await page.inst('[name="emailConfirm"]', tMail, true)
+      await page.inst('[name="password"]', tMail, true)
       await page.clk('.btn-full')
 
       request('https://online-accounts.herokuapp.com/addAccount?tidal:' + tMail + ':' + tMail, function (error, response, body) { })
