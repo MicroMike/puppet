@@ -1,8 +1,8 @@
 process.setMaxListeners(0)
 
-var fs = require('fs');
 var shell = require('shelljs');
-var socket = require('socket.io-client')('https://online-music.herokuapp.com');
+// var fs = require('fs');
+// var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = 0
@@ -11,6 +11,7 @@ let pause = false
 let first = true
 let updating
 let timeout
+let clientId
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -23,7 +24,6 @@ const getTime = () => {
   return hour + 'H' + minute
 }
 
-let clientId = Date.now()
 
 const main = async () => {
   try {
@@ -51,6 +51,8 @@ const main = async () => {
 }
 
 timeout = setInterval(() => {
+  clientId = clientId || Date.now()
+
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (accountsValid < max) { main() }
 }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 120));
