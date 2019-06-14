@@ -204,10 +204,14 @@ const main = async () => {
 
     await page.waitFor(5000 + rand(2000))
 
-    await page.gotoUrl('https://my.tidal.com/account/subscription')
-    await page.clk('a.cancel-subscription')
-    await page.clk('.btn-gray')
-
+    try {
+      await page.gotoUrl('https://my.tidal.com/account/subscription')
+      await page.clk('a.cancel-subscription')
+      await page.clk('.btn-gray')
+    }
+    catch (e) {
+      await page.cls()
+    }
   }
   else if (type === 'napster') {
     await page.clk('.button.extra-large')

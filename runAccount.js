@@ -453,8 +453,6 @@ const fct = async () => {
           await page.waitFor(2000 + rand(2000))
           await page.gotoUrl(url)
 
-
-
           await checkFill()
 
           await page.jClk(remember)
