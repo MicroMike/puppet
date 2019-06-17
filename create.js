@@ -153,22 +153,18 @@ const main = async () => {
 
         await waitForPass()
 
-        const doLeft = async () => {
-          await tidalLog.inst(password, m, true)
-          await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
+        await tidalLog.inst(password, m, true)
+        await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          const logged = await tidalLog.wfs(loggedDom)
-          if (!logged) { throw 'del' }
+        const logged = await tidalLog.wfs(loggedDom)
+        if (!logged) { throw 'del' }
 
-          await tidalLog.gotoUrl('https://listen.tidal.com/album/93312939')
-          await tidalLog.clk(playBtn)
-          await tidalLog.waitFor(1000 * 45)
+        await tidalLog.gotoUrl('https://listen.tidal.com/album/93312939')
+        await tidalLog.clk(playBtn)
+        await tidalLog.waitFor(1000 * 45)
 
-          shell.exec('git add save/tidal_' + m + ' && git commit -m "add account"')
-          await tidalLog.cls()
-        }
-
-        doLeft()
+        shell.exec('git add save/tidal_' + m + ' && git commit -m "add account"')
+        await tidalLog.cls()
       }
     }
 
