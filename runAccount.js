@@ -90,7 +90,7 @@ const startCheck = async () => {
   }
 }
 
-if (check) { await startCheck() }
+if (check) { startCheck() }
 
 const fct = async () => {
   socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED', other: true })
