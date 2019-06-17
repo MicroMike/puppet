@@ -1,4 +1,5 @@
 process.setMaxListeners(0)
+const arg = process.argv[2]
 
 var shell = require('shelljs');
 // var fs = require('fs');
@@ -6,12 +7,12 @@ var shell = require('shelljs');
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = 0
-const max = process.env.BIG ? 63 : 7
+const max = process.env.BIG ? 63 : 5
 let pause = false
 let first = true
 let updating
 let timeout
-let clientId
+let time
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -34,7 +35,7 @@ const main = async () => {
   accountsValid++
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
-  let cmd = 'CLIENTID=' + clientId + ' node runAccount'
+  let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
@@ -51,7 +52,7 @@ const main = async () => {
 }
 
 timeout = setInterval(() => {
-  clientId = clientId || Date.now()
+  time = time || Date.now()
 
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (accountsValid < max) { main() }

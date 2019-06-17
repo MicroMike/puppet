@@ -19,6 +19,7 @@ let trys = 0
 
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
+const time = process.env.TIME
 
 let account
 let player
@@ -39,7 +40,7 @@ const rand = (max, min) => {
 
 socket.on('activate', id => {
   if (!streamId) { streamId = id }
-  socket.emit('runner', { clientId, id: streamId, env: process.env, account })
+  socket.emit('runner', { clientId, time, id: streamId, env: process.env, account })
 })
 
 socket.on('streams', a => {
