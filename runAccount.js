@@ -430,7 +430,7 @@ const fct = async () => {
           }
 
           await waitForPass()
-          await page.inst(password, pass)
+          await page.inst(password, pass, true)
           await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
           const logged = await page.wfs(loggedDom)
