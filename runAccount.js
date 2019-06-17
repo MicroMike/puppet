@@ -572,7 +572,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 10 + rand(10)
+    let changePlay = 15 + rand(15)
 
     const loop = async () => {
       if (player === 'tidal') {
