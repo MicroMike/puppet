@@ -91,8 +91,8 @@ const main = async () => {
     // await page.clk('#card-form > button')
 
     await page.clk('button[type="button"]')
-    await page.inst('input#email', 'dandre.dallan@nospam.ze.tc', true)
-    await page.inst('input#password', 'dandre.dallan', true)
+    await page.inst('input#email', 'vara@hostguru.top', true)
+    await page.inst('input#password', '20192019', true)
     await page.clk('button#btnLogin')
     await page.clk('input#confirmButtonTop')
 
