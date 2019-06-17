@@ -40,7 +40,7 @@ const rand = (max, min) => {
 
 socket.on('activate', id => {
   if (!streamId) { streamId = id }
-  socket.emit('runner', { clientId, time, id: streamId, env: process.env, account })
+  socket.emit('runner', { clientId: check ? 'check' : clientId, time, id: streamId, env: process.env, account })
 })
 
 socket.on('streams', a => {
@@ -232,6 +232,9 @@ const fct = async () => {
     close = true
 
     let code = 5
+
+    socket.emit('outLog', e)
+
     code = e === 'loop' ? 1 : code
     code = e === 'used' ? 1 : code
     code = e === 'firstPlay' ? 2 : code
