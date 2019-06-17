@@ -40,7 +40,7 @@ const rand = (max, min) => {
 
 socket.on('activate', id => {
   if (!streamId) { streamId = id }
-  socket.emit('runner', { clientId, time, id: streamId, env: process.env, account })
+  socket.emit('runner', { clientId: check ? 'check' : clientId, time, id: streamId, env: process.env, account })
 })
 
 socket.on('streams', a => {
