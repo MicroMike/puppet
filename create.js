@@ -127,6 +127,7 @@ const main = async () => {
         const existInput = await tidalLog.ext(username)
 
         if (!done && !existInput) {
+          await tidalLog.waitFor(2000 + rand(2000))
           await tryClick()
         }
 
