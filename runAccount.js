@@ -187,7 +187,7 @@ const fct = async () => {
   }
 
   page.on('close', function (err) {
-    if (!close) {
+    if (!close || !check) {
       exit(0)
     }
   });
