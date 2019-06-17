@@ -232,6 +232,9 @@ const fct = async () => {
     close = true
 
     let code = 5
+
+    socket.emit('outLog', e)
+
     code = e === 'loop' ? 1 : code
     code = e === 'used' ? 1 : code
     code = e === 'firstPlay' ? 2 : code
