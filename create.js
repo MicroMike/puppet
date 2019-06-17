@@ -78,18 +78,6 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    // await page.inst('#ccname', 'Assoune Mike')
-    // await page.inst('#cardnumber', '5273462879953488')
-    // await page.inst('#ccmonth', '05')
-    // await page.inst('#ccyear', '24')
-    // await page.inst('#cvc', '437')
-    // try {
-    //   await page.inst('#postalCode', '10001')
-    // }
-    // catch (e) { }
-
-    // await page.clk('#card-form > button')
-
     await page.clk('button[type="button"]')
     await page.inst('input#email', 'vara@hostguru.top', true)
     await page.inst('input#password', '20192019', true)
@@ -137,9 +125,8 @@ const main = async () => {
       const needLog = await tryClick()
 
       if (needLog) {
-        // if (check) { await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m) }
-        // else { await tidalLog.inst(username, m) }
-        await tidalLog.inst(username, m, true)
+        // await tidalLog.inst(username, m, true)
+        await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
 
         const waitForPass = async () => {
           try {
@@ -153,22 +140,18 @@ const main = async () => {
 
         await waitForPass()
 
-        const doLeft = async () => {
-          await tidalLog.inst(password, m, true)
-          await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
+        await tidalLog.inst(password, m, true)
+        await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
-          const logged = await tidalLog.wfs(loggedDom)
-          if (!logged) { throw 'del' }
+        const logged = await tidalLog.wfs(loggedDom)
+        if (!logged) { throw 'del' }
 
-          await tidalLog.gotoUrl('https://listen.tidal.com/album/93312939')
-          await tidalLog.clk(playBtn)
-          await tidalLog.waitFor(1000 * 45)
+        await tidalLog.gotoUrl('https://listen.tidal.com/album/93312939')
+        await tidalLog.clk(playBtn)
+        await tidalLog.waitFor(1000 * 45)
 
-          shell.exec('git add save/tidal_' + m + ' && git commit -m "add account"')
-          await tidalLog.cls()
-        }
-
-        doLeft()
+        shell.exec('git add save/tidal_' + m + ' && git commit -m "add account"')
+        await tidalLog.cls()
       }
     }
 
