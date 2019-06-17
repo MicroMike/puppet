@@ -151,7 +151,7 @@ const main = async () => {
         await tidalLog.waitFor(1000 * 45)
 
         shell.exec('git add save/tidal_' + m + ' && git commit -m "add account"')
-        await tidalLog.cls()
+        await tidalLog.cls(true)
       }
     }
 
@@ -188,14 +188,13 @@ const main = async () => {
 
     await page.waitFor(5000 + rand(2000))
 
-    try {
-      await page.gotoUrl('https://my.tidal.com/account/subscription')
-      await page.clk('a.cancel-subscription')
-      await page.clk('.btn-gray')
-    }
-    catch (e) {
-      await page.cls()
-    }
+    await page.cls(true)
+
+    //   await page.gotoUrl('https://my.tidal.com/account/subscription')
+    //   await page.clk('a.cancel-subscription')
+    //   await page.clk('.btn-gray')
+
+    process.exit()
   }
   else if (type === 'napster') {
     await page.clk('.button.extra-large')
@@ -299,7 +298,6 @@ const main = async () => {
     main()
     request('https://online-accounts.herokuapp.com/addAccount?napster:' + email + ':20192019', function (error, response, body) { })
   }
-
 
   // await page.cls(true)
   // await mailPage.cls(true)
