@@ -68,9 +68,9 @@ const getCheckAccounts = async () => {
   })
 }
 
-const checkAccounts = await getCheckAccounts()
-
+let checkAccounts = null
 const startCheck = async () => {
+  checkAccounts = checkAccounts === null ? await getCheckAccounts() : checkAccounts
   account = checkAccounts && checkAccounts.length && checkAccounts.shift()
 
   if (account) {
