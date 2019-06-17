@@ -47,7 +47,7 @@ socket.on('streams', a => {
   account = a
   if (!account) { return process.exit(0) }
 
-  const accountInfo = a.split(':')
+  const accountInfo = account.split(':')
   player = accountInfo[0]
   login = accountInfo[1]
   pass = accountInfo[2]
@@ -58,6 +58,39 @@ socket.on('streams', a => {
     fct()
   })
 })
+
+const getCheckAccounts = async () => {
+  return new Promise(res => {
+    request('https://online-accounts.herokuapp.com/checkAccounts', function (error, response, body) {
+      const CA = JSON.parse(body)
+      res(CA)
+    })
+  })
+}
+
+const checkAccounts = await getCheckAccounts()
+
+const startCheck = async () => {
+  account = checkAccounts && checkAccounts.length && checkAccounts.shift()
+
+  if (account) {
+    const accountInfo = account.split(':')
+    player = accountInfo[0]
+    login = accountInfo[1]
+    pass = accountInfo[2]
+
+    request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
+      const a = JSON.parse(body)
+      albums = a[player]
+      fct()
+    })
+  }
+  else {
+    process.exit(0)
+  }
+}
+
+if (check) { await startCheck() }
 
 const fct = async () => {
   socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED', other: true })
@@ -554,7 +587,8 @@ const fct = async () => {
       await page.waitFor(1000 * 35)
       shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account"')
       request('https://online-accounts.herokuapp.com/checkOk?' + account, function (error, response, body) { })
-      throw 'loop'
+      await page.cls(true)
+      await startCheck()
     }
 
     // ***************************************************************************************************************************************************************
