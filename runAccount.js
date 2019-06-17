@@ -27,7 +27,6 @@ let login
 let pass
 
 let over = false
-let page
 
 const getTime = () => {
   const date = new Date
@@ -93,6 +92,7 @@ const startCheck = async () => {
 if (check) { startCheck() }
 
 const fct = async () => {
+  let page
   socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED', other: true })
 
   let currentAlbum
