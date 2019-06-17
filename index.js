@@ -51,12 +51,17 @@ const main = async () => {
   })
 }
 
-timeout = setInterval(() => {
-  time = time || Date.now()
+if (check) {
+  main()
+}
+else {
+  timeout = setInterval(() => {
+    time = time || Date.now()
 
-  process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
-  if (accountsValid < max) { main() }
-}, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 120));
+    process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
+    if (accountsValid < max) { main() }
+  }, check ? 1000 * 30 : 1000 * 30 + rand(1000 * 120));
+}
 
 process.on('SIGINT', () => {
   clearInterval(timeout)
