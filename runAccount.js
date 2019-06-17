@@ -241,7 +241,7 @@ const fct = async () => {
     code = e === 'del' ? 4 : code
     code = e === 'tidalError' ? 6 : code
     code = e === 'used' ? 7 : code
-    
+
     // code = e === 'retry' ? 5 : code
     // code = e === 'crashed' ? 6 : code
     // code = e === 'error' ? 7 : code
@@ -250,7 +250,7 @@ const fct = async () => {
     // code = e === 'nobar' ? 10 : code
     // code = e === 'check' ? 12 : code
 
-    if (code === 1 || code === 6) {
+    if (code === 1) {
       socket.emit('retryOk')
     }
 
