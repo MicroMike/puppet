@@ -584,11 +584,12 @@ const fct = async () => {
     }
 
     if (check) {
-      await page.waitFor(1000 * 35)
       request('https://online-accounts.herokuapp.com/checkOk?' + account, async (error, response, body) => {
         shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account"')
-        await page.cls(true)
         await startCheck()
+        setTimeout(() => {
+          await page.cls(true)
+        }, 1000 * 35);
       })
     }
 
