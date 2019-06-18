@@ -508,7 +508,7 @@ const fct = async () => {
           await page.gotoUrl(album())
         }
         else if (player === 'napster') {
-          napsterCheck()
+          await napsterCheck()
           // const reload = await page.ext('#main-container .not-found')
           await page.gotoUrl(album())
         }
@@ -628,7 +628,7 @@ const fct = async () => {
       used = await page.ext(usedDom)
 
       try {
-        if (player === 'napster') { napsterCheck() }
+        if (player === 'napster') { await napsterCheck() }
 
         if (used) {
           if (player === 'tidal') {
