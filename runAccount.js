@@ -179,8 +179,7 @@ const fct = async () => {
   page = await puppet('save/' + player + '_' + login, noCache, false)
 
   if (!page) {
-    fct()
-    return
+    exit(0)
   }
 
   page.on('close', function (err) {
