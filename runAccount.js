@@ -25,6 +25,7 @@ let account
 let player
 let login
 let pass
+let page
 
 let over = false
 
@@ -91,60 +92,59 @@ const startCheck = async () => {
 
 if (check) { startCheck() }
 
+let currentAlbum
+
+const album = () => {
+  let albumUrl = albums[rand(albums.length)]
+  while (currentAlbum === albumUrl) {
+    albumUrl = albums[rand(albums.length)]
+  }
+  currentAlbum = albumUrl
+  return albumUrl
+}
+
+const exit = async (code = 0) => {
+  socket.emit('playerInfos', { account: player + ':' + login, out: true })
+
+  close = true
+  page && await page.cls(true)
+
+  socket.emit('Cdisconnect', account)
+
+  process.exit(code)
+}
+
+const logError = (e) => {
+  socket.emit('log', account + ' => ' + e)
+}
+
+process.on('SIGINT', function (code) {
+  over = true
+  console.log('exit')
+  logError('exit')
+  exit(100)
+});
+
+socket.on('forceOut', () => {
+  over = true
+  socket.emit('forceOut')
+  console.log('forceOut')
+  // logError('forceOut')
+  exit(100)
+})
+
+socket.on('streamOn', () => {
+  countStream = 0
+  streamOn = true
+  stream()
+})
+
+socket.on('streamOff', () => {
+  streamOn = false
+})
+
 const fct = async () => {
-  let page
   socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED', other: true })
-
-  let currentAlbum
-
-  const album = () => {
-    let albumUrl = albums[rand(albums.length)]
-    while (currentAlbum === albumUrl) {
-      albumUrl = albums[rand(albums.length)]
-    }
-    currentAlbum = albumUrl
-    return albumUrl
-  }
-
-  const exit = async (code = 0) => {
-    socket.emit('playerInfos', { account: player + ':' + login, out: true })
-
-    close = true
-    page && await page.cls(true)
-
-    socket.emit('Cdisconnect', account)
-
-    process.exit(code)
-  }
-
-  const logError = (e) => {
-    socket.emit('log', account + ' => ' + e)
-  }
-
-  process.on('SIGINT', function (code) {
-    over = true
-    console.log('exit')
-    logError('exit')
-    exit(100)
-  });
-
-  socket.on('forceOut', () => {
-    over = true
-    socket.emit('forceOut')
-    console.log('forceOut')
-    // logError('forceOut')
-    exit(100)
-  })
-
-  socket.on('streamOn', () => {
-    countStream = 0
-    streamOn = true
-    stream()
-  })
-
-  socket.on('streamOff', () => {
-    streamOn = false
-  })
 
   let username
   let password
@@ -182,12 +182,12 @@ const fct = async () => {
   page = await puppet('save/' + player + '_' + login, noCache, false)
 
   if (!page) {
-    close = true
-    exit(50)
+    fct()
+    return
   }
 
   page.on('close', function (err) {
-    if (!close || !check) {
+    if (!close && !check) {
       exit(0)
     }
   });
