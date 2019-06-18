@@ -141,8 +141,6 @@ socket.on('streamOff', () => {
 })
 
 const fct = async () => {
-  socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED', other: true })
-
   let username
   let password
   let url
@@ -182,6 +180,8 @@ const fct = async () => {
     socket.emit('outLog', 'noPage')
     exit(0)
   }
+
+  socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED', other: true })
 
   page.on('close', function (err) {
     if (!close && !check) {
