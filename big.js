@@ -10,3 +10,12 @@ shell.exec('git pull')
 for (let i = 0; i < 13; i++) {
   shell.exec('node index ' + arg, () => { })
 }
+
+const inter = setInterval(() => {
+  shell.exec('git pull', { silent: true })
+}, 1000 * 60)
+
+process.on('SIGINT', () => {
+  clearInterval(inter)
+  process.exit()
+});
