@@ -85,9 +85,6 @@ const startCheck = async () => {
       fct()
     })
   }
-  else {
-    process.exit(0)
-  }
 }
 
 if (check) { startCheck() }
