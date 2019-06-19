@@ -33,9 +33,9 @@ else {
 let count
 const main = async () => {
   const mailPage = await puppet('', true, true)
-  const page = await page.np()
+  const page = await mailPage.np()
 
-  if (!page) { return }
+  if (!mailPage) { return }
 
   await page.gotoUrl(url)
 
