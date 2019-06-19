@@ -256,6 +256,8 @@ const main = async () => {
     await payPage.jClk('#amazonpay-accept-button-consent input')
     await payPage.jClk('input[type="submit"]')
 
+    await page.mouse.move(425, 430)
+
     const waitForAmazon = async () => {
       try {
         payPage = await page.lastPage()
