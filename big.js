@@ -10,7 +10,7 @@ const inter = setInterval(() => {
   shell.exec('npm run rm && npm run clear', { silent: true })
   shell.exec('git reset --hard origin/master', { silent: true })
   shell.exec('git pull', { silent: true })
-}, 1000 * 60 * 3)
+}, 1000 * 60 * 2)
 
 process.on('SIGINT', () => {
   clearInterval(inter)
