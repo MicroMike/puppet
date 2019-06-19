@@ -32,16 +32,17 @@ else {
 
 let count
 const main = async () => {
-  const mailPage = await puppet('', true, true)
-  const page = await mailPage.np()
+  const page = await puppet('', true, true)
+  const mailPage = await page.np()
 
-  if (!mailPage) { return }
+  if (!page) { return }
 
   await page.gotoUrl(url)
 
   await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
   const email = await mailPage.get('#mail', 'value')
   console.log(email)
+  await page.bringToFront()
 
   if (type === 'tidal') {
     await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
