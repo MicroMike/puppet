@@ -12,7 +12,7 @@ for (let i = 0; i < 5; i++) {
 }
 
 const inter = setInterval(() => {
-  shell.exec('git pull')
+  shell.exec('git pull', { silent: true })
 }, 1000 * 60)
 
 process.on('SIGINT', () => {
