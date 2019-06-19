@@ -287,7 +287,9 @@ const main = async () => {
     await payPage.clk('input[name="ppw-widgetEvent:UseSuggestedAddressEvent"]')
 
     await page.evaluate(() => {
-      document.querySelector('iframe') && document.querySelector('iframe').scrollIntoView()
+      const frames = document.querySelectorAll('iframe')
+      const lastF = frames && frames[frames.length - 1]
+      lastF.scrollIntoView()
     })
 
     const waitForDone = async () => {
