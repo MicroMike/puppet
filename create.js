@@ -236,8 +236,6 @@ const main = async () => {
 
     const waitForMail = async () => {
       try {
-        await payPage.inst('input#ap_password', '20192019')
-        await payPage.inst('input#ap_password_check', '20192019')
         await mailPage.clk('.col-box a')
       }
       catch (e) {
