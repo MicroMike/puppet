@@ -713,6 +713,9 @@ const fct = async () => {
           if (!logged) { throw 'logout' }
           else {
             await takeScreenshot('freeze')
+            if (player === 'amazon') {
+              countPlays = changePlay + 1
+            }
           }
         }
 
