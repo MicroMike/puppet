@@ -1,6 +1,9 @@
 var shell = require('shelljs');
 
 const arg = process.argv[2]
+
+shell.exec('killall chrome', { silent: true })
+
 const pull = () => {
   shell.exec('npm run rm && npm run clear', { silent: true })
   shell.exec('git reset --hard origin/master', { silent: true })
