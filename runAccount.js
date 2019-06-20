@@ -686,7 +686,7 @@ const fct = async () => {
         }
 
         if (countPlays > changePlay) {
-          // exitLoop = true
+          if (!rand(3)) { exitLoop = true }
           countPlays = 0
           changePlay = 5 + rand(5)
           await page.gotoUrl(album())
