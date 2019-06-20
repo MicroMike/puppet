@@ -17,6 +17,7 @@ let out = 0
 for (let i = 0; i < 13; i++) {
   shell.exec('node index ' + arg, () => {
     if (++out === 5) {
+      console.log('reboot')
       clearInterval(inter)
       process.exit()
     }
