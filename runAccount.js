@@ -686,15 +686,11 @@ const fct = async () => {
         }
 
         if (countPlays > changePlay) {
-          if (rand(2)) {
-            await page.gotoUrl(album())
-            await waitForPlayBtn('failedLoop')
-          }
-          else {
-            exitLoop = true
-          }
-          countPlays = 0
-          changePlay = 5 + rand(5)
+          exitLoop = true
+          // countPlays = 0
+          // changePlay = 5 + rand(5)
+          // await page.gotoUrl(album())
+          // await waitForPlayBtn('failedLoop')
         }
 
         if (t1 === t2) {
@@ -714,12 +710,9 @@ const fct = async () => {
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
 
           const logged = await page.ext(loggedDom)
-          if (!logged) { throw 'logout' }
+          if (!logged || player === 'amazon') { throw 'logout' }
           else {
             await takeScreenshot('freeze')
-            if (player === 'amazon') {
-              countPlays = changePlay + 1
-            }
           }
         }
 
