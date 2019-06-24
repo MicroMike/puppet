@@ -712,6 +712,7 @@ const fct = async () => {
           const logged = await page.ext(loggedDom)
           if (!logged || player === 'amazon') { throw 'logout' }
           else {
+            await page.clk(nextBtn)
             await takeScreenshot('freeze')
           }
         }
