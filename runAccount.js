@@ -608,6 +608,7 @@ const fct = async () => {
 
     let countPlays = 0
     let changePlay = 20 + rand(10)
+    let change = false
 
     const loop = async () => {
       if (player === 'tidal') {
@@ -687,10 +688,12 @@ const fct = async () => {
 
         if (countPlays > changePlay) {
           exitLoop = true
-          // countPlays = 0
-          // changePlay = 5 + rand(5)
-          // await page.gotoUrl(album())
-          // await waitForPlayBtn('failedLoop')
+        }
+
+        if (change) {
+          change = false
+          await page.gotoUrl(album())
+          await waitForPlayBtn('failedLoop')
         }
 
         if (t1 === t2) {
@@ -710,11 +713,8 @@ const fct = async () => {
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
 
           const logged = await page.ext(loggedDom)
-          if (!logged || player === 'amazon') { throw 'logout' }
-          else {
-            await page.clk(nextBtn)
-            await takeScreenshot('freeze')
-          }
+          if (!logged) { throw 'logout' }
+          else { change = true }
         }
 
         if (exitLoop) { throw 'loop' }
