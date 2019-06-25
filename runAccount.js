@@ -66,6 +66,7 @@ const parseAccount = (a) => {
 
 socket.on('streams', a => {
   if (!a) { return process.exit(0) }
+  if (check) { console.log(a) }
   parseAccount(a)
   fct()
 })
