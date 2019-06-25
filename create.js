@@ -156,7 +156,7 @@ const main = async () => {
       }
     }
 
-    request('https://online-accounts.herokuapp.com/addAccount?tidal:' + email + ':' + email, function (error, response, body) { })
+    request('https://online-music.herokuapp.com/addAccount?tidal:' + email + ':' + email, function (error, response, body) { })
     await tidalConnect(email)
 
     await page.gotoUrl('https://my.tidal.com/')
@@ -176,7 +176,7 @@ const main = async () => {
       await page.inst('[name="password"]', tMail, true)
       await page.clk('.btn-full')
 
-      request('https://online-accounts.herokuapp.com/addAccount?tidal:' + tMail + ':' + tMail, function (error, response, body) { })
+      request('https://online-music.herokuapp.com/addAccount?tidal:' + tMail + ':' + tMail, function (error, response, body) { })
 
       await tidalConnect(tMail)
     }
@@ -308,7 +308,7 @@ const main = async () => {
     await waitForDone()
     await page.cls()
     main()
-    request('https://online-accounts.herokuapp.com/addAccount?napster:' + email + ':20192019', function (error, response, body) { })
+    request('https://online-music.herokuapp.com/addAccount?napster:' + email + ':20192019', function (error, response, body) { })
   }
 
   // await page.cls(true)

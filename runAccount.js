@@ -52,16 +52,13 @@ socket.on('streams', a => {
   login = accountInfo[1]
   pass = accountInfo[2]
 
-  request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
-    const a = JSON.parse(body)
-    albums = a[player]
-    fct()
-  })
+  const a = require('./albums')
+  albums = a[player]
 })
 
 const getCheckAccounts = async () => {
   return new Promise(res => {
-    request('https://online-accounts.herokuapp.com/checkAccounts', function (error, response, body) {
+    request('https://online-music.herokuapp.com/checkAccounts', function (error, response, body) {
       const CA = JSON.parse(body)
       res(CA)
     })
@@ -79,11 +76,8 @@ const startCheck = async () => {
     login = accountInfo[1]
     pass = accountInfo[2]
 
-    request('https://online-accounts.herokuapp.com/albums', function (error, response, body) {
-      const a = JSON.parse(body)
-      albums = a[player]
-      fct()
-    })
+    const a = require('./albums')
+    albums = a[player]
   }
 }
 
@@ -252,7 +246,7 @@ const fct = async () => {
     }
 
     if (code === 6) {
-      request('https://online-accounts.herokuapp.com/error?check/' + account, function (error, response, body) { })
+      request('https://online-music.herokuapp.com/error?check/' + account, function (error, response, body) { })
     }
 
     if (code !== 1) {
@@ -269,7 +263,7 @@ const fct = async () => {
     }
 
     if (code === 4) {
-      request('https://online-accounts.herokuapp.com/error?del/' + account, function (error, response, body) { })
+      request('https://online-music.herokuapp.com/error?del/' + account, function (error, response, body) { })
 
       // 4 = DEL
       socket.emit('delete', account)
@@ -583,7 +577,7 @@ const fct = async () => {
     }
 
     if (check) {
-      request('https://online-accounts.herokuapp.com/checkOk?' + account, async (error, response, body) => {
+      request('https://online-music.herokuapp.com/checkOk?' + account, async (error, response, body) => {
         shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account"')
         startCheck()
         await page.waitFor(1000 * 35)
@@ -672,14 +666,12 @@ const fct = async () => {
         if (matchTime > 40) {
           if (rand(7) < 1) {
             await page.jClk(nextBtn)
-            socket.emit('plays', true)
-            // request('https://online-accounts.herokuapp.com/listen?' + currentAlbum, function (error, response, body) { })
+            socket.emit('plays', { next: true, currentAlbum })
           }
           if (!nextMusic) {
             nextMusic = true
             countPlays++
-            socket.emit('plays')
-            // request('https://online-accounts.herokuapp.com/listen?' + currentAlbum, function (error, response, body) { })
+            socket.emit('plays', { next: false, currentAlbum })
           }
         }
         else {
