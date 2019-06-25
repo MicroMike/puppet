@@ -43,19 +43,6 @@ socket.on('activate', id => {
   socket.emit('runner', { clientId: check ? 'check' : clientId, time, id: streamId, env: process.env, account })
 })
 
-socket.on('streams', a => {
-  account = a
-  if (!account) { return process.exit(0) }
-
-  const accountInfo = account.split(':')
-  player = accountInfo[0]
-  login = accountInfo[1]
-  pass = accountInfo[2]
-
-  const a = require('./albums')
-  albums = a[player]
-})
-
 const getCheckAccounts = async () => {
   return new Promise(res => {
     request('https://online-music.herokuapp.com/checkAccounts', function (error, response, body) {
@@ -65,20 +52,30 @@ const getCheckAccounts = async () => {
   })
 }
 
+const parseAccount = (a) => {
+  account = a
+
+  const accountInfo = account.split(':')
+  player = accountInfo[0]
+  login = accountInfo[1]
+  pass = accountInfo[2]
+
+  const al = require('./albums')
+  albums = al[player]
+}
+
+socket.on('streams', a => {
+  if (!a) { return process.exit(0) }
+  parseAccount(a)
+})
+
 let checkAccounts = null
 const startCheck = async () => {
   checkAccounts = checkAccounts === null ? await getCheckAccounts() : checkAccounts
-  account = checkAccounts && checkAccounts.length && checkAccounts.shift()
+  a = checkAccounts && checkAccounts.length && checkAccounts.shift()
 
-  if (account) {
-    const accountInfo = account.split(':')
-    player = accountInfo[0]
-    login = accountInfo[1]
-    pass = accountInfo[2]
-
-    const a = require('./albums')
-    albums = a[player]
-  }
+  if (!a) { return process.exit(0) }
+  parseAccount(a)
 }
 
 if (check) { startCheck() }
