@@ -682,6 +682,7 @@ const fct = async () => {
         }
 
         if (change) {
+          freeze = 0
           change = false
           await page.gotoUrl(album())
           await waitForPlayBtn('failedLoop')
