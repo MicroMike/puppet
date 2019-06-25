@@ -70,17 +70,17 @@ socket.on('streams', a => {
   fct()
 })
 
-let checkAccounts = null
-const startCheck = async () => {
-  checkAccounts = checkAccounts === null ? await getCheckAccounts() : checkAccounts
-  a = checkAccounts && checkAccounts.length && checkAccounts.shift()
+// let checkAccounts = null
+// const startCheck = async () => {
+//   checkAccounts = checkAccounts === null ? await getCheckAccounts() : checkAccounts
+//   a = checkAccounts && checkAccounts.length && checkAccounts.shift()
 
-  if (!a) { return process.exit(0) }
-  parseAccount(a)
-  fct()
-}
+//   if (!a) { return process.exit(0) }
+//   parseAccount(a)
+//   fct()
+// }
 
-if (check) { startCheck() }
+// if (check) { startCheck() }
 
 let currentAlbum
 
@@ -578,7 +578,7 @@ const fct = async () => {
     if (check) {
       request('https://online-music.herokuapp.com/checkOk?' + account, async (error, response, body) => {
         shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account"')
-        startCheck()
+        // startCheck()
         await page.waitFor(1000 * 35)
         await page.cls(true)
       })
