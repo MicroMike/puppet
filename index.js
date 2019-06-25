@@ -25,7 +25,6 @@ const getTime = () => {
   return hour + 'H' + minute
 }
 
-
 const main = async () => {
   try {
     shell.exec('expressvpn disconnect', { silent: true })
@@ -35,8 +34,9 @@ const main = async () => {
   accountsValid++
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
-  let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
+  let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' FIRST=' + first + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
+  first = false
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid--
