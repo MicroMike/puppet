@@ -34,8 +34,9 @@ const main = async () => {
   accountsValid++
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
-  let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' FIRST=' + first + ' node runAccount'
+  let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
+  cmd = first ? 'FIRST=true ' + cmd : cmd
   first = false
 
   shell.exec(cmd, async (code, b, c) => {
