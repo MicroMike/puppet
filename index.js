@@ -51,6 +51,8 @@ const main = async () => {
   })
 }
 
+if (check) { main() }
+
 timeout = setInterval(() => {
   time = time || Date.now()
 
