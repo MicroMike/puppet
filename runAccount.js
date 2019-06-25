@@ -67,6 +67,7 @@ const parseAccount = (a) => {
 socket.on('streams', a => {
   if (!a) { return process.exit(0) }
   parseAccount(a)
+  fct()
 })
 
 let checkAccounts = null
@@ -76,6 +77,7 @@ const startCheck = async () => {
 
   if (!a) { return process.exit(0) }
   parseAccount(a)
+  fct()
 }
 
 if (check) { startCheck() }
