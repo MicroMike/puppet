@@ -56,7 +56,7 @@ timeout = setInterval(() => {
 
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (accountsValid < max) { main() }
-}, check ? 1000 * 30 : 1000 * 60 + rand(1000 * 120));
+}, check ? 1000 * 60 : 1000 * 60 + rand(1000 * 120));
 
 process.on('SIGINT', () => {
   clearInterval(timeout)
