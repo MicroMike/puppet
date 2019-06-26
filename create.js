@@ -295,6 +295,10 @@ const main = async () => {
       lastF.scrollIntoView()
     })
 
+    await page.waitFor(2000 + rand(2000))
+    await page.mouse.click(188, 53)
+    await payPage.clk('#btn-payflow-submit')
+
     const waitForDone = async () => {
       try {
         const exist = await page.ext('#add-earn-account-successful')
