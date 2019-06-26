@@ -297,8 +297,7 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
     await page.mouse.click(188, 53)
-    await page.waitFor(5000 + rand(2000))
-    await payPage.clk('#btn-payflow-submit')
+    await page.clk('#btn-payflow-submit')
 
     const waitForDone = async () => {
       try {
