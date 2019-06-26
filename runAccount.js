@@ -43,13 +43,15 @@ socket.on('activate', id => {
   socket.emit('runner', { clientId: check ? 'check' : clientId, time, id: streamId, env: process.env, account })
 })
 
-const getCheckAccounts = async () => {
-  return new Promise(res => {
-    request('https://online-music.herokuapp.com/checkAccounts', function (error, response, body) {
-      const CA = JSON.parse(body)
-      res(CA)
-    })
-  })
+const exit = async (code = 0) => {
+  socket.emit('playerInfos', { account: player + ':' + login, out: true })
+
+  close = true
+  page && await page.cls(true)
+
+  socket.emit('Cdisconnect', account)
+
+  process.exit(code)
 }
 
 const parseAccount = (a) => {
@@ -65,7 +67,7 @@ const parseAccount = (a) => {
 }
 
 socket.on('streams', a => {
-  if (!a) { return process.exit(0) }
+  if (!a) { return exit(0) }
   if (check) { console.log(a) }
   parseAccount(a)
   fct()
@@ -92,17 +94,6 @@ const album = () => {
   }
   currentAlbum = albumUrl
   return albumUrl
-}
-
-const exit = async (code = 0) => {
-  socket.emit('playerInfos', { account: player + ':' + login, out: true })
-
-  close = true
-  page && await page.cls(true)
-
-  socket.emit('Cdisconnect', account)
-
-  process.exit(code)
 }
 
 const logError = (e) => {
