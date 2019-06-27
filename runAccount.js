@@ -508,7 +508,7 @@ const fct = async () => {
           connected = await page.ext(loggedDom, true)
           if (!connected && !check) { throw 'amazonError' }
 
-          if (check) {
+          if (!connected && check) {
             await page.jClk('#continue')
 
             const yopmail = await page.np()
