@@ -222,6 +222,7 @@ const fct = async () => {
     code = e === 'failedLoop' ? 2 : code
     code = e === 'del' ? 4 : code
     code = e === 'tidalError' ? 6 : code
+    code = e === 'amazonError' ? 6 : code
     code = e === 'used' ? 7 : code
 
     // code = e === 'retry' ? 5 : code
@@ -498,6 +499,47 @@ const fct = async () => {
           await page.gotoUrl(album())
         }
         else if (player === 'amazon') {
+          await page.clk('#continue')
+
+          const yopmail = await page.np()
+          await yopmail.gotoUrl('http://yopmail.com/')
+          await yopmail.inst('.scpt', login)
+          await yopmail.clk('.sbut')
+
+          let code
+          const waitForCode = async () => {
+            try {
+              const mailHere = await yopmail.evaluate(() => {
+                const iframe = document.querySelector('#ifinbox')
+                const m = iframe && iframe.contentDocument.querySelector('#m1')
+                m && m.click()
+                return m
+              })
+              if (!mailHere) { throw 'fail' }
+
+              code = await yopmail.evaluate(() => {
+                const iframe = document.querySelector('#ifmail')
+                const selector = iframe && iframe.contentDocument.querySelector('.otp')
+                const code = selector && selector.innerText
+
+                return code
+              })
+
+              if (code) { return }
+              throw 'fail'
+            }
+            catch (e) {
+              await yopmail.waitFor(1000 * 10 + rand(2000))
+              await yopmail.clk('#lrefr')
+              await waitFor()
+            }
+          }
+
+          await waitForCode()
+
+          await page.inst('input[name="code"]', code)
+          await page.clk('input[type="submit"]')
+
           const waitForLogged = async () => {
             try {
               await page.wfs(loggedDom, true)
@@ -510,7 +552,7 @@ const fct = async () => {
           await waitForLogged()
 
           if (!connected) {
-            await page.gotoUrl(album())
+            throw 'amazonError'
           }
         }
       }
