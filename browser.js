@@ -1,5 +1,6 @@
 const puppet = require('./puppet')
 var shell = require('shelljs');
+const request = require('ajax-request');
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
