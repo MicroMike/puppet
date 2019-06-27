@@ -503,7 +503,7 @@ const fct = async () => {
           if (!connected && !check) { throw 'amazonError' }
 
           if (check) {
-            await page.clk('#continue')
+            await page.jClk('#continue')
 
             const yopmail = await page.np()
             await yopmail.gotoUrl('http://yopmail.com/')
