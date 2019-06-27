@@ -5,6 +5,7 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
+let firstAdd = true
 let MP
 const getEmail = async () => {
   await MP.gotoUrl('https://temp-mail.org/option/delete/')
@@ -102,8 +103,11 @@ const main = async () => {
     await page.clk('input[type="submit"]')
 
     if (i) {
-      await mainPage.gotoUrl('https://www.amazon.fr/music/settings')
-      await mainPage.clk('#familyManagementLink')
+      if (firstAdd) {
+        firstAdd = false
+        await mainPage.gotoUrl('https://www.amazon.fr/music/settings')
+        await mainPage.clk('#familyManagementLink')
+      }
       await mainPage.inst('#enterEmail', email)
       await mainPage.inst('#confirmEmail', email)
       await mainPage.clk('input.a-button-input')
