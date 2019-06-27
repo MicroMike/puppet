@@ -157,6 +157,7 @@ const main = async () => {
     if (!i) {
       await page.clk('#HAWKFIRE_FAMILY_MONTHLY_RADIO_BUTTON')
       await page.clk('input.a-button-input')
+      await page.waitFor(5000 + rand(2000))
       await page.gotoUrl('https://www.amazon.fr/music/settings')
       await page.clk('#familyManagementLink')
     }
