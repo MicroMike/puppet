@@ -168,6 +168,7 @@ const main = async () => {
       await page.clk('input.a-button-input')
       await page.clk('input[name="address-ui-widgets-saveOriginalOrSuggestedAddress"]')
       await page.clk('#confirm-button a')
+      await page.waitFor(5000 + rand(2000))
     }
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
