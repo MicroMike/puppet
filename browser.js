@@ -21,7 +21,7 @@ const main = async () => {
 
   const create = async (i = null) => {
     shell.exec('expressvpn disconnect', { silent: true })
-    shell.exec('expressvpn connect fr')
+    shell.exec('expressvpn connect fr', { silent: true })
 
     const page = !i ? mainPage : await puppet('', true, true)
     await page.gotoUrl('https://music.amazon.fr/home')
@@ -62,7 +62,6 @@ const main = async () => {
           m && m.click()
           return m
         })
-        console.log('mailHere', mailHere)
         if (!mailHere) { throw 'fail' }
 
         code = isCode && await mailPage.evaluate(() => {
@@ -73,7 +72,6 @@ const main = async () => {
           return code
         })
 
-        console.log('code', code)
         if (code) { return }
 
         url = !isCode && await mailPage.evaluate(() => {
@@ -84,10 +82,8 @@ const main = async () => {
           return url
         })
 
-        console.log('url', url)
         if (url) { return }
 
-        console.log('fail')
         throw 'fail'
       }
       catch (e) {
