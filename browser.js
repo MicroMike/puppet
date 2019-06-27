@@ -106,15 +106,19 @@ const main = async () => {
       await page.clk('.buttonOption')
     }
 
-    await page.inst('input#ap_email', email, false, true)
-    await page.inst('input#ap_password', '20192019', false, true)
-    await page.jClk('#signInSubmit')
+    if (i) {
+      await page.inst('input#ap_email', email, false, true)
+      await page.inst('input#ap_password', '20192019', false, true)
+      await page.jClk('#signInSubmit')
+    }
+    else
 
     if (!i) {
       await page.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
       await page.inst('input[name="addCreditCardNumber"]', '5273462879953488')
       await page.select('select[name="ppw-expirationDate_month"]', '5')
       await page.select('select[name="ppw-expirationDate_year"]', '2024')
+      await page.inst('input[name="addCreditCardVerificationNumber"]', '789')
       await page.clk('input[name="ppw-widgetEvent:AddCreditCardEvent"]')
     }
 
