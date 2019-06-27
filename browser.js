@@ -155,6 +155,10 @@ const main = async () => {
     if (!i) {
       await page.clk('#HAWKFIRE_FAMILY_MONTHLY_RADIO_BUTTON')
       await page.clk('input.a-button-input')
+      await page.waitFor(5000 + rand(2000))
+      await page.evaluate(() => {
+        window.stop()
+      })
       await page.clk('#inviteFamilyMembersBtn a')
     }
 
