@@ -16,9 +16,6 @@ const getEmail = async () => {
 }
 
 const main = async () => {
-  shell.exec('expressvpn disconnect', { silent: true })
-  shell.exec('expressvpn connect fr')
-
   const mainPage = await puppet('', true, true)
   MP = await mainPage.np()
 
