@@ -40,6 +40,8 @@ const main = async () => {
     const mail = await getEmail()
     const email = mail + '@mega.zik.dj'
 
+    console.log(email)
+
     await mailPage.gotoUrl('http://yopmail.com/')
     await mailPage.inst('.scpt', mail)
     await mailPage.clk('.sbut')
