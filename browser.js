@@ -157,13 +157,12 @@ const main = async () => {
       await page.clk('input.a-button-input')
       await page.clk('#inviteFamilyMembersBtn a')
     }
+
+    request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) { })
+    create(true)
   }
 
-  request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) { })
-  create(true)
-}
-
-await create()
+  await create()
 }
 
 main()
