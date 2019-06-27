@@ -130,10 +130,10 @@ const main = async () => {
       }
     }
 
-    await waitForSelect()
+    // await waitForSelect()
 
-    await page.select('select#address-ui-widgets-countryCode-dropdown-nativeId', 'FR')
-    await page.waitFor(2000 + rand(2000))
+    // await page.select('select#address-ui-widgets-countryCode-dropdown-nativeId', 'FR')
+    // await page.waitFor(2000 + rand(2000))
 
     await page.inst('input#address-ui-widgets-enterAddressFullName', mail)
     await page.inst('input[name="ppw-line1"]', rand(50, 1) + ' rue de paris')
