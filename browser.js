@@ -155,8 +155,8 @@ const main = async () => {
     if (!i) {
       await page.clk('#HAWKFIRE_FAMILY_MONTHLY_RADIO_BUTTON')
       await page.clk('input.a-button-input')
-      await mainPage.gotoUrl('https://www.amazon.fr/music/settings')
-      await mainPage.clk('#familyManagementLink')
+      await page.gotoUrl('https://www.amazon.fr/music/settings')
+      await page.clk('#familyManagementLink')
     }
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) { })
