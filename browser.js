@@ -104,11 +104,6 @@ const main = async () => {
     await page.clk('input[type="submit"]')
 
     if (i) {
-      if (firstAdd) {
-        firstAdd = false
-        await mainPage.gotoUrl('https://www.amazon.fr/music/settings')
-        await mainPage.clk('#familyManagementLink')
-      }
       await mainPage.inst('#enterEmail', email)
       await mainPage.inst('#confirmEmail', email)
       await mainPage.clk('input.a-button-input')
@@ -160,13 +155,15 @@ const main = async () => {
     if (!i) {
       await page.clk('#HAWKFIRE_FAMILY_MONTHLY_RADIO_BUTTON')
       await page.clk('input.a-button-input')
+      await page.clk('#inviteFamilyMembersBtn a')
     }
-
-    request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) { })
-    create(true)
   }
 
-  await create()
+  request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) { })
+  create(true)
+}
+
+await create()
 }
 
 main()
