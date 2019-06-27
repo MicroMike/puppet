@@ -146,7 +146,6 @@ const main = async () => {
     await page.inst('input[name="ppw-phoneNumber"]', '06' + rand(89, 10) + rand(89, 10) + rand(89, 10) + rand(89, 10))
     await page.clk('input.a-button-input')
     await page.clk('input.a-button-input')
-    await page.clk('#confirm-button a')
 
     if (!i) {
       await page.clk('#HAWKFIRE_FAMILY_MONTHLY_RADIO_BUTTON')
