@@ -21,6 +21,9 @@ const main = async () => {
   MP = await mainPage.np()
 
   const create = async (i = null) => {
+    shell.exec('expressvpn disconnect', { silent: true })
+    shell.exec('expressvpn connect fr')
+
     const page = !i ? mainPage : await puppet('', true, true)
     await page.gotoUrl('https://music.amazon.fr/home')
     try {
