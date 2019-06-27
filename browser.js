@@ -157,6 +157,8 @@ const main = async () => {
       await page.waitFor(5000 + rand(2000))
     }
     else {
+      await page.jClk('#ap-account-fixup-phone-skip-link')
+
       await page.inst('input#address-ui-widgets-enterAddressFullName', mail)
       await page.inst('input#address-ui-widgets-enterAddressLine1', rand(50, 1) + ' rue de paris')
       await page.inst('input#address-ui-widgets-enterAddressCity', 'Paris')
