@@ -118,7 +118,7 @@ const addFcts = async (page) => {
     }
   }
 
-  page.inst = async (selector, text, type) => {
+  page.inst = async (selector, text, type, noError) => {
     if (page.closed) { return }
     try {
       await page.wfs(selector, true)
@@ -129,12 +129,14 @@ const addFcts = async (page) => {
 
       if (type) {
         await page.type(selector, text, { delay: 150 });
-
       }
+
       return true
     }
     catch (e) {
-      throw 'Insert error ' + selector
+      if (!noError) {
+        throw 'Insert error ' + selector
+      }
     }
   }
 

@@ -5,26 +5,34 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-const getEmail = async (i) => {
-  const MP = await puppet('', true, true)
+let MP
+const getEmail = async () => {
   await MP.gotoUrl('https://temp-mail.org/option/delete/')
   let M = await MP.get('#mail', 'value')
   M = M.split('@')[0]
-  await MP.cls()
-  return M + i
+  return M
 }
 
 const main = async () => {
   shell.exec('expressvpn disconnect', { silent: true })
   shell.exec('expressvpn connect fr')
 
-  const create = async (i = '') => {
-    const page = await puppet('', true, true)
+  const mainPage = await puppet('', true, true)
+  MP = await mainPage.np()
+
+  const create = async (i = null) => {
+    const page = !i ? mainPage : await puppet('', true, true)
     await page.gotoUrl('https://music.amazon.fr/home')
-    await page.clk('.createAccountLink')
+    try {
+      await page.clk('.createAccountLink')
+    }
+    catch (e) {
+      await page.clk('.signIn')
+      await page.clk('.createAccountLink')
+    }
 
     let mailPage = await page.np()
-    const mail = await getEmail(i)
+    const mail = await getEmail()
     const email = mail + '@mega.zik.dj'
 
     await mailPage.gotoUrl('http://yopmail.com/')
@@ -61,6 +69,9 @@ const main = async () => {
           return code
         })
 
+        console.log('code', code)
+        if (code) { return }
+
         url = !isCode && await mailPage.evaluate(() => {
           const iframe = document.querySelector('#ifmail')
           const link = iframe && iframe.contentDocument.querySelector('table tr td a')
@@ -69,7 +80,11 @@ const main = async () => {
           return url
         })
 
-        if ((isCode && !code) || (!isCode && !url)) { throw 'fail' }
+        console.log('url', url)
+        if (url) { return }
+
+        console.log('fail')
+        throw 'fail'
       }
       catch (e) {
         await mailPage.waitFor(1000 * 10 + rand(2000))
@@ -89,15 +104,19 @@ const main = async () => {
     }
     else {
       await page.clk('.buttonOption')
-
     }
 
-    try {
-      await page.inst('input#ap_email', email)
+    await page.inst('input#ap_email', email, false, true)
+    await page.inst('input#ap_password', '20192019', false, true)
+    await page.jClk('#signInSubmit')
+
+    if (!i) {
+      await page.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
+      await page.inst('input[name="addCreditCardNumber"]', '5273462879953488')
+      await page.select('select[name="ppw-expirationDate_month"]', '5')
+      await page.select('select[name="ppw-expirationDate_year"]', '2024')
+      await page.clk('input[name="ppw-widgetEvent:AddCreditCardEvent"]')
     }
-    catch (e) { }
-    await page.inst('input#ap_password', '20192019')
-    await page.clk('#signInSubmit')
 
     const waitForSelect = async () => {
       try {
@@ -111,33 +130,28 @@ const main = async () => {
 
     await waitForSelect()
 
-    await page.select('select#address-ui-widgets-countryCode-dropdown-nativeId', 'US')
+    await page.select('select#address-ui-widgets-countryCode-dropdown-nativeId', 'FR')
     await page.waitFor(2000 + rand(2000))
 
     await page.inst('input#address-ui-widgets-enterAddressFullName', mail)
-    await page.inst('input#address-ui-widgets-enterAddressLine1', rand(50, 1) + ' ' + rand(10, 1) + ' avenue')
-    await page.inst('input#address-ui-widgets-enterAddressCity', 'New-York')
-    await page.inst('input#address-ui-widgets-enterAddressStateOrRegion', 'New-York')
-    await page.inst('input#address-ui-widgets-enterAddressPostalCode', '10001')
+    await page.inst('input#address-ui-widgets-enterAddressLine1', rand(50, 1) + ' rue de paris')
+    await page.inst('input#address-ui-widgets-enterAddressCity', 'Paris')
+    await page.inst('input#address-ui-widgets-enterAddressStateOrRegion', 'Paris')
+    await page.inst('input#address-ui-widgets-enterAddressPostalCode', '75020')
     await page.inst('input#address-ui-widgets-enterAddressPhoneNumber', '06' + rand(89, 10) + rand(89, 10) + rand(89, 10) + rand(89, 10))
     await page.clk('input.a-button-input')
     await page.clk('input[name="address-ui-widgets-saveOriginalOrSuggestedAddress"]')
     await page.clk('#confirm-button a')
-    
+
     if (!i) {
       await page.clk('#HAWKFIRE_FAMILY_MONTHLY_RADIO_BUTTON')
       await page.clk('input[name="ppw-widgetEvent:SavePaymentPreferenceEvent"]')
     }
+
+    create(true)
   }
 
   await create()
-
-  let time = 0
-  for (let i of 'abcde') {
-    setTimeout(() => {
-      create(i)
-    }, 1000 * 5 * (time++));
-  }
 }
 
 main()
