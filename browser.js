@@ -114,7 +114,7 @@ const main = async () => {
     }
 
     if (i) {
-      await page.inst('input#ap_email', email, false, true)
+      // await page.inst('input#ap_email', email, false, true)
       await page.inst('input#ap_password', '20192019', false, true)
       await page.jClk('#signInSubmit')
     }
