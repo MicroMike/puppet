@@ -543,6 +543,8 @@ const fct = async () => {
             await page.inst('input[name="code"]', code)
             await page.clk('input[type="submit"]')
 
+            await page.jClk('#ap-account-fixup-phone-skip-link')
+
             const waitForLogged = async () => {
               try {
                 await page.wfs(loggedDom, true)
