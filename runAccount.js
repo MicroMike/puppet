@@ -70,6 +70,12 @@ socket.on('streams', a => {
   if (!a) { return exit(0) }
   if (check) { console.log(a) }
   parseAccount(a)
+
+  if (check && player === 'amazon') {
+    shell.exec('expressvpn disconnect', { silent: true })
+    shell.exec('expressvpn connect fr', { silent: true })
+  }
+
   fct()
 })
 
