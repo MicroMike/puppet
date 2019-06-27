@@ -157,10 +157,12 @@ const main = async () => {
       await page.waitFor(5000 + rand(2000))
       await page.gotoUrl('https://www.amazon.fr/music/settings')
       await page.clk('#familyManagementLink')
+      await page.waitFor(5000 + rand(2000))
     }
 
-    request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) { })
-    create(true)
+    request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
+      create(true)
+    })
   }
 
   await create()
