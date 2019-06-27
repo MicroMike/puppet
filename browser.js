@@ -43,6 +43,8 @@ const main = async () => {
     await mailPage.inst('.scpt', mail)
     await mailPage.clk('.sbut')
 
+    await page.bringToFront()
+
     await page.inst('input#ap_customer_name', mail)
     await page.inst('input#ap_email', email)
     await page.inst('input#ap_password', '20192019')
