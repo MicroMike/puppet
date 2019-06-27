@@ -500,8 +500,9 @@ const fct = async () => {
         }
         else if (player === 'amazon') {
           connected = await page.ext(loggedDom, true)
+          if (!connected && !check) { throw 'amazonError' }
 
-          if (!connected && check) {
+          if (check) {
             await page.clk('#continue')
 
             const yopmail = await page.np()
@@ -545,9 +546,6 @@ const fct = async () => {
 
             await page.jClk('#ap-account-fixup-phone-skip-link')
           }
-
-          const logged = await page.wfs(loggedDom)
-          if (!logged) { throw 'amazonError' }
         }
       }
       catch (e) {
