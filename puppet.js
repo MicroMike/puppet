@@ -1,6 +1,7 @@
 process.setMaxListeners(0)
 
 const puppeteer = require('puppeteer');
+var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -272,7 +273,11 @@ module.exports = async (userDataDir, noCache, cspot) => {
   //   });
   // }
 
-  page = addFcts(page)
+  const pageWithFct = addFcts(page)
 
-  return page
+  if (!pageWithFct) {
+    socket.emit('log', account + ' => ' + page)
+  }
+
+  return pageWithFct
 }
