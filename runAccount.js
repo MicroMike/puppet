@@ -504,7 +504,7 @@ const fct = async () => {
           if (dialogBox) {
             await page.clk('.dialogBox button')
             await page.clk('input.a-button-input')
-            await page.clk('input.a-button-input')
+            await page.clk('.a-button-inner a')
           }
 
           connected = await page.ext(loggedDom, true)
@@ -561,6 +561,8 @@ const fct = async () => {
               throw 'amazonError'
             }
           }
+
+          await page.gotoUrl(album())
         }
       }
       catch (e) {
