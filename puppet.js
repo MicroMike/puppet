@@ -1,7 +1,6 @@
 process.setMaxListeners(0)
 
 const puppeteer = require('puppeteer');
-var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -239,29 +238,38 @@ module.exports = async (userDataDir, noCache, cspot) => {
     delete params.userDataDir
   }
 
-  try {
-    launch = await puppeteer.launch(params);
-    browserContext = launch.defaultBrowserContext()
-  }
-  catch (e) {
+  let pageWithFct
+  const make = async () => {
     try {
-      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
       launch = await puppeteer.launch(params);
       browserContext = launch.defaultBrowserContext()
     }
-    catch (e) { return false }
-  }
+    catch (e) {
+      try {
+        params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+        launch = await puppeteer.launch(params);
+        browserContext = launch.defaultBrowserContext()
+      }
+      catch (e) { return false }
+    }
 
-  const pages = await browserContext.pages()
-  let page = pages[0]
+    const pages = await browserContext.pages()
+    let page = pages[0]
 
-  page.bc = launch
+    page.bc = launch
 
-  await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
+    await page.evaluateOnNewDocument(() => {
+      Object.defineProperty(navigator, 'webdriver', {
+        get: () => false,
+      });
     });
-  });
+
+    pageWithFct = addFcts(page)
+
+    if (!pageWithFct) {
+      await make()
+    }
+  }
 
   // if (!cspot) {
   //   await page.setRequestInterception(true);
@@ -273,14 +281,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
   //   });
   // }
 
-  const pageWithFct = addFcts(page)
-
-  if (!pageWithFct) {
-    socket.emit('log', account + ' => ' + page)
-  }
-  else {
-    socket.emit('log', account + ' => ok')
-  }
+  await make()
 
   return pageWithFct
 }
