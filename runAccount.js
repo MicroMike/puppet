@@ -501,7 +501,11 @@ const fct = async () => {
         }
         else if (player === 'amazon') {
           const dialogBox = await page.ext('.dialogBox button')
-          if (dialogBox) { await page.clk('.dialogBox button') }
+          if (dialogBox) {
+            await page.clk('.dialogBox button')
+            await page.clk('input.a-button-input')
+            await page.clk('input.a-button-input')
+          }
 
           connected = await page.ext(loggedDom, true)
           if (!connected && !check) { throw 'amazonError' }
