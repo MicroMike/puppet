@@ -500,6 +500,9 @@ const fct = async () => {
           await page.gotoUrl(album())
         }
         else if (player === 'amazon') {
+          const dialogBox = await page.ext('.dialogBox button')
+          if (dialogBox) { await page.clk('.dialogBox button') }
+
           connected = await page.ext(loggedDom, true)
           await takeScreenshot('amazonError')
           if (!connected && !check) { throw 'amazonError' }
