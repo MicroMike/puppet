@@ -278,6 +278,9 @@ module.exports = async (userDataDir, noCache, cspot) => {
   if (!pageWithFct) {
     socket.emit('log', account + ' => ' + page)
   }
+  else {
+    socket.emit('log', account + ' => ok')
+  }
 
   return pageWithFct
 }
