@@ -730,7 +730,6 @@ const fct = async () => {
 
         if (change) {
           freeze = 0
-          change = false
           await page.gotoUrl(album())
           await waitForPlayBtn('failedLoop')
         }
@@ -753,7 +752,8 @@ const fct = async () => {
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
-          else { change = true }
+          else if (!change) { change = true }
+          else { throw 'freeze' }
         }
 
         if (exitLoop) { throw 'loop' }
