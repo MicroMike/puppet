@@ -38,7 +38,7 @@ const main = async () => {
   let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
   cmd = first ? 'FIRST=true ' + cmd : cmd
-  cmd = type ? `'TYPE=${type} ` + cmd : cmd
+  cmd = type ? `TYPE=${type} ` + cmd : cmd
   first = false
 
   shell.exec(cmd, async (code, b, c) => {
@@ -54,14 +54,14 @@ const main = async () => {
   })
 }
 
-if (check) { main() }
+if (check || type) { main() }
 
 timeout = setInterval(() => {
   time = time || Date.now()
 
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (accountsValid < max) { main() }
-}, check ? 1000 * 60 : 1000 * 60 + rand(1000 * 120));
+}, check || type ? 1000 * 60 : 1000 * 60 + rand(1000 * 120));
 
 process.on('SIGINT', () => {
   clearInterval(timeout)
