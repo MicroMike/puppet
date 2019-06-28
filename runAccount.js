@@ -511,10 +511,9 @@ const fct = async () => {
             await page.clk('.a-button-inner a')
           }
 
-          connected = await page.ext(loggedDom, true)
-          if (!connected && !check) { throw 'amazonError' }
+          // connected = await page.ext(loggedDom, true)
 
-          if (!connected && check) {
+          if (check) {
             const continueBtn = await page.ext('#continue')
 
             if (continueBtn) {
@@ -564,9 +563,10 @@ const fct = async () => {
             else {
               throw 'amazonError'
             }
+
+            await page.gotoUrl(album())
           }
 
-          await page.gotoUrl(album())
         }
       }
       catch (e) {
