@@ -6,7 +6,6 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-let accounts = 0
 let MP
 const getEmail = async () => {
   await MP.gotoUrl('https://temp-mail.org/option/delete/')
@@ -21,7 +20,6 @@ const main = async () => {
 
   const create = async (i = null) => {
     shell.exec('expressvpn disconnect', { silent: true })
-    if (++accounts > 6) { return }
     shell.exec('expressvpn connect fr', { silent: true })
 
     const page = !i ? mainPage : await puppet('', true, true)
