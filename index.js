@@ -1,5 +1,6 @@
 process.setMaxListeners(0)
 const arg = process.argv[2]
+const type = process.argv[3]
 
 var shell = require('shelljs');
 // var fs = require('fs');
@@ -37,6 +38,7 @@ const main = async () => {
   let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
   cmd = first ? 'FIRST=true ' + cmd : cmd
+  cmd = type ? `'TYPE=${type} ` + cmd : cmd
   first = false
 
   shell.exec(cmd, async (code, b, c) => {
