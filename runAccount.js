@@ -560,9 +560,6 @@ const fct = async () => {
 
               await page.jClk('#ap-account-fixup-phone-skip-link')
             }
-            else {
-              throw 'amazonError'
-            }
 
             await page.gotoUrl(album())
           }
