@@ -38,7 +38,7 @@ const main = async () => {
   let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
   cmd = first ? 'FIRST=true ' + cmd : cmd
-  cmd = type ? `'TYPE=${type} ` + cmd : cmd
+  cmd = type ? `TYPE=${type} ` + cmd : cmd
   first = false
 
   shell.exec(cmd, async (code, b, c) => {
