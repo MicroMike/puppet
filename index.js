@@ -60,7 +60,7 @@ timeout = setInterval(() => {
   time = time || Date.now()
 
   process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
-  if (accountsValid < max) { main() }
+  if (!check || accountsValid < max) { main() }
 }, check || type ? 1000 * 60 : 1000 * 60 + rand(1000 * 120));
 
 process.on('SIGINT', () => {

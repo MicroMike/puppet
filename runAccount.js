@@ -317,7 +317,7 @@ const fct = async () => {
       usedDom = '.concurrentStreamsPopover'
 
       timeLine = '.listViewDuration'
-      callback = a => (70 - a.split(':').reduce((a, b) => Math.abs(a * 60) + Number(b)))
+      callback = a => (100 - a.split(':').reduce((a, b) => Math.abs(a * 60) + Number(b)))
     }
     if (player === 'tidal') {
       url = 'https://listen.tidal.com/'
