@@ -501,6 +501,7 @@ const fct = async () => {
         }
         else if (player === 'amazon') {
           connected = await page.ext(loggedDom, true)
+          await takeScreenshot('amazonError')
           if (!connected && !check) { throw 'amazonError' }
 
           if (!connected && check) {
