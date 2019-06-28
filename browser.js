@@ -22,6 +22,11 @@ const main = async () => {
     shell.exec('expressvpn disconnect', { silent: true })
     shell.exec('expressvpn connect fr', { silent: true })
 
+    if (i) {
+      const full = !await mainPage.ext('#enterEmail')
+      if (full) { return process.exit() }
+    }
+
     const page = !i ? mainPage : await puppet('', true, true)
     await page.gotoUrl('https://music.amazon.fr/home')
     try {
@@ -37,7 +42,6 @@ const main = async () => {
     const email = mail + '@mega.zik.dj'
 
     console.log(email)
-    accounts++
 
     await mailPage.gotoUrl('http://yopmail.com/')
     await mailPage.inst('.scpt', mail)
