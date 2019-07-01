@@ -213,63 +213,72 @@ const addFcts = async (page) => {
 
 module.exports = async (userDataDir, noCache, cspot) => {
 
-  const params = {
-    executablePath: '/usr/bin/google-chrome-stable',
-    userDataDir,
-    headless: false,
-    args: [
-      // '--no-sandbox',
-      // '--disable-setuid-sandbox',
-      '--disable-translate',
-      // '--user-agent=Mozilla/10.0 (Windows NT 10.0) AppleWebKit/538.36 (KHTML, like Gecko) Chrome/69.420 Safari/537.36'
-    ],
-    defaultViewport: {
-      width: 851,
-      height: 450,
+  return new Promise(res => {
+    const params = {
+      executablePath: '/usr/bin/google-chrome-stable',
+      userDataDir,
+      headless: false,
+      args: [
+        // '--no-sandbox',
+        // '--disable-setuid-sandbox',
+        '--disable-translate',
+        // '--user-agent=Mozilla/10.0 (Windows NT 10.0) AppleWebKit/538.36 (KHTML, like Gecko) Chrome/69.420 Safari/537.36'
+      ],
+      defaultViewport: {
+        width: 851,
+        height: 450,
+      }
     }
-  }
 
-  if (cspot) {
-    // const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
-    // params.args.push(ua)
-  }
-
-  if (noCache) {
-    delete params.userDataDir
-  }
-
-  let pageWithFct
-  const make = async () => {
-    try {
-      launch = await puppeteer.launch(params);
-      browserContext = launch.defaultBrowserContext()
+    if (cspot) {
+      // const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
+      // params.args.push(ua)
     }
-    catch (e) {
+
+    if (noCache) {
+      delete params.userDataDir
+    }
+
+    let pageWithFct
+    const make = async () => {
       try {
-        params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
         launch = await puppeteer.launch(params);
         browserContext = launch.defaultBrowserContext()
       }
-      catch (e) { return false }
-    }
+      catch (e) {
+        try {
+          params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+          launch = await puppeteer.launch(params);
+          browserContext = launch.defaultBrowserContext()
+        }
+        catch (e) { return false }
+      }
 
-    const pages = await browserContext.pages()
-    let page = pages[0]
+      const pages = await browserContext.pages()
+      let page = pages[0]
 
-    page.bc = launch
+      page.bc = launch
 
-    await page.evaluateOnNewDocument(() => {
-      Object.defineProperty(navigator, 'webdriver', {
-        get: () => false,
+      await page.evaluateOnNewDocument(() => {
+        Object.defineProperty(navigator, 'webdriver', {
+          get: () => false,
+        });
       });
-    });
 
-    pageWithFct = addFcts(page)
+      pageWithFct = addFcts(page)
 
-    if (!pageWithFct) {
-      await make()
+      if (!pageWithFct) {
+        setTimeout(async () => {
+          make()
+        }, 1000 * 10);
+      }
+      else {
+        res(pageWithFct)
+      }
     }
-  }
+
+    make()
+  })
 
   // if (!cspot) {
   //   await page.setRequestInterception(true);
@@ -280,8 +289,4 @@ module.exports = async (userDataDir, noCache, cspot) => {
   //       interceptedRequest.continue();
   //   });
   // }
-
-  await make()
-
-  return pageWithFct
 }
