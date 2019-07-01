@@ -37,9 +37,15 @@ const main = async () => {
       await page.clk('.createAccountLink')
     }
 
+    const mails = [
+      '@mega.zik.dj',
+      '@nospam.ze.tc',
+      '@speed.1s.fr',
+      '@cool.fr.nf',
+    ]
     let mailPage = await page.np()
     const mail = await getEmail()
-    const email = mail + '@mega.zik.dj'
+    const email = mail + mails[rand(mails.length)]
 
     console.log(email)
 

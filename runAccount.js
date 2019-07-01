@@ -747,7 +747,7 @@ const fct = async () => {
           socket.emit('retryOk')
         }
 
-        if (freeze > 1) {
+        if (freeze > 3) {
           socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
 
           const logged = await page.ext(loggedDom)
