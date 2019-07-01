@@ -160,9 +160,9 @@ const fct = async () => {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
-  page = await puppet('save/' + player + '_' + login, noCache, false)
-
   socket.emit('playerInfos', { account: player + ':' + login, time: 'WAIT_PAGE', other: true })
+
+  page = await puppet('save/' + player + '_' + login, noCache, false)
 
   if (!page) {
     socket.emit('outLog', 'noPage')
