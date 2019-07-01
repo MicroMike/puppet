@@ -646,6 +646,7 @@ const fct = async () => {
     let countPlays = 0
     let changePlay = 20 + rand(10)
     let change = false
+    let changeOnce = false
 
     const loop = async () => {
       if (player === 'tidal') {
@@ -727,6 +728,8 @@ const fct = async () => {
 
         if (change) {
           freeze = 0
+          change = false
+          changeOnce = true
           await page.gotoUrl(album())
           await waitForPlayBtn('failedLoop')
         }
@@ -749,7 +752,7 @@ const fct = async () => {
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
-          else if (!change) { change = true }
+          else if (!changeOnce) { change = true }
           else { throw 'freeze' }
         }
 
