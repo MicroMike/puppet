@@ -563,6 +563,9 @@ const fct = async () => {
 
             await page.gotoUrl(album())
           }
+          else if (!connected) {
+            throw 'amazonError'
+          }
 
         }
       }
