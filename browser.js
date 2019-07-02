@@ -177,6 +177,24 @@ const main = async () => {
       await page.clk('input[name="address-ui-widgets-saveOriginalOrSuggestedAddress"]')
       await page.clk('#confirm-button a')
       await page.waitFor(5000 + rand(2000))
+      await page.clk('input.a-button-input')
+
+      const dialogBox = await page.ext('.dialogBox button')
+      if (dialogBox) {
+        await page.clk('.dialogBox button')
+
+        try {
+          const input = await page.ext(password)
+          if (!input) { throw 'nope' }
+
+          await page.inst(password, pass)
+          await page.clk('input.a-button-input')
+        }
+        catch (e) { }
+
+        await page.clk('input.a-button-input')
+        await page.clk('.a-button-inner a')
+      }
     }
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
