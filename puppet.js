@@ -268,6 +268,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
       pageWithFct = addFcts(page)
 
       if (!pageWithFct) {
+        console.log(page, pageWithFct)
         setTimeout(async () => {
           make()
         }, 1000 * 10);
