@@ -196,13 +196,13 @@ const addFcts = async (page) => {
 
   page.np = async () => {
     if (page.closed) { return }
-    let page2 = await page.bc.newPage()
+    let page2 = await launch.newPage()
     page2 = addFcts(page2)
     return page2
   }
 
   page.lastPage = async () => {
-    const bcPages = await page.bc.pages()
+    const bcPages = await launch.pages()
     let page2 = bcPages[bcPages.length - 1]
     page2 = addFcts(page2)
     return page2
@@ -240,6 +240,7 @@ module.exports = async (userDataDir, noCache, cspot) => {
     }
 
     let pageWithFct
+    let tryPage = false
     const make = async () => {
       try {
         launch = await puppeteer.launch(params);
@@ -257,8 +258,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
       const pages = await browserContext.pages()
       let page = pages[0]
 
-      page.bc = launch
-
       await page.evaluateOnNewDocument(() => {
         Object.defineProperty(navigator, 'webdriver', {
           get: () => false,
@@ -268,10 +267,15 @@ module.exports = async (userDataDir, noCache, cspot) => {
       pageWithFct = addFcts(page)
 
       if (!pageWithFct) {
-        console.log(page, pageWithFct)
-        setTimeout(async () => {
-          make()
-        }, 1000 * 10);
+        if (!tryPage) {
+          tryPage = true
+          setTimeout(async () => {
+            make()
+          }, 1000 * 10);
+        }
+        else {
+          res(false)
+        }
       }
       else {
         res(pageWithFct)
