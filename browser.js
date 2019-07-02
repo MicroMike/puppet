@@ -38,7 +38,7 @@ const main = async () => {
       if (full) { return process.exit() }
     }
 
-    const page = !i ? mainPage : await puppet('save/amazon_' + email, true, true)
+    const page = !i ? mainPage : await puppet('save/amazon_' + email)
     await page.gotoUrl('https://music.amazon.fr/home')
     try {
       await page.clk('.createAccountLink')

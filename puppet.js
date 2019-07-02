@@ -211,7 +211,7 @@ const addFcts = async (page) => {
   return page
 }
 
-module.exports = async (userDataDir, noCache, cspot) => {
+module.exports = async (userDataDir, noCache) => {
 
   return new Promise(res => {
     const params = {
@@ -228,11 +228,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
         width: 851,
         height: 450,
       }
-    }
-
-    if (cspot) {
-      // const ua = '--user-agent=Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19'
-      // params.args.push(ua)
     }
 
     if (noCache) {
@@ -264,7 +259,6 @@ module.exports = async (userDataDir, noCache, cspot) => {
     return addFcts(page)
   })
 
-  // if (!cspot) {
   //   await page.setRequestInterception(true);
   //   page.on('request', interceptedRequest => {
   //     if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
@@ -272,5 +266,4 @@ module.exports = async (userDataDir, noCache, cspot) => {
   //     else
   //       interceptedRequest.continue();
   //   });
-  // }
 }
