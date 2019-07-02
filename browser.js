@@ -23,6 +23,7 @@ const main = async () => {
     shell.exec('expressvpn connect fr', { silent: true })
 
     if (i) {
+      await page.rload()
       const full = !await mainPage.ext('#enterEmail')
       if (full) { return process.exit() }
     }
