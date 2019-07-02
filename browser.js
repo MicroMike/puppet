@@ -28,6 +28,7 @@ const main = async () => {
   const create = async (i = null) => {
     shell.exec('expressvpn disconnect', { silent: true })
     shell.exec('expressvpn connect fr', { silent: true })
+
     const mail = await getEmail()
     const email = mail + mails[rand(mails.length)]
 
