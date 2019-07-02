@@ -22,13 +22,22 @@ const main = async () => {
     shell.exec('expressvpn disconnect', { silent: true })
     shell.exec('expressvpn connect fr', { silent: true })
 
+    const mails = [
+      '@mega.zik.dj',
+      '@nospam.ze.tc',
+      '@speed.1s.fr',
+      '@cool.fr.nf',
+    ]
+    const mail = await getEmail()
+    const email = mail + mails[rand(mails.length)]
+
     if (i) {
       await page.rload()
       const full = !await mainPage.ext('#enterEmail')
       if (full) { return process.exit() }
     }
 
-    const page = !i ? mainPage : await puppet('', true, true)
+    const page = !i ? mainPage : await puppet('amazon_' + email, true, true)
     await page.gotoUrl('https://music.amazon.fr/home')
     try {
       await page.clk('.createAccountLink')
@@ -38,15 +47,7 @@ const main = async () => {
       await page.clk('.createAccountLink')
     }
 
-    const mails = [
-      '@mega.zik.dj',
-      '@nospam.ze.tc',
-      '@speed.1s.fr',
-      '@cool.fr.nf',
-    ]
     let mailPage = await page.np()
-    const mail = await getEmail()
-    const email = mail + mails[rand(mails.length)]
 
     console.log(email)
 
