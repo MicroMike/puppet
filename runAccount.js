@@ -44,7 +44,7 @@ socket.on('activate', id => {
 })
 
 const exit = async (code = 0) => {
-  socket.emit('playerInfos', { account: player + ':' + login, out: true })
+  socket.emit('playerInfos', { account: player + ':' + login, streamId, out: true })
 
   close = true
   page && await page.cls(true)
@@ -160,7 +160,7 @@ const fct = async () => {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
-  socket.emit('playerInfos', { account: player + ':' + login, time: 'WAIT_PAGE', other: true })
+  socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
   page = await puppet('save/' + player + '_' + login, noCache, false)
 
@@ -169,7 +169,7 @@ const fct = async () => {
     exit(0)
   }
 
-  socket.emit('playerInfos', { account: player + ':' + login, time: 'STARTED', other: true })
+  socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
 
   page.on('close', function (err) {
     if (!close && !check) {
@@ -613,7 +613,7 @@ const fct = async () => {
       }
     }
 
-    socket.emit('playerInfos', { account: player + ':' + login, time: 'PLAY', other: true })
+    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
     await waitForPlayBtn('firstPlay')
     // await page.clk(playBtn, 'firstPlay')
 
@@ -741,19 +741,19 @@ const fct = async () => {
 
         if (t1 === t2) {
           ++freeze
-          socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true, warn: true })
+          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
         }
         else {
           freeze = 0
           retry = false
           retryDom = false
           streamOn = false
-          socket.emit('playerInfos', { account: player + ':' + login, time: t1, ok: true })
+          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
           socket.emit('retryOk')
         }
 
         if (freeze > 3) {
-          socket.emit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
+          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
