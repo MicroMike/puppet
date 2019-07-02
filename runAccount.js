@@ -166,10 +166,10 @@ const fct = async () => {
 
   let tryPage = false
   if (!page) {
-    // if (!tryPage) {
-    //   tryPage = true
-    //   return fct()
-    // }
+    if (!tryPage) {
+      tryPage = true
+      return fct()
+    }
     socket.emit('outLog', 'noPage')
     exit(0)
   }
