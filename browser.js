@@ -33,7 +33,7 @@ const main = async () => {
     const email = mail + mails[rand(mails.length)]
 
     if (i) {
-      await page.rload()
+      await mainPage.rload()
       const full = !await mainPage.ext('#enterEmail')
       if (full) { return process.exit() }
     }
