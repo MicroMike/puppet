@@ -14,6 +14,13 @@ const getEmail = async () => {
   return M
 }
 
+const mails = [
+  '@mega.zik.dj',
+  '@nospam.ze.tc',
+  '@speed.1s.fr',
+  '@cool.fr.nf',
+]
+
 const main = async () => {
   const mainPage = await puppet('', true, true)
   MP = await mainPage.np()
@@ -21,13 +28,6 @@ const main = async () => {
   const create = async (i = null) => {
     shell.exec('expressvpn disconnect', { silent: true })
     shell.exec('expressvpn connect fr', { silent: true })
-
-    const mails = [
-      '@mega.zik.dj',
-      '@nospam.ze.tc',
-      '@speed.1s.fr',
-      '@cool.fr.nf',
-    ]
     const mail = await getEmail()
     const email = mail + mails[rand(mails.length)]
 
