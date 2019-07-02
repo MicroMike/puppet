@@ -239,50 +239,29 @@ module.exports = async (userDataDir, noCache, cspot) => {
       delete params.userDataDir
     }
 
-    let pageWithFct
-    let tryPage = false
-    const make = async () => {
+    try {
+      launch = await puppeteer.launch(params);
+      browserContext = launch.defaultBrowserContext()
+    }
+    catch (e) {
       try {
+        params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
         launch = await puppeteer.launch(params);
         browserContext = launch.defaultBrowserContext()
       }
-      catch (e) {
-        try {
-          params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-          launch = await puppeteer.launch(params);
-          browserContext = launch.defaultBrowserContext()
-        }
-        catch (e) { return false }
-      }
-
-      const pages = await browserContext.pages()
-      let page = pages[0]
-
-      await page.evaluateOnNewDocument(() => {
-        Object.defineProperty(navigator, 'webdriver', {
-          get: () => false,
-        });
-      });
-
-      pageWithFct = addFcts(page)
-
-      if (!pageWithFct) {
-        if (!tryPage) {
-          tryPage = true
-          setTimeout(async () => {
-            make()
-          }, 1000 * 10);
-        }
-        else {
-          res(false)
-        }
-      }
-      else {
-        res(pageWithFct)
-      }
+      catch (e) { return false }
     }
 
-    make()
+    const pages = await browserContext.pages()
+    let page = pages[0]
+
+    await page.evaluateOnNewDocument(() => {
+      Object.defineProperty(navigator, 'webdriver', {
+        get: () => false,
+      });
+    });
+
+    return addFcts(page)
   })
 
   // if (!cspot) {

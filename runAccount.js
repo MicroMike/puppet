@@ -164,12 +164,7 @@ const fct = async () => {
 
   page = await puppet('save/' + player + '_' + login, noCache, false)
 
-  let tryPage = false
   if (!page) {
-    if (!tryPage) {
-      tryPage = true
-      return fct()
-    }
     socket.emit('outLog', 'noPage')
     exit(0)
   }
