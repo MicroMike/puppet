@@ -213,51 +213,49 @@ const addFcts = async (page) => {
 
 module.exports = async (userDataDir, noCache) => {
 
-  return new Promise(res => {
-    const params = {
-      executablePath: '/usr/bin/google-chrome-stable',
-      userDataDir,
-      headless: false,
-      args: [
-        // '--no-sandbox',
-        // '--disable-setuid-sandbox',
-        '--disable-translate',
-        // '--user-agent=Mozilla/10.0 (Windows NT 10.0) AppleWebKit/538.36 (KHTML, like Gecko) Chrome/69.420 Safari/537.36'
-      ],
-      defaultViewport: {
-        width: 851,
-        height: 450,
-      }
+  const params = {
+    executablePath: '/usr/bin/google-chrome-stable',
+    userDataDir,
+    headless: false,
+    args: [
+      // '--no-sandbox',
+      // '--disable-setuid-sandbox',
+      '--disable-translate',
+      // '--user-agent=Mozilla/10.0 (Windows NT 10.0) AppleWebKit/538.36 (KHTML, like Gecko) Chrome/69.420 Safari/537.36'
+    ],
+    defaultViewport: {
+      width: 851,
+      height: 450,
     }
+  }
 
-    if (noCache) {
-      delete params.userDataDir
-    }
+  if (noCache) {
+    delete params.userDataDir
+  }
 
+  try {
+    launch = await puppeteer.launch(params);
+    browserContext = launch.defaultBrowserContext()
+  }
+  catch (e) {
     try {
+      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
       launch = await puppeteer.launch(params);
       browserContext = launch.defaultBrowserContext()
     }
-    catch (e) {
-      try {
-        params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-        launch = await puppeteer.launch(params);
-        browserContext = launch.defaultBrowserContext()
-      }
-      catch (e) { return false }
-    }
+    catch (e) { return false }
+  }
 
-    const pages = await browserContext.pages()
-    let page = pages[0]
+  const pages = await browserContext.pages()
+  let page = pages[0]
 
-    await page.evaluateOnNewDocument(() => {
-      Object.defineProperty(navigator, 'webdriver', {
-        get: () => false,
-      });
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
     });
+  });
 
-    return addFcts(page)
-  })
+  return addFcts(page)
 
   //   await page.setRequestInterception(true);
   //   page.on('request', interceptedRequest => {
