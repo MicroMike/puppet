@@ -265,21 +265,22 @@ module.exports = async (userDataDir, noCache, cspot) => {
       });
 
       pageWithFct = addFcts(page)
+      res(pageWithFct)
 
-      if (!pageWithFct) {
-        if (!tryPage) {
-          tryPage = true
-          setTimeout(async () => {
-            make()
-          }, 1000 * 10);
-        }
-        else {
-          res(false)
-        }
-      }
-      else {
-        res(pageWithFct)
-      }
+      // if (!pageWithFct) {
+      //   if (!tryPage) {
+      //     tryPage = true
+      //     setTimeout(async () => {
+      //       make()
+      //     }, 1000 * 10);
+      //   }
+      //   else {
+      //     res(false)
+      //   }
+      // }
+      // else {
+      //   res(pageWithFct)
+      // }
     }
 
     make()
