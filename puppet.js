@@ -259,7 +259,7 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
-  await page.evaluateOnNewDocument(() => {
+  await pageWithFct.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
       get: () => false,
     });
