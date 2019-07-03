@@ -233,7 +233,7 @@ module.exports = async (userDataDir, noCache) => {
     delete params.userDataDir
   }
 
-  return new Promise(res => {
+  return new Promise(async res => {
     let tries = 0
     let pageWithFct
     const getPuppet = async () => {
