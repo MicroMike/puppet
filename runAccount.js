@@ -162,13 +162,21 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
-  page = await puppet('save/' + player + '_' + login, noCache, false)
+  let tries = 0
+  const waitForPage = async () => {
+    page = await puppet('save/' + player + '_' + login, noCache, false)
 
-  if (!page) {
-    // logError(page)
-    socket.emit('outLog', 'noPage')
-    exit(0)
+    if (tries++ > 3) {
+      socket.emit('outLog', 'noPage')
+      await exit(0)
+    }
+
+    if (!page) {
+      await waitForPage()
+    }
   }
+
+  await waitForPage()
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
 
