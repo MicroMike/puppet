@@ -514,7 +514,7 @@ const fct = async () => {
             await page.clk('.a-button-inner a')
           }
 
-          // connected = await page.ext(loggedDom, true)
+          connected = await page.ext(loggedDom)
 
           if (check) {
             const continueBtn = await page.ext('#continue')
