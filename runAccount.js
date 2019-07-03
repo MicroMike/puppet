@@ -165,9 +165,7 @@ const fct = async () => {
   page = await puppet('save/' + player + '_' + login, noCache, false)
 
   if (!page) {
-    // logError(page)
-    socket.emit('outLog', 'noPage')
-    exit(0)
+    await exit(1234)
   }
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
@@ -313,7 +311,7 @@ const fct = async () => {
 
       playBtn = '.playerIconPlayRing'
       pauseBtn = '.playerIconPauseRing'
-      shuffleBtn = '.shuffleButton:not(.on)'
+      shuffleBtn = '.playbackControlsView .shuffleButton:not(.on)'
       repeatBtn = '.repeatButton:not(.on)'
       nextBtn = '.nextButton'
 
@@ -514,8 +512,6 @@ const fct = async () => {
             await page.clk('.a-button-inner a')
           }
 
-          connected = await page.ext(loggedDom)
-
           if (check) {
             const continueBtn = await page.ext('#continue')
 
@@ -565,9 +561,6 @@ const fct = async () => {
             }
 
             await page.gotoUrl(album())
-          }
-          else if (!connected) {
-            throw 'amazonError'
           }
 
         }

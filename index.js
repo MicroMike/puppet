@@ -51,6 +51,10 @@ const main = async () => {
       clearInterval(timeout)
       process.exit()
     }
+
+    if (code === 1234) {
+      main()
+    }
   })
 }
 
