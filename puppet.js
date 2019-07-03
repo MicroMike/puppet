@@ -233,47 +233,29 @@ module.exports = async (userDataDir, noCache) => {
     delete params.userDataDir
   }
 
-  return new Promise(async res => {
-    let tries = 0
-    let pageWithFct
-
-    const getPuppet = async () => {
-      if (tries++ < 3) { res(false) }
-
-      try {
-        launch = await puppeteer.launch(params);
-        browserContext = launch.defaultBrowserContext()
-      }
-      catch (e) {
-        try {
-          params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-          launch = await puppeteer.launch(params);
-          browserContext = launch.defaultBrowserContext()
-        }
-        catch (e) { return await getPuppet() }
-      }
-
-      const pages = await browserContext.pages()
-      const tpage = pages[0]
-
-      await tpage.evaluateOnNewDocument(() => {
-        Object.defineProperty(navigator, 'webdriver', {
-          get: () => false,
-        });
-      });
-
-      pageWithFct = addFcts(tpage)
-
-      if (!pageWithFct) {
-        await getPuppet()
-      }
-      else {
-        res(pageWithFct)
-      }
+  try {
+    launch = await puppeteer.launch(params);
+    browserContext = launch.defaultBrowserContext()
+  }
+  catch (e) {
+    try {
+      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+      launch = await puppeteer.launch(params);
+      browserContext = launch.defaultBrowserContext()
     }
+    catch (e) { return false }
+  }
 
-    await getPuppet()
-  })
+  const pages = await browserContext.pages()
+  const tpage = pages[0]
+
+  await tpage.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
+    });
+  });
+
+  return addFcts(tpage)
 
   //   await page.setRequestInterception(true);
   //   page.on('request', interceptedRequest => {
