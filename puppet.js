@@ -236,6 +236,7 @@ module.exports = async (userDataDir, noCache) => {
   return new Promise(async res => {
     let tries = 0
     let pageWithFct
+
     const getPuppet = async () => {
       if (tries++ < 3) { res(false) }
 
