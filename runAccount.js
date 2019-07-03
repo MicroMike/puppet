@@ -643,7 +643,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 20 + rand(10)
+    let changePlay = 20 + rand(20)
     let change = false
     let changeOnce = false
 
