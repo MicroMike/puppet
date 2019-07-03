@@ -233,8 +233,11 @@ module.exports = async (userDataDir, noCache) => {
     delete params.userDataDir
   }
 
+  let tries = 0
   let pageWithFct
   const getPuppet = async () => {
+    if (tries++ < 3) { return }
+
     try {
       launch = await puppeteer.launch(params);
       browserContext = launch.defaultBrowserContext()
@@ -245,25 +248,26 @@ module.exports = async (userDataDir, noCache) => {
         launch = await puppeteer.launch(params);
         browserContext = launch.defaultBrowserContext()
       }
-      catch (e) { return pageWithFct = false }
+      catch (e) { return await getPuppet() }
     }
 
     const pages = await browserContext.pages()
-    pageWithFct = addFcts(pages[0])
-  }
+    const tpage = pages[0]
 
+    await tpage.evaluateOnNewDocument(() => {
+      Object.defineProperty(navigator, 'webdriver', {
+        get: () => false,
+      });
+    });
 
-  for (let i = 0; i < 3; i++) {
+    pageWithFct = addFcts(tpage)
+
     if (!pageWithFct) {
       await getPuppet()
     }
   }
 
-  await pageWithFct.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
-    });
-  });
+  await getPuppet()
 
   return pageWithFct
 
