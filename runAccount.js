@@ -313,7 +313,7 @@ const fct = async () => {
 
       playBtn = '.playerIconPlayRing'
       pauseBtn = '.playerIconPauseRing'
-      shuffleBtn = '.shuffleButton:not(.on)'
+      shuffleBtn = '.playbackControlsView .shuffleButton:not(.on)'
       repeatBtn = '.repeatButton:not(.on)'
       nextBtn = '.nextButton'
 
