@@ -255,7 +255,7 @@ module.exports = async (userDataDir, noCache) => {
     });
   });
 
-  return addFcts(tpage)
+  return tpage && addFcts(tpage)
 
   //   await page.setRequestInterception(true);
   //   page.on('request', interceptedRequest => {
