@@ -151,7 +151,7 @@ const addFcts = async (page) => {
       return html
     }
     catch (e) {
-      console.log('Get error ' + selector, e.match('/destroyed/') ? '' : e)
+      console.log('Get error ' + selector, e.Error.match('/destroyed/') ? '' : e)
       return false
     }
   }
