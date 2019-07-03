@@ -233,21 +233,31 @@ module.exports = async (userDataDir, noCache) => {
     delete params.userDataDir
   }
 
-  try {
-    launch = await puppeteer.launch(params);
-    browserContext = launch.defaultBrowserContext()
-  }
-  catch (e) {
+  let pageWithFct
+  const getPuppet = async () => {
+    try {
+      launch = await puppeteer.launch(params);
+      browserContext = launch.defaultBrowserContext()
+    }
+    catch (e) { }
+
     try {
       params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
       launch = await puppeteer.launch(params);
       browserContext = launch.defaultBrowserContext()
     }
-    catch (e) { return false }
+    catch (e) { }
+
+    const pages = await browserContext.pages()
+    pageWithFct = addFcts(pages[0])
   }
 
-  const pages = await browserContext.pages()
-  let page = pages[0]
+
+  for (let i = 0; i < 3; i++) {
+    if (!pageWithFct) {
+      await getPuppet()
+    }
+  }
 
   await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
@@ -255,7 +265,7 @@ module.exports = async (userDataDir, noCache) => {
     });
   });
 
-  return addFcts(page)
+  return pageWithFct
 
   //   await page.setRequestInterception(true);
   //   page.on('request', interceptedRequest => {
