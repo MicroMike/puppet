@@ -514,8 +514,6 @@ const fct = async () => {
             await page.clk('.a-button-inner a')
           }
 
-          connected = await page.ext(loggedDom)
-
           if (check) {
             const continueBtn = await page.ext('#continue')
 
@@ -565,9 +563,6 @@ const fct = async () => {
             }
 
             await page.gotoUrl(album())
-          }
-          else if (!connected) {
-            throw 'amazonError'
           }
 
         }
