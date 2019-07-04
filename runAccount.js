@@ -512,56 +512,56 @@ const fct = async () => {
             await page.clk('.a-button-inner a')
           }
 
-          if (check) {
-            const continueBtn = await page.ext('#continue')
+          // if (check) {
+          const continueBtn = await page.ext('#continue')
 
-            if (continueBtn) {
-              await page.clk('#continue')
+          if (continueBtn) {
+            await page.clk('#continue')
 
-              const yopmail = await page.np()
-              await yopmail.gotoUrl('http://yopmail.com/')
-              await yopmail.inst('.scpt', login)
-              await yopmail.clk('.sbut')
+            const yopmail = await page.np()
+            await yopmail.gotoUrl('http://yopmail.com/')
+            await yopmail.inst('.scpt', login)
+            await yopmail.clk('.sbut')
 
-              let code
-              const waitForCode = async () => {
-                try {
-                  const mailHere = await yopmail.evaluate(() => {
-                    const iframe = document.querySelector('#ifinbox')
-                    const m = iframe && iframe.contentDocument.querySelector('#m1')
-                    m && m.click()
-                    return m
-                  })
-                  if (!mailHere) { throw 'fail' }
+            let code
+            const waitForCode = async () => {
+              try {
+                const mailHere = await yopmail.evaluate(() => {
+                  const iframe = document.querySelector('#ifinbox')
+                  const m = iframe && iframe.contentDocument.querySelector('#m1')
+                  m && m.click()
+                  return m
+                })
+                if (!mailHere) { throw 'fail' }
 
-                  code = await yopmail.evaluate(() => {
-                    const iframe = document.querySelector('#ifmail')
-                    const selector = iframe && iframe.contentDocument.querySelector('.otp')
-                    const code = selector && selector.innerText
+                code = await yopmail.evaluate(() => {
+                  const iframe = document.querySelector('#ifmail')
+                  const selector = iframe && iframe.contentDocument.querySelector('.otp')
+                  const code = selector && selector.innerText
 
-                    return code
-                  })
+                  return code
+                })
 
-                  if (code) { return }
-                  throw 'fail'
-                }
-                catch (e) {
-                  await yopmail.waitFor(1000 * 10 + rand(2000))
-                  await yopmail.clk('#lrefr')
-                  await waitForCode()
-                }
+                if (code) { return }
+                throw 'fail'
               }
-
-              await waitForCode()
-
-              await page.inst('input[name="code"]', code)
-              await page.clk('input[type="submit"]')
-
-              await page.jClk('#ap-account-fixup-phone-skip-link')
+              catch (e) {
+                await yopmail.waitFor(1000 * 10 + rand(2000))
+                await yopmail.clk('#lrefr')
+                await waitForCode()
+              }
             }
 
-            await page.gotoUrl(album())
+            await waitForCode()
+
+            await page.inst('input[name="code"]', code)
+            await page.clk('input[type="submit"]')
+
+            await page.jClk('#ap-account-fixup-phone-skip-link')
           }
+
+          await page.gotoUrl(album())
+          // }
 
         }
       }
