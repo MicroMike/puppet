@@ -512,10 +512,7 @@ const fct = async () => {
           }
           catch (e) { }
 
-          // if (check) {
-          const continueBtn = await page.ext('#continue')
-
-          if (continueBtn) {
+          try {
             await page.clk('#continue')
 
             const yopmail = await page.np()
@@ -559,10 +556,9 @@ const fct = async () => {
 
             await page.jClk('#ap-account-fixup-phone-skip-link')
           }
+          catch (e) { }
 
           await page.gotoUrl(album())
-          // }
-
         }
       }
       catch (e) {
