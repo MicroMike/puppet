@@ -464,11 +464,13 @@ const fct = async () => {
       try {
         await page.clk('.dialogBox button')
 
-        // await page.inst(password, pass, false, true)
-        // await page.clk('input.a-button-input')
+        await page.inst(password, pass, false, true)
+        await page.jClk('input.a-button-input')
 
         await page.clk('input.a-button-input')
         await page.clk('.a-button-inner a')
+
+        await takeScreenshot('amazonBoxBtn')
       }
       catch (e) { }
 
