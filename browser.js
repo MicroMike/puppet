@@ -191,7 +191,7 @@ const main = async () => {
         await page.clk('input.a-button-input')
         await page.clk('.a-button-inner a')
       }
-      catch (e) { }
+      catch (e) { console.log(e) }
     }
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
