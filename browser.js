@@ -182,22 +182,16 @@ const main = async () => {
       await page.waitFor(5000 + rand(2000))
       await page.clk('input.a-button-input')
 
-      const dialogBox = await page.ext('.dialogBox button')
-      if (dialogBox) {
+      try {
         await page.clk('.dialogBox button')
 
-        try {
-          const input = await page.ext(password)
-          if (!input) { throw 'nope' }
-
-          await page.inst(password, pass)
-          await page.clk('input.a-button-input')
-        }
-        catch (e) { }
+        await page.inst(password, pass)
+        await page.clk('input.a-button-input')
 
         await page.clk('input.a-button-input')
         await page.clk('.a-button-inner a')
       }
+      catch (e) { console.log(e) }
     }
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
