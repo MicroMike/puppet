@@ -460,6 +460,65 @@ const fct = async () => {
       await spotCheck.close()
     }
 
+    const amazonCheck = async () => {
+      try {
+        await page.clk('.dialogBox button')
+
+        // await page.inst(password, pass, false, true)
+        // await page.clk('input.a-button-input')
+
+        await page.clk('input.a-button-input')
+        await page.clk('.a-button-inner a')
+      }
+      catch (e) { }
+
+      try {
+        await page.clk('#continue')
+
+        const yopmail = await page.np()
+        await yopmail.gotoUrl('http://yopmail.com/')
+        await yopmail.inst('.scpt', login)
+        await yopmail.clk('.sbut')
+
+        let code
+        const waitForCode = async () => {
+          try {
+            const mailHere = await yopmail.evaluate(() => {
+              const iframe = document.querySelector('#ifinbox')
+              const m = iframe && iframe.contentDocument.querySelector('#m1')
+              m && m.click()
+              return m
+            })
+            if (!mailHere) { throw 'fail' }
+
+            code = await yopmail.evaluate(() => {
+              const iframe = document.querySelector('#ifmail')
+              const selector = iframe && iframe.contentDocument.querySelector('.otp')
+              const code = selector && selector.innerText
+
+              return code
+            })
+
+            if (code) { return }
+            throw 'fail'
+          }
+          catch (e) {
+            await yopmail.waitFor(1000 * 10 + rand(2000))
+            await yopmail.clk('#lrefr')
+            await waitForCode()
+          }
+        }
+
+        await waitForCode()
+
+        await page.inst('input[name="code"]', code)
+        await page.clk('input[type="submit"]')
+
+        await page.jClk('#ap-account-fixup-phone-skip-link')
+      }
+      catch (e) { }
+    }
+
     const connectFct = async () => {
       try {
         if (player === 'tidal') {
@@ -501,63 +560,7 @@ const fct = async () => {
           await page.gotoUrl(album())
         }
         else if (player === 'amazon') {
-          try {
-            await page.clk('.dialogBox button')
-
-            // await page.inst(password, pass, false, true)
-            // await page.clk('input.a-button-input')
-
-            await page.clk('input.a-button-input')
-            await page.clk('.a-button-inner a')
-          }
-          catch (e) { }
-
-          try {
-            await page.clk('#continue')
-
-            const yopmail = await page.np()
-            await yopmail.gotoUrl('http://yopmail.com/')
-            await yopmail.inst('.scpt', login)
-            await yopmail.clk('.sbut')
-
-            let code
-            const waitForCode = async () => {
-              try {
-                const mailHere = await yopmail.evaluate(() => {
-                  const iframe = document.querySelector('#ifinbox')
-                  const m = iframe && iframe.contentDocument.querySelector('#m1')
-                  m && m.click()
-                  return m
-                })
-                if (!mailHere) { throw 'fail' }
-
-                code = await yopmail.evaluate(() => {
-                  const iframe = document.querySelector('#ifmail')
-                  const selector = iframe && iframe.contentDocument.querySelector('.otp')
-                  const code = selector && selector.innerText
-
-                  return code
-                })
-
-                if (code) { return }
-                throw 'fail'
-              }
-              catch (e) {
-                await yopmail.waitFor(1000 * 10 + rand(2000))
-                await yopmail.clk('#lrefr')
-                await waitForCode()
-              }
-            }
-
-            await waitForCode()
-
-            await page.inst('input[name="code"]', code)
-            await page.clk('input[type="submit"]')
-
-            await page.jClk('#ap-account-fixup-phone-skip-link')
-          }
-          catch (e) { }
-
+          await amazonCheck()
           await page.gotoUrl(album())
         }
       }
@@ -751,7 +754,10 @@ const fct = async () => {
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
-          else if (!changeOnce) { change = true }
+          else if (!changeOnce) {
+            if (player === 'amazon') { await amazonCheck() }
+            change = true
+          }
           else { throw 'freeze' }
         }
 
