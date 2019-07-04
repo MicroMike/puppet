@@ -649,24 +649,24 @@ const fct = async () => {
     let changeOnce = false
 
     const loop = async () => {
-      if (player === 'tidal') {
-        const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
-        if (String(delTidal).match(/expired/)) {
-          throw 'del'
-        }
-      }
-
-      const existRepeatBtnOk = await page.ext(repeatBtnOk)
-
-      if (!existRepeatBtnOk || !repeatBtnOk) {
-        await page.jClk(repeatBtn)
-      }
-
-      await page.jClk(shuffleBtn)
-
-      used = await page.ext(usedDom)
-
       try {
+        const existRepeatBtnOk = await page.ext(repeatBtnOk)
+
+        if (!existRepeatBtnOk || !repeatBtnOk) {
+          await page.jClk(repeatBtn)
+        }
+
+        await page.jClk(shuffleBtn)
+
+        used = await page.ext(usedDom)
+
+        if (player === 'tidal') {
+          const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
+          if (String(delTidal).match(/expired/)) {
+            throw 'del'
+          }
+        }
+
         if (player === 'napster') { await napsterCheck() }
 
         if (used) {
