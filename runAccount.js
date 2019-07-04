@@ -722,7 +722,11 @@ const fct = async () => {
         }
 
         if (countPlays > changePlay) {
-          exitLoop = true
+          // exitLoop = true
+          countPlays = 0
+          changePlay = 20 + rand(20)
+          await page.gotoUrl(album())
+          await waitForPlayBtn('failedLoop')
         }
 
         if (change) {
