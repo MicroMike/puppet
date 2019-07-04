@@ -21,13 +21,14 @@ const mails = [
   '@cool.fr.nf',
 ]
 
+shell.exec('expressvpn disconnect', { silent: true })
+shell.exec('expressvpn connect fr', { silent: true })
+
 const main = async () => {
   const mainPage = await puppet('', true, true)
   MP = await mainPage.np()
 
   const create = async (i = null) => {
-    shell.exec('expressvpn disconnect', { silent: true })
-    shell.exec('expressvpn connect fr', { silent: true })
 
     const mail = await getEmail()
     const email = mail + mails[rand(mails.length)]
