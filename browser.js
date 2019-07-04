@@ -35,8 +35,8 @@ const main = async () => {
 
     if (i) {
       await mainPage.rload()
-      const full = !await mainPage.ext('#enterEmail')
-      if (full) { return process.exit() }
+      const notfull = await mainPage.ext('#enterEmail:not(.hide)')
+      if (!notfull) { return process.exit() }
     }
 
     const page = !i ? mainPage : await puppet('save/amazon_' + email)
