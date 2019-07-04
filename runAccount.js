@@ -501,8 +501,7 @@ const fct = async () => {
           await page.gotoUrl(album())
         }
         else if (player === 'amazon') {
-          const dialogBox = await page.ext('.dialogBox button')
-          if (dialogBox) {
+          try {
             await page.clk('.dialogBox button')
 
             await page.inst(password, pass, false, true)
@@ -511,6 +510,7 @@ const fct = async () => {
             await page.clk('input.a-button-input')
             await page.clk('.a-button-inner a')
           }
+          catch (e) { }
 
           // if (check) {
           const continueBtn = await page.ext('#continue')
