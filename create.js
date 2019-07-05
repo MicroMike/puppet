@@ -75,7 +75,7 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    await page.jClk('#premium > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > button', true)
+    await page.jClk('.btn-success:not(.margin-top-1)', true)
 
     await page.waitFor(2000 + rand(2000))
 
