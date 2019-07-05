@@ -467,9 +467,9 @@ const fct = async () => {
         // await page.inst(password, pass, false, true)
         // await page.jClk('input.a-button-input')
 
-        await yopmail.waitFor(1000 * 5 + rand(2000))
+        await page.waitFor(1000 * 5 + rand(2000))
         await page.clk('input.a-button-input')
-        await yopmail.waitFor(1000 * 5 + rand(2000))
+        await page.waitFor(1000 * 5 + rand(2000))
         await page.clk('.a-button-inner a')
 
         await takeScreenshot('amazonBoxBtn')
