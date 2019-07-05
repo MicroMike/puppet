@@ -472,7 +472,7 @@ const fct = async () => {
         await page.waitFor(1000 * 5 + rand(2000))
         await page.clk('.a-button-inner a')
 
-        await takeScreenshot('amazonBoxBtn')
+        socket.emit('outLog', 'amazonOk')
       }
       catch (e) { }
 
