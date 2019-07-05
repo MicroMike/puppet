@@ -644,7 +644,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 20 + rand(20)
+    let changePlay = 5 + rand(5)
     let change = false
     let changeOnce = false
 
@@ -725,7 +725,7 @@ const fct = async () => {
         if (countPlays > changePlay) {
           // exitLoop = true
           countPlays = 0
-          changePlay = 20 + rand(20)
+          changePlay = 5 + rand(5)
           await page.gotoUrl(album())
           await waitForPlayBtn('failedLoop')
         }
