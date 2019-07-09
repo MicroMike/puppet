@@ -759,7 +759,6 @@ const fct = async () => {
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
           else if (!changeOnce) {
-            if (player === 'amazon') { await amazonCheck() }
             change = true
           }
           else { throw 'freeze' }
