@@ -22,6 +22,7 @@ module.exports = {
     'https://music.amazon.fr/albums/B07RGRZL9F',
     'https://music.amazon.fr/albums/B07RNYTBXG',
     'https://music.amazon.fr/albums/B07TC99Y6V',
+    'https://music.amazon.fr/albums/B07V4BZFM2',
     // 'https://music.amazon.fr/albums/B07G9RM2MG',
     // 'https://music.amazon.fr/albums/B07D3NQ235',
     // 'https://music.amazon.fr/albums/B07D3PGSR4',
@@ -37,6 +38,7 @@ module.exports = {
     'https://listen.tidal.com/album/108790098',
     'https://listen.tidal.com/album/108980716',
     'https://listen.tidal.com/album/111577934',
+    'https://listen.tidal.com/album/112969038',
   ],
   spotify: [
     'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
