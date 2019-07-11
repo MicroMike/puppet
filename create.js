@@ -75,7 +75,7 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    await page.jClk('button:enabled', true)
+    await page.jClk('button.btn-success:enabled', true)
 
     await page.waitFor(2000 + rand(2000))
 
