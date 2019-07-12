@@ -80,7 +80,7 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    await page.inst('input#email', 'vara@hostguru.top', true)
+    await page.inst('input#email', 'micro.smith@mega.zik.dj', true)
     await page.inst('input#password', '20192019', true)
     await page.clk('button#btnLogin')
     await page.clk('input#confirmButtonTop')
