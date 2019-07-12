@@ -155,7 +155,10 @@ const main = async () => {
         const logged = await tidalLog.wfs(loggedDom)
         if (!logged) { throw 'del' }
 
-        await tidalLog.gotoUrl('https://listen.tidal.com/album/93312939')
+        const al = require('./albums')
+        album = al['tidal'][rand(al['tidal'].length)]
+
+        await tidalLog.gotoUrl(album)
         await tidalLog.clk(playBtn)
         await tidalLog.waitFor(1000 * 45)
 
