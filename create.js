@@ -76,14 +76,22 @@ const main = async () => {
     await page.waitFor(2000 + rand(2000))
 
     await page.clk('#premium > div:nth-child(2) div > button')
-    await page.clk('button.btn-success:enabled')
+    // await page.clk('button.btn-success:enabled')
 
+    await page.inst('input#ccname', 'assoune mike', true)
+    await page.inst('input#cardnumber', '5273 4628 0273 0219', true)
+    await page.inst('input#ccmonth', '07', true)
+    await page.inst('input#ccyear', '24', true)
+    await page.inst('input#cvc', '224', true)
+    await page.clk('button.btn-success:enabled')
     await page.waitFor(2000 + rand(2000))
 
-    await page.inst('input#email', 'micro.smith@mega.zik.dj', true)
-    await page.inst('input#password', '20192019', true)
-    await page.clk('button#btnLogin')
-    await page.clk('input#confirmButtonTop')
+    // PAYPAL
+    // await page.inst('input#email', 'micro.smith@mega.zik.dj', true)
+    // await page.inst('input#password', '20192019', true)
+    // await page.clk('button#btnLogin')
+    // await page.clk('input#confirmButtonTop')
+    //PAYPAL
 
     const waitForFinishPay = async () => {
       try {
@@ -319,4 +327,6 @@ const main = async () => {
   // await mailPage.cls(true)
 }
 //5273 4628 0074 9229 04/24 474
+//5273 4628 7704 1310 07/24 004
+//5273 4628 0273 0219 07/24 224
 main()
