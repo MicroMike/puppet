@@ -78,7 +78,7 @@ const main = async () => {
     await page.clk('#premium > div:nth-child(2) div > button')
     // await page.clk('button.btn-success:enabled')
 
-    await page.inst('input#ccname', 'assoune mike', true)
+    await page.inst('input#ccname', 'OSNAUSE KIME', true)
     await page.inst('input#cardnumber', '5273 4628 0273 0219', true)
     await page.inst('input#ccmonth', '07', true)
     await page.inst('input#ccyear', '24', true)
