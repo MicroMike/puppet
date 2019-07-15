@@ -1,11 +1,11 @@
 module.exports = {
   napster: [
     'https://app.napster.com/artist/yokem/album/boombeats',
-    'https://app.napster.com/artist/mahone/album/stone-distraction',
-    'https://app.napster.com/artist/hazel/album/electric-nature',
-    'https://app.napster.com/artist/dj-reid/album/satisfaction-spell',
+    // 'https://app.napster.com/artist/mahone/album/stone-distraction',
+    // 'https://app.napster.com/artist/hazel/album/electric-nature',
+    // 'https://app.napster.com/artist/dj-reid/album/satisfaction-spell',
     'https://app.napster.com/artist/xondes/album/the-last-heat',
-    'https://app.napster.com/artist/dj-otl/album/about-other-people',
+    // 'https://app.napster.com/artist/dj-otl/album/about-other-people',
     'https://app.napster.com/artist/lenitap/album/above-everybody-wind',
     // 'https://app.napster.com/artist/honey/album/just-another-emotion',
     // 'https://app.napster.com/artist/dhn/album/blue-gun',
