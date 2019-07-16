@@ -78,6 +78,7 @@ const main = async () => {
     await page.clk('#premium > div:nth-child(2) div > button')
     // await page.clk('button.btn-success:enabled')
 
+    await page.waitFor(2000 + rand(2000))
     await page.inst('input#ccname', 'OSNAUSE KIME', true)
     await page.inst('input#cardnumber', '5273 4628 0273 0219', true)
     await page.inst('input#ccmonth', '07', true)
