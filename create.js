@@ -83,6 +83,7 @@ const main = async () => {
     await page.inst('input#ccmonth', '07', true)
     await page.inst('input#ccyear', '24', true)
     await page.inst('input#cvc', '224', true)
+    await page.waitFor(2000 + rand(2000))
     await page.clk('button.btn-success:enabled')
     await page.waitFor(2000 + rand(2000))
 
