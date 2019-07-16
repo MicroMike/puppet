@@ -461,6 +461,9 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
+      const del = await page.wfs('.upsellButton')
+      if (del) { throw 'del' }
+
       try {
         await page.clk('.dialogBox button')
 
