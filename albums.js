@@ -1,6 +1,7 @@
 module.exports = {
   napster: [
     'https://app.napster.com/artist/yokem/album/boombeats',
+    'https://app.napster.com/artist/micro-beats-and-breaks/album/micro-one/',
     // 'https://app.napster.com/artist/mahone/album/stone-distraction',
     // 'https://app.napster.com/artist/hazel/album/electric-nature',
     // 'https://app.napster.com/artist/dj-reid/album/satisfaction-spell',
