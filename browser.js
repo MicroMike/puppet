@@ -6,12 +6,22 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-let MP
 const getEmail = async () => {
-  await MP.gotoUrl('https://temp-mail.org/option/delete/')
-  let M = await MP.get('#mail', 'value')
-  M = M.split('@')[0]
-  return M
+  const letters = 'abcdefghijklmnopqrstuvwxyz'
+  const length = rand(2, 4)
+  let mail = ''
+
+  for (let i = 0; i < length; i++) {
+    mail += letters[rand(letters.length)]
+  }
+
+  mail += '.'
+
+  for (let i = 0; i < length; i++) {
+    mail += letters[rand(letters.length)]
+  }
+
+  return mail
 }
 
 const mails = [
@@ -26,7 +36,6 @@ shell.exec('expressvpn connect fr', { silent: true })
 
 const main = async () => {
   const mainPage = await puppet('', true, true)
-  MP = await mainPage.np()
 
   const create = async (i = null) => {
 
