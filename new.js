@@ -15,7 +15,7 @@ const inter = setInterval(pull, 1000 * 60 * 2)
 
 let out = 0
 for (let i = 0; i < 10; i++) {
-  shell.exec('node index ' + arg + '' + i, () => {
+  shell.exec('node index ' + arg + ' ' + i, () => {
     console.log('OUUUUUUUUUUUUUUUUUUUUT')
     if (++out === 5) {
       console.log('reboot')
