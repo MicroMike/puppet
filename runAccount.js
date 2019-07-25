@@ -287,27 +287,28 @@ const fct = async () => {
       password = '#password'
       loginBtn = '.signin'
       loginError = '.login-error'
-
+      
       unlock1 = '.icon-pause2'
       unlock2 = '.icon-play-button'
       playBtn = '.track-list-header .shuffle-button'
       repeatBtn = '.repeat-button'
       repeatBtnOk = '.repeat-button.repeat'
       nextBtn = '.player-advance-button.icon-next2'
-
+      
       usedDom = '.player-error-box'
-
+      
       timeLine = '.player-time'
       callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
     }
     if (player === 'amazon') {
       url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
       loggedDom = '.actionSection.settings'
-
+      
       username = '#ap_email'
       password = '#ap_password'
       remember = '[name="rememberMe"]'
       loginBtn = '#signInSubmit'
+      loginError = '.upsellButton'
 
       playBtn = '.playerIconPlayRing'
       pauseBtn = '.playerIconPauseRing'
@@ -461,7 +462,7 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
-      const del = await page.wfs('.upsellButton')
+      const del = await page.wfs(loginError)
       if (del) { throw 'del' }
 
       try {
