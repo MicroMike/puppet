@@ -597,19 +597,20 @@ const fct = async () => {
       }
       catch (e) {
         if (++trys >= 3) {
-          return catchFct('3trys/' + playError)
+          return catchFct(playError)
         }
 
         await takeScreenshot('try')
 
-        const logged = await page.ext(loggedDom)
-        if (logged) {
-          await page.gotoUrl(album())
-        }
-        else {
-          await connectFct()
-        }
+        // const logged = await page.ext(loggedDom)
+        // if (logged) {
+        //   await page.gotoUrl(album())
+        // }
+        // else {
+        //   await connectFct()
+        // }
 
+        await page.rload()
         await waitForPlayBtn(playError)
       }
     }
