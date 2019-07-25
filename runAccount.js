@@ -603,7 +603,7 @@ const fct = async () => {
           throw playError
         }
 
-        await takeScreenshot('try')
+        // await takeScreenshot('try')
 
         // const logged = await page.ext(loggedDom)
         // if (logged) {
