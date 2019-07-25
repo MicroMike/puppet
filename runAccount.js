@@ -167,7 +167,7 @@ const fct = async () => {
   page = await puppet('save/' + player + '_' + login, noCache, false)
 
   if (!page) {
-    await exit(1234)
+    await exit(210)
   }
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
@@ -222,13 +222,13 @@ const fct = async () => {
     socket.emit('outLog', e)
 
     code = e === 'loop' ? 1 : code
-    code = e === 'firstPlay' ? 1234 : code
-    code = e === 'failedLoop' ? 1234 : code
+    code = e === 'firstPlay' ? 210 : code
+    code = e === 'failedLoop' ? 210 : code
     code = e === 'del' ? 4 : code
     code = e === 'tidalError' ? 6 : code
     code = e === 'amazonError' ? 6 : code
     code = e === 'used' ? 7 : code
-    code = e === 'freeze' ? 1234 : code
+    code = e === 'freeze' ? 210 : code
 
     // code = e === 'retry' ? 5 : code
     // code = e === 'crashed' ? 6 : code
