@@ -219,8 +219,6 @@ module.exports = async (userDataDir, noCache) => {
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--disable-translate',
-      // '--user-agent=Mozilla/10.0 (Windows NT 10.0) AppleWebKit/538.36 (KHTML, like Gecko) Chrome/69.420 Safari/537.36'
     ],
     defaultViewport: {
       width: 851,
@@ -242,7 +240,10 @@ module.exports = async (userDataDir, noCache) => {
       launch = await puppeteer.launch(params);
       browserContext = launch.defaultBrowserContext()
     }
-    catch (e) { return false }
+    catch (f) {
+      console.log(e)
+      return false
+    }
   }
 
   const pages = await browserContext.pages()
