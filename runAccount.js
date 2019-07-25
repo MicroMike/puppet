@@ -597,7 +597,7 @@ const fct = async () => {
       }
       catch (e) {
         if (++trys >= 3) {
-          return catchFct(playError)
+          throw playError
         }
 
         await takeScreenshot('try')
