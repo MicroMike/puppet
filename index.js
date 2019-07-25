@@ -52,7 +52,7 @@ const main = async () => {
       process.exit()
     }
 
-    if (code === 1234) {
+    if (code === 1234 || code === 210) {
       main()
     }
   })
