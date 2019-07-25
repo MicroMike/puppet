@@ -51,8 +51,6 @@ const exit = async (code = 0) => {
 
   socket.emit('Cdisconnect', account)
 
-  console.log('exit Error', code)
-
   process.exit(code)
 }
 
@@ -167,6 +165,7 @@ const fct = async () => {
   page = await puppet('save/' + player + '_' + login, noCache, false)
 
   if (!page) {
+    console.log('no page')
     await exit(210)
   }
 
@@ -216,6 +215,8 @@ const fct = async () => {
 
   const catchFct = async (e) => {
     close = true
+
+    console.log(e)
 
     let code = 5
 
