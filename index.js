@@ -43,7 +43,7 @@ const main = async () => {
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid--
-    console.log(code, `${getTime()} max: ${accountsValid >= max} ${accountsValid}`)
+    console.log(code, `  ${getTime()} max: ${accountsValid >= max} ${accountsValid}`)
     // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
     if (code === 100) {
