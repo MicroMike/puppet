@@ -58,14 +58,14 @@ const main = async () => {
   })
 }
 
-if (check || type) { main() }
+if (check) { main() }
 
 timeout = setInterval(() => {
   time = time || Date.now()
 
   // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (check || accountsValid < max) { main() }
-}, check || type ? 1000 * 60 : 1000 * 60 + rand(1000 * 120));
+}, check ? 1000 * 60 : 1000 * 60 + rand(1000 * 120));
 
 process.on('SIGINT', () => {
   clearInterval(timeout)
