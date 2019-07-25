@@ -33,7 +33,7 @@ const main = async () => {
   catch (e) { }
 
   accountsValid++
-  process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
+  // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
   let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
@@ -43,8 +43,8 @@ const main = async () => {
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid--
-    console.log(code)
-    process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
+    console.log(code, `${getTime()} max: ${accountsValid >= max} ${accountsValid}`)
+    // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
     if (code === 100) {
       console.log('exit')
