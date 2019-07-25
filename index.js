@@ -34,7 +34,6 @@ const main = async () => {
 
   accountsValid++
   // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
-  console.log(`${getTime()} max: ${accountsValid >= max} ${accountsValid}`)
 
   let cmd = 'CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
@@ -44,7 +43,7 @@ const main = async () => {
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid--
-    console.log(code)
+    console.log(code, `${getTime()} max: ${accountsValid >= max} ${accountsValid}`)
     // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
     if (code === 100) {
@@ -64,7 +63,7 @@ if (check || type) { main() }
 timeout = setInterval(() => {
   time = time || Date.now()
 
-  process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
+  // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (check || accountsValid < max) { main() }
 }, check || type ? 1000 * 60 : 1000 * 60 + rand(1000 * 120));
 
