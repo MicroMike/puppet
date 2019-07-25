@@ -287,23 +287,23 @@ const fct = async () => {
       password = '#password'
       loginBtn = '.signin'
       loginError = '.login-error'
-      
+
       unlock1 = '.icon-pause2'
       unlock2 = '.icon-play-button'
       playBtn = '.track-list-header .shuffle-button'
       repeatBtn = '.repeat-button'
       repeatBtnOk = '.repeat-button.repeat'
       nextBtn = '.player-advance-button.icon-next2'
-      
+
       usedDom = '.player-error-box'
-      
+
       timeLine = '.player-time'
       callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
     }
     if (player === 'amazon') {
       url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
       loggedDom = '.actionSection.settings'
-      
+
       username = '#ap_email'
       password = '#ap_password'
       remember = '[name="rememberMe"]'
@@ -548,7 +548,7 @@ const fct = async () => {
           await page.clk(loginBtn)
 
           await page.waitFor(2000 + rand(2000))
-          suppressed = await page.wfs(loginError,false)
+          suppressed = await page.wfs(loginError, false)
 
           if (suppressed) {
             if (player !== 'napster' || String(suppressed).match(/password/)) {
