@@ -228,6 +228,7 @@ const fct = async () => {
     code = e === 'tidalError' ? 6 : code
     code = e === 'amazonError' ? 6 : code
     code = e === 'used' ? 7 : code
+    code = e === 'freeze' ? 1234 : code
 
     // code = e === 'retry' ? 5 : code
     // code = e === 'crashed' ? 6 : code
@@ -273,7 +274,7 @@ const fct = async () => {
         });
       });
     }
-    else {
+    else if (code === 7) {
       socket.emit('loop', { errorMsg: e, account })
     }
 
@@ -653,7 +654,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 50 + rand(50)
+    let changePlay = 5 + rand(5)
     let change = false
     let changeOnce = false
 
@@ -732,11 +733,11 @@ const fct = async () => {
         }
 
         if (countPlays > changePlay) {
-          exitLoop = true
-          // countPlays = 0
-          // changePlay = 5 + rand(5)
-          // await page.gotoUrl(album())
-          // await waitForPlayBtn('failedLoop')
+          // exitLoop = true
+          countPlays = 0
+          changePlay = 5 + rand(5)
+          await page.gotoUrl(album())
+          await waitForPlayBtn('failedLoop')
         }
 
         if (change) {
