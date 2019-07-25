@@ -151,8 +151,7 @@ const addFcts = async (page) => {
       return html
     }
     catch (e) {
-      console.log('Get error ' + selector)
-      return false
+      throw 'Get error ' + selector + ' ' + e
     }
   }
 
