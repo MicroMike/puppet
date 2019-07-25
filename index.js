@@ -8,7 +8,7 @@ var shell = require('shelljs');
 
 const check = process.env.CHECK || process.env.TYPE
 let accountsValid = 0
-const max = process.env.BIG ? 63 : 5
+const max = process.env.BIG ? 63 : 1
 let pause = false
 let first = true
 let updating
@@ -65,7 +65,7 @@ timeout = setInterval(() => {
 
   // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   if (check || accountsValid < max) { main() }
-}, check ? 1000 * 60 : 1000 * 60 + rand(1000 * 120));
+}, check ? 1000 * 60 : 1000 * 60 + rand(1000 * 60 * 4));
 
 process.on('SIGINT', () => {
   clearInterval(timeout)
