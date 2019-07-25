@@ -51,6 +51,8 @@ const exit = async (code = 0) => {
 
   socket.emit('Cdisconnect', account)
 
+  console.log('exit Error', code)
+
   process.exit(code)
 }
 
