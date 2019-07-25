@@ -222,8 +222,8 @@ const fct = async () => {
     socket.emit('outLog', e)
 
     code = e === 'loop' ? 1 : code
-    code = e === 'firstPlay' ? 2 : code
-    code = e === 'failedLoop' ? 2 : code
+    code = e === 'firstPlay' ? 1234 : code
+    code = e === 'failedLoop' ? 1234 : code
     code = e === 'del' ? 4 : code
     code = e === 'tidalError' ? 6 : code
     code = e === 'amazonError' ? 6 : code
@@ -252,12 +252,12 @@ const fct = async () => {
       await takeScreenshot('throw', e)
     }
 
-    if (player === "spotify") {
-      if (code === 2) {
-        await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
-      }
-      await page.gotoUrl('https://spotify.com/logout', true)
-    }
+    // if (player === "spotify") {
+    //   if (code === 2) {
+    //     await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
+    //   }
+    //   await page.gotoUrl('https://spotify.com/logout', true)
+    // }
 
     if (code === 4) {
       request('https://online-music.herokuapp.com/error?del/' + account, function (error, response, body) { })
@@ -599,7 +599,7 @@ const fct = async () => {
         socket.emit('retryOk')
       }
       catch (e) {
-        if (++trys >= 3) {
+        if (++trys > 1) {
           throw playError
         }
 
