@@ -52,20 +52,20 @@ const main = async () => {
       process.exit()
     }
 
-    if (code === 1234 || code === 210) {
+    setTimeout(() => {
       main()
-    }
+    }, rand(1000 * 60 * 5));
   })
 }
 
-if (check) { main() }
+main()
 
-timeout = setInterval(() => {
-  time = time || Date.now()
+// timeout = setInterval(() => {
+//   time = time || Date.now()
 
-  // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
-  if (check || accountsValid < max) { main() }
-}, check ? 1000 * 60 : rand(1000 * 60 * 5));
+//   // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
+//   if (check || accountsValid < max) { main() }
+// }, check ? 1000 * 60 : rand(1000 * 60 * 5));
 
 process.on('SIGINT', () => {
   clearInterval(timeout)

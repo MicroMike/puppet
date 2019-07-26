@@ -604,17 +604,17 @@ const fct = async () => {
           throw playError
         }
 
-        // await takeScreenshot('try')
+        
+        const logged = await page.ext(loggedDom)
+        if (logged) {
+          await takeScreenshot('try')
+          await page.rload()
+        }
+        else {
+          await takeScreenshot('log')
+          await connectFct()
+        }
 
-        // const logged = await page.ext(loggedDom)
-        // if (logged) {
-        //   await page.gotoUrl(album())
-        // }
-        // else {
-        //   await connectFct()
-        // }
-
-        await page.rload()
         await waitForPlayBtn(playError)
       }
     }
