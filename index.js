@@ -52,9 +52,7 @@ const main = async () => {
       process.exit()
     }
 
-    setTimeout(() => {
-      main()
-    }, rand(1000 * 60 * 5));
+    main()
   })
 }
 
