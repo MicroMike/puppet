@@ -1,6 +1,6 @@
 process.setMaxListeners(0)
 
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
