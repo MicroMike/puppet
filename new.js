@@ -15,16 +15,14 @@ const inter = setInterval(pull, 1000 * 60 * 2)
 
 let out = 0
 for (let i = 0; i < 50; i++) {
-  setTimeout(() => {
-    shell.exec('node index ' + arg + ' ' + i, () => {
-      console.log('OUUUUUUUUUUUUUUUUUUUUT')
-      if (++out === 5) {
-        console.log('reboot')
-        clearInterval(inter)
-        process.exit()
-      }
-    })
-  }, 1000 * 15 * i);
+  shell.exec('node index ' + arg + ' ' + i, () => {
+    console.log('OUUUUUUUUUUUUUUUUUUUUT')
+    if (++out === 5) {
+      console.log('reboot')
+      clearInterval(inter)
+      process.exit()
+    }
+  })
 }
 
 process.on('SIGINT', () => {
