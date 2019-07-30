@@ -84,7 +84,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
   let page = new Chromy(params)
 
   if (!noCache) {
-    await page.setCookie({ path: userDataDir +'/Default/Cookies'})
+    // await page.setCookie({ path: userDataDir +'/Default/Cookies'})
   }
 
   page.gotoUrl = async (url, noError) => {
