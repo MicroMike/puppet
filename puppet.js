@@ -29,7 +29,7 @@ const addFcts = async (page) => {
 }
 
 const evaluate = async (page, fct, args) => {
-  Object.keys(args).forEach(k => {
+  Object.keys(args).forEach(async k => {
     await page.evaluate(`${k} = '${args[k]}'`)
   })
   await page.evaluate(fct)
