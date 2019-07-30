@@ -72,7 +72,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
 
   let params = {
     visible: true,
-    // chromePath: '/usr/bin/google-chrome-stable',
+    chromePath: '/usr/bin/google-chrome-stable',
     chromeFlags: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
