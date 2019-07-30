@@ -1,7 +1,6 @@
 process.setMaxListeners(0)
 
 const puppeteer = require('puppeteer');
-const Chromy = require('chromy')
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -28,72 +27,52 @@ const addFcts = async (page) => {
   return page
 }
 
-const evaluate = async (page, fct, args) => {
-  Object.keys(args).forEach(async k => {
-    await page.evaluate(`${k} = '${args[k]}'`)
-  })
-  await page.evaluate(fct)
-}
+module.exports = async (userDataDir, noCache) => {
 
-module.exports = async ({ userDataDir, noCache, create = false, port }) => {
-
-  // const params = {
-  //   executablePath: '/usr/bin/google-chrome-stable',
-  //   userDataDir,
-  //   headless: false,
-  //   args: [
-  //     '--no-sandbox',
-  //     '--disable-setuid-sandbox',
-  //     // '--user-agent=Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36'
-  //   ],
-  //   defaultViewport: {
-  //     width: 851,
-  //     height: 450,
-  //   }
-  // }
-
-  // try {
-  //   launch = await puppeteer.launch(params);
-  //   browserContext = launch.defaultBrowserContext()
-  // }
-  // catch (e) {
-  //   try {
-  //     params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-  //     launch = await puppeteer.launch(params);
-  //     browserContext = launch.defaultBrowserContext()
-  //   }
-  //   catch (f) {
-  //     console.log(e)
-  //     return false
-  //   }
-  // }
-
-  // const pages = await browserContext.pages()
-  // const page = pages[0]
-
-  // await page.evaluateOnNewDocument(() => {
-  //   Object.defineProperty(navigator, 'webdriver', {
-  //     get: () => false,
-  //   });
-  // });
-
-  let params = {
-    visible: true,
-    chromePath: '/usr/bin/google-chrome-stable',
-    chromeFlags: [
+  const params = {
+    executablePath: '/usr/bin/google-chrome-stable',
+    userDataDir,
+    headless: false,
+    args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--window-size=851,450',
+      // '--user-agent=Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36'
     ],
-    waitTimeout: 1000 * 60,
-    port
+    defaultViewport: {
+      width: 851,
+      height: 450,
+    }
   }
 
-  let page = new Chromy(params)
-
-  if (!noCache) {
-    // await page.setCookie({ path: userDataDir +'/Default/Cookies'})
+  if (noCache) {
+    delete params.userDataDir
   }
+
+  try {
+    launch = await puppeteer.launch(params);
+    browserContext = launch.defaultBrowserContext()
+  }
+  catch (e) {
+    try {
+      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+      launch = await puppeteer.launch(params);
+      browserContext = launch.defaultBrowserContext()
+    }
+    catch (f) {
+      console.log(e)
+      return false
+    }
+  }
+
+  const pages = await browserContext.pages()
+  const page = pages[0]
+
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
+    });
+  });
+
 
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
@@ -102,7 +81,7 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
         timeout: 1000 * 60 * 5,
         waitUntil: 'domcontentloaded'
       })
-      await page.wait(3000 + rand(2000))
+      await page.waitFor(3000 + rand(2000))
 
       // setTimeout(async () => {
       //   try {
@@ -122,7 +101,7 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
   page.rload = async () => {
     if (page.closed) { return }
     try {
-      await page.wait(5000 + rand(2000))
+      await page.waitFor(5000 + rand(2000))
       await page.reload({ timeout: 1000 * 60 * 5 })
       return true
     } catch (e) {
@@ -133,8 +112,8 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
   page.wfs = async (selector, error) => {
     if (page.closed) { return }
     try {
-      await page.wait(1000 + rand(2000))
-      await page.wait(selector)
+      await page.waitFor(1000 + rand(2000))
+      await page.waitForSelector(selector, { timeout: 1000 * 60 })
       return true
     } catch (e) {
       if (error) {
@@ -149,7 +128,7 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
   page.ext = async (selector) => {
     if (page.closed) { return }
     try {
-      await page.wait(1000 + rand(2000))
+      await page.waitFor(1000 + rand(2000))
       const exist = await page.evaluate(selector => {
         return !!document.querySelector(selector)
       }, selector)
@@ -162,7 +141,7 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
   page.clk = async (selector, error, noError) => {
     if (page.closed) { return }
     try {
-      await page.wait(1000 + rand(2000))
+      await page.waitFor(1000 + rand(2000))
       !noError && await page.wfs(selector, true)
       await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
@@ -228,8 +207,8 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
   page.get = async (selector, getter = 'innerHTML') => {
     if (page.closed) { return }
     try {
-      await page.wait(1000 + rand(2000))
-      const html = await evaluate(page, () => {
+      await page.waitFor(1000 + rand(2000))
+      const html = await page.evaluate(({ selector, getter }) => {
         return document.querySelector(selector) && document.querySelector(selector)[getter]
       }, { selector, getter })
 
@@ -243,7 +222,7 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
   page.getTime = async (timeLine, callback) => {
     if (page.closed) { return }
     try {
-      await page.wait(1000 + rand(2000))
+      await page.waitFor(1000 + rand(2000))
       let time = await page.evaluate(timeLine => {
         return document.querySelector(timeLine) && document.querySelector(timeLine).innerText
       }, timeLine)
@@ -278,7 +257,7 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
     throw 'crashed'
   });
 
-  return !create ? page : addFcts(page)
+  return tpage && addFcts(tpage)
 
   //   await page.setRequestInterception(true);
   //   page.on('request', interceptedRequest => {

@@ -20,7 +20,6 @@ let trys = 0
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 const time = process.env.TIME
-const port = process.env.PORT
 
 let account
 let player
@@ -163,11 +162,7 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
-  page = await puppet({
-    userDataDir: 'save/' + player + '_' + login,
-    noCache,
-    port,
-  })
+  page = await puppet('save/' + player + '_' + login, noCache, false)
 
   if (!page) {
     console.log('no page')
@@ -201,7 +196,7 @@ const fct = async () => {
 
   stream = async () => {
     await takeScreenshot('stream')
-    await page.wait(3000)
+    await page.waitFor(3000)
 
     if (++countStream > maxStream) {
       streamOn = false
@@ -480,9 +475,9 @@ const fct = async () => {
         // await page.inst(password, pass, false, true)
         // await page.jClk('input.a-button-input')
 
-        await page.wait(1000 * 5 + rand(2000))
+        await page.waitFor(1000 * 5 + rand(2000))
         await page.clk('input.a-button-input')
-        await page.wait(1000 * 5 + rand(2000))
+        await page.waitFor(1000 * 5 + rand(2000))
         await page.clk('.a-button-inner a')
 
         socket.emit('outLog', 'amazonOk')
@@ -548,7 +543,7 @@ const fct = async () => {
         }
 
         if (!connected && player !== 'tidal') {
-          await page.wait(2000 + rand(2000))
+          await page.waitFor(2000 + rand(2000))
           await page.gotoUrl(url)
 
           await checkFill()
@@ -556,7 +551,7 @@ const fct = async () => {
           await page.jClk(remember)
           await page.clk(loginBtn)
 
-          await page.wait(2000 + rand(2000))
+          await page.waitFor(2000 + rand(2000))
           suppressed = await page.wfs(loginError, false)
 
           if (suppressed) {
@@ -593,7 +588,7 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
 
     if (player === 'spotify') {
-      await page.wait(2000 + rand(2000))
+      await page.waitFor(2000 + rand(2000))
       const check1 = await page.ext(usedDom)
       const check2 = await page.ext('.Root__now-playing-bar .control-button.spoticon-pause-16.control-button--circled')
       if (check1 && check2) { throw 'used' }
@@ -609,7 +604,7 @@ const fct = async () => {
           throw playError
         }
 
-
+        
         const logged = await page.ext(loggedDom)
         if (logged) {
           await takeScreenshot('try')
@@ -639,7 +634,7 @@ const fct = async () => {
       request('https://online-music.herokuapp.com/checkOk?' + account, async (error, response, body) => {
         shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account"')
         // startCheck()
-        await page.wait(1000 * 35)
+        await page.waitFor(1000 * 35)
         await page.cls(true)
       })
       return
@@ -706,14 +701,14 @@ const fct = async () => {
         if (t1 === t2 && freeze > 0) {
           a = t1 + ' ' + t2
           await page.jClk(unlock1)
-          await page.wait(1000 * 5)
+          await page.waitFor(1000 * 5)
           await page.jClk(unlock2)
-          await page.wait(1000 * 5)
+          await page.waitFor(1000 * 5)
           t2 = await page.getTime(timeLine, callback)
         }
         else {
           t1 = await page.getTime(timeLine, callback)
-          await page.wait(1000 * 10)
+          await page.waitFor(1000 * 10)
           t2 = await page.getTime(timeLine, callback)
         }
 
