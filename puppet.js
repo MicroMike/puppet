@@ -28,6 +28,13 @@ const addFcts = async (page) => {
   return page
 }
 
+const evaluate = async (page, fct, args) => {
+  Object.keys(args).forEach(k => {
+    await page.evaluate(`${k} = '${args[k]}'`)
+  })
+  await page.evaluate(fct)
+}
+
 module.exports = async ({ userDataDir, noCache, create = false, port }) => {
 
   // const params = {
@@ -77,7 +84,6 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--window-size=851,450',
-      '--remote-debugging-port=' + port
     ],
     waitTimeout: 1000 * 60,
     port
@@ -223,7 +229,7 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
     if (page.closed) { return }
     try {
       await page.wait(1000 + rand(2000))
-      const html = await page.evaluate(({ selector, getter }) => {
+      const html = await evaluate(page, () => {
         return document.querySelector(selector) && document.querySelector(selector)[getter]
       }, { selector, getter })
 
