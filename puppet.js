@@ -30,24 +30,20 @@ const addFcts = async (page) => {
 
 module.exports = async (userDataDir, noCache, create = false) => {
 
-  const params = {
-    executablePath: '/usr/bin/google-chrome-stable',
-    userDataDir,
-    headless: false,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      // '--user-agent=Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36'
-    ],
-    defaultViewport: {
-      width: 851,
-      height: 450,
-    }
-  }
-
-  if (noCache) {
-    delete params.userDataDir
-  }
+  // const params = {
+  //   executablePath: '/usr/bin/google-chrome-stable',
+  //   userDataDir,
+  //   headless: false,
+  //   args: [
+  //     '--no-sandbox',
+  //     '--disable-setuid-sandbox',
+  //     // '--user-agent=Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36'
+  //   ],
+  //   defaultViewport: {
+  //     width: 851,
+  //     height: 450,
+  //   }
+  // }
 
   // try {
   //   launch = await puppeteer.launch(params);
@@ -74,7 +70,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
   //   });
   // });
 
-  let page = new Chromy({
+  let params = new Chromy({
     userDataDir,
     visible: true,
     chromePath: '/usr/bin/google-chrome-stable',
@@ -85,6 +81,12 @@ module.exports = async (userDataDir, noCache, create = false) => {
     ],
     waitTimeout: 1000 * 60
   })
+
+  if (noCache) {
+    delete params.userDataDir
+  }
+
+  let page = new Chromy(params)
 
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
