@@ -86,7 +86,11 @@ module.exports = async (userDataDir, noCache, create = false) => {
     delete params.userDataDir
   }
 
-  let page = new Chromy(params)
+  let page
+  try {
+    page = new Chromy(params)
+  }
+  catch (e) { }
 
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
