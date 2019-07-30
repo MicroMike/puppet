@@ -35,9 +35,9 @@ module.exports = async (userDataDir, noCache) => {
     headless: false,
     dumpio: true,
     args: [
-      '--disable-gpu',
       '--no-sandbox',
       '--disable-setuid-sandbox',
+      '--disable-gpu',
     ],
     defaultViewport: {
       width: 851,
