@@ -76,7 +76,8 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
     chromeFlags: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--window-size=851,450'
+      '--window-size=851,450',
+      '--remote-debugging-port=' + port
     ],
     waitTimeout: 1000 * 60,
     port
