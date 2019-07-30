@@ -78,7 +78,8 @@ module.exports = async ({ userDataDir, noCache, create = false, port }) => {
       '--disable-setuid-sandbox',
       '--window-size=851,450'
     ],
-    waitTimeout: 1000 * 60
+    waitTimeout: 1000 * 60,
+    port
   }
 
   let page = new Chromy(params)
