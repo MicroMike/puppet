@@ -1,6 +1,7 @@
 process.setMaxListeners(0)
 
 const puppeteer = require('puppeteer');
+const Chromy = require('chromy')
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -48,31 +49,42 @@ module.exports = async (userDataDir, noCache, create = false) => {
     delete params.userDataDir
   }
 
-  try {
-    launch = await puppeteer.launch(params);
-    browserContext = launch.defaultBrowserContext()
-  }
-  catch (e) {
-    try {
-      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-      launch = await puppeteer.launch(params);
-      browserContext = launch.defaultBrowserContext()
-    }
-    catch (f) {
-      console.log(e)
-      return false
-    }
-  }
+  // try {
+  //   launch = await puppeteer.launch(params);
+  //   browserContext = launch.defaultBrowserContext()
+  // }
+  // catch (e) {
+  //   try {
+  //     params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+  //     launch = await puppeteer.launch(params);
+  //     browserContext = launch.defaultBrowserContext()
+  //   }
+  //   catch (f) {
+  //     console.log(e)
+  //     return false
+  //   }
+  // }
 
-  const pages = await browserContext.pages()
-  const page = pages[0]
+  // const pages = await browserContext.pages()
+  // const page = pages[0]
 
-  await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
-    });
-  });
+  // await page.evaluateOnNewDocument(() => {
+  //   Object.defineProperty(navigator, 'webdriver', {
+  //     get: () => false,
+  //   });
+  // });
 
+  let page = new Chromy({
+    userDataDir,
+    visible: true,
+    chromePath: '/usr/bin/google-chrome-stable',
+    chromeFlags: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--window-size=851,450'
+    ],
+    waitTimeout: 1000 * 60
+  })
 
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
@@ -81,7 +93,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
         timeout: 1000 * 60 * 5,
         waitUntil: 'domcontentloaded'
       })
-      await page.waitFor(3000 + rand(2000))
+      await page.wait(3000 + rand(2000))
 
       // setTimeout(async () => {
       //   try {
@@ -101,7 +113,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
   page.rload = async () => {
     if (page.closed) { return }
     try {
-      await page.waitFor(5000 + rand(2000))
+      await page.wait(5000 + rand(2000))
       await page.reload({ timeout: 1000 * 60 * 5 })
       return true
     } catch (e) {
@@ -112,8 +124,8 @@ module.exports = async (userDataDir, noCache, create = false) => {
   page.wfs = async (selector, error) => {
     if (page.closed) { return }
     try {
-      await page.waitFor(1000 + rand(2000))
-      await page.waitForSelector(selector, { timeout: 1000 * 60 })
+      await page.wait(1000 + rand(2000))
+      await page.wait(selector)
       return true
     } catch (e) {
       if (error) {
@@ -128,7 +140,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
   page.ext = async (selector) => {
     if (page.closed) { return }
     try {
-      await page.waitFor(1000 + rand(2000))
+      await page.wait(1000 + rand(2000))
       const exist = await page.evaluate(selector => {
         return !!document.querySelector(selector)
       }, selector)
@@ -141,7 +153,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
   page.clk = async (selector, error, noError) => {
     if (page.closed) { return }
     try {
-      await page.waitFor(1000 + rand(2000))
+      await page.wait(1000 + rand(2000))
       !noError && await page.wfs(selector, true)
       await page.evaluate(selector => {
         document.querySelector(selector) && document.querySelector(selector).click()
@@ -207,7 +219,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
   page.get = async (selector, getter = 'innerHTML') => {
     if (page.closed) { return }
     try {
-      await page.waitFor(1000 + rand(2000))
+      await page.wait(1000 + rand(2000))
       const html = await page.evaluate(({ selector, getter }) => {
         return document.querySelector(selector) && document.querySelector(selector)[getter]
       }, { selector, getter })
@@ -222,7 +234,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
   page.getTime = async (timeLine, callback) => {
     if (page.closed) { return }
     try {
-      await page.waitFor(1000 + rand(2000))
+      await page.wait(1000 + rand(2000))
       let time = await page.evaluate(timeLine => {
         return document.querySelector(timeLine) && document.querySelector(timeLine).innerText
       }, timeLine)
