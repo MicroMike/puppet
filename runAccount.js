@@ -162,7 +162,7 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
-  page = await puppet('save/' + player + '_' + login, noCache, false)
+  page = await puppet('chromy/' + player + '_' + login, noCache, false)
 
   if (!page) {
     console.log('no page')
