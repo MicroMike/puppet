@@ -70,7 +70,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
   //   });
   // });
 
-  let params = new Chromy({
+  let params = {
     userDataDir,
     visible: true,
     chromePath: '/usr/bin/google-chrome-stable',
@@ -80,7 +80,7 @@ module.exports = async (userDataDir, noCache, create = false) => {
       '--window-size=851,450'
     ],
     waitTimeout: 1000 * 60
-  })
+  }
 
   if (noCache) {
     delete params.userDataDir
