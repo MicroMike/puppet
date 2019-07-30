@@ -28,7 +28,7 @@ const addFcts = async (page) => {
   return page
 }
 
-module.exports = async (userDataDir, noCache, create = false) => {
+module.exports = async ({ userDataDir, noCache, create = false, port }) => {
 
   // const params = {
   //   executablePath: '/usr/bin/google-chrome-stable',
