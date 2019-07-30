@@ -20,7 +20,6 @@ let trys = 0
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 const time = process.env.TIME
-const port = process.env.PORT
 
 let account
 let player
@@ -163,7 +162,7 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
-  page = await puppet('save/' + player + '_' + login, noCache, port)
+  page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) {
     console.log('no page')

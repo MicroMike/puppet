@@ -27,7 +27,7 @@ const addFcts = async (page) => {
   return page
 }
 
-module.exports = async (userDataDir, noCache, port) => {
+module.exports = async (userDataDir, noCache) => {
 
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
@@ -46,7 +46,7 @@ module.exports = async (userDataDir, noCache, port) => {
   }
 
   if (port) {
-    params.args.push('--remote-debugging-port=' + port)
+    params.args.push('--remote-debugging-port=0')
   }
 
   if (noCache) {
