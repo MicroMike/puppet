@@ -257,7 +257,7 @@ module.exports = async (userDataDir, noCache) => {
     throw 'crashed'
   });
 
-  return tpage && addFcts(tpage)
+  return page && addFcts(page)
 
   //   await page.setRequestInterception(true);
   //   page.on('request', interceptedRequest => {
