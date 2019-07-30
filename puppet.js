@@ -10,6 +10,70 @@ let browserContext
 let launch
 
 const addFcts = async (page) => {
+  page.np = async () => {
+    if (page.closed) { return }
+    let page2 = await launch.newPage()
+    page2 = addFcts(page2)
+    return page2
+  }
+
+  page.lastPage = async () => {
+    const bcPages = await launch.pages()
+    let page2 = bcPages[bcPages.length - 1]
+    page2 = addFcts(page2)
+    return page2
+  }
+
+  return page
+}
+
+module.exports = async (userDataDir, noCache, create = false) => {
+
+  const params = {
+    executablePath: '/usr/bin/google-chrome-stable',
+    userDataDir,
+    headless: false,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      // '--user-agent=Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36'
+    ],
+    defaultViewport: {
+      width: 851,
+      height: 450,
+    }
+  }
+
+  if (noCache) {
+    delete params.userDataDir
+  }
+
+  try {
+    launch = await puppeteer.launch(params);
+    browserContext = launch.defaultBrowserContext()
+  }
+  catch (e) {
+    try {
+      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+      launch = await puppeteer.launch(params);
+      browserContext = launch.defaultBrowserContext()
+    }
+    catch (f) {
+      console.log(e)
+      return false
+    }
+  }
+
+  const pages = await browserContext.pages()
+  const page = pages[0]
+
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
+    });
+  });
+
+
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
     try {
@@ -193,70 +257,7 @@ const addFcts = async (page) => {
     throw 'crashed'
   });
 
-  page.np = async () => {
-    if (page.closed) { return }
-    let page2 = await launch.newPage()
-    page2 = addFcts(page2)
-    return page2
-  }
-
-  page.lastPage = async () => {
-    const bcPages = await launch.pages()
-    let page2 = bcPages[bcPages.length - 1]
-    page2 = addFcts(page2)
-    return page2
-  }
-
-  return page
-}
-
-module.exports = async (userDataDir, noCache) => {
-
-  const params = {
-    executablePath: '/usr/bin/google-chrome-stable',
-    userDataDir,
-    headless: false,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      // '--user-agent=Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36'
-    ],
-    defaultViewport: {
-      width: 851,
-      height: 450,
-    }
-  }
-
-  if (noCache) {
-    delete params.userDataDir
-  }
-
-  try {
-    launch = await puppeteer.launch(params);
-    browserContext = launch.defaultBrowserContext()
-  }
-  catch (e) {
-    try {
-      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-      launch = await puppeteer.launch(params);
-      browserContext = launch.defaultBrowserContext()
-    }
-    catch (f) {
-      console.log(e)
-      return false
-    }
-  }
-
-  const pages = await browserContext.pages()
-  const tpage = pages[0]
-
-  await tpage.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
-    });
-  });
-
-  return tpage && addFcts(tpage)
+  return !create ? page : addFcts(page)
 
   //   await page.setRequestInterception(true);
   //   page.on('request', interceptedRequest => {
