@@ -71,9 +71,8 @@ module.exports = async (userDataDir, noCache, create = false) => {
   // });
 
   let params = {
-    userDataDir,
     visible: true,
-    chromePath: '/usr/bin/google-chrome-stable',
+    // chromePath: '/usr/bin/google-chrome-stable',
     chromeFlags: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -82,15 +81,11 @@ module.exports = async (userDataDir, noCache, create = false) => {
     waitTimeout: 1000 * 60
   }
 
-  if (noCache) {
-    delete params.userDataDir
-  }
+  let page = new Chromy(params)
 
-  let page
-  try {
-    page = new Chromy(params)
+  if (!noCache) {
+    await page.setCookie({ path: userDataDir +'/Default/Cookies'})
   }
-  catch (e) { }
 
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
