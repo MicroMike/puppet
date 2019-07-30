@@ -45,10 +45,6 @@ module.exports = async (userDataDir, noCache) => {
     }
   }
 
-  if (port) {
-    params.args.push('--remote-debugging-port=0')
-  }
-
   if (noCache) {
     delete params.userDataDir
   }
