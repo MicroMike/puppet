@@ -27,7 +27,7 @@ const addFcts = async (page) => {
   return page
 }
 
-module.exports = async (userDataDir, noCache) => {
+module.exports = async (userDataDir, noCache, port) => {
 
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
@@ -35,14 +35,18 @@ module.exports = async (userDataDir, noCache) => {
     headless: false,
     dumpio: true,
     args: [
+      '--disable-gpu',
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      // '--user-agent=Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36'
     ],
     defaultViewport: {
       width: 851,
       height: 450,
     }
+  }
+
+  if (port) {
+    params.args.push('--remote-debugging-port=' + port)
   }
 
   if (noCache) {
