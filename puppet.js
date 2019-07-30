@@ -33,6 +33,7 @@ module.exports = async (userDataDir, noCache) => {
     executablePath: '/usr/bin/google-chrome-stable',
     userDataDir,
     headless: false,
+    dumpio: true,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
