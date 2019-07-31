@@ -217,7 +217,6 @@ const fct = async () => {
 
     let code = 5
 
-    socket.emit('outLog', e)
 
     code = e === 'loop' ? 1 : code
     code = e === 'firstPlay' ? 210 : code
@@ -245,6 +244,7 @@ const fct = async () => {
     }
 
     if (code !== 1) {
+      socket.emit('outLog', e)
       logError(e)
       console.log(getTime() + " ERR ", account, e)
       await takeScreenshot('throw', e)
@@ -652,7 +652,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 10 + rand(10)
+    let changePlay = 30 + rand(30)
     let change = false
     let changeOnce = false
 
