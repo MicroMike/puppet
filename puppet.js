@@ -10,69 +10,6 @@ let browserContext
 let launch
 
 const addFcts = async (page) => {
-  page.np = async () => {
-    if (page.closed) { return }
-    let page2 = await launch.newPage()
-    page2 = addFcts(page2)
-    return page2
-  }
-
-  page.lastPage = async () => {
-    const bcPages = await launch.pages()
-    let page2 = bcPages[bcPages.length - 1]
-    page2 = addFcts(page2)
-    return page2
-  }
-
-  return page
-}
-
-module.exports = async (userDataDir, noCache) => {
-
-  const params = {
-    executablePath: '/usr/bin/google-chrome-stable',
-    userDataDir,
-    headless: false,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-    ],
-    defaultViewport: {
-      width: 851,
-      height: 450,
-    }
-  }
-
-  if (noCache) {
-    delete params.userDataDir
-  }
-
-  try {
-    launch = await puppeteer.launch(params);
-    browserContext = launch.defaultBrowserContext()
-  }
-  catch (e) {
-    try {
-      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-      launch = await puppeteer.launch(params);
-      browserContext = launch.defaultBrowserContext()
-    }
-    catch (f) {
-      console.log(e)
-      return false
-    }
-  }
-
-  const pages = await browserContext.pages()
-  const page = pages[0]
-
-  await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
-    });
-  });
-
-
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
     try {
@@ -254,6 +191,68 @@ module.exports = async (userDataDir, noCache) => {
 
   page.on('error', function (err) {
     throw 'crashed'
+  });
+
+  page.np = async () => {
+    if (page.closed) { return }
+    let page2 = await launch.newPage()
+    page2 = addFcts(page2)
+    return page2
+  }
+
+  page.lastPage = async () => {
+    const bcPages = await launch.pages()
+    let page2 = bcPages[bcPages.length - 1]
+    page2 = addFcts(page2)
+    return page2
+  }
+
+  return page
+}
+
+module.exports = async (userDataDir, noCache) => {
+
+  const params = {
+    executablePath: '/usr/bin/google-chrome-stable',
+    userDataDir,
+    headless: false,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+    ],
+    defaultViewport: {
+      width: 851,
+      height: 450,
+    }
+  }
+
+  if (noCache) {
+    delete params.userDataDir
+  }
+
+  try {
+    launch = await puppeteer.launch(params);
+    browserContext = launch.defaultBrowserContext()
+  }
+  catch (e) {
+    try {
+      params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+      launch = await puppeteer.launch(params);
+      browserContext = launch.defaultBrowserContext()
+    }
+    catch (f) {
+      console.log(e)
+      return false
+    }
+  }
+
+  const pages = await browserContext.pages()
+  const page = pages[0]
+
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
+    });
   });
 
   return page && addFcts(page)
