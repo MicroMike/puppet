@@ -32,7 +32,7 @@ else {
 
 let count
 const main = async () => {
-  const page = await puppet('', true, true)
+  const page = await puppet('', true)
   const mailPage = await page.np()
 
   if (!page) { return }
