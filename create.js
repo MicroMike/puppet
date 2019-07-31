@@ -80,7 +80,7 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#ccname', 'OSNAUSE KIME', true)
-    await page.inst('input#cardnumber', '5273 4628 0273 0219', true)
+    await page.inst('input#cardnumber', '5273462802730219', true)
     await page.inst('input#ccmonth', '07', true)
     await page.inst('input#ccyear', '24', true)
     await page.inst('input#cvc', '224', true)
