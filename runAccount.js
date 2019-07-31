@@ -216,8 +216,6 @@ const fct = async () => {
   const catchFct = async (e) => {
     close = true
 
-    console.log(e)
-
     let code = 5
 
     socket.emit('outLog', e)
