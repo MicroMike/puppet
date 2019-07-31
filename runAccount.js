@@ -27,8 +27,6 @@ let login
 let pass
 let page
 
-let over = false
-
 const getTime = () => {
   const date = new Date
   return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
@@ -102,17 +100,18 @@ const logError = (e) => {
 }
 
 process.on('SIGINT', function (code) {
-  over = true
   console.log('exit')
   logError('exit')
-  exit(100)
+  exit(0)
 });
 
 socket.on('forceOut', () => {
-  over = true
   socket.emit('forceOut')
-  console.log('forceOut')
-  // logError('forceOut')
+  exit(0)
+})
+
+socket.on('outReset', () => {
+  socket.emit('outReset')
   exit(100)
 })
 

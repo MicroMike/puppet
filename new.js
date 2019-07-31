@@ -14,15 +14,22 @@ pull()
 const inter = setInterval(pull, 1000 * 60 * 2)
 
 let out = 0
-for (let i = 0; i < 60; i++) {
-  shell.exec('node index ' + arg + ' ' + i, () => {
-    console.log('OUUUUUUUUUUUUUUUUUUUUT')
-    if (++out === 5) {
-      console.log('reboot')
+let up = 60
+
+const run = async (i) => {
+  shell.exec('node index ' + arg + ' ' + i, code => {
+    if (code === 10) {
       clearInterval(inter)
       process.exit()
     }
+    else {
+      run(i)
+    }
   })
+}
+
+for (let i = 0; i < 60; i++) {
+  run(i)
 }
 
 process.on('SIGINT', () => {
