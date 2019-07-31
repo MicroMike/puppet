@@ -15,14 +15,17 @@ const inter = setInterval(pull, 1000 * 60 * 2)
 
 let out = 0
 let up = 60
+let count = 0
 
 const run = async (i) => {
+  count++
   shell.exec('node index ' + arg + ' ' + i, code => {
-    if (code === 10) {
+    count--
+    if (code === 10 && count === 0) {
       clearInterval(inter)
       process.exit()
     }
-    else {
+    else if (code !== 10) {
       run(i)
     }
   })
