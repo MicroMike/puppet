@@ -185,6 +185,20 @@ const main = async () => {
       await page.waitFor(5000 + rand(2000))
     }
     else {
+      const waitForContinue = async () => {
+        try {
+          const ext1 = await page.ext('#ap-account-fixup-phone-skip-link')
+          const ext2 = await page.ext('input#address-ui-widgets-enterAddressFullName')
+
+          if (!ext1 && !ext2) { throw 'Failed' }
+        }
+        catch (e) {
+          await waitForContinue()
+        }
+      }
+
+      await waitForContinue()
+
       await page.jClk('#ap-account-fixup-phone-skip-link')
 
       await page.inst('input#address-ui-widgets-enterAddressFullName', mail)
