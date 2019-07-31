@@ -61,7 +61,7 @@ if(!nb) {
 else {
   setTimeout(() => {
     main()
-  }, rand(1000 * 60 * 5));
+  }, rand(1000 * 60 * 10));
 }
 
 // timeout = setInterval(() => {
