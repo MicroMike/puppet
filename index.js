@@ -55,14 +55,7 @@ const main = async () => {
   })
 }
 
-if(!nb) {
-  main()
-}
-else {
-  setTimeout(() => {
-    main()
-  }, rand(1000 * 60 * 10));
-}
+main()
 
 // timeout = setInterval(() => {
 //   time = time || Date.now()
