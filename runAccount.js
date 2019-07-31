@@ -71,7 +71,7 @@ socket.on('streams', a => {
 
   setTimeout(() => {
     fct()
-  }, 1000 * 60 * 5);
+  }, rand(1000 * 60 * 5));
 })
 
 // let checkAccounts = null
