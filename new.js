@@ -21,6 +21,7 @@ const run = async (i) => {
   count++
   shell.exec('node index ' + arg + ' ' + i, code => {
     count--
+    console.log(count)
     if (code === 10 && count === 0) {
       clearInterval(inter)
       process.exit()
