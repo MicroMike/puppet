@@ -33,13 +33,12 @@ else {
 let count
 const main = async () => {
   const page = await puppet('', true)
-  const mailPage = await page.np()
-
-  console.log(page)
+  
   if (!page) { return }
-
+  
   await page.gotoUrl(url)
-
+  
+  const mailPage = await page.np()
   await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
   const email = await mailPage.get('#mail', 'value')
   console.log(email)
