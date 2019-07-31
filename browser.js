@@ -76,44 +76,12 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
-    let socketId
-    const takeScreenshot = async (socket) => {
-      let img
+    const lock = await page.ext('input#ap_customer_name')
 
-      try {
-        await page.screenshot({ path: email + '.png' });
-        img = await image2base64(email + '.png')
-      }
-      catch (e) { }
-
-      socket.emit('lockScreen', { streamId: socketId, img, log: email + ' => amazon captcha' })
+    if (lock) {
+      await page.inst('input#ap_password', '20192019')
+      await page.inst('input#ap_password_check', '20192019')
     }
-
-    let socket
-    const unlock = async () => {
-      const lock = await page.ext('input#ap_customer_name')
-
-      if (lock) {
-        if (!socket) {
-          socket = require('socket.io-client')('https://online-music.herokuapp.com');
-
-          socket.on('activate', id => {
-            socketId = id
-          })
-
-          socket.on('runScript', async (captcha) => {
-            await page.inst('input#', captcha)
-          })
-        }
-
-        await takeScreenshot(socket)
-
-        await page.inst('input#ap_password', '20192019')
-        await page.inst('input#ap_password_check', '20192019')
-      }
-    }
-
-    await unlock()
 
     let code
     let url
