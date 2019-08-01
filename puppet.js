@@ -221,6 +221,7 @@ module.exports = async (userDataDir, noCache) => {
       '--no-sandbox',
       '--disable-setuid-sandbox',
     ],
+    timeout: 0,
     defaultViewport: {
       width: 851,
       height: 450,
