@@ -67,14 +67,14 @@ const parseAccount = (a) => {
   const al = require('./albums')
   albums = al[player]
 }
-
+let portc = 9222 + rand(500)
 socket.on('streams', a => {
   if (!a) { return exit(0) }
   if (check) { console.log(a) }
   parseAccount(a)
 
   setTimeout(() => {
-    shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + port, { silent: true }, () => { })
+    shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + portc, { silent: true }, () => { })
     fct()
   }, rand(1000 * 60 * 10));
 })
@@ -177,14 +177,14 @@ const fct = async () => {
     return new Promise(async r => {
       const inter = setInterval(async () => {
         try {
-          const response = await fetch('http://127.0.0.1:' + port + '/json')
+          const response = await fetch('http://127.0.0.1:' + portc + '/json')
           const json = response.json()
           const browserWSEndpoint = json[0] && json[0].webSocketDebuggerUrl
 
           if (browserWSEndpoint) { clearInterval(inter) }
           else { return }
 
-          browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
+          browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + portc })
           page = await puppet(browser)
 
           r(true)
