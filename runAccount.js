@@ -174,17 +174,17 @@ const fct = async () => {
 
   const connect = async () => {
     return new Promise(async r => {
-      try {
-        setTimeout(async () => {
+      setTimeout(async () => {
+        try {
           browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
           page = await puppet(browser)
           r(true)
-        }, 1000 * 15);
-      }
-      catch (e) {
-        console.log(e)
-        r(false)
-      }
+        }
+        catch (e) {
+          console.log(e)
+          r(false)
+        }
+      }, 1000 * 15);
     })
   }
 
