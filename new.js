@@ -79,7 +79,7 @@ for (let i = 0; i < 50; i++) {
   interT.push(
     setTimeout(() => {
       run(i)
-    }, rand(1000 * 60 * 5))
+    }, 1000 * 15 * i + rand(1000 * 15))
   )
 }
 
