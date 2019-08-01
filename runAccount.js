@@ -155,7 +155,8 @@ const fct = async () => {
   let connected = false
   let suppressed = false
 
-  let noCache = player === 'napster' || player === 'spotify'
+  // let noCache = player === 'napster' || player === 'spotify'
+  let noCache = player === 'spotify'
 
   if (noCache) {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
