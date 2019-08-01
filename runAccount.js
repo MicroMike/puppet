@@ -196,10 +196,6 @@ const fct = async () => {
     await exit(210)
   }
 
-  setTimeout(async () => {
-    await page.cls()
-  }, 1000 * 15);
-
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
 
   // page.on('console', msg => {
