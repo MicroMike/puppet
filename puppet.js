@@ -194,15 +194,11 @@ module.exports = async (browser) => {
 
     try {
       await page.goto('about:blank')
-      await browserContext.browser().close()
+      await browser.close()
     }
     catch (e) {
       if (!noError) { throw ('Can\'t close', e) }
     }
-  }
-
-  page.onCls = callback => {
-    callback()
   }
 
   page.np = async () => {
