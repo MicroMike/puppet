@@ -47,7 +47,7 @@ const run = async (i) => {
   // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
   // console.log(`${nb} ${getTime()} max: ${accountsValid >= max} ${accountsValid}`)
 
-  let cmd = 'PORT=' + port + ' CLIENTID=' + arg + ' TIME=' + time + ' node runAccount'
+  let cmd = 'PORT=' + port + ' CLIENTID=' + arg + ' TIME=' + time + ' xvfb-run -a node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
   cmd = first ? 'FIRST=true ' + cmd : cmd
   first = false
