@@ -70,7 +70,7 @@ socket.on('streams', a => {
   parseAccount(a)
 
   // setTimeout(() => {
-    fct()
+  fct()
   // }, rand(1000 * 60 * 5));
 })
 
@@ -127,6 +127,14 @@ socket.on('streamOff', () => {
   streamOn = false
 })
 
+const browserStart = async () => {
+  return new Promise(r => {
+    shell.exec('google-chrome-stable --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port, () => {
+      r(true)
+    })
+  })
+}
+
 const fct = async () => {
   let username
   let password
@@ -167,7 +175,7 @@ const fct = async () => {
   // page = await puppet('save/' + player + '_' + login, noCache)
   let port = 9222 + rand(300)
 
-  shell.exec('google-chrome-stable --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port, { silent: true })
+  await browserStart()
 
   const browser = await puppeteer.connect('http://localhost:' + port)
   const pages = await browser.pages()
