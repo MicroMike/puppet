@@ -72,7 +72,7 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
-  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
+  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, () => { })
 
   setTimeout(() => {
     fct()
