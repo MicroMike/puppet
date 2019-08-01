@@ -70,9 +70,9 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
-  // setTimeout(() => {
+  setTimeout(() => {
   fct()
-  // }, rand(1000 * 60 * 5));
+  }, rand(1000 * 60 * 5));
 })
 
 // let checkAccounts = null
@@ -129,10 +129,6 @@ socket.on('streamOff', () => {
 })
 
 let port = 9222 + rand(300)
-
-if (port++ > 9500) {
-  port = 9222
-}
 
 const fct = async () => {
   let username
