@@ -1,11 +1,12 @@
 process.setMaxListeners(0)
 
-var fs = require('fs');
+const fs = require('fs');
+const fetch = require('fetch');
 const puppeteer = require('puppeteer')
 const puppet = require('./puppet');
 const request = require('ajax-request');
-var shell = require('shelljs');
-var socket = require('socket.io-client')('https://online-music.herokuapp.com');
+const shell = require('shelljs');
+const socket = require('socket.io-client')('https://online-music.herokuapp.com');
 const image2base64 = require('image-to-base64');
 const captcha = require('./captcha')
 
