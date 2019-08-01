@@ -74,7 +74,7 @@ socket.on('streams', a => {
 
   shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + port, { silent: true }, () => { })
 
-  setInterval(() => {
+  setInterval(async () => {
     const result = await fetch('http://127.0.0.1:' + port)
     console.log(result)
   }, 200);
