@@ -181,15 +181,15 @@ const fct = async () => {
 
   const connect = async () => {
     try {
-      browser = await puppeteer.connect('http://127.0.0.1:' + port)
-      console.log(browser)
-      const pages = await browser.pages()
-      page = pages[0]
+      setTimeout(async () => {
+        browser = await puppeteer.connect('http://127.0.0.1:' + port)
+        console.log(browser)
+        const pages = await browser.pages()
+        page = pages[0]
+      }, 1000 * 15);
     }
     catch (e) {
-      setTimeout(() => {
-        await connect()
-      }, 1000 * 15);
+      console.log(e)
     }
   }
 
