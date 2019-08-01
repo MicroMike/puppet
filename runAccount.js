@@ -72,11 +72,10 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
-  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, () => { })
-
   setTimeout(() => {
+    shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, () => { })
     fct()
-  }, rand(1000 * 60 * 5));
+  }, rand(1000 * 60 * 10));
 })
 
 // let checkAccounts = null
@@ -239,7 +238,6 @@ const fct = async () => {
 
     let code = 5
 
-
     code = e === 'loop' ? 1 : code
     code = e === 'firstPlay' ? 210 : code
     code = e === 'failedLoop' ? 210 : code
@@ -267,7 +265,7 @@ const fct = async () => {
 
     if (code !== 1) {
       socket.emit('outLog', e)
-      logError(e)
+      // logError(e)
       console.log(getTime() + " ERR ", account, e)
       await takeScreenshot('throw', e)
     }
