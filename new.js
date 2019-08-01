@@ -1,6 +1,7 @@
 process.setMaxListeners(0)
 
 const shell = require('shelljs');
+const puppeteer = require('puppeteer');
 
 const arg = process.argv[2]
 const nb = process.argv[3]
