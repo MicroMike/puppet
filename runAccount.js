@@ -74,9 +74,9 @@ socket.on('streams', a => {
 
   shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
 
-  setTimeout(() => {
-    fct()
-  }, rand(1000 * 60 * 5));
+  // setTimeout(() => {
+  fct()
+  // }, rand(1000 * 60 * 5));
 })
 
 // let checkAccounts = null
@@ -197,7 +197,7 @@ const fct = async () => {
   }
 
   setTimeout(() => {
-    exit()
+    await page.cls()
   }, 1000 * 15);
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
