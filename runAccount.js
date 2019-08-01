@@ -184,6 +184,7 @@ const fct = async () => {
         setTimeout(async () => {
           browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
           page = puppet(browser)
+          console.log(page)
           r(true)
         }, 1000 * 15);
       }
