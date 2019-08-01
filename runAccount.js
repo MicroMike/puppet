@@ -194,9 +194,9 @@ const fct = async () => {
             });
           });
           
-          page.on('error', function (err) {
-            throw 'crashed'
-          });
+          // page.on('error', function (err) {
+          //   throw 'crashed'
+          // });
           
           page = puppet(page)
           console.log(page)
