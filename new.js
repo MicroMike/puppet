@@ -10,7 +10,6 @@ const pull = () => {
   shell.exec('git pull', { silent: true })
 }
 
-pull()
 const inter = setInterval(pull, 1000 * 60 * 2)
 
 let out = 0
