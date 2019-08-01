@@ -1,7 +1,7 @@
 process.setMaxListeners(0)
 
 const fs = require('fs');
-const fetch = require('fetch');
+const fetch = require('node-fetch');
 const puppeteer = require('puppeteer')
 const puppet = require('./puppet');
 const request = require('ajax-request');
