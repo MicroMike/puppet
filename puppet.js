@@ -189,10 +189,6 @@ module.exports = async (page) => {
     callback()
   }
 
-  page.on('error', function (err) {
-    throw 'crashed'
-  });
-
   page.np = async () => {
     if (page.closed) { return }
     let page2 = await launch.newPage()

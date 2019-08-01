@@ -185,10 +185,22 @@ const fct = async () => {
       try {
         setTimeout(async () => {
           browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
-          console.log(browser)
           const pages = await browser.pages()
           page = pages[0]
+          
+          await page.evaluateOnNewDocument(() => {
+            Object.defineProperty(navigator, 'webdriver', {
+              get: () => false,
+            });
+          });
+          
+          page.on('error', function (err) {
+            throw 'crashed'
+          });
+          
           page = puppet(page)
+          console.log(page)
+
           r(true)
         }, 1000 * 15);
       }
