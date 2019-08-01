@@ -73,10 +73,8 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
-  setTimeout(() => {
-    shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + portc, { silent: true }, () => { })
-    fct()
-  }, rand(1000 * 60 * 10));
+  shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + portc, { silent: true }, () => { })
+  fct()
 })
 
 // let checkAccounts = null

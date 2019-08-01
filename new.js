@@ -16,6 +16,7 @@ let updating
 let timeout
 let time
 let port = 9222
+const interT = []
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -63,6 +64,9 @@ const run = async (i) => {
 
     if (code === 100) {
       console.log('exit')
+      interT.forEach(i => {
+        clearTimeout(i)
+      })
       process.exit()
     }
     else {
@@ -72,10 +76,16 @@ const run = async (i) => {
 }
 
 for (let i = 0; i < 50; i++) {
-  run(i)
+  interT.push(
+    setTimeout(() => {
+      run(i)
+    }, rand(1000 * 60 * 5))
+  )
 }
 
 process.on('SIGINT', () => {
-  clearInterval(inter)
+  interT.forEach(i => {
+    clearTimeout(i)
+  })
   process.exit()
 });
