@@ -175,16 +175,12 @@ const fct = async () => {
     return new Promise(async r => {
       const inter = setInterval(async () => {
         try {
-          const response = await fetch('http://127.0.0.1:' + portc + '/json')
-          const json = response.json()
-          const browserWSEndpoint = json[0] && json[0].webSocketDebuggerUrl
+          fetch('http://127.0.0.1:' + port + '/json')
+            .then(res => res.json())
+            .then(json => console.log(json))
 
-          if (browserWSEndpoint) { clearInterval(inter) }
-          else { return }
-
-          browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + portc })
+          browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
           page = await puppet(browser)
-
           r(true)
         }
         catch (e) { console.log('retry ' + port) }
