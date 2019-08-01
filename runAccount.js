@@ -175,12 +175,13 @@ const fct = async () => {
     return new Promise(async r => {
       const inter = setInterval(async () => {
         try {
-          let isOk
+          let error
           fetch('http://127.0.0.1:' + port + '/json')
             .then(res => res.json())
             .then(json => isOk = json)
-          console.log(isOk)
-          if (isOk) {
+            .catch(err => error = err);
+
+          if (!error) {
             clearInterval(inter)
             browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
             page = await puppet(browser)
