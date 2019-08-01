@@ -135,7 +135,10 @@ if (port++ > 9500) {
 
 const browserStart = async () => {
   return new Promise(r => {
-    shell.exec('google-chrome-stable --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port, () => {
+    shell.exec('google-chrome-stable --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port, { silent: true }, (a, b, c) => {
+      console.log('a: ' + a)
+      console.log('b: ' + b)
+      console.log('c: ' + c)
       r(true)
     })
   })
