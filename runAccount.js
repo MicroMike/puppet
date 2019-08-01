@@ -172,6 +172,7 @@ const fct = async () => {
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
   // page = await puppet('save/' + player + '_' + login, noCache)
+  console.log('chrome start')
   shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, () => {
     console.log('chrome exit')
   })
