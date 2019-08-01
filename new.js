@@ -71,7 +71,7 @@ const run = async (i) => {
   })
 }
 
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 50; i++) {
   run(i)
 }
 
