@@ -9,7 +9,7 @@ const rand = (max, min) => {
 let browserContext
 let launch
 
-const addFcts = async (page) => {
+module.exports = async (page) => {
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
     try {
@@ -210,7 +210,7 @@ const addFcts = async (page) => {
   return page
 }
 
-module.exports = async (userDataDir, noCache) => {
+async (userDataDir, noCache) => {
 
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',

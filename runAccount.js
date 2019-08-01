@@ -2,6 +2,7 @@ process.setMaxListeners(0)
 
 var fs = require('fs');
 const puppeteer = require('puppeteer')
+const puppet = require('./puppet');
 const request = require('ajax-request');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
@@ -172,7 +173,7 @@ const fct = async () => {
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
   // page = await puppet('save/' + player + '_' + login, noCache)
-  shell.exec('google-chrome-stable --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port, () => {
+  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port, () => {
     console.log('chrome exit')
   })
 
@@ -187,6 +188,7 @@ const fct = async () => {
           console.log(browser)
           const pages = await browser.pages()
           page = pages[0]
+          page = puppet(page)
           r(true)
         }, 1000 * 15);
       }
