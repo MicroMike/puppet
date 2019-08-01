@@ -183,7 +183,7 @@ const fct = async () => {
     return new Promise(async r => {
       try {
         setTimeout(async () => {
-          browser = await puppeteer.connect('http://127.0.0.1:' + port)
+          browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
           console.log(browser)
           const pages = await browser.pages()
           page = pages[0]
