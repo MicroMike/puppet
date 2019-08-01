@@ -189,9 +189,7 @@ const fct = async () => {
 
           r(true)
         }
-        catch (e) {
-          console.log(e)
-        }
+        catch (e) { console.log('retry ' + port) }
       }, 1000 * 15);
     })
   }
