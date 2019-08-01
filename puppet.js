@@ -213,12 +213,13 @@ const addFcts = async (page) => {
 module.exports = async (userDataDir, noCache) => {
 
   const params = {
-    executablePath: '/usr/bin/google-chrome-stable',
+    executablePath: '/usr/bin/chromium-browser',
     userDataDir,
     headless: false,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
+      '--user-agent=Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36'
     ],
     defaultViewport: {
       width: 851,
