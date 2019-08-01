@@ -133,16 +133,6 @@ if (port++ > 9500) {
   port = 9222
 }
 
-const browserStart = async () => {
-  return new Promise(r => {
-    shell.exec('google-chrome-stable --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port, (a, b, c) => {
-      console.log('a: ' + a)
-      console.log('b: ' + b)
-      console.log('c: ' + c)
-      r(true)
-    })
-  })
-}
 
 const fct = async () => {
   let username
@@ -182,8 +172,7 @@ const fct = async () => {
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
   // page = await puppet('save/' + player + '_' + login, noCache)
-
-  await browserStart()
+  shell.exec('google-chrome-stable --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port)
 
   const browser = await puppeteer.connect('http://localhost:' + port)
   const pages = await browser.pages()
