@@ -83,7 +83,7 @@ socket.on('streams', a => {
     catch (e) {
       console.log(e)
     }
-  }, 200);
+  }, 1000);
 
   setTimeout(() => {
     fct()
