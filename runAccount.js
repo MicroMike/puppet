@@ -174,7 +174,8 @@ const fct = async () => {
   // page = await puppet('save/' + player + '_' + login, noCache)
   shell.exec('google-chrome-stable --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --remote-debugging-port=' + port)
 
-  const browser = await puppeteer.connect('http://localhost:' + port)
+  const browser = await puppeteer.connect('http://127.0.0.1:' + port)
+  console.log(browser)
   const pages = await browser.pages()
   const page = pages[0]
 
