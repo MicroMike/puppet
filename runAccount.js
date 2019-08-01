@@ -73,13 +73,16 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
-  if(player === 'napster') {
+  if (player === 'napster') {
     shell.exec('google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
   }
   else {
     shell.exec('google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
   }
-  fct()
+
+  setTimeout(() => {
+    fct()
+  }, rand(1000 * 60 * 10));
 })
 
 // let checkAccounts = null

@@ -64,9 +64,6 @@ const run = async (i) => {
 
     if (code === 100) {
       console.log('exit')
-      interT.forEach(i => {
-        clearTimeout(i)
-      })
       process.exit()
     }
     else {
@@ -76,16 +73,9 @@ const run = async (i) => {
 }
 
 for (let i = 0; i < 50; i++) {
-  interT.push(
-    setTimeout(() => {
-      run(i)
-    }, 1000 * 20 * i + rand(1000 * 20))
-  )
+  run(i)
 }
 
 process.on('SIGINT', () => {
-  interT.forEach(i => {
-    clearTimeout(i)
-  })
   process.exit()
 });
