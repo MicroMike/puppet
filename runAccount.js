@@ -179,7 +179,7 @@ const fct = async () => {
           fetch('http://127.0.0.1:' + port + '/json')
             .then(res => res.json())
             .then(json => isOk = json)
-
+          console.log(isOk)
           if (isOk) {
             clearInterval(inter)
             browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
