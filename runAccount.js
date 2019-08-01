@@ -21,6 +21,7 @@ let trys = 0
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 const time = process.env.TIME
+const port = process.env.PORT
 
 let account
 let player
@@ -127,8 +128,6 @@ socket.on('streamOn', () => {
 socket.on('streamOff', () => {
   streamOn = false
 })
-
-let port = 9222 + rand(300)
 
 const fct = async () => {
   let username
