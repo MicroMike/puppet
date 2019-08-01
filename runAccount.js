@@ -187,7 +187,9 @@ const fct = async () => {
       page = pages[0]
     }
     catch (e) {
-      connect()
+      setTimeout(() => {
+        connect()
+      }, 1000 * 15);
     }
   }
 
