@@ -1,7 +1,7 @@
 process.setMaxListeners(0)
 
 var fs = require('fs');
-const puppeteer = require('./puppeteer')
+const puppeteer = require('puppeteer')
 const request = require('ajax-request');
 var shell = require('shelljs');
 var socket = require('socket.io-client')('https://online-music.herokuapp.com');
