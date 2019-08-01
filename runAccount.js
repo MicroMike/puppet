@@ -196,7 +196,7 @@ const fct = async () => {
     await exit(210)
   }
 
-  setTimeout(() => {
+  setTimeout(async () => {
     await page.cls()
   }, 1000 * 15);
 
