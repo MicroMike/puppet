@@ -176,10 +176,20 @@ const fct = async () => {
     console.log('chrome exit')
   })
 
-  const browser = await puppeteer.connect('http://127.0.0.1:' + port)
-  console.log(browser)
-  const pages = await browser.pages()
-  const page = pages[0]
+  let browser
+  let page
+
+  const connect = async () => {
+    try {
+      browser = await puppeteer.connect('http://127.0.0.1:' + port)
+      console.log(browser)
+      const pages = await browser.pages()
+      page = pages[0]
+    }
+    catch (e) {
+      connect()
+    }
+  }
 
   if (!page) {
     console.log('no page')
