@@ -77,8 +77,8 @@ socket.on('streams', a => {
 
   setInterval(async () => {
     try {
-      fetch('http://127.0.0.1:' + port)
-        .then(res => `{arr:${res}}`.json())
+      fetch('http://127.0.0.1:' + port + '/json')
+        .then(res => res.json())
         .then(json => console.log(json))
     }
     catch (e) {
