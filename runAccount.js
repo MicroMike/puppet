@@ -134,7 +134,6 @@ if (port++ > 9500) {
   port = 9222
 }
 
-
 const fct = async () => {
   let username
   let password
@@ -178,7 +177,6 @@ const fct = async () => {
   })
 
   let browser
-  let page
 
   const connect = async () => {
     return new Promise(async r => {
@@ -194,9 +192,9 @@ const fct = async () => {
             });
           });
           
-          // page.on('error', function (err) {
-          //   throw 'crashed'
-          // });
+          page.on('error', function (err) {
+            throw 'crashed'
+          });
           
           page = puppet(page)
           console.log(page)
