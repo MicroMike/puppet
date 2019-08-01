@@ -183,27 +183,7 @@ const fct = async () => {
       try {
         setTimeout(async () => {
           browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
-          const pages = await browser.pages()
-          page = pages[0]
-
-          await page.evaluateOnNewDocument(() => {
-            Object.defineProperty(navigator, 'webdriver', {
-              get: () => false,
-            });
-          });
-
-          page.on('error', function (err) {
-            throw 'crashed'
-          });
-
-          page.on('close', function (err) {
-            if (!close && !check) {
-              exit(0)
-            }
-          });
-
-          page = puppet(page)
-
+          page = puppet(browser)
           r(true)
         }, 1000 * 15);
       }

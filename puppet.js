@@ -6,10 +6,26 @@ const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-let browserContext
-let launch
+module.exports = async (browser) => {
+  const pages = await browser.pages()
+  const page = pages[0]
 
-module.exports = async (page) => {
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
+    });
+  });
+
+  page.on('error', function (err) {
+    throw 'crashed'
+  });
+
+  page.on('close', function (err) {
+    if (!close && !check) {
+      exit(0)
+    }
+  });
+
   page.gotoUrl = async (url, noError) => {
     if (page.closed) { return }
     try {
@@ -191,13 +207,13 @@ module.exports = async (page) => {
 
   page.np = async () => {
     if (page.closed) { return }
-    let page2 = await launch.newPage()
+    let page2 = await browser.newPage()
     page2 = addFcts(page2)
     return page2
   }
 
   page.lastPage = async () => {
-    const bcPages = await launch.pages()
+    const bcPages = await browser.pages()
     let page2 = bcPages[bcPages.length - 1]
     page2 = addFcts(page2)
     return page2
