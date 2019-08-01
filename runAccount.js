@@ -173,7 +173,7 @@ const fct = async () => {
 
   // page = await puppet('save/' + player + '_' + login, noCache)
   console.log('chrome start')
-  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, () => {
+  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => {
     console.log('chrome exit')
   })
 
