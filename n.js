@@ -1,3 +1,5 @@
+process.setMaxListeners(0)
+
 var shell = require('shelljs');
 
 while (true) {
