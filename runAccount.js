@@ -72,8 +72,14 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
+  shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + port, { silent: true }, () => { })
+
+  setInterval(() => {
+    const result = await fetch('http://127.0.0.1:' + port)
+    console.log(result)
+  }, 200);
+
   setTimeout(() => {
-    shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + port, { silent: true }, () => { })
     fct()
   }, rand(1000 * 60 * 25));
 })
