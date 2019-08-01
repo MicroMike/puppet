@@ -213,7 +213,7 @@ const addFcts = async (page) => {
 module.exports = async (userDataDir, noCache) => {
 
   const params = {
-    executablePath: '/usr/bin/chromium-browser',
+    // executablePath: '/usr/bin/chromium-browser',
     userDataDir,
     headless: false,
     args: [
