@@ -185,7 +185,7 @@ const fct = async () => {
 
               if (browserWSEndpoint) { clearInterval(inter) }
 
-              browser = await puppeteer.connect({ browserWSEndpoint })
+              browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
               page = await puppet(browser)
 
               r(true)
