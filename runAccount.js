@@ -191,6 +191,8 @@ const fct = async () => {
     }
   }
 
+  await connect()
+
   if (!page) {
     console.log('no page')
     await exit(210)
