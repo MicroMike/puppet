@@ -189,7 +189,7 @@ const fct = async () => {
 
   let success = await connect()
 
-  if (!page && !success) {
+  if (!success) {
     console.log('no page')
     await exit(210)
   }
