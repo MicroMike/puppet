@@ -75,20 +75,9 @@ socket.on('streams', a => {
 
   shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + port, { silent: true }, () => { })
 
-  setInterval(async () => {
-    try {
-      fetch('http://127.0.0.1:' + port + '/json')
-        .then(res => res.json())
-        .then(json => console.log(json))
-    }
-    catch (e) {
-      console.log(e)
-    }
-  }, 1000 * 5);
-
-  setTimeout(() => {
+  // setTimeout(() => {
     fct()
-  }, rand(1000 * 60 * 25));
+  // }, rand(1000 * 60 * 5));
 })
 
 // let checkAccounts = null
@@ -187,15 +176,23 @@ const fct = async () => {
 
   const connect = async () => {
     return new Promise(async r => {
-      setTimeout(async () => {
+      const inter = setInterval(async () => {
         try {
-          browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
-          page = await puppet(browser)
-          r(true)
+          fetch('http://127.0.0.1:' + port + '/json')
+            .then(res => res.json())
+            .then(json => {
+              const browserWSEndpoint = json[0].webSocketDebuggerUrl
+
+              if (browserWSEndpoint) { clearInterval(inter) }
+
+              browser = await puppeteer.connect({ browserWSEndpoint })
+              page = await puppet(browser)
+
+              r(true)
+            })
         }
         catch (e) {
           console.log(e)
-          r(false)
         }
       }, 1000 * 15);
     })
