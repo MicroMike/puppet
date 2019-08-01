@@ -48,7 +48,7 @@ const main = async () => {
 
     if (code === 100) {
       console.log('exit')
-      process.exit(100)
+      process.exit()
     }
 
     main()
@@ -67,5 +67,5 @@ main()
 process.on('SIGINT', () => {
   clearInterval(timeout)
   console.log('exit')
-  process.exit()
+  process.exit(100)
 });

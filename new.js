@@ -30,7 +30,7 @@ const run = async (i) => {
       clearInterval(inter)
       process.exit()
     }
-    else if (code !== 10) {
+    else {
       run(i)
     }
   })
