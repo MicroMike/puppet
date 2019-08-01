@@ -179,7 +179,7 @@ const fct = async () => {
         try {
           const response = await fetch('http://127.0.0.1:' + port + '/json')
           const json = response.json()
-          const browserWSEndpoint = json && json[0].webSocketDebuggerUrl
+          const browserWSEndpoint = json[0] && json[0].webSocketDebuggerUrl
 
           if (browserWSEndpoint) { clearInterval(inter) }
           else { return }
