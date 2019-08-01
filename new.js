@@ -58,7 +58,7 @@ const run = async (i) => {
 
   shell.exec(cmd, async (code, b, c) => {
     accountsValid--
-    console.log(`${nb} code: ${code}`, b, c)
+    console.log(`${nb} code: ${code}`)
     // process.stdout.write(`${getTime()} max: ${accountsValid >= max} ${accountsValid} \r`)
 
     if (code === 100) {
