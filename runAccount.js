@@ -74,10 +74,10 @@ socket.on('streams', a => {
   parseAccount(a)
 
   if(player === 'napster') {
-    shell.exec('google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
+    shell.exec('google-chrome-stable --headless --window-size=851,450 --no-sandbox --disable-setuid-sandbox --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
   }
   else {
-    shell.exec('google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
+    shell.exec('google-chrome-stable --headless --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
   }
   fct()
 })
