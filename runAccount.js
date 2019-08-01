@@ -181,7 +181,7 @@ const fct = async () => {
         }
         catch (e) {
           console.log(e)
-          r(false)
+          connect()
         }
       }, 1000 * 15);
     })
