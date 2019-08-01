@@ -188,7 +188,7 @@ const fct = async () => {
     }
     catch (e) {
       setTimeout(() => {
-        connect()
+        await connect()
       }, 1000 * 15);
     }
   }
