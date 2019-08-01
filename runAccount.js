@@ -76,7 +76,7 @@ socket.on('streams', a => {
   setTimeout(() => {
     shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + port, { silent: true }, () => { })
     fct()
-  }, rand(1000 * 60 * 5));
+  }, rand(1000 * 60 * 10));
 })
 
 // let checkAccounts = null
