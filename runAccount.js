@@ -185,19 +185,22 @@ const fct = async () => {
           browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
           const pages = await browser.pages()
           page = pages[0]
-          
+
           await page.evaluateOnNewDocument(() => {
             Object.defineProperty(navigator, 'webdriver', {
               get: () => false,
             });
           });
-          
+
           page.on('error', function (err) {
             throw 'crashed'
           });
-          
+
+          page.on('close', function (err) {
+            throw 'crashed'
+          });
+
           page = puppet(page)
-          console.log(page)
 
           r(true)
         }, 1000 * 15);
@@ -219,11 +222,11 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
 
-  page.on('close', function (err) {
-    if (!close && !check) {
-      exit(0)
-    }
-  });
+  // page.on('close', function (err) {
+  //   if (!close && !check) {
+  //     exit(0)
+  //   }
+  // });
 
   // page.on('console', msg => {
   //   for (let i = 0; i < msg.args().length; ++i)
