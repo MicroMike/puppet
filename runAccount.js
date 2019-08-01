@@ -71,7 +71,7 @@ socket.on('streams', a => {
   parseAccount(a)
 
   setTimeout(() => {
-  fct()
+    fct()
   }, rand(1000 * 60 * 5));
 })
 
@@ -168,10 +168,7 @@ const fct = async () => {
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
   // page = await puppet('save/' + player + '_' + login, noCache)
-  console.log('chrome start')
-  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => {
-    console.log('chrome exit')
-  })
+  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
 
   let browser
 
@@ -181,7 +178,6 @@ const fct = async () => {
         setTimeout(async () => {
           browser = await puppeteer.connect({ browserURL: 'http://127.0.0.1:' + port })
           page = await puppet(browser)
-          console.log(page)
           r(true)
         }, 1000 * 15);
       }
@@ -193,7 +189,6 @@ const fct = async () => {
   }
 
   let success = await connect()
-  console.log(success)
 
   if (!page && !success) {
     console.log('no page')
