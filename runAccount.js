@@ -69,9 +69,7 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
-  setTimeout(() => {
-    fct()
-  }, rand(1000 * 60 * 5));
+  fct()
 })
 
 // let checkAccounts = null

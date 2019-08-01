@@ -48,7 +48,7 @@ const main = async () => {
 
     if (code === 100) {
       console.log('exit')
-      process.exit(10)
+      process.exit(100)
     }
 
     main()

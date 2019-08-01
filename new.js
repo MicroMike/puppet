@@ -16,14 +16,14 @@ const inter = setInterval(pull, 1000 * 60 * 2)
 let out = 0
 let up = 60
 let count = 0
+let inter = []
 
 const run = async (i) => {
-  count++
   shell.exec('node index ' + arg + ' ' + i, code => {
-    count--
-    console.log(count)
-    if (code === 10 && count === 0) {
-      clearInterval(inter)
+    if (code === 100) {
+      inter.forEach(i => {
+        clearTimeout(i)
+      });
       process.exit()
     }
     else if (code !== 10) {
@@ -33,10 +33,16 @@ const run = async (i) => {
 }
 
 for (let i = 0; i < 50; i++) {
-  run(i)
+  inter.push(
+    setTimeout(() => {
+      run(i)
+    }, rand(1000 * 60 * 5))
+  )
 }
 
 process.on('SIGINT', () => {
-  clearInterval(inter)
+  inter.forEach(i => {
+    clearTimeout(i)
+  });
   process.exit()
 });
