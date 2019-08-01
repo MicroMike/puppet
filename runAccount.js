@@ -73,9 +73,12 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
-  let noCache = player === 'spotify' || player === 'napster'
-
-  shell.exec('google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox ' + noCache ? '' : '--user-data-dir="save/' + player + '_' + login + '"' + ' --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
+  if(player === 'napster') {
+    shell.exec('google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
+  }
+  else {
+    shell.exec('google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
+  }
   fct()
 })
 
