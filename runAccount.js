@@ -72,9 +72,11 @@ socket.on('streams', a => {
   if (check) { console.log(a) }
   parseAccount(a)
 
-  // setTimeout(() => {
-  fct()
-  // }, rand(1000 * 60 * 5));
+  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
+
+  setTimeout(() => {
+    fct()
+  }, rand(1000 * 60 * 5));
 })
 
 // let checkAccounts = null
@@ -168,7 +170,6 @@ const fct = async () => {
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
   // page = await puppet('save/' + player + '_' + login, noCache)
-  shell.exec('google-chrome --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=' + port, { silent: true }, () => { })
 
   let browser
 
