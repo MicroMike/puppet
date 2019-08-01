@@ -4,6 +4,10 @@ const arg = process.argv[2]
 
 shell.exec('killall chrome', { silent: true })
 
+const rand = (max, min) => {
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+}
+
 const pull = () => {
   shell.exec('npm run rm && npm run clear', { silent: true })
   shell.exec('git reset --hard origin/master', { silent: true })
