@@ -67,13 +67,13 @@ const parseAccount = (a) => {
   const al = require('./albums')
   albums = al[player]
 }
-let portc = 9222 + rand(500)
+
 socket.on('streams', a => {
   if (!a) { return exit(0) }
   if (check) { console.log(a) }
   parseAccount(a)
 
-  shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + portc, { silent: true }, () => { })
+  shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + port, { silent: true }, () => { })
   fct()
 })
 
