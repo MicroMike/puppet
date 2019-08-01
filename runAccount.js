@@ -76,7 +76,7 @@ socket.on('streams', a => {
   shell.exec(`google-chrome-stable --window-size=851,450 --no-sandbox --disable-setuid-sandbox --user-data-dir="save/' + player + '_' + login + '" --no-first-run --remote-debugging-port=` + port, { silent: true }, () => { })
 
   // setTimeout(() => {
-    fct()
+  fct()
   // }, rand(1000 * 60 * 5));
 })
 
@@ -180,7 +180,7 @@ const fct = async () => {
         try {
           fetch('http://127.0.0.1:' + port + '/json')
             .then(res => res.json())
-            .then(json => {
+            .then(async json => {
               const browserWSEndpoint = json[0].webSocketDebuggerUrl
 
               if (browserWSEndpoint) { clearInterval(inter) }
