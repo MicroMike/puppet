@@ -197,7 +197,9 @@ const fct = async () => {
           });
 
           page.on('close', function (err) {
-            throw 'crashed'
+            if (!close && !check) {
+              exit(0)
+            }
           });
 
           page = puppet(page)
@@ -221,12 +223,6 @@ const fct = async () => {
   }
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
-
-  // page.on('close', function (err) {
-  //   if (!close && !check) {
-  //     exit(0)
-  //   }
-  // });
 
   // page.on('console', msg => {
   //   for (let i = 0; i < msg.args().length; ++i)
