@@ -28,6 +28,7 @@ let player
 let login
 let pass
 let page
+let success
 
 const getTime = () => {
   const date = new Date
@@ -47,7 +48,7 @@ const exit = async (code = 0) => {
   socket.emit('playerInfos', { account: player + ':' + login, streamId, out: true })
 
   close = true
-  page && await page.cls(true)
+  success && page && await page.cls(true)
 
   socket.emit('Cdisconnect', account)
 
@@ -187,7 +188,7 @@ const fct = async () => {
     })
   }
 
-  let success = await connect()
+  success = await connect()
 
   if (!success) {
     console.log('no page')
