@@ -180,22 +180,27 @@ const fct = async () => {
   let page
 
   const connect = async () => {
-    try {
-      setTimeout(async () => {
-        browser = await puppeteer.connect('http://127.0.0.1:' + port)
-        console.log(browser)
-        const pages = await browser.pages()
-        page = pages[0]
-      }, 1000 * 15);
-    }
-    catch (e) {
-      console.log(e)
-    }
+    return new Promise(async r => {
+      try {
+        setTimeout(async () => {
+          browser = await puppeteer.connect('http://127.0.0.1:' + port)
+          console.log(browser)
+          const pages = await browser.pages()
+          page = pages[0]
+          r(true)
+        }, 1000 * 15);
+      }
+      catch (e) {
+        console.log(e)
+        r(false)
+      }
+    })
   }
 
-  await connect()
+  let success = await connect()
+  console.log(success)
 
-  if (!page) {
+  if (!page && !success) {
     console.log('no page')
     await exit(210)
   }
