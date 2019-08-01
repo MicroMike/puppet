@@ -108,12 +108,12 @@ const logError = (e) => {
 process.on('SIGINT', function (code) {
   console.log('exit')
   logError('exit')
-  exit(0)
+  exit(150)
 });
 
 socket.on('forceOut', () => {
   socket.emit('forceOut')
-  exit(0)
+  exit(50)
 })
 
 socket.on('outReset', () => {
