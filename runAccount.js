@@ -490,6 +490,7 @@ const fct = async () => {
         await yopmail.clk('.sbut')
 
         let code
+        let tries = 0
         const waitForCode = async () => {
           try {
             const mailHere = await yopmail.evaluate(() => {
@@ -514,7 +515,13 @@ const fct = async () => {
           catch (e) {
             await yopmail.waitFor(1000 * 10 + rand(2000))
             await yopmail.clk('#lrefr')
-            await waitForCode()
+            if (++tries < 6) {
+              await waitForCode()
+            }
+            else {
+              catchFct('amazonError')
+              return false
+            }
           }
         }
 
