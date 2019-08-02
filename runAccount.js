@@ -725,7 +725,7 @@ const fct = async () => {
         let matchTime = Number(t1)
 
         if (matchTime > 40) {
-          if (rand(7) < 1) {
+          if (rand(3) === 0) {
             await page.jClk(nextBtn)
             socket.emit('plays', { next: true, currentAlbum })
           }
