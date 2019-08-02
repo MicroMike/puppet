@@ -64,7 +64,6 @@ const main = async () => {
 
   await page.gotoUrl(url)
 
-
   if (type === 'tidal') {
     await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
