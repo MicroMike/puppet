@@ -210,9 +210,10 @@ const main = async () => {
       console.log(tMail)
 
       const tryClick = async () => {
-        const done = await page.jClk('.icon.icon-plus')
+        await page.jClk('.icon.icon-plus')
+        const existInput = await page.ext('[name="email"]')
 
-        if (!done) {
+        if (!existInput) {
           await tidalLog.waitFor(2000 + rand(2000))
           await tryClick()
         }
