@@ -72,10 +72,10 @@ const main = async () => {
     // await page.clk('input#email + button')
     // await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
 
+    await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
+
     const waitForPass = async () => {
       try {
-        await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
-
         const exist = await page.ext('input#new-password')
         if (!exist) { throw 'failed' }
       }
@@ -164,11 +164,10 @@ const main = async () => {
 
       if (needLog) {
         // await tidalLog.inst(username, m, true)
+        await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
 
         const waitForPass = async () => {
           try {
-            await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
-
             const exist = await tidalLog.ext(password)
             if (!exist) { throw 'failed' }
           }
