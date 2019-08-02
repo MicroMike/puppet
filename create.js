@@ -30,29 +30,51 @@ else {
   shell.exec('expressvpn connect us')
 }
 
+const mails = [
+  '@mega.zik.dj',
+  '@nospam.ze.tc',
+  '@speed.1s.fr',
+  '@cool.fr.nf',
+]
+
+const getEmail = () => {
+  const letters = 'abcdefghijklmnopqrstuvwxyz'
+  const length = rand(2, 4)
+  let mail = ''
+
+  for (let i = 0; i < length; i++) {
+    mail += letters[rand(letters.length)]
+  }
+
+  mail += '.'
+
+  for (let i = 0; i < length; i++) {
+    mail += letters[rand(letters.length)]
+  }
+
+  return mail + mails[rand(mails.length)]
+}
+
 let count
 const main = async () => {
-  const page = await puppet('', true)
-  
+  const email = getEmail()
+  const page = await puppet('save/tidal_' + email, false)
+
   if (!page) { return }
-  
+
   await page.gotoUrl(url)
-  
-  const mailPage = await page.np()
-  await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
-  const email = await mailPage.get('#mail', 'value')
-  console.log(email)
-  await page.bringToFront()
+
 
   if (type === 'tidal') {
     await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
-    // await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
-    await page.inst('input#email', email, true)
+    // await page.inst('input#email', email, true)
     // await page.clk('input#email + button')
+    // await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
 
     const waitForPass = async () => {
       try {
+        await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
         await page.inst('input#new-password', email, true)
       }
       catch (e) {
@@ -80,10 +102,10 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#ccname', 'OSNAUSE KIME', true)
-    await page.inst('input#cardnumber', '5469230621045125', true)
-    await page.inst('input#ccmonth', '07', true)
-    await page.inst('input#ccyear', '22', true)
-    await page.inst('input#cvc', '302', true)
+    await page.inst('input#cardnumber', '5273462811265215', true)
+    await page.inst('input#ccmonth', '08', true)
+    await page.inst('input#ccyear', '24', true)
+    await page.inst('input#cvc', '723', true)
     await page.waitFor(2000 + rand(2000))
     await page.clk('button.btn-success:enabled')
     await page.waitFor(2000 + rand(2000))
@@ -137,10 +159,11 @@ const main = async () => {
 
       if (needLog) {
         // await tidalLog.inst(username, m, true)
-        await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
 
         const waitForPass = async () => {
           try {
+            await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
+
             const exist = await tidalLog.ext(password)
             if (!exist) { throw 'failed' }
           }
@@ -170,7 +193,8 @@ const main = async () => {
     }
 
     request('https://online-music.herokuapp.com/addAccount?tidal:' + email + ':' + email, function (error, response, body) { })
-    await tidalConnect(email)
+    shell.exec('git add save/tidal_' + email + ' && git commit -m "add account"')
+    // await tidalConnect(email)
 
     await page.gotoUrl('https://my.tidal.com/')
     await page.inst('.login-email', email, true)
@@ -179,11 +203,21 @@ const main = async () => {
     await page.clk('.box-family a')
 
     const addTidal = async () => {
-      await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
-      const tMail = await mailPage.get('#mail', 'value')
+      const tMail = getEmail()
       console.log(tMail)
 
-      await page.clk('.icon.icon-plus')
+      const tryClick = async () => {
+        const done = await page.jClk('.icon.icon-plus')
+        const existInput = await page.ext('[name="email"]')
+
+        if (!done && !existInput) {
+          await tidalLog.waitFor(2000 + rand(2000))
+          await tryClick()
+        }
+      }
+
+      await tryClick()
+
       await page.inst('[name="email"]', tMail, true)
       await page.inst('[name="emailConfirm"]', tMail, true)
       await page.inst('[name="password"]', tMail, true)
