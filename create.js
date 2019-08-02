@@ -211,9 +211,8 @@ const main = async () => {
 
       const tryClick = async () => {
         const done = await page.jClk('.icon.icon-plus')
-        const existInput = await page.ext('[name="email"]')
 
-        if (!done && !existInput) {
+        if (!done) {
           await tidalLog.waitFor(2000 + rand(2000))
           await tryClick()
         }
