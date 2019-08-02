@@ -1,7 +1,7 @@
 module.exports = {
   napster: [
     'https://app.napster.com/artist/yokem/album/boombeats',
-    'https://app.napster.com/artist/micro-beats-and-breaks/album/micro-one/',
+    'https://app.napster.com/artist/micro-beats-and-breaks/album/micro-one',
     'https://app.napster.com/artist/xondes/album/the-last-heat',
     'https://app.napster.com/artist/lenitap/album/above-everybody-wind',
     'https://app.napster.com/artist/prestync/album/marching-smile',
