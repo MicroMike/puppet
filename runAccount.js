@@ -640,6 +640,8 @@ const fct = async () => {
         // startCheck()
         await page.waitFor(1000 * 35)
         await page.cls(true)
+
+        catchFct('check')
       })
       return
     }
