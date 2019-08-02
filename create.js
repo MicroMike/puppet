@@ -106,10 +106,10 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#ccname', 'OSNAUSE KIME', true)
-    await page.inst('input#cardnumber', '5273462811265215', true)
+    await page.inst('input#cardnumber', '5469230620005104', true)
     await page.inst('input#ccmonth', '08', true)
-    await page.inst('input#ccyear', '24', true)
-    await page.inst('input#cvc', '723', true)
+    await page.inst('input#ccyear', '22', true)
+    await page.inst('input#cvc', '819', true)
     await page.waitFor(2000 + rand(2000))
     await page.clk('button.btn-success:enabled')
     await page.waitFor(2000 + rand(2000))
