@@ -544,6 +544,7 @@ const fct = async () => {
         if (player === 'amazon') {
           await page.gotoUrl(album())
           connected = await page.ext(loggedDom)
+          check && console.log('amazon: ' + connected)
         }
 
         if (!connected && player !== 'tidal') {
@@ -576,7 +577,7 @@ const fct = async () => {
           await page.gotoUrl(album())
         }
         else if (player === 'amazon') {
-          await amazonCheck()
+          check && await amazonCheck()
           await page.gotoUrl(album())
         }
       }
