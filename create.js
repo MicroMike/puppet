@@ -75,7 +75,9 @@ const main = async () => {
     const waitForPass = async () => {
       try {
         await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
-        await page.inst('input#new-password', email, true)
+
+        const exist = await page.ext('input#new-password')
+        if (!exist) { throw 'failed' }
       }
       catch (e) {
         await waitForPass()
@@ -83,6 +85,9 @@ const main = async () => {
     }
 
     await waitForPass()
+
+    await page.inst('input#new-password', email, true)
+    await page.waitFor(2000 + rand(2000))
     await page.inst('input#password2', email, true)
     await page.waitFor(2000 + rand(2000))
     await page.select('select#tbi-day', String(rand(25, 1)))
