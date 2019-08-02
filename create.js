@@ -33,11 +33,11 @@ else {
 let count
 const main = async () => {
   const page = await puppet('', true)
-  
+
   if (!page) { return }
-  
+
   await page.gotoUrl(url)
-  
+
   const mailPage = await page.np()
   await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
   const email = await mailPage.get('#mail', 'value')
@@ -137,10 +137,11 @@ const main = async () => {
 
       if (needLog) {
         // await tidalLog.inst(username, m, true)
-        await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
 
         const waitForPass = async () => {
           try {
+            await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
+
             const exist = await tidalLog.ext(password)
             if (!exist) { throw 'failed' }
           }
