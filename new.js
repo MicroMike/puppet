@@ -36,7 +36,7 @@ const run = async (i) => {
   })
 }
 
-for (let i = 0; i < 55; i++) {
+for (let i = 0; i < 50; i++) {
   timeout.push(
     setTimeout(() => {
       run(i)
