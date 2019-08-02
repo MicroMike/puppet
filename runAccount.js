@@ -466,73 +466,81 @@ const fct = async () => {
       const del = await page.wfs(loginError)
       if (del) { throw 'del' }
 
-      try {
-        await page.clk('.dialogBox button')
+      const box = await page.ext('.dialogBox button')
+      const going = await page.ext('#continue')
 
-        // await page.inst(password, pass, false, true)
-        // await page.jClk('input.a-button-input')
+      if (box || going) {
+        if (check) {
+          if (box) {
+            try {
+              await page.clk('.dialogBox button')
 
-        await page.waitFor(1000 * 5 + rand(2000))
-        await page.clk('input.a-button-input')
-        await page.waitFor(1000 * 5 + rand(2000))
-        await page.clk('.a-button-inner a')
+              // await page.inst(password, pass, false, true)
+              // await page.jClk('input.a-button-input')
 
-        socket.emit('outLog', 'amazonOk')
-      }
-      catch (e) { }
+              await page.waitFor(1000 * 5 + rand(2000))
+              await page.clk('input.a-button-input')
+              await page.waitFor(1000 * 5 + rand(2000))
+              await page.clk('.a-button-inner a')
 
-      try {
-        await page.clk('#continue')
-
-        const yopmail = await page.np()
-        await yopmail.gotoUrl('http://yopmail.com/')
-        await yopmail.inst('.scpt', login)
-        await yopmail.clk('.sbut')
-
-        let code
-        let tries = 0
-        const waitForCode = async () => {
-          try {
-            const mailHere = await yopmail.evaluate(() => {
-              const iframe = document.querySelector('#ifinbox')
-              const m = iframe && iframe.contentDocument.querySelector('#m1')
-              m && m.click()
-              return m
-            })
-            if (!mailHere) { throw 'fail' }
-
-            code = await yopmail.evaluate(() => {
-              const iframe = document.querySelector('#ifmail')
-              const selector = iframe && iframe.contentDocument.querySelector('.otp')
-              const code = selector && selector.innerText
-
-              return code
-            })
-
-            if (code) { return }
-            throw 'fail'
+              socket.emit('outLog', 'amazonOk')
+            }
+            catch (e) { }
           }
-          catch (e) {
-            await yopmail.waitFor(1000 * 10 + rand(2000))
-            await yopmail.clk('#lrefr')
-            if (++tries < 6) {
+
+          if (going) {
+            try {
+              await page.clk('#continue')
+
+              const yopmail = await page.np()
+              await yopmail.gotoUrl('http://yopmail.com/')
+              await yopmail.inst('.scpt', login)
+              await yopmail.clk('.sbut')
+
+              let code
+              let tries = 0
+              const waitForCode = async () => {
+                try {
+                  const mailHere = await yopmail.evaluate(() => {
+                    const iframe = document.querySelector('#ifinbox')
+                    const m = iframe && iframe.contentDocument.querySelector('#m1')
+                    m && m.click()
+                    return m
+                  })
+                  if (!mailHere) { throw 'fail' }
+
+                  code = await yopmail.evaluate(() => {
+                    const iframe = document.querySelector('#ifmail')
+                    const selector = iframe && iframe.contentDocument.querySelector('.otp')
+                    const code = selector && selector.innerText
+
+                    return code
+                  })
+
+                  if (code) { return }
+                  throw 'fail'
+                }
+                catch (e) {
+                  await yopmail.waitFor(1000 * 10 + rand(2000))
+                  await yopmail.clk('#lrefr')
+                  await waitForCode()
+                }
+              }
+
               await waitForCode()
+
+              await page.inst('input[name="code"]', code)
+              await page.clk('input[type="submit"]')
+
+              await page.jClk('#ap-account-fixup-phone-skip-link')
             }
-            else {
-              catchFct('amazonError')
-              return false
-            }
+            catch (e) { }
           }
         }
-
-        await waitForCode()
-
-        await page.inst('input[name="code"]', code)
-        await page.clk('input[type="submit"]')
-
-        await page.jClk('#ap-account-fixup-phone-skip-link')
+        else {
+          throw 'amazonError'
+        }
       }
-      catch (e) { }
     }
 
     const connectFct = async () => {
