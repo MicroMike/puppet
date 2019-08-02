@@ -585,8 +585,8 @@ const fct = async () => {
           await page.gotoUrl(album())
         }
         else if (player === 'amazon') {
-          check && await amazonCheck()
-          await page.gotoUrl(album())
+          await amazonCheck()
+          !connected && await page.gotoUrl(album())
         }
       }
       catch (e) {
