@@ -463,7 +463,7 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
-      const del = await page.wfs(loginError)
+      const del = await page.ext(loginError)
       if (del) { throw 'del' }
 
       const box = await page.ext('.dialogBox button')
@@ -497,11 +497,15 @@ const fct = async () => {
               await yopmail.inst('.scpt', login)
               await yopmail.clk('.sbut')
 
+              const alc = await page.ext('.alc')
+              if (alc) {
+                const keyCaptcha = '6LcG5v8SAAAAAOdAn2iqMEQTdVyX8t0w9T3cpdN2'
+                await captcha(mailPage, 'https://yopmail.com/', keyCaptcha)
+              }
+
               let code
               let tries = 0
               const waitForCode = async () => {
-                const keyCaptcha = '6LcG5v8SAAAAAOdAn2iqMEQTdVyX8t0w9T3cpdN2'
-                await captcha(mailPage, 'https://yopmail.com/', keyCaptcha)
 
                 try {
                   const mailHere = await yopmail.evaluate(() => {
