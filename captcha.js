@@ -72,22 +72,26 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
     const captcha = await resolveCaptcha()
 
     await page.rload()
-    username && await page.inst(username, login, true)
 
-    await page.evaluate((captcha) => {
-      setTimeout(() => {
-        let clients = window.___grecaptcha_cfg.clients[0]
-        Object.keys(clients).map(key => {
-          let client = clients[key]
-          Object.keys(client).map(k => {
-            let l = client[k]
-            l && l.callback && l.callback(captcha)
+    if (username) {
+      await page.inst(username, login, true)
+    }
+
+    return new Promise(r => {
+      await page.evaluate((captcha) => {
+        setTimeout(() => {
+          let clients = window.___grecaptcha_cfg.clients[0]
+          Object.keys(clients).map(key => {
+            let client = clients[key]
+            Object.keys(client).map(k => {
+              let l = client[k]
+              l && l.callback && l.callback(captcha)
+            })
           })
-        })
-      }, 5000);
-    }, captcha)
-
-    return true
+          r(true)
+        }, 5000);
+      }, captcha)
+    })
   }
   catch (e) {
     console.log(e)
