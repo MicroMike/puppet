@@ -500,7 +500,7 @@ const fct = async () => {
               const alc = await page.ext('.alc')
               if (alc) {
                 const keyCaptcha = '6LcG5v8SAAAAAOdAn2iqMEQTdVyX8t0w9T3cpdN2'
-                await captcha(mailPage, 'https://yopmail.com/', keyCaptcha)
+                await captcha(yopmail, 'https://yopmail.com/', keyCaptcha)
               }
 
               let code
