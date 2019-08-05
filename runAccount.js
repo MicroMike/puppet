@@ -497,16 +497,19 @@ const fct = async () => {
               await yopmail.inst('.scpt', login)
               await yopmail.clk('.sbut')
 
-              const alc = await yopmail.ext('.alc')
-              console.log('alc: ' + alc)
-              if (alc) {
-                const keyCaptcha = '6LcG5v8SAAAAAOdAn2iqMEQTdVyX8t0w9T3cpdN2'
-                await captcha(yopmail, 'https://yopmail.com/', keyCaptcha)
-              }
-
               let code
               let tries = 0
               const waitForCode = async () => {
+                try {
+                  const alc = await yopmail.ext('.alc')
+                  if (alc) {
+                    await yopmail.waitFor(1000 * 30 + rand(2000))
+                    throw 'captcha'
+                  }
+                }
+                catch (e) {
+                  await waitForCode()
+                }
 
                 try {
                   const mailHere = await yopmail.evaluate(() => {
