@@ -248,6 +248,8 @@ const main = async () => {
     process.exit()
   }
   else if (type === 'napster') {
+    const mailPage = await page.np()
+
     await page.clk('.button.extra-large')
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#txtEmail', email)
