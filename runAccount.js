@@ -575,8 +575,8 @@ const fct = async () => {
           await page.jClk(remember)
           await page.clk(loginBtn)
 
-          await page.waitFor(2000 + rand(2000))
-          suppressed = await page.get(loginError)
+          await page.waitFor(5000 + rand(2000))
+          suppressed = await page.ext(loginError)
 
           if (suppressed) {
             if (player !== 'napster' || String(suppressed).match(/password/)) {
