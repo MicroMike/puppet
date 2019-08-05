@@ -75,9 +75,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
     if (username) {
       await page.inst(username, login, true)
-    }
 
-    return new Promise(async r => {
       await page.evaluate((captcha) => {
         setTimeout(() => {
           let clients = window.___grecaptcha_cfg.clients[0]
@@ -88,10 +86,18 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
               l && l.callback && l.callback(captcha)
             })
           })
-          r(true)
         }, 5000);
       }, captcha)
-    })
+    }
+    else {
+      await page.evaluate((captcha) => {
+        const captchaselector = document.querySelector('#g-recaptcha-response')
+        captchaselector.value = captcha
+        document.querySelector('form').submit()
+      }, captcha)
+    }
+
+    return true
   }
   catch (e) {
     console.log(e)
