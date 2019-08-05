@@ -77,7 +77,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
       await page.inst(username, login, true)
     }
 
-    return new Promise(r => {
+    return new Promise(async r => {
       await page.evaluate((captcha) => {
         setTimeout(() => {
           let clients = window.___grecaptcha_cfg.clients[0]
