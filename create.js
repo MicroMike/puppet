@@ -57,14 +57,13 @@ const getEmail = () => {
 
 let count
 const main = async () => {
-  const email = getEmail()
-  const page = await puppet('save/tidal_' + email, false)
-
-  if (!page) { return }
-
-  await page.gotoUrl(url)
-
   if (type === 'tidal') {
+    const email = getEmail()
+    const page = await puppet('save/tidal_' + email, false)
+
+    if (!page) { return }
+
+    await page.gotoUrl(url)
     await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
 
     // await page.inst('input#email', email, true)
@@ -248,7 +247,13 @@ const main = async () => {
     process.exit()
   }
   else if (type === 'napster') {
+    const page = await puppet('', true)
     const mailPage = await page.np()
+
+    await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
+    const email = await mailPage.get('#mail', 'value')
+    console.log(email)
+    await page.bringToFront()
 
     await page.clk('.button.extra-large')
     await page.waitFor(2000 + rand(2000))
