@@ -1,6 +1,7 @@
 const puppet = require('./puppet')
 var shell = require('shelljs');
 const request = require('ajax-request');
+const captcha = require('./captcha')
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -87,6 +88,9 @@ const main = async () => {
     let url
 
     const waitFor = async (isCode) => {
+      const keyCaptcha = '6LcG5v8SAAAAAOdAn2iqMEQTdVyX8t0w9T3cpdN2'
+      await captcha(mailPage, 'https://yopmail.com/', keyCaptcha)
+
       try {
         const mailHere = await mailPage.evaluate(() => {
           const iframe = document.querySelector('#ifinbox')
