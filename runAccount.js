@@ -500,6 +500,9 @@ const fct = async () => {
               let code
               let tries = 0
               const waitForCode = async () => {
+                const keyCaptcha = '6LcG5v8SAAAAAOdAn2iqMEQTdVyX8t0w9T3cpdN2'
+                await captcha(mailPage, 'https://yopmail.com/', keyCaptcha)
+
                 try {
                   const mailHere = await yopmail.evaluate(() => {
                     const iframe = document.querySelector('#ifinbox')
