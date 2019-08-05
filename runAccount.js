@@ -463,7 +463,7 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
-      const del = await page.wfs(loginError)
+      const del = await page.ext(loginError)
       if (del) { throw 'del' }
 
       const box = await page.ext('.dialogBox button')
