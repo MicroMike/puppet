@@ -498,6 +498,7 @@ const fct = async () => {
               await yopmail.clk('.sbut')
 
               const alc = await yopmail.ext('.alc')
+              console.log('alc: ' + alc)
               if (alc) {
                 const keyCaptcha = '6LcG5v8SAAAAAOdAn2iqMEQTdVyX8t0w9T3cpdN2'
                 await captcha(yopmail, 'https://yopmail.com/', keyCaptcha)
