@@ -248,8 +248,12 @@ const main = async () => {
   }
   else if (type === 'napster') {
     const page = await puppet('', true)
-    const mailPage = await page.np()
 
+    if (!page) { return }
+
+    await page.gotoUrl(url)
+
+    const mailPage = await page.np()
     await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
     const email = await mailPage.get('#mail', 'value')
     console.log(email)
