@@ -628,15 +628,15 @@ const fct = async () => {
           throw playError
         }
 
+        await page.rload()
         await page.waitFor(10000 + rand(2000))
 
         const logged = await page.ext(loggedDom)
         if (logged) {
           await takeScreenshot('try')
-          await page.rload()
         }
         else {
-          await takeScreenshot('log')
+          await takeScreenshot('notLog')
           await connectFct()
         }
 
