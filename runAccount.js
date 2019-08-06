@@ -621,6 +621,7 @@ const fct = async () => {
           }, 300);
         })
       })
+      await page.waitFor(5000 + rand(2000))
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
       await page.clk('.thin-nav-button[title="Favorites"] a')
       await page.clk(playBtn)
