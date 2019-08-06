@@ -748,7 +748,7 @@ const fct = async () => {
         }
         else {
           t1 = await page.getTime(timeLine, callback)
-          await page.waitFor(1000 * 15)
+          await page.waitFor(1000 * 10)
           t2 = await page.getTime(timeLine, callback)
         }
 
@@ -774,12 +774,12 @@ const fct = async () => {
         }
 
         if (countPlays > changePlay) {
-          if (player === 'napster') {
-            await page.gotoUrl(album())
-            await napsterAddFavs()
-          }
+          // if (player === 'napster') {
+          //   await page.gotoUrl(album())
+          //   await napsterAddFavs()
+          // }
           // else {
-          //   exitLoop = true
+            exitLoop = true
           // }
           // countPlays = 0
           // changePlay = 5 + rand(5)
