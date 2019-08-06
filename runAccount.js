@@ -638,7 +638,8 @@ const fct = async () => {
         await page.rload()
         await page.waitFor(10000 + rand(2000))
 
-        const logged = await page.ext(loggedDom)
+        const logged = await page.wfs(loggedDom)
+
         if (logged) {
           await takeScreenshot('try')
         }
