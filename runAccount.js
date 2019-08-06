@@ -217,7 +217,6 @@ const fct = async () => {
 
     let code = 5
 
-
     code = e === 'loop' ? 1 : code
     code = e === 'firstPlay' ? 210 : code
     code = e === 'failedLoop' ? 210 : code
@@ -779,9 +778,9 @@ const fct = async () => {
             await page.gotoUrl(album())
             await napsterAddFavs()
           }
-          else {
-            exitLoop = true
-          }
+          // else {
+          //   exitLoop = true
+          // }
           // countPlays = 0
           // changePlay = 5 + rand(5)
           // await waitForPlayBtn('failedLoop')
