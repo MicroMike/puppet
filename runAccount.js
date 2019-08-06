@@ -651,8 +651,6 @@ const fct = async () => {
       }
     }
 
-    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
-
     if (player !== 'napster') {
       await waitForPlayBtn('firstPlay')
     }
@@ -696,7 +694,7 @@ const fct = async () => {
     let change = false
     let changeOnce = false
 
-    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
+    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true })
 
     const loop = async () => {
       try {
