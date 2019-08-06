@@ -621,7 +621,13 @@ const fct = async () => {
       await page.waitFor(5000 + rand(2000))
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
       await page.clk('.thin-nav-button[title="Favorites"] a')
-      await page.clk(playBtn)
+      try {
+        await page.clk(playBtn)
+      }
+      catch (e) {
+        await page.rload()
+        await page.clk(playBtn)
+      }
     }
 
     const waitForPlayBtn = async (playError) => {
