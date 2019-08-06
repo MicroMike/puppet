@@ -65,7 +65,6 @@ main()
 // }, check ? 1000 * 60 : rand(1000 * 60 * 5));
 
 process.on('SIGINT', () => {
-  clearInterval(timeout)
   console.log('exit')
   process.exit(100)
 });

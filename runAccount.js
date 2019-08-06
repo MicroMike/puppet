@@ -291,7 +291,7 @@ const fct = async () => {
 
       unlock1 = '.icon-pause2'
       unlock2 = '.icon-play-button'
-      playBtn = '.track-list-header .shuffle-button'
+      playBtn = '#favorites .shuffle-button'
       repeatBtn = '.repeat-button'
       repeatBtnOk = '.repeat-button.repeat'
       nextBtn = '.player-advance-button.icon-next2'
@@ -609,6 +609,25 @@ const fct = async () => {
       if (check1 && check2) { throw 'used' }
     }
 
+    const napsterAddFavs = async () => {
+      await page.wfs('.album-tracks .options-button.icon-options')
+      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
+      await page.evaluate(() => {
+        for (let t of document.querySelectorAll('.album-tracks .options-button.icon-options')) {
+          t.click()
+          document.querySelector('.add-to-favorites') && document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click()
+        }
+      })
+      await page.waitFor(10000 + rand(2000))
+      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
+      await page.clk('.thin-nav-button[title="Favorites"] a')
+      await page.clk(playBtn)
+    }
+
+    if (player === 'napster') {
+      await napsterAddFavs()
+    }
+
     const waitForPlayBtn = async (playError) => {
       try {
         await page.clk(playBtn)
@@ -622,7 +641,8 @@ const fct = async () => {
         await page.rload()
         await page.waitFor(10000 + rand(2000))
 
-        const logged = await page.ext(loggedDom)
+        const logged = await page.wfs(loggedDom)
+
         if (logged) {
           await takeScreenshot('try')
         }
@@ -635,8 +655,9 @@ const fct = async () => {
       }
     }
 
-    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
-    await waitForPlayBtn('firstPlay')
+    if (player !== 'napster') {
+      await waitForPlayBtn('firstPlay')
+    }
     // await page.clk(playBtn, 'firstPlay')
 
     if (player === 'tidal') {
@@ -676,6 +697,8 @@ const fct = async () => {
     let changePlay = 30 + rand(30)
     let change = false
     let changeOnce = false
+
+    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true })
 
     const loop = async () => {
       try {
@@ -752,19 +775,16 @@ const fct = async () => {
         }
 
         if (countPlays > changePlay) {
-          exitLoop = true
+          if (player === 'napster') {
+            await page.gotoUrl(album())
+            await napsterAddFavs()
+          }
+          else {
+            exitLoop = true
+          }
           // countPlays = 0
           // changePlay = 5 + rand(5)
-          // await page.gotoUrl(album())
           // await waitForPlayBtn('failedLoop')
-        }
-
-        if (change) {
-          freeze = 0
-          change = false
-          changeOnce = true
-          await page.gotoUrl(album())
-          await waitForPlayBtn('failedLoop')
         }
 
         if (t1 === t2) {
@@ -772,11 +792,13 @@ const fct = async () => {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
         }
         else {
+          if (freeze > 0) {
+            socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
+          }
           freeze = 0
           retry = false
           retryDom = false
           streamOn = false
-          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
           socket.emit('retryOk')
         }
 
@@ -785,7 +807,6 @@ const fct = async () => {
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
-          else if (!changeOnce) { change = true }
           else { throw 'freeze' }
         }
 
