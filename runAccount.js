@@ -617,7 +617,6 @@ const fct = async () => {
         document.querySelectorAll('.album-tracks .options-button.icon-options').forEach(t => { t.click(); document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click() })
       })
       await takeScreenshot('addToFavs')
-      await page.waitFor(5000 + rand(2000))
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
       await page.clk('.nav-favorites a')
       await page.clk('#favorites .shuffle-button')
