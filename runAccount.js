@@ -626,10 +626,13 @@ const fct = async () => {
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
       await addAlbums()
       await page.gotoUrl('https://app.napster.com/library/')
-      await page.evaluate((rand) => {
+      await page.evaluate(() => {
+        const rand = (max, min) => {
+          return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+        }
         const artistList = document.querySelectorAll('.artist-list .artist a')
         artistList[rand(artistList.length)].click()
-      }, rand)
+      })
       await page.clk('#library-tracks .shuffle-button')
     }
 
