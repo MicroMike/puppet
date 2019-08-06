@@ -609,7 +609,7 @@ const fct = async () => {
       if (check1 && check2) { throw 'used' }
     }
 
-    if (player === 'napster') {
+    const napsterAddFavs = async () => {
       await page.wfs('.album-tracks .options-button.icon-options')
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
       await page.evaluate(() => {
@@ -621,13 +621,11 @@ const fct = async () => {
       await page.waitFor(5000 + rand(2000))
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
       await page.clk('.thin-nav-button[title="Favorites"] a')
-      try {
-        await page.clk(playBtn)
-      }
-      catch (e) {
-        await page.rload()
-        await page.clk(playBtn)
-      }
+      await page.clk(playBtn)
+    }
+
+    if (player === 'napster') {
+      await napsterAddFavs()
     }
 
     const waitForPlayBtn = async (playError) => {
@@ -777,10 +775,15 @@ const fct = async () => {
         }
 
         if (countPlays > changePlay) {
-          exitLoop = true
+          if (player === 'napster') {
+            await page.gotoUrl(album())
+            await napsterAddFavs()
+          }
+          else {
+            exitLoop = true
+          }
           // countPlays = 0
           // changePlay = 5 + rand(5)
-          // await page.gotoUrl(album())
           // await waitForPlayBtn('failedLoop')
         }
 
