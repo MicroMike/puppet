@@ -610,6 +610,7 @@ const fct = async () => {
     }
 
     if (player === 'napster') {
+      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
       albums.forEach(a => {
         await page.gotoUrl(a)
         await page.evaluate(() => {
