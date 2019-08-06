@@ -616,7 +616,7 @@ const fct = async () => {
       await page.evaluate(() => {
         for (let t of document.querySelectorAll('.album-tracks .options-button.icon-options')) {
           t.click()
-          document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click()
+          document.querySelector('.add-to-favorites') && document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click()
         }
       })
       await page.waitFor(5000 + rand(2000))
