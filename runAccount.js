@@ -618,7 +618,7 @@ const fct = async () => {
           document.querySelector('.add-to-favorites') && document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click()
         }
       })
-      await page.waitFor(5000 + rand(2000))
+      await page.waitFor(10000 + rand(2000))
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
       await page.clk('.thin-nav-button[title="Favorites"] a')
       await page.clk(playBtn)
