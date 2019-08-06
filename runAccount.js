@@ -291,7 +291,7 @@ const fct = async () => {
 
       unlock1 = '.icon-pause2'
       unlock2 = '.icon-play-button'
-      playBtn = 'a.shuffle-button'
+      playBtn = '#favorites .shuffle-button'
       repeatBtn = '.repeat-button'
       repeatBtnOk = '.repeat-button.repeat'
       nextBtn = '.player-advance-button.icon-next2'
@@ -619,7 +619,7 @@ const fct = async () => {
       await takeScreenshot('addToFavs')
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
       await page.clk('.thin-nav-button[title="Favorites"] a')
-      await page.clk('#favorites .shuffle-button')
+      await page.clk(playBtn)
     }
 
     const waitForPlayBtn = async (playError) => {
