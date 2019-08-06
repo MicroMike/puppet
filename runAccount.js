@@ -618,7 +618,7 @@ const fct = async () => {
           t.click()
           setTimeout(() => {
             document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click()
-          }, 300);
+          }, 200);
         })
       })
       await page.waitFor(5000 + rand(2000))
