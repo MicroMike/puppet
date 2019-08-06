@@ -610,7 +610,6 @@ const fct = async () => {
     }
 
     if (player === 'napster') {
-      await page.gotoUrl(album())
       await page.wfs('.album-tracks .options-button.icon-options')
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
       await page.evaluate(() => {
