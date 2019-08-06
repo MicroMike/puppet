@@ -696,6 +696,8 @@ const fct = async () => {
     let change = false
     let changeOnce = false
 
+    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
+
     const loop = async () => {
       try {
         const existRepeatBtnOk = await page.ext(repeatBtnOk)
