@@ -501,24 +501,13 @@ const fct = async () => {
               let tries = 0
               const waitForCode = async () => {
                 try {
-                  const alc = await yopmail.ext('.alc')
-                  if (alc) {
-                    await yopmail.waitFor(1000 * 30 + rand(2000))
-                    throw 'captcha'
-                  }
-                }
-                catch (e) {
-                  await waitForCode()
-                }
-
-                try {
                   const mailHere = await yopmail.evaluate(() => {
                     const iframe = document.querySelector('#ifinbox')
                     const m = iframe && iframe.contentDocument.querySelector('#m1')
                     m && m.click()
                     return m
                   })
-                  if (!mailHere) { throw 'fail' }
+                  if (!mailHere) { throw 'nomail' }
 
                   code = await yopmail.evaluate(() => {
                     const iframe = document.querySelector('#ifmail')
@@ -529,12 +518,14 @@ const fct = async () => {
                   })
 
                   if (code) { return }
-                  throw 'fail'
+                  throw 'nocode'
                 }
                 catch (e) {
                   await yopmail.waitFor(1000 * 10 + rand(2000))
-                  await yopmail.clk('#lrefr')
-                  await waitForCode()
+                  if (e === 'nocode') {
+                    await yopmail.clk('#lrefr')
+                    await waitForCode()
+                  }
                 }
               }
 
