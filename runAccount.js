@@ -609,32 +609,15 @@ const fct = async () => {
       if (check1 && check2) { throw 'used' }
     }
 
-    const addAlbums = async () => {
-      return new Promise(async r => {
-        for (let a of albums) {
-          await page.gotoUrl(a)
-          await page.evaluate(() => {
-            document.querySelectorAll('.album-tracks .options-button.icon-options').forEach(t => { t.click(); document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click() })
-          })
-          await page.waitFor(2000 + rand(2000))
-        }
-        r(true)
-      })
-    }
-
     if (player === 'napster') {
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
+      await page.evaluate(() => {
+        document.querySelectorAll('.album-tracks .options-button.icon-options').forEach(t => { t.click(); document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click() })
+      })
       await addAlbums()
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
-      await page.gotoUrl('https://app.napster.com/library/')
-      await page.evaluate(() => {
-        const rand = (max, min) => {
-          return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
-        }
-        const artistList = document.querySelectorAll('.artist-list .artist a')
-        artistList && artistList[rand(artistList.length)].click()
-      })
-      await page.clk('#library-tracks .shuffle-button')
+      await page.gotoUrl('https://app.napster.com/favorites/')
+      await page.clk('#favorites .shuffle-button')
     }
 
     const waitForPlayBtn = async (playError) => {
