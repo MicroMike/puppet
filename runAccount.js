@@ -291,7 +291,7 @@ const fct = async () => {
 
       unlock1 = '.icon-pause2'
       unlock2 = '.icon-play-button'
-      playBtn = '.track-list-header .shuffle-button'
+      playBtn = 'a.shuffle-button'
       repeatBtn = '.repeat-button'
       repeatBtnOk = '.repeat-button.repeat'
       nextBtn = '.player-advance-button.icon-next2'
