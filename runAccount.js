@@ -628,6 +628,7 @@ const fct = async () => {
           throw playError
         }
 
+        await page.waitFor(10000 + rand(2000))
 
         const logged = await page.ext(loggedDom)
         if (logged) {
