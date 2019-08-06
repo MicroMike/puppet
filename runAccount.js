@@ -609,15 +609,22 @@ const fct = async () => {
       if (check1 && check2) { throw 'used' }
     }
 
+    const addAlbums = async () => {
+      return new Promise(r => {
+        albums.forEach(async a => {
+          await page.gotoUrl(a)
+          await page.evaluate(() => {
+            document.querySelectorAll('.album-tracks .options-button.icon-options').forEach(t => { t.click(); document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click() })
+          })
+          await page.waitFor(2000 + rand(2000))
+        })
+        r(true)
+      })
+    }
+
     if (player === 'napster') {
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
-      albums.forEach(async a => {
-        await page.gotoUrl(a)
-        await page.evaluate(() => {
-          document.querySelectorAll('.album-tracks .options-button.icon-options').forEach(t => { t.click(); document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click() })
-        })
-        await page.waitFor(2000 + rand(2000))
-      })
+      await addAlbums()
       await page.gotoUrl('https://app.napster.com/library/')
       await page.evaluate(() => {
         const artistList = document.querySelectorAll('.artist-list .artist a')
