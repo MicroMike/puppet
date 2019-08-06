@@ -616,7 +616,6 @@ const fct = async () => {
       await page.evaluate(() => {
         document.querySelectorAll('.album-tracks .options-button.icon-options').forEach(t => { t.click(); document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click() })
       })
-      await takeScreenshot('addToFavs')
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
       await page.clk('.thin-nav-button[title="Favorites"] a')
       await page.clk(playBtn)
