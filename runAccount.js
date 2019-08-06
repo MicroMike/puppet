@@ -784,14 +784,6 @@ const fct = async () => {
           // await waitForPlayBtn('failedLoop')
         }
 
-        if (change) {
-          freeze = 0
-          change = false
-          changeOnce = true
-          await page.gotoUrl(album())
-          await waitForPlayBtn('failedLoop')
-        }
-
         if (t1 === t2) {
           ++freeze
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
@@ -812,7 +804,6 @@ const fct = async () => {
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
-          else if (!changeOnce) { change = true }
           else { throw 'freeze' }
         }
 
