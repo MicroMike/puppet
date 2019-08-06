@@ -614,12 +614,10 @@ const fct = async () => {
       await page.wfs('.album-tracks .options-button.icon-options')
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
       await page.evaluate(() => {
-        document.querySelectorAll('.album-tracks .options-button.icon-options').forEach(t => {
+        for (let t of document.querySelectorAll('.album-tracks .options-button.icon-options')) {
           t.click()
-          setTimeout(() => {
-            document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click()
-          }, 200);
-        })
+          document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click()
+        }
       })
       await page.waitFor(5000 + rand(2000))
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
