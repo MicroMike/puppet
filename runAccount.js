@@ -619,7 +619,7 @@ const fct = async () => {
       await takeScreenshot('addToFavs')
       await page.waitFor(5000 + rand(2000))
       socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
-      await page.gotoUrl('https://app.napster.com/favorites/')
+      await page.clk('.nav-favorites a')
       await page.clk('#favorites .shuffle-button')
     }
 
