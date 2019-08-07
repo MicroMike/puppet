@@ -254,7 +254,7 @@ module.exports = async (userDataDir, noCache) => {
   await page.setRequestInterception(true);
   page.on('request', interceptedRequest => {
     const regex = new RegExp('rhapsody|napster|amazon|tidal', 'i')
-    const payRegex = new RegExp('v2.2\/events|amazon|playbackinfopostpaywall', 'i')
+    const payRegex = new RegExp('v2.2\/events|cirrus\/v3|playbackinfopostpaywall', 'i')
     const url = interceptedRequest.url()
     const data = interceptedRequest.postData()
 
