@@ -178,20 +178,6 @@ const fct = async () => {
     }
   });
 
-  page.event.on('next', ({ url, datastring }) => {
-    const data = datastring && JSON.parse(datastring)
-
-    if (player === 'napster' && data && data.duration && data.duration > 40) {
-      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
-    }
-    else if (player === 'amazon' && data && data.clientActionList && data.clientActionList[0].actionName === 'streamingInitiated') {
-      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
-    }
-    else if (player === 'tidal' && data && data.events && data.events.length === 2 && data.events[0].group === 'streaming_metrics') {
-      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
-    }
-  })
-
   // page.on('console', msg => {
   //   for (let i = 0; i < msg.args().length; ++i)
   //     logError(`${account} => ${i}: ${msg.args()[i]}`)
@@ -616,6 +602,23 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
     // *************************************************************************** PLAY ******************************************************************************
     // ***************************************************************************************************************************************************************
+
+    page.event.on('next', ({ url, datastring }) => {
+      const data = datastring && JSON.parse(datastring)
+
+      if (player === 'napster' && data && data.duration && data.duration > 40) {
+        console.log('play')
+        socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
+      }
+      else if (player === 'amazon' && data && data.clientActionList && data.clientActionList[0].actionName === 'streamingInitiated') {
+        console.log('play')
+        socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
+      }
+      else if (player === 'tidal' && data && data.events && data.events.length === 2 && data.events[0].group === 'streaming_metrics') {
+        console.log('play')
+        socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
+      }
+    })
 
     if (player === 'spotify') {
       await page.waitFor(2000 + rand(2000))
