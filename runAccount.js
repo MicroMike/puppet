@@ -754,6 +754,8 @@ const fct = async () => {
           }
         }
 
+        return
+
         let a, b
         if (t1 === t2 && freeze > 0) {
           a = t1 + ' ' + t2
