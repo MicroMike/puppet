@@ -256,6 +256,7 @@ module.exports = async (userDataDir, noCache) => {
     const regex = new RegExp('rhapsody|napster|amazon|tidal', 'i')
     const payRegex = new RegExp('v2.2\/events|amazon|playbackinfopostpaywall', 'i')
     const url = interceptedRequest.url()
+    const data = interceptedRequest.postData()
 
     if (!regex.test(url)) {
       interceptedRequest.abort()
@@ -264,7 +265,7 @@ module.exports = async (userDataDir, noCache) => {
     else {
       if (payRegex.test(url)) {
         console.log(url)
-        console.log(interceptedRequest.postData())
+        data && data.type === 'playbackStop' && data.duration && console.log(data.duration)
       }
       interceptedRequest.continue()
     }
