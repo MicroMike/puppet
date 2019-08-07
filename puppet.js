@@ -253,11 +253,14 @@ module.exports = async (userDataDir, noCache) => {
 
   await page.setRequestInterception(true);
   page.on('request', interceptedRequest => {
-    // if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
-    //   interceptedRequest.abort()
-    // else
-    console.log(interceptedRequest.url())
-    interceptedRequest.continue()
+    var regex = new RegExp('napster|amazon|tidal', 'i');
+    if (!regex.test(interceptedRequest.url())) {
+      interceptedRequest.abort()
+      console.log(interceptedRequest.url())
+    }
+    else {
+      interceptedRequest.continue()
+    }
   });
 
   await page.evaluateOnNewDocument(() => {
