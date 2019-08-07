@@ -161,7 +161,7 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
-  page = await puppet('save/' + player + '_' + login)
+  page = await puppet('save/' + player + '_' + login, noCache)
 
   if (!page) {
     console.log('no page')
@@ -568,11 +568,6 @@ const fct = async () => {
           await page.gotoUrl(album())
           connected = await page.ext(loggedDom)
           check && console.log('amazon: ' + connected)
-        }
-
-        if (player === 'napster') {
-          await page.gotoUrl(album())
-          connected = await page.ext(loggedDom)
         }
 
         if (!connected && player !== 'tidal') {
