@@ -347,7 +347,7 @@ const fct = async () => {
       keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
 
       usedDom = '.WARN'
-      reLog = 'body > div > div.main > div > div > div > div > div > button'
+      reLog = 'button'
 
       timeLine = '[class*="currentTime"]'
       callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
