@@ -251,6 +251,15 @@ module.exports = async (userDataDir, noCache) => {
   const pages = await browserContext.pages()
   const page = pages[0]
 
+  await page.setRequestInterception(true);
+  page.on('request', interceptedRequest => {
+    // if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
+    //   interceptedRequest.abort();
+    // else
+    console.log(interceptedRequest.url())
+    interceptedRequest.continue();
+  });
+
   await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
       get: () => false,
@@ -258,12 +267,4 @@ module.exports = async (userDataDir, noCache) => {
   });
 
   return page && addFcts(page)
-
-  //   await page.setRequestInterception(true);
-  //   page.on('request', interceptedRequest => {
-  //     if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
-  //       interceptedRequest.abort();
-  //     else
-  //       interceptedRequest.continue();
-  //   });
 }
