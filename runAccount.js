@@ -181,7 +181,10 @@ const fct = async () => {
     const data = JSON.parse(datastring)
 
     if (player === 'napster') {
-      console.log(data.type, data.duration)
+      data.duration && console.log('play')
+    }
+    if (player === 'amazon') {
+      data.clientActionList[0].actionName === 'streamingInitiated' && console.log('play')
     }
     else {
       console.log(data)
