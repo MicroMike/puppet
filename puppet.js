@@ -265,12 +265,12 @@ module.exports = async (userDataDir, noCache = false) => {
     }
 
     // if (/stylesheet|font|image/.test(interceptedRequest.resourceType())) {
-    if (/stylesheet|image/.test(interceptedRequest.resourceType())) {
-      interceptedRequest.abort()
-    }
-    else {
-      interceptedRequest.continue()
-    }
+    // if (/image/.test(interceptedRequest.resourceType())) {
+    //   interceptedRequest.abort()
+    // }
+    // else {
+    interceptedRequest.continue()
+    // }
 
   });
 
