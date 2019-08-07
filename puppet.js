@@ -256,7 +256,7 @@ module.exports = async (userDataDir, noCache) => {
     // if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
     //   interceptedRequest.abort()
     // else
-    console.log(interceptedRequest.url())
+    console.log(interceptedRequest)
     interceptedRequest.continue()
   });
 
