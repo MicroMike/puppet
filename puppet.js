@@ -253,12 +253,19 @@ module.exports = async (userDataDir, noCache) => {
 
   await page.setRequestInterception(true);
   page.on('request', interceptedRequest => {
-    var regex = new RegExp('rhapsody|napster|amazon|tidal', 'i');
-    if (!regex.test(interceptedRequest.url())) {
+    const regex = new RegExp('rhapsody|napster|amazon|tidal', 'i')
+    const payRegex = new RegExp('v2.2\/events|amazon|playbackinfopostpaywall', 'i')
+    const url = interceptedRequest.url()
+
+    if (!regex.test(url)) {
       interceptedRequest.abort()
-      console.log(interceptedRequest.url())
+      console.log(url)
     }
     else {
+      if (payRegex.test(url)) {
+        console.log(url)
+      }
+      console.log(interceptedRequest)
       interceptedRequest.continue()
     }
   });
