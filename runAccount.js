@@ -749,7 +749,8 @@ const fct = async () => {
           }
         }
 
-        return
+        await page.waitFor(1000 * 20)
+        return loop()
 
         let a, b
         if (t1 === t2 && freeze > 0) {

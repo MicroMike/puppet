@@ -264,7 +264,8 @@ module.exports = async (userDataDir, noCache = false) => {
       page.event.emit('next', { url, datastring: data });
     }
 
-    if (/stylesheet|font|image/.test(interceptedRequest.resourceType())) {
+    // if (/stylesheet|font|image/.test(interceptedRequest.resourceType())) {
+    if (/image/.test(interceptedRequest.resourceType())) {
       interceptedRequest.abort()
     }
     else {
