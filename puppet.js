@@ -264,7 +264,13 @@ module.exports = async (userDataDir, noCache = false) => {
       page.event.emit('next', { url, datastring: data });
     }
 
-    interceptedRequest.continue()
+    if (/stylesheet|font|image/.test(interceptedRequest.resourceType())) {
+      interceptedRequest.abort()
+    }
+    else {
+      interceptedRequest.continue()
+    }
+
   });
 
   await page.evaluateOnNewDocument(() => {
