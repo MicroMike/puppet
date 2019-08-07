@@ -176,8 +176,6 @@ const fct = async () => {
     }
   });
 
-  const tidalFirstNotCount = true
-
   page.event.on('next', ({ url, datastring }) => {
     const data = datastring && JSON.parse(datastring)
 
