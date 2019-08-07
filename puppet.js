@@ -265,7 +265,7 @@ module.exports = async (userDataDir, noCache) => {
     else {
       if (payRegex.test(url)) {
         console.log(url)
-        data && data.type === 'playbackStop' && data.duration && console.log(data.duration)
+        console.log(data)
       }
       interceptedRequest.continue()
     }
