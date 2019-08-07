@@ -651,8 +651,8 @@ const fct = async () => {
       }
     }
 
-    await waitForPlayBtn('firstPlay')
-    // await page.clk(playBtn, 'firstPlay')
+    // await waitForPlayBtn('firstPlay')
+    await page.clk(playBtn, 'firstPlay')
 
     if (player === 'tidal') {
       const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
