@@ -256,22 +256,15 @@ module.exports = async (userDataDir, noCache = false) => {
 
   await page.setRequestInterception(true);
   page.on('request', interceptedRequest => {
-    const regex = new RegExp('rhapsody|napster|cloudfront|amazon|tidal|captcha|optimizely', 'i')
     const payRegex = new RegExp('v2.2\/events|cirrus\/v3|playbackinfopostpaywall', 'i')
     const url = interceptedRequest.url()
     const data = interceptedRequest.postData()
 
-    if (!regex.test(url)) {
-      interceptedRequest.abort()
-      console.log(url)
+    if (payRegex.test(url)) {
+      page.event.emit('next', data);
     }
-    else {
-      if (payRegex.test(url)) {
-        console.log(url)
-        page.event.emit('next', data);
-      }
-      interceptedRequest.continue()
-    }
+
+    interceptedRequest.continue()
   });
 
   await page.evaluateOnNewDocument(() => {
