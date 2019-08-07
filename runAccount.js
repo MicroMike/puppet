@@ -177,6 +177,8 @@ const fct = async () => {
   });
 
   page.event.on('next', data => {
+    if (!data) { return }
+
     if (player === 'napster') {
       console.log(data.type, data.duration)
     }
