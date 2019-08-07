@@ -176,11 +176,12 @@ const fct = async () => {
     }
   });
 
-  page.event.on('next', data => {
-    if (!data) { return }
+  page.event.on('next', datastring => {
+    if (!datastring) { return }
+    const data = JSON.parse(datastring)
 
     if (player === 'napster') {
-      console.log(typeof data, JSON.parse(data), data['duration'])
+      console.log(data.type, data.duration)
     }
     else {
       console.log(data)
