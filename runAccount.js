@@ -85,8 +85,10 @@ socket.on('streams', a => {
 // if (check) { startCheck() }
 
 let currentAlbum
+let countPlays = 0
 
 const album = () => {
+  countPlays = 0
   let albumUrl = albums[rand(albums.length)]
   while (currentAlbum === albumUrl) {
     albumUrl = albums[rand(albums.length)]
@@ -179,14 +181,14 @@ const fct = async () => {
   page.event.on('next', ({ url, datastring }) => {
     const data = datastring && JSON.parse(datastring)
 
-    if (player === 'napster') {
-      data && data.duration && data.duration > 40 && socket.emit('plays', { next: false, currentAlbum })
+    if (player === 'napster' && data && data.duration && data.duration > 40) {
+      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
     }
-    else if (player === 'amazon') {
-      data && data.clientActionList && data.clientActionList[0].actionName === 'streamingInitiated' && socket.emit('plays', { next: false, currentAlbum })
+    else if (player === 'amazon' && data && data.clientActionList && data.clientActionList[0].actionName === 'streamingInitiated') {
+      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
     }
-    else if (player === 'tidal') {
-      data && data.events && data.events.length === 2 && data.events[0].group === 'streaming_metrics' && socket.emit('plays', { next: false, currentAlbum })
+    else if (player === 'tidal' && data && data.events && data.events.length === 2 && data.events[0].group === 'streaming_metrics') {
+      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true, next: false, currentAlbum, countPlays: ++countPlays })
     }
   })
 
@@ -620,25 +622,6 @@ const fct = async () => {
       const check1 = await page.ext(usedDom)
       const check2 = await page.ext('.Root__now-playing-bar .control-button.spoticon-pause-16.control-button--circled')
       if (check1 && check2) { throw 'used' }
-    }
-
-    const napsterAddFavs = async () => {
-      await page.wfs('.album-tracks .options-button.icon-options')
-      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'ADDALBUMS', other: true })
-      await page.evaluate(() => {
-        for (let t of document.querySelectorAll('.album-tracks .options-button.icon-options')) {
-          t.click()
-          document.querySelector('.add-to-favorites') && document.querySelector('.add-to-favorites').style['display'] !== 'none' && document.querySelector('.add-to-favorites').click()
-        }
-      })
-      await page.waitFor(10000 + rand(2000))
-      socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
-      await page.clk('.thin-nav-button[title="Favorites"] a')
-      await page.clk(playBtn)
-    }
-
-    if (player === 'napster') {
-      // await napsterAddFavs()
     }
 
     const waitForPlayBtn = async (playError) => {
