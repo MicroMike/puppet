@@ -188,9 +188,6 @@ const fct = async () => {
     else if (player === 'tidal') {
       data.events.length === 2 && data.events[0].group === 'streaming_metrics' && socket.emit('plays', { next: false, currentAlbum })
     }
-    else {
-      console.log(url, data)
-    }
   })
 
   // page.on('console', msg => {
