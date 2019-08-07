@@ -253,7 +253,7 @@ module.exports = async (userDataDir, noCache) => {
 
   await page.setRequestInterception(true);
   page.on('request', interceptedRequest => {
-    var regex = new RegExp('napster|amazon|tidal', 'i');
+    var regex = new RegExp('rhapsody|napster|amazon|tidal', 'i');
     if (!regex.test(interceptedRequest.url())) {
       interceptedRequest.abort()
       console.log(interceptedRequest.url())
