@@ -566,6 +566,11 @@ const fct = async () => {
           check && console.log('amazon: ' + connected)
         }
 
+        if (player === 'napster') {
+          await page.gotoUrl(album())
+          connected = await page.ext(loggedDom)
+        }
+
         if (!connected && player !== 'tidal') {
           await page.waitFor(2000 + rand(2000))
           await page.gotoUrl(url)
