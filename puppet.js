@@ -254,10 +254,10 @@ module.exports = async (userDataDir, noCache) => {
   await page.setRequestInterception(true);
   page.on('request', interceptedRequest => {
     // if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
-    //   interceptedRequest.abort();
+    //   interceptedRequest.abort()
     // else
     console.log(interceptedRequest.url())
-    interceptedRequest.continue();
+    interceptedRequest.continue()
   });
 
   await page.evaluateOnNewDocument(() => {
