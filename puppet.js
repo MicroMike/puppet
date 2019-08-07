@@ -265,7 +265,7 @@ module.exports = async (userDataDir, noCache = false) => {
     else {
       if (payRegex.test(url)) {
         console.log(url)
-        console.log(JSON.parse(data))
+        console.log(data)
       }
       interceptedRequest.continue()
     }
