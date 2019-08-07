@@ -184,10 +184,10 @@ const fct = async () => {
     if (player === 'napster') {
       data && data.duration && data.duration > 40 && console.log('play')
     }
-    if (player === 'amazon') {
-      data && data.clientActionList[0].actionName === 'streamingInitiated' && console.log('play')
+    else if (player === 'amazon') {
+      data && data.clientActionList && data.clientActionList[0].actionName === 'streamingInitiated' && console.log('play')
     }
-    if (player === 'tidal') {
+    else if (player === 'tidal') {
       data.events.length === 2 && data.events[0].group === 'streaming_metrics' && console.log('play')
     }
     else {
