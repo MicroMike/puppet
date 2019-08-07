@@ -188,7 +188,7 @@ const fct = async () => {
       data && data.clientActionList[0].actionName === 'streamingInitiated' && console.log('play')
     }
     if (player === 'tidal') {
-      data.events.length === 2 && data.events.group === 'streaming_metrics' && console.log('play')
+      data.events.length === 2 && data.events[0].group === 'streaming_metrics' && console.log('play')
     }
     else {
       console.log(url, data)
