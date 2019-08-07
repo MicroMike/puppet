@@ -176,6 +176,8 @@ const fct = async () => {
     }
   });
 
+  const tidalFirstNotCount = true
+
   page.event.on('next', ({ url, datastring }) => {
     const data = datastring && JSON.parse(datastring)
 
@@ -185,11 +187,13 @@ const fct = async () => {
     if (player === 'amazon') {
       data && data.clientActionList[0].actionName === 'streamingInitiated' && console.log('play')
     }
+    if (player === 'tidal') {
+      data.events.length === 2 && data.events.group === 'streaming_metrics' && console.log('play')
+    }
     else {
       console.log(url, data)
     }
   })
-
 
   // page.on('console', msg => {
   //   for (let i = 0; i < msg.args().length; ++i)
