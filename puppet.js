@@ -1,6 +1,7 @@
 process.setMaxListeners(0)
 
 const puppeteer = require('puppeteer');
+var events = require('events');
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -251,6 +252,8 @@ module.exports = async (userDataDir, noCache = false) => {
   const pages = await browserContext.pages()
   const page = pages[0]
 
+  page.event = new events.EventEmitter();
+
   await page.setRequestInterception(true);
   page.on('request', interceptedRequest => {
     const regex = new RegExp('rhapsody|napster|cloudfront|amazon|tidal', 'i')
@@ -265,7 +268,7 @@ module.exports = async (userDataDir, noCache = false) => {
     else {
       if (payRegex.test(url)) {
         console.log(url)
-        console.log(data)
+        page.event.emit('next', data);
       }
       interceptedRequest.continue()
     }

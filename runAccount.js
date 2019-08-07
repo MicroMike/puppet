@@ -176,6 +176,11 @@ const fct = async () => {
     }
   });
 
+  page.event.on('next', data => {
+    console.log(data)
+  })
+
+
   // page.on('console', msg => {
   //   for (let i = 0; i < msg.args().length; ++i)
   //     logError(`${account} => ${i}: ${msg.args()[i]}`)
