@@ -641,7 +641,7 @@ const fct = async () => {
     }
 
     if (player === 'napster') {
-      await napsterAddFavs()
+      // await napsterAddFavs()
     }
 
     const waitForPlayBtn = async (playError) => {
@@ -671,9 +671,7 @@ const fct = async () => {
       }
     }
 
-    if (player !== 'napster') {
-      await waitForPlayBtn('firstPlay')
-    }
+    await waitForPlayBtn('firstPlay')
     // await page.clk(playBtn, 'firstPlay')
 
     if (player === 'tidal') {
