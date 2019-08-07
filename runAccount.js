@@ -161,7 +161,7 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
-  page = await puppet('save/' + player + '_' + login, noCache)
+  page = await puppet('save/' + player + '_' + login)
 
   if (!page) {
     console.log('no page')
@@ -779,7 +779,7 @@ const fct = async () => {
           //   await napsterAddFavs()
           // }
           // else {
-            exitLoop = true
+          exitLoop = true
           // }
           // countPlays = 0
           // changePlay = 5 + rand(5)
