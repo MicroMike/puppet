@@ -186,7 +186,7 @@ const fct = async () => {
       data && data.clientActionList && data.clientActionList[0].actionName === 'streamingInitiated' && socket.emit('plays', { next: false, currentAlbum })
     }
     else if (player === 'tidal') {
-      data && data.events.length === 2 && data.events[0].group === 'streaming_metrics' && socket.emit('plays', { next: false, currentAlbum })
+      data && data.events && data.events.length === 2 && data.events[0].group === 'streaming_metrics' && socket.emit('plays', { next: false, currentAlbum })
     }
   })
 
