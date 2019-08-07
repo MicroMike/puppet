@@ -176,18 +176,17 @@ const fct = async () => {
     }
   });
 
-  page.event.on('next', datastring => {
-    if (!datastring) { return }
-    const data = JSON.parse(datastring)
+  page.event.on('next', ({ url, datastring }) => {
+    const data = datastring && JSON.parse(datastring)
 
     if (player === 'napster') {
-      data.duration && data.duration > 40 && console.log('play')
+      data && data.duration && data.duration > 40 && console.log('play')
     }
     if (player === 'amazon') {
-      data.clientActionList[0].actionName === 'streamingInitiated' && console.log('play')
+      data && data.clientActionList[0].actionName === 'streamingInitiated' && console.log('play')
     }
     else {
-      console.log(data)
+      console.log(url, data)
     }
   })
 

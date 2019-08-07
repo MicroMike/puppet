@@ -261,7 +261,7 @@ module.exports = async (userDataDir, noCache = false) => {
     const data = interceptedRequest.postData()
 
     if (payRegex.test(url)) {
-      page.event.emit('next', data);
+      page.event.emit('next', { url, datastring: data });
     }
 
     interceptedRequest.continue()
