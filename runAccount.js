@@ -180,13 +180,13 @@ const fct = async () => {
     const data = datastring && JSON.parse(datastring)
 
     if (player === 'napster') {
-      data && data.duration && data.duration > 40 && console.log('play')
+      data && data.duration && data.duration > 40 && socket.emit('plays', { next: false, currentAlbum })
     }
     else if (player === 'amazon') {
-      data && data.clientActionList && data.clientActionList[0].actionName === 'streamingInitiated' && console.log('play')
+      data && data.clientActionList && data.clientActionList[0].actionName === 'streamingInitiated' && socket.emit('plays', { next: false, currentAlbum })
     }
     else if (player === 'tidal') {
-      data.events.length === 2 && data.events[0].group === 'streaming_metrics' && console.log('play')
+      data.events.length === 2 && data.events[0].group === 'streaming_metrics' && socket.emit('plays', { next: false, currentAlbum })
     }
     else {
       console.log(url, data)
