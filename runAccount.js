@@ -180,7 +180,7 @@ const fct = async () => {
     if (!data) { return }
 
     if (player === 'napster') {
-      console.log(data.type, data.duration)
+      console.log(typeof data, data.type, data.duration)
     }
     else {
       console.log(data)
