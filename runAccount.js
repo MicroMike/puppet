@@ -733,15 +733,18 @@ const fct = async () => {
 
         let matchTime = Number(t1)
 
-        if (matchTime > 40) {
-          if (rand(3) === 0) {
-            await page.jClk(nextBtn)
-            socket.emit('plays', { next: true, currentAlbum })
-          }
+        if (matchTime > 60) {
           if (!nextMusic) {
             nextMusic = true
             countPlays++
-            socket.emit('plays', { next: false, currentAlbum })
+
+            if (rand(3) === 0) {
+              await page.jClk(nextBtn)
+              socket.emit('plays', { next: true, currentAlbum })
+            }
+            else {
+              socket.emit('plays', { next: false, currentAlbum })
+            }
           }
         }
         else {
