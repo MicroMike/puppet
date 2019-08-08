@@ -49,7 +49,7 @@ const main = async () => {
 
     const page = !i ? mainPage : await puppet('save/amazon_' + email)
     const mailPage = await page.np()
-    
+
     await page.gotoUrl('https://music.amazon.fr/home')
     await mailPage.gotoUrl('http://yopmail.com/')
 
@@ -113,14 +113,6 @@ const main = async () => {
       }
     }
 
-    if (i) {
-      await mainPage.inst('#enterEmail', email)
-      await mainPage.inst('#confirmEmail', email)
-      await mainPage.clk('input.a-button-input')
-      await waitFor()
-      create(true)
-    }
-
     await page.bringToFront()
 
     await page.inst('input#ap_customer_name', mail)
@@ -144,6 +136,10 @@ const main = async () => {
     await page.clk('input[type="submit"]')
 
     if (i) {
+      await mainPage.inst('#enterEmail', email)
+      await mainPage.inst('#confirmEmail', email)
+      await mainPage.clk('input.a-button-input')
+      await waitFor()
       await page.gotoUrl(url)
     }
     else {
@@ -235,7 +231,7 @@ const main = async () => {
     }
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
-      if (!i) { create(true) }
+      create(true)
     })
   }
 
