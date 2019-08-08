@@ -38,7 +38,6 @@ const main = async () => {
   const mainPage = await puppet('', true, true)
 
   const create = async (i = null) => {
-
     const mail = await getEmail()
     const email = mail + mails[rand(mails.length)]
 
@@ -49,7 +48,11 @@ const main = async () => {
     }
 
     const page = !i ? mainPage : await puppet('save/amazon_' + email)
+    const mailPage = await page.np()
+    
     await page.gotoUrl('https://music.amazon.fr/home')
+    await mailPage.gotoUrl('http://yopmail.com/')
+
     try {
       await page.clk('.createAccountLink')
     }
@@ -58,30 +61,10 @@ const main = async () => {
       await page.clk('.createAccountLink')
     }
 
-    let mailPage = await page.np()
-
-    console.log(email)
-
-    await mailPage.gotoUrl('http://yopmail.com/')
     await mailPage.inst('.scpt', mail)
     await mailPage.clk('.sbut')
 
-    await page.bringToFront()
-
-    await page.inst('input#ap_customer_name', mail)
-    await page.inst('input#ap_email', email)
-    await page.inst('input#ap_password', '20192019')
-    await page.inst('input#ap_password_check', '20192019')
-    await page.clk('#continue')
-
-    await page.waitFor(2000 + rand(2000))
-
-    const lock = await page.ext('input#ap_customer_name')
-
-    if (lock) {
-      await page.inst('input#ap_password', '20192019')
-      await page.inst('input#ap_password_check', '20192019')
-    }
+    console.log(email)
 
     let code
     let url
@@ -119,10 +102,40 @@ const main = async () => {
         throw 'fail'
       }
       catch (e) {
+        const captcha = await page.ext('.alc')
+        if (captcha) {
+          shell.exec('expressvpn disconnect', { silent: true })
+          shell.exec('expressvpn connect fr', { silent: true })
+        }
         await mailPage.waitFor(1000 * 10 + rand(2000))
         await mailPage.clk('#lrefr')
         await waitFor(isCode)
       }
+    }
+
+    if (i) {
+      await mainPage.inst('#enterEmail', email)
+      await mainPage.inst('#confirmEmail', email)
+      await mainPage.clk('input.a-button-input')
+      await waitFor()
+      create(true)
+    }
+
+    await page.bringToFront()
+
+    await page.inst('input#ap_customer_name', mail)
+    await page.inst('input#ap_email', email)
+    await page.inst('input#ap_password', '20192019')
+    await page.inst('input#ap_password_check', '20192019')
+    await page.clk('#continue')
+
+    await page.waitFor(2000 + rand(2000))
+
+    const lock = await page.ext('input#ap_customer_name')
+
+    if (lock) {
+      await page.inst('input#ap_password', '20192019')
+      await page.inst('input#ap_password_check', '20192019')
     }
 
     await waitFor(true)
@@ -131,10 +144,6 @@ const main = async () => {
     await page.clk('input[type="submit"]')
 
     if (i) {
-      await mainPage.inst('#enterEmail', email)
-      await mainPage.inst('#confirmEmail', email)
-      await mainPage.clk('input.a-button-input')
-      await waitFor()
       await page.gotoUrl(url)
     }
     else {
@@ -226,7 +235,7 @@ const main = async () => {
     }
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
-      create(true)
+      if (!i) { create(true) }
     })
   }
 
