@@ -741,7 +741,8 @@ const fct = async () => {
           if (!nextMusic) {
             nextMusic = true
             countPlays++
-            if (true || rand(2) === 0) {
+
+            if (rand(2) === 0) {
               await page.jClk(nextBtn)
               socket.emit('plays', { next: true, currentAlbum })
             }
