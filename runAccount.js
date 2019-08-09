@@ -299,8 +299,8 @@ const fct = async () => {
 
       usedDom = '.player-error-box'
 
-      timeLine = '.player-time'
-      callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
+      timeLine = '#progress'
+      callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
     }
     if (player === 'amazon') {
       url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
