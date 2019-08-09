@@ -299,7 +299,7 @@ const fct = async () => {
 
       usedDom = '.player-error-box'
 
-      timeLine = '#progress'
+      timeLine = '.demobox > div.text'
       callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
     }
     if (player === 'amazon') {
