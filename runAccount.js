@@ -735,7 +735,7 @@ const fct = async () => {
         // a && logError(a + '/' + b)
 
         let matchTime = Number(t1)
-
+        console.log(matchTime)
         if (matchTime > 60) {
           if (!nextMusic) {
             nextMusic = true
