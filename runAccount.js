@@ -559,7 +559,8 @@ const fct = async () => {
         }
         else if (player === 'amazon') {
           await amazonCheck()
-          !connected && await page.gotoUrl(album())
+          const play = await page.ext(playBtn)
+          !play && await page.gotoUrl(album())
         }
       }
       catch (e) {
