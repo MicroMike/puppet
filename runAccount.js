@@ -281,20 +281,21 @@ const fct = async () => {
 
   try {
     if (player === 'napster') {
-      url = 'https://app.napster.com/login/'
+      url = 'https://micro-napster.herokuapp.com/'
       loggedDom = '.icon-settings2'
 
       username = '#username'
       password = '#password'
-      loginBtn = '.signin'
+      loginBtn = '.sign-in-btn.button'
       loginError = '.login-error'
 
       unlock1 = '.icon-pause2'
       unlock2 = '.icon-play-button'
-      playBtn = '.track-list-header .shuffle-button'
-      repeatBtn = '.repeat-button'
-      repeatBtnOk = '.repeat-button.repeat'
-      nextBtn = '.player-advance-button.icon-next2'
+      playBtn = '#track .content'
+      shuffleBtn = '.player-btn[title="Shuffle"]'
+      // repeatBtn = '.repeat-button'
+      // repeatBtnOk = '.repeat-button.repeat'
+      nextBtn = '.player-btn[title="Next Song"]'
 
       usedDom = '.player-error-box'
 
@@ -564,6 +565,10 @@ const fct = async () => {
           await page.jClk(remember)
           await page.clk(loginBtn)
 
+          if (player === 'napster') {
+            await page.jClk('#confirm-authorize')
+          }
+
           await page.waitFor(2000 + rand(2000))
           suppressed = await page.wfs(loginError, false)
 
@@ -633,8 +638,8 @@ const fct = async () => {
     }
 
     socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
-    await waitForPlayBtn('firstPlay')
-    // await page.clk(playBtn, 'firstPlay')
+    // await waitForPlayBtn('firstPlay')
+    await page.clk(playBtn, 'firstPlay')
 
     if (player === 'tidal') {
       const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
