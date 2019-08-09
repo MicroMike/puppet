@@ -379,9 +379,8 @@ const fct = async () => {
     // ***************************************************************************************************************************************************************
 
     const napsterCheck = async () => {
-      const issueAccount = await page.ext('.account-issue')
-      const issueRadio = await page.ext('.unradio')
-      if (issueAccount || issueRadio) { throw 'del' }
+      const issueAccount = await page.ext('#del')
+      if (issueAccount) { throw 'del' }
     }
 
     const tidalConnect = async () => {
