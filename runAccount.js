@@ -335,7 +335,7 @@ const fct = async () => {
 
       unlock1 = '[class*="playbackToggle"]'
       unlock2 = '[class*="playbackToggle"]'
-      playBtn = '[class*="controls"] button + button'
+      playBtn = 'main [data-test="header-controls"] button + button'
       pauseBtn = '.playerIconPauseRing'
       repeatBtn = '[class*="repeatButton"]'
       repeatBtnOk = '[class*="repeatStateIcon"][class*="all"]'
