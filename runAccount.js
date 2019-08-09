@@ -736,7 +736,7 @@ const fct = async () => {
 
         let matchTime = Number(t1)
 
-        if (matchTime > 60) {
+        if (matchTime > 40) {
           if (!nextMusic) {
             nextMusic = true
             countPlays++
