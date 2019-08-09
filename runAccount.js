@@ -559,7 +559,8 @@ const fct = async () => {
         }
         else if (player === 'amazon') {
           await amazonCheck()
-          !connected && await page.gotoUrl(album())
+          const play = await page.ext(playBtn)
+          !play && await page.gotoUrl(album())
         }
       }
       catch (e) {
@@ -605,9 +606,9 @@ const fct = async () => {
       }
     }
 
-    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true })
     // await waitForPlayBtn('firstPlay')
     await page.clk(playBtn, 'firstPlay')
+    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true })
 
     if (player === 'tidal') {
       const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
@@ -692,73 +693,43 @@ const fct = async () => {
             nextMusic = true
             countPlays++
 
-            if (rand(2) === 0) {
-              await page.jClk(nextBtn)
-              socket.emit('plays', { next: true, currentAlbum })
-            }
-            else {
-              socket.emit('plays', { next: false, currentAlbum })
-            }
-            return loop()
+            await page.jClk(nextBtn)
+            socket.emit('plays', { next: true, currentAlbum })
           }
         }
         else {
           nextMusic = false
         }
 
-        let a, b
-        if (t1 === t2 && freeze > 0) {
-          a = t1 + ' ' + t2
-          await page.jClk(nextBtn)
-          await page.waitFor(1000 * 5)
-          t2 = await page.getTime(timeLine, callback)
-        }
-        else {
-          t1 = await page.getTime(timeLine, callback)
-          await page.waitFor(1000 * 10)
-          t2 = await page.getTime(timeLine, callback)
-        }
-
-        b = t1 + ' ' + t2
-
-        // a && logError(a + '/' + b)
-
         if (countPlays > changePlay) {
           exitLoop = true
-          // countPlays = 0
-          // changePlay = 5 + rand(5)
-          // await page.gotoUrl(album())
-          // await waitForPlayBtn('failedLoop')
         }
 
-        if (change) {
-          freeze = 0
-          change = false
-          changeOnce = true
-          // await page.gotoUrl(album())
-          await page.clk(playBtn, 'failedLoop')
-          // await waitForPlayBtn('failedLoop')
-        }
+        t1 = t2
+        t2 = await page.getTime(timeLine, callback)
 
         if (t1 === t2) {
           ++freeze
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
         }
         else {
+          if (freeze > 0) {
+            socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
+          }
           freeze = 0
           retry = false
           retryDom = false
           streamOn = false
-          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
           socket.emit('retryOk')
         }
 
-        if (freeze > 3) {
+        if (t1 === t2 && freeze > 2) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
+          await page.jClk(nextBtn)
+
           const logged = await page.ext(loggedDom)
-          if (!logged) { throw 'logout' }
-          else { throw 'freeze' }
+          if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
         }
 
         if (exitLoop) { throw 'loop' }
