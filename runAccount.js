@@ -282,7 +282,7 @@ const fct = async () => {
   try {
     if (player === 'napster') {
       url = 'https://micro-napster.herokuapp.com/'
-      loggedDom = '.icon-settings2'
+      loggedDom = '#track .content'
 
       username = '#username'
       password = '#password'
