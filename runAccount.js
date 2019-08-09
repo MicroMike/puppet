@@ -495,7 +495,7 @@ const fct = async () => {
             }
             catch (e) {
               const captcha = await yopmail.ext('.alc')
-              if (captcha) {
+              if (check && captcha) {
                 shell.exec('expressvpn disconnect', { silent: true })
                 shell.exec('expressvpn connect fr', { silent: true })
               }
