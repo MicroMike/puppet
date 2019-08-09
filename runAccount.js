@@ -703,39 +703,12 @@ const fct = async () => {
           nextMusic = false
         }
 
-        let a, b
-        if (t1 === t2 && freeze > 0) {
-          a = t1 + ' ' + t2
-          await page.jClk(nextBtn)
-          await page.waitFor(1000 * 5)
-          t2 = await page.getTime(timeLine, callback)
-        }
-        else {
-          t1 = t2
-          t2 = await page.getTime(timeLine, callback)
-          await page.waitFor(1000 * 3)
-        }
-
-        b = t1 + ' ' + t2
-
-        // a && logError(a + '/' + b)
-
         if (countPlays > changePlay) {
           exitLoop = true
-          // countPlays = 0
-          // changePlay = 5 + rand(5)
-          // await page.gotoUrl(album())
-          // await waitForPlayBtn('failedLoop')
         }
 
-        if (change) {
-          freeze = 0
-          change = false
-          changeOnce = true
-          // await page.gotoUrl(album())
-          await page.clk(playBtn, 'failedLoop')
-          // await waitForPlayBtn('failedLoop')
-        }
+        t1 = t2
+        t2 = await page.getTime(timeLine, callback)
 
         if (t1 === t2) {
           ++freeze
@@ -750,12 +723,13 @@ const fct = async () => {
           socket.emit('retryOk')
         }
 
-        if (freeze > 3) {
+        if (t1 === t2 && freeze > 3) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
+
+          await page.jClk(nextBtn)
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw 'logout' }
-          else { throw 'freeze' }
         }
 
         if (exitLoop) { throw 'loop' }
