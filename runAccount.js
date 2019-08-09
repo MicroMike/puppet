@@ -586,7 +586,6 @@ const fct = async () => {
         else if (player === 'napster') {
           await napsterCheck()
           // const reload = await page.ext('#main-container .not-found')
-          await page.gotoUrl(album())
         }
         else if (player === 'amazon') {
           await amazonCheck()
