@@ -695,8 +695,6 @@ const fct = async () => {
 
             await page.jClk(nextBtn)
             socket.emit('plays', { next: true, currentAlbum })
-
-            return loop()
           }
         }
         else {
