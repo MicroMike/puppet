@@ -635,7 +635,7 @@ const fct = async () => {
       }
     }
 
-    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', other: true })
+    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true })
     // await waitForPlayBtn('firstPlay')
     await page.clk(playBtn, 'firstPlay')
 
