@@ -300,7 +300,7 @@ const fct = async () => {
       usedDom = '.player-error-box'
 
       timeLine = '.demobox > div.text'
-      callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
+      callback = a => (a.split('/')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
     }
     if (player === 'amazon') {
       url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
@@ -735,7 +735,7 @@ const fct = async () => {
         // a && logError(a + '/' + b)
 
         let matchTime = Number(t1)
-        console.log(matchTime)
+
         if (matchTime > 60) {
           if (!nextMusic) {
             nextMusic = true
