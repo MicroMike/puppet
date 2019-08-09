@@ -766,8 +766,9 @@ const fct = async () => {
           freeze = 0
           change = false
           changeOnce = true
-          await page.gotoUrl(album())
-          await waitForPlayBtn('failedLoop')
+          // await page.gotoUrl(album())
+          await page.clk(playBtn, 'failedLoop')
+          // await waitForPlayBtn('failedLoop')
         }
 
         if (t1 === t2) {
