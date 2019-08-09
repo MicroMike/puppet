@@ -40,7 +40,7 @@ for (let i = 0; i < 50; i++) {
   timeout.push(
     setTimeout(() => {
       run(i)
-    }, 1000 * 20 * i)
+    }, rand(1000 * 60 * 10))
   )
 }
 
