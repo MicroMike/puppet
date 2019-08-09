@@ -217,9 +217,7 @@ module.exports = async (userDataDir, noCache) => {
     userDataDir,
     headless: false,
     args: [
-      '--disable-timeouts-for-profiling',
       '--no-sandbox',
-      '--disable-setuid-sandbox',
     ],
     timeout: 0,
     defaultViewport: {
