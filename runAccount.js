@@ -711,9 +711,9 @@ const fct = async () => {
           t2 = await page.getTime(timeLine, callback)
         }
         else {
-          t1 = await page.getTime(timeLine, callback)
-          await page.waitFor(1000 * 10)
+          t1 = t2
           t2 = await page.getTime(timeLine, callback)
+          await page.waitFor(1000 * 3)
         }
 
         b = t1 + ' ' + t2
