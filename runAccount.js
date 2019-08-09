@@ -727,7 +727,7 @@ const fct = async () => {
           await page.jClk(nextBtn)
 
           const logged = await page.ext(loggedDom)
-          if (!logged) { throw 'logout' }
+          if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
         }
 
         if (exitLoop) { throw 'loop' }
