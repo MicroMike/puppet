@@ -494,6 +494,11 @@ const fct = async () => {
               throw 'fail'
             }
             catch (e) {
+              const captcha = await yopmail.ext('.alc')
+              if (captcha) {
+                shell.exec('expressvpn disconnect', { silent: true })
+                shell.exec('expressvpn connect fr', { silent: true })
+              }
               await yopmail.waitFor(1000 * 10 + rand(2000))
               await yopmail.clk('#lrefr')
               await waitForCode()
@@ -713,17 +718,15 @@ const fct = async () => {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
         }
         else {
-          if (freeze > 0) {
-            socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
-          }
           freeze = 0
           retry = false
           retryDom = false
           streamOn = false
+          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
           socket.emit('retryOk')
         }
 
-        if (t1 === t2 && freeze > 2) {
+        if (freeze > 2) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
           await page.jClk(nextBtn)
