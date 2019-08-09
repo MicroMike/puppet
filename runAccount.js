@@ -289,8 +289,7 @@ const fct = async () => {
       loginBtn = '.sign-in-btn.button'
       loginError = '.login-error'
 
-      unlock1 = '.icon-pause2'
-      unlock2 = '.icon-play-button'
+      unlock1 = '.player-btn[title="Next Song"]'
       playBtn = '#track .content'
       shuffleBtn = '.player-btn[title="Shuffle"]'
       // repeatBtn = '.repeat-button'
@@ -739,9 +738,7 @@ const fct = async () => {
         let a, b
         if (t1 === t2 && freeze > 0) {
           a = t1 + ' ' + t2
-          await page.jClk(unlock1)
-          await page.waitFor(1000 * 5)
-          await page.jClk(unlock2)
+          await page.jClk(nextBtn)
           await page.waitFor(1000 * 5)
           t2 = await page.getTime(timeLine, callback)
         }
