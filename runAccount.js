@@ -733,6 +733,7 @@ const fct = async () => {
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
+          else { throw 'freeze' }
         }
 
         if (exitLoop) { throw 'loop' }
