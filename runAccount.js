@@ -740,7 +740,6 @@ const fct = async () => {
           if (!nextMusic) {
             nextMusic = true
             countPlays++
-
             if (rand(3) === 0) {
               await page.jClk(nextBtn)
               socket.emit('plays', { next: true, currentAlbum })
@@ -748,6 +747,7 @@ const fct = async () => {
             else {
               socket.emit('plays', { next: false, currentAlbum })
             }
+            return loop()
           }
         }
         else {
