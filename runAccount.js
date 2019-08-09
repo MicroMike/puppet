@@ -42,12 +42,10 @@ socket.on('activate', id => {
 })
 
 const exit = async (code = 0) => {
-  socket.emit('playerInfos', { account: player + ':' + login, streamId, out: true })
+  socket.emit('Cdisconnect', account)
 
   close = true
   page && await page.cls(true)
-
-  socket.emit('Cdisconnect', account)
 
   process.exit(code)
 }
@@ -106,12 +104,10 @@ process.on('SIGINT', function (code) {
 });
 
 socket.on('forceOut', () => {
-  socket.emit('forceOut')
   exit(0)
 })
 
 socket.on('outReset', () => {
-  socket.emit('outReset')
   exit(100)
 })
 
