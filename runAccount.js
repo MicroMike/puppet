@@ -723,7 +723,7 @@ const fct = async () => {
           socket.emit('retryOk')
         }
 
-        if (t1 === t2 && freeze > 3) {
+        if (t1 === t2 && freeze > 2) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
           await page.jClk(nextBtn)
