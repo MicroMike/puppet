@@ -715,6 +715,27 @@ const fct = async () => {
           }
         }
 
+        let matchTime = Number(t1)
+
+        if (matchTime && matchTime > 30) {
+          if (!nextMusic) {
+            nextMusic = true
+            countPlays++
+
+            if (rand(2) === 0) {
+              await page.jClk(nextBtn)
+              socket.emit('plays', { next: true, currentAlbum })
+            }
+            else {
+              socket.emit('plays', { next: false, currentAlbum })
+            }
+            return loop()
+          }
+        }
+        else {
+          nextMusic = false
+        }
+
         let a, b
         if (t1 === t2 && freeze > 0) {
           a = t1 + ' ' + t2
@@ -733,27 +754,6 @@ const fct = async () => {
         b = t1 + ' ' + t2
 
         // a && logError(a + '/' + b)
-
-        let matchTime = Number(t1)
-
-        if (matchTime > 30) {
-          if (!nextMusic) {
-            nextMusic = true
-            countPlays++
-
-            if (rand(2) === 0) {
-              await page.jClk(nextBtn)
-              socket.emit('plays', { next: true, currentAlbum })
-            }
-            else {
-              socket.emit('plays', { next: false, currentAlbum })
-            }
-            return loop()
-          }
-        }
-        else {
-          nextMusic = false
-        }
 
         if (countPlays > changePlay) {
           exitLoop = true
