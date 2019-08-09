@@ -569,7 +569,7 @@ const fct = async () => {
           }
 
           await page.waitFor(2000 + rand(2000))
-          suppressed = await page.wfs(loginError, false)
+          // suppressed = await page.wfs(loginError, false)
 
           if (suppressed) {
             if (player !== 'napster' || String(suppressed).match(/password/)) {
