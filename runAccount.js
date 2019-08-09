@@ -564,7 +564,7 @@ const fct = async () => {
           await page.clk(loginBtn)
 
           if (player === 'napster') {
-            await page.jClk('#confirm-authorize')
+            await page.clk('#confirm-authorize')
           }
 
           await page.waitFor(2000 + rand(2000))
