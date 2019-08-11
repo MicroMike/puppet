@@ -33,6 +33,8 @@ const main = async () => {
   cmd = check ? 'CHECK=true ' + cmd : cmd + ' xvfb-run'
   cmd += ' node runAccount'
 
+  console.log(cmd)
+
   shell.exec(cmd, async (code, b, c) => {
     // console.log(`${nb} code: ${code}`)
     if (code !== 100) {
