@@ -516,6 +516,8 @@ const fct = async () => {
 
           await waitForCode()
 
+          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CODE', other: true, code: true })
+
           !manual && await page.inst('input[name="code"]', code)
           await page.clk('input[type="submit"]')
 
