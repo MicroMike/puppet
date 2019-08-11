@@ -731,7 +731,7 @@ const fct = async () => {
 
           await page.rload()
 
-          const logged = await page.ext(loggedDom)
+          const logged = await page.wfs(loggedDom)
           if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
 
           freeze = 0
