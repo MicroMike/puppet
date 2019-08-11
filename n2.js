@@ -2,7 +2,7 @@ process.setMaxListeners(0)
 
 var shell = require('shelljs');
 
-const arg = process.argv[2]
+const arg = process.argv[3]
 const check = process.env.CHECK
 
 shell.exec('killall chrome', { silent: true })
@@ -29,11 +29,8 @@ catch (e) { }
 const main = async () => {
   pull()
 
-  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now()
-  cmd = check ? 'CHECK=true ' + cmd : cmd + ' xvfb-run'
-  cmd += ' node runAccount'
-
-  console.log(cmd)
+  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
+  cmd = check ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
     // console.log(`${nb} code: ${code}`)
