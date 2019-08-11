@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "s": "xvfb-run node n2",
     "tidal": "TYPE=tidal node index",
     "spotify": "TYPE=spotify node index",
     "napster": "TYPE=napster node index",
@@ -15,7 +14,7 @@
     "reset": "git reset --hard HEAD && git clean -fd && git pull",
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
-    "check": "CHECK=true node index",
+    "check": "CHECK=true node n2 check",
     "clean": "find save/ -type f ! -iname \"Cookies\" -delete",
     "clear": "git clean -fd",
     "rm": "rm -R *.png",
