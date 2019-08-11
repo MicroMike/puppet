@@ -30,7 +30,7 @@ const main = async () => {
   pull()
 
   let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
-  cmd = check ? 'CHECK=true ' + cmd : cmd
+  cmd = check ? 'CHECK=true ' + cmd : 'xvfb-run ' + cmd
 
   shell.exec(cmd, async (code, b, c) => {
     // console.log(`${nb} code: ${code}`)
