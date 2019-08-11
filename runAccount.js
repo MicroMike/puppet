@@ -507,6 +507,8 @@ const fct = async () => {
               await yopmail.waitFor(1000 * 10 + rand(2000))
               await yopmail.clk('#lrefr')
 
+              socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CODE', other: true, code: true })
+
               manual = await page.get('input[name="code"]', 'value')
               if (!manual) {
                 await waitForCode()
@@ -516,7 +518,6 @@ const fct = async () => {
 
           await waitForCode()
 
-          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CODE', other: true, code: true })
 
           !manual && await page.inst('input[name="code"]', code)
           await page.clk('input[type="submit"]')
