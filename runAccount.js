@@ -531,57 +531,52 @@ const fct = async () => {
     }
 
     const connectFct = async () => {
-      try {
-        if (player === 'tidal') {
-          await tidalConnect()
+      if (player === 'tidal') {
+        await tidalConnect()
+      }
+
+      if (player === 'amazon') {
+        await page.gotoUrl(album())
+        connected = await page.ext(loggedDom)
+        check && console.log('amazon: ' + connected)
+      }
+
+      if (!connected && player !== 'tidal') {
+        await page.waitFor(2000 + rand(2000))
+        await page.gotoUrl(url)
+
+        await checkFill()
+
+        await page.jClk(remember)
+        await page.clk(loginBtn)
+
+        if (player === 'napster') {
+          await page.clk('#confirm-authorize')
         }
 
-        if (player === 'amazon') {
-          await page.gotoUrl(album())
-          connected = await page.ext(loggedDom)
-          check && console.log('amazon: ' + connected)
-        }
+        await page.waitFor(2000 + rand(2000))
+        // suppressed = await page.wfs(loginError, false)
 
-        if (!connected && player !== 'tidal') {
-          await page.waitFor(2000 + rand(2000))
-          await page.gotoUrl(url)
-
-          await checkFill()
-
-          await page.jClk(remember)
-          await page.clk(loginBtn)
-
-          if (player === 'napster') {
-            await page.clk('#confirm-authorize')
+        if (suppressed) {
+          if (player !== 'napster' || String(suppressed).match(/password/)) {
+            throw 'del'
           }
-
-          await page.waitFor(2000 + rand(2000))
-          // suppressed = await page.wfs(loginError, false)
-
-          if (suppressed) {
-            if (player !== 'napster' || String(suppressed).match(/password/)) {
-              throw 'del'
-            }
-            throw 'login'
-          }
-        }
-
-        if (player === 'spotify') {
-          spotCheck()
-          await page.gotoUrl(album())
-        }
-        else if (player === 'napster') {
-          await napsterCheck()
-          // const reload = await page.ext('#main-container .not-found')
-        }
-        else if (player === 'amazon') {
-          await amazonCheck()
-          const play = await page.ext(playBtn)
-          !play && await page.gotoUrl(album())
+          throw 'login'
         }
       }
-      catch (e) {
-        catchFct(e)
+
+      if (player === 'spotify') {
+        spotCheck()
+        await page.gotoUrl(album())
+      }
+      else if (player === 'napster') {
+        await napsterCheck()
+        // const reload = await page.ext('#main-container .not-found')
+      }
+      else if (player === 'amazon') {
+        await amazonCheck()
+        const play = await page.ext(playBtn)
+        !play && await page.gotoUrl(album())
       }
     }
 
