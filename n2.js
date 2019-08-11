@@ -33,7 +33,7 @@ const main = async () => {
   cmd = check ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
-    // console.log(`${nb} code: ${code}`)
+    check && console.log(`code: ${code}`, b, c)
     if (code !== 100) {
       main()
     }
