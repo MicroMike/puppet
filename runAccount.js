@@ -163,7 +163,7 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'TIMEOUT', other: true })
 
-  await page.waitFor(rand(1000 * 60 * 5))
+  !check && await page.waitFor(rand(1000 * 60 * 5))
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CONNECT', other: true })
 
