@@ -29,8 +29,9 @@ catch (e) { }
 const main = async () => {
   pull()
 
-  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
-  cmd = check ? 'CHECK=true ' + cmd : 'xvfb-run ' + cmd
+  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now()
+  cmd = check ? 'CHECK=true ' + cmd : cmd + ' xvfb-run'
+  cmd += ' node runAccount'
 
   shell.exec(cmd, async (code, b, c) => {
     // console.log(`${nb} code: ${code}`)
