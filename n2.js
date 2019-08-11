@@ -33,15 +33,13 @@ const main = async () => {
   cmd = check ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
-    check && console.log(`code: ${code}`, b, c)
+    // check && console.log(`code: ${code}`, b, c)
     if (code !== 100) {
       main()
     }
   })
 }
 
-check && main()
-
-for (let i = 0; i < 25; i++) {
-  !check && main()
+for (let i = 0; i < check ? 1 : 25; i++) {
+  main()
 }
