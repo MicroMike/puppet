@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "xvfb-run node n2",
     "tidal": "TYPE=tidal node index",
     "spotify": "TYPE=spotify node index",
     "napster": "TYPE=napster node index",
