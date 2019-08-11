@@ -715,8 +715,6 @@ const fct = async () => {
 
         if (t1 === t2) {
           ++freeze
-          await page.jClk(nextBtn)
-          await page.waitFor(1000 * 5)          
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
         }
         else {
@@ -731,13 +729,15 @@ const fct = async () => {
         if (freeze > 3) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
-          await page.rload()
-
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
 
-          freeze = 0
-          await page.clk(playBtn, 'freezePlay')
+          await page.jClk(nextBtn)
+          await page.waitFor(1000 * 5)
+        }
+
+        if (freeze > 6) {
+          throw 'freeze'
         }
 
         if (exitLoop) { throw 'loop' }
