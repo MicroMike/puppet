@@ -726,14 +726,17 @@ const fct = async () => {
           socket.emit('retryOk')
         }
 
-        if (freeze > 2) {
+        if (freeze > 3) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
-          await page.jClk(nextBtn)
+          await page.rload()
 
           const logged = await page.ext(loggedDom)
           if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
-          else { throw 'freeze' }
+
+          freeze = 0
+          await page.jClk(nextBtn)
+          await page.waitFor(1000 * 10)
         }
 
         if (exitLoop) { throw 'loop' }
