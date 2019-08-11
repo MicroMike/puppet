@@ -99,16 +99,12 @@ const logError = (e) => {
 
 process.on('SIGINT', function (code) {
   console.log('exit')
-  logError('exit')
-  exit(0)
+  exit(100)
 });
 
 socket.on('forceOut', () => {
+  console.log('out')
   exit(0)
-})
-
-socket.on('outReset', () => {
-  exit(100)
 })
 
 socket.on('streamOn', () => {
@@ -163,6 +159,8 @@ const fct = async () => {
     console.log('no page')
     await exit(210)
   }
+
+  await page.waitFor(rand(1000 * 60 * 5))
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'STARTED', other: true })
 
