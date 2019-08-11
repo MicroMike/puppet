@@ -204,6 +204,10 @@ const fct = async () => {
     await page.evaluate(scriptText)
   })
 
+  socket.on('runCode', async (code) => {
+    await page.inst('input[name="code"]', code)
+  })
+
   socket.on('screenshot', async () => {
     await takeScreenshot('getScreen')
   })
@@ -472,6 +476,7 @@ const fct = async () => {
 
           let code
           let tries = 0
+          let manual = false
           const waitForCode = async () => {
             try {
               const mailHere = await yopmail.evaluate(() => {
@@ -501,13 +506,17 @@ const fct = async () => {
               }
               await yopmail.waitFor(1000 * 10 + rand(2000))
               await yopmail.clk('#lrefr')
-              await waitForCode()
+
+              manual = await page.get('input[name="code"]', 'value')
+              if (!manual) {
+                await waitForCode()
+              }
             }
           }
 
           await waitForCode()
 
-          await page.inst('input[name="code"]', code)
+          !manual && await page.inst('input[name="code"]', code)
           await page.clk('input[type="submit"]')
 
           await page.jClk('#ap-account-fixup-phone-skip-link')
@@ -596,23 +605,17 @@ const fct = async () => {
           throw playError
         }
 
+        await page.rload()
 
-        const logged = await page.ext(loggedDom)
-        if (logged) {
-          await takeScreenshot('try')
-          await page.rload()
-        }
-        else {
-          await takeScreenshot('log')
-          await connectFct()
-        }
+        const logged = await page.wfs(loggedDom)
+        if (!logged) { throw 'logout' }
 
         await waitForPlayBtn(playError)
       }
     }
 
-    // await waitForPlayBtn('firstPlay')
-    await page.clk(playBtn, 'firstPlay')
+    await waitForPlayBtn('firstPlay')
+    // await page.clk(playBtn, 'firstPlay')
     socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true })
 
     if (player === 'tidal') {
