@@ -501,9 +501,8 @@ const fct = async () => {
             }
             catch (e) {
               const captcha = await yopmail.ext('.alc')
-              if (check && captcha) {
-                shell.exec('expressvpn disconnect', { silent: true })
-                shell.exec('expressvpn connect fr', { silent: true })
+              if (!check) {
+                throw 'amazonError'
               }
               await yopmail.waitFor(1000 * 10 + rand(2000))
               await yopmail.clk('#lrefr')
