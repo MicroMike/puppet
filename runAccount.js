@@ -103,7 +103,6 @@ process.on('SIGINT', function (code) {
 });
 
 socket.on('forceOut', () => {
-  if (check) { return }
   console.log('out')
   exit(0)
 })
