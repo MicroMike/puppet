@@ -2,7 +2,7 @@ process.setMaxListeners(0)
 
 var shell = require('shelljs');
 
-const arg = process.argv[3]
+const arg = process.argv[2]
 const check = process.env.CHECK
 
 shell.exec('killall chrome', { silent: true })
