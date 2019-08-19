@@ -39,8 +39,7 @@ const main = async () => {
 
   const create = async (i = null) => {
     const mail = await getEmail()
-    // const email = mail + mails[rand(mails.length)]
-    const email = mail + '@maildrop.cc'
+    const email = mail + mails[rand(mails.length)]
 
     if (i) {
       await mainPage.rload()
@@ -52,7 +51,7 @@ const main = async () => {
     const mailPage = await page.np()
 
     await page.gotoUrl('https://music.amazon.fr/home')
-    await mailPage.gotoUrl('https://maildrop.cc')
+    await mailPage.gotoUrl('http://yopmail.com/')
 
     try {
       await page.clk('.createAccountLink')
@@ -62,8 +61,8 @@ const main = async () => {
       await page.clk('.createAccountLink')
     }
 
-    await mailPage.inst('.inboxform-input input', mail, true)
-    await mailPage.clk('.inboxform-container button')
+    await mailPage.inst('.scpt', mail)
+    await mailPage.clk('.sbut')
 
     console.log(email)
 
@@ -72,11 +71,16 @@ const main = async () => {
 
     const waitFor = async (isCode) => {
       try {
-        const mailHere = await mailPage.clk('.messagelist-subject')
+        const mailHere = await mailPage.evaluate(() => {
+          const iframe = document.querySelector('#ifinbox')
+          const m = iframe && iframe.contentDocument.querySelector('#m1')
+          m && m.click()
+          return m
+        })
         if (!mailHere) { throw 'fail' }
 
         code = isCode && await mailPage.evaluate(() => {
-          const iframe = document.querySelector('.messagedata-iframe')
+          const iframe = document.querySelector('#ifmail')
           const selector = iframe && iframe.contentDocument.querySelector('.otp')
           const code = selector && selector.innerText
 
@@ -86,7 +90,7 @@ const main = async () => {
         if (code) { return }
 
         url = !isCode && await mailPage.evaluate(() => {
-          const iframe = document.querySelector('.messagedata-iframe')
+          const iframe = document.querySelector('#ifmail')
           const link = iframe && iframe.contentDocument.querySelector('table tr td a')
           const url = link && link.href
 
@@ -98,8 +102,13 @@ const main = async () => {
         throw 'fail'
       }
       catch (e) {
+        const captcha = await page.ext('.alc')
+        if (captcha) {
+          shell.exec('expressvpn disconnect', { silent: true })
+          shell.exec('expressvpn connect fr', { silent: true })
+        }
         await mailPage.waitFor(1000 * 10 + rand(2000))
-        await mailPage.clk('.inboxheader-container button')
+        await mailPage.clk('#lrefr')
         await waitFor(isCode)
       }
     }
