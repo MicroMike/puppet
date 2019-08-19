@@ -190,7 +190,7 @@ const main = async () => {
         await tidalLog.clk(playBtn)
         await tidalLog.waitFor(1000 * 45)
 
-        shell.exec('git add save/tidal_' + m + ' && git commit -m "add account"')
+        shell.exec('git add save/tidal_' + m + ' && git commit -m "add account" && git push')
         await tidalLog.cls(true)
       }
     }
