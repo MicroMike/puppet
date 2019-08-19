@@ -148,7 +148,7 @@ const fct = async () => {
 
   let noCache = player === 'napster' || player === 'spotify'
 
-  if (noCache) {
+  if (noCache || check) {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
