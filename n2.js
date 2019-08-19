@@ -41,12 +41,10 @@ const main = async () => {
 
   shell.exec(cmd, async (code, b, c) => {
     console.log(`code: ${code}`, b, c)
-    if (code !== 100) {
-      main()
-    }
+    main()
   })
 }
 
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 40; i++) {
   main()
 }
