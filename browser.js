@@ -51,7 +51,7 @@ const main = async () => {
     const mailPage = await page.np()
 
     await page.gotoUrl('https://music.amazon.fr/home')
-    await mailPage.gotoUrl('http://yopmail.com/')
+    await mailPage.gotoUrl('https://maildrop.cc')
 
     try {
       await page.clk('.createAccountLink')
@@ -61,8 +61,8 @@ const main = async () => {
       await page.clk('.createAccountLink')
     }
 
-    await mailPage.inst('.scpt', mail)
-    await mailPage.clk('.sbut')
+    await mailPage.inst('.inboxform-input input', mail)
+    await mailPage.clk('.inboxform-container button')
 
     console.log(email)
 
@@ -71,16 +71,11 @@ const main = async () => {
 
     const waitFor = async (isCode) => {
       try {
-        const mailHere = await mailPage.evaluate(() => {
-          const iframe = document.querySelector('#ifinbox')
-          const m = iframe && iframe.contentDocument.querySelector('#m1')
-          m && m.click()
-          return m
-        })
+        const mailHere = await mailPage.clk('.messagelist-subject')
         if (!mailHere) { throw 'fail' }
 
         code = isCode && await mailPage.evaluate(() => {
-          const iframe = document.querySelector('#ifmail')
+          const iframe = document.querySelector('.messagedata-iframe')
           const selector = iframe && iframe.contentDocument.querySelector('.otp')
           const code = selector && selector.innerText
 
@@ -90,7 +85,7 @@ const main = async () => {
         if (code) { return }
 
         url = !isCode && await mailPage.evaluate(() => {
-          const iframe = document.querySelector('#ifmail')
+          const iframe = document.querySelector('.messagedata-iframe')
           const link = iframe && iframe.contentDocument.querySelector('table tr td a')
           const url = link && link.href
 
@@ -102,13 +97,8 @@ const main = async () => {
         throw 'fail'
       }
       catch (e) {
-        const captcha = await page.ext('.alc')
-        if (captcha) {
-          shell.exec('expressvpn disconnect', { silent: true })
-          shell.exec('expressvpn connect fr', { silent: true })
-        }
         await mailPage.waitFor(1000 * 10 + rand(2000))
-        await mailPage.clk('#lrefr')
+        await mailPage.clk('.inboxheader-container button')
         await waitFor(isCode)
       }
     }

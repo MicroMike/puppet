@@ -17,7 +17,9 @@ const pull = () => {
   shell.exec('git pull', { silent: true })
 }
 
+let out = false
 process.on('SIGINT', () => {
+  out = true
   process.exit()
 });
 
@@ -27,6 +29,8 @@ try {
 catch (e) { }
 
 const main = async () => {
+  if (out) { return }
+
   pull()
 
   let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
