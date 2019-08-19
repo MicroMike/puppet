@@ -463,7 +463,7 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
-      const del = await page.wfs(loginError)
+      const del = await page.ext(loginError)
       if (del) { throw 'del' }
 
       const needContinue = await page.jClk('#continue')
@@ -554,6 +554,10 @@ const fct = async () => {
           await page.clk('#confirm-authorize')
         }
 
+        if (player === 'amazon') {
+          await page.jClk('#ap-account-fixup-phone-skip-link')
+        }
+
         await page.waitFor(2000 + rand(2000))
         // suppressed = await page.wfs(loginError, false)
 
@@ -574,8 +578,8 @@ const fct = async () => {
         // const reload = await page.ext('#main-container .not-found')
       }
       else if (player === 'amazon') {
+        const play = await page.wfs(playBtn)
         await amazonCheck()
-        const play = await page.ext(playBtn)
         !play && await page.gotoUrl(album())
       }
     }
