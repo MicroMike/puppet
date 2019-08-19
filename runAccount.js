@@ -561,7 +561,8 @@ const fct = async () => {
               if (ca) { throw 'fail' }
             }
             catch (e) {
-              await checkFill()
+              try { await checkFill() }
+              catch (e) { }
               await captchaAmazon()
             }
           }
