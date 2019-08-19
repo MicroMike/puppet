@@ -5,6 +5,7 @@ var shell = require('shelljs');
 const puppet = require('./puppet')
 const captcha = require('./captcha')
 const request = require('ajax-request');
+const amazon = false
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -19,7 +20,7 @@ if (type === 'tidal') {
   keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
 }
 else if (type === 'napster') {
-  url = 'https://us.napster.com/soundtracking/special'
+  url = 'https://br.napster.com/home'
 }
 
 shell.exec('expressvpn disconnect', { silent: true })
@@ -259,102 +260,112 @@ const main = async () => {
     console.log(email)
     await page.bringToFront()
 
-    await page.clk('.button.extra-large')
+    await page.clk('a.cta-trial')
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#txtEmail', email)
     await page.inst('input#txtPassword', '20192019')
-    // await page.inst('input#txtConfirmPassword', '20192019')
-    await page.waitFor(2000 + rand(2000))
-    await page.select('select#age', String(20 + rand(50)))
-    await page.waitFor(2000 + rand(2000))
-    await page.select('select#gender', 'U')
-    // await page.clk('#chkTermsOfUse')
+    await page.inst('input#txtConfirmPassword', '20192019')
+    // await page.waitFor(2000 + rand(2000))
+    // await page.select('select#age', String(20 + rand(50)))
+    // await page.waitFor(2000 + rand(2000))
+    // await page.select('select#gender', 'U')
+    await page.clk('#chkTermsOfUse')
     await page.clk('#signupSubmitButton')
 
-    await page.waitFor(2000 + rand(2000))
-    await page.clk('#rdbPaymentMethodsAmazon')
-    await page.clk('#OffAmazonPaymentsWidgets1')
+    if (amazon) {
+      await page.waitFor(2000 + rand(2000))
+      await page.clk('#rdbPaymentMethodsAmazon')
+      await page.clk('#OffAmazonPaymentsWidgets1')
 
-    let payPage
-    const waitForPopup = async () => {
-      try {
-        payPage = await page.lastPage()
-        const exist = await payPage.ext('#createAccountSubmit')
-        if (!exist) { throw 'Failed' }
+      let payPage
+      const waitForPopup = async () => {
+        try {
+          payPage = await page.lastPage()
+          const exist = await payPage.ext('#createAccountSubmit')
+          if (!exist) { throw 'Failed' }
+        }
+        catch (e) {
+          await waitForPopup()
+        }
       }
-      catch (e) {
-        await waitForPopup()
+
+      await waitForPopup()
+
+      await payPage.clk('#createAccountSubmit')
+      await payPage.inst('input#ap_customer_name', email)
+      await payPage.inst('input#ap_email', email)
+      await payPage.inst('input#ap_password', '20192019')
+      await payPage.inst('input#ap_password_check', '20192019')
+      await payPage.clk('#continue')
+
+      const waitForMail = async () => {
+        try {
+          await mailPage.clk('.col-box a')
+        }
+        catch (e) {
+          await waitForMail()
+        }
       }
+
+      await waitForMail()
+
+      await mailPage.wfs('.inbox-data-content-intro')
+      await page.waitFor(2000 + rand(2000))
+      let code = await mailPage.get('.inbox-data-content-intro', 'innerText')
+      code = code && code.match(/\d+/g)[0]
+
+      await payPage.inst('input[name="code"]', code)
+      await payPage.clk('input[type="submit"]')
+
+      await payPage.jClk('#amazonpay-accept-button-consent input')
+      await payPage.jClk('input[type="submit"]')
+
+      await page.waitFor(10000 + rand(2000))
+      await page.mouse.click(425, 430)
+
+      const waitForAmazon = async () => {
+        try {
+          payPage = await page.lastPage()
+          const exist = await payPage.ext('input[name="ppw-accountHolderName"]')
+          if (!exist) { throw 'Failed' }
+        }
+        catch (e) {
+          await waitForAmazon()
+        }
+      }
+
+      await waitForAmazon()
+
+      await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
+      await payPage.inst('input[name="addCreditCardNumber"]', '5469230653959599')
+      await payPage.select('select[name="ppw-expirationDate_month"]', '8')
+      await payPage.select('select[name="ppw-expirationDate_year"]', '2022')
+      await payPage.clk('input[name="ppw-widgetEvent:AddCreditCardEvent"]')
+
+      await payPage.inst('input[name="ppw-line1"]', '23 56st')
+      await payPage.inst('input[name="ppw-city"]', 'New-York')
+      await payPage.inst('input[name="ppw-stateOrRegion"]', 'New-York')
+      await payPage.inst('input[name="ppw-postalCode"]', '10001')
+      await payPage.inst('input[name="ppw-phoneNumber"]', '0645789458')
+      await payPage.clk('input[name="ppw-widgetEvent:AddAddressEvent"]')
+      await payPage.clk('input[name="ppw-widgetEvent:UseSuggestedAddressEvent"]')
+
+      await page.waitFor(5000 + rand(2000))
+
+      await page.evaluate(() => {
+        const frames = document.querySelectorAll('iframe')
+        const lastF = frames && frames[frames.length - 1]
+        lastF.scrollIntoView()
+      })
     }
-
-    await waitForPopup()
-
-    await payPage.clk('#createAccountSubmit')
-    await payPage.inst('input#ap_customer_name', email)
-    await payPage.inst('input#ap_email', email)
-    await payPage.inst('input#ap_password', '20192019')
-    await payPage.inst('input#ap_password_check', '20192019')
-    await payPage.clk('#continue')
-
-    const waitForMail = async () => {
-      try {
-        await mailPage.clk('.col-box a')
-      }
-      catch (e) {
-        await waitForMail()
-      }
+    else {
+      await page.inst('input#paymentAccountNumberText', '5469230653959599')
+      await page.select('select#expMonth', '8')
+      await page.select('select#expYear', '2022')
+      await page.inst('input#paymentSecurityCode', '251')
+      await page.inst('input#firstName', 'Assoune')
+      await page.inst('input#lastName', 'Mike')
     }
-
-    await waitForMail()
-
-    await mailPage.wfs('.inbox-data-content-intro')
-    await page.waitFor(2000 + rand(2000))
-    let code = await mailPage.get('.inbox-data-content-intro', 'innerText')
-    code = code && code.match(/\d+/g)[0]
-
-    await payPage.inst('input[name="code"]', code)
-    await payPage.clk('input[type="submit"]')
-
-    await payPage.jClk('#amazonpay-accept-button-consent input')
-    await payPage.jClk('input[type="submit"]')
-
-    await page.waitFor(10000 + rand(2000))
-    await page.mouse.click(425, 430)
-
-    const waitForAmazon = async () => {
-      try {
-        payPage = await page.lastPage()
-        const exist = await payPage.ext('input[name="ppw-accountHolderName"]')
-        if (!exist) { throw 'Failed' }
-      }
-      catch (e) {
-        await waitForAmazon()
-      }
-    }
-
-    await waitForAmazon()
-
-    await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
-    await payPage.inst('input[name="addCreditCardNumber"]', '4979938904321965')
-    await payPage.select('select[name="ppw-expirationDate_month"]', '4')
-    await payPage.select('select[name="ppw-expirationDate_year"]', '2021')
-    await payPage.clk('input[name="ppw-widgetEvent:AddCreditCardEvent"]')
-
-    await payPage.inst('input[name="ppw-line1"]', '23 56st')
-    await payPage.inst('input[name="ppw-city"]', 'New-York')
-    await payPage.inst('input[name="ppw-stateOrRegion"]', 'New-York')
-    await payPage.inst('input[name="ppw-postalCode"]', '10001')
-    await payPage.inst('input[name="ppw-phoneNumber"]', '0645789458')
-    await payPage.clk('input[name="ppw-widgetEvent:AddAddressEvent"]')
-    await payPage.clk('input[name="ppw-widgetEvent:UseSuggestedAddressEvent"]')
-
-    await page.waitFor(5000 + rand(2000))
-
-    await page.evaluate(() => {
-      const frames = document.querySelectorAll('iframe')
-      const lastF = frames && frames[frames.length - 1]
-      lastF.scrollIntoView()
-    })
 
     await page.waitFor(2000 + rand(2000))
     await page.mouse.click(188, 53)
