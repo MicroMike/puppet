@@ -12,9 +12,12 @@ const rand = (max, min) => {
 }
 
 const pull = () => {
-  shell.exec('npm run rm && npm run clear', { silent: true })
-  shell.exec('git reset --hard origin/master', { silent: true })
-  shell.exec('git pull', { silent: true })
+  try {
+    shell.exec('npm run rm && npm run clear', { silent: true })
+    shell.exec('git reset --hard origin/master', { silent: true })
+    shell.exec('git pull', { silent: true })
+  }
+  catch (e) { }
 }
 
 let out = false
