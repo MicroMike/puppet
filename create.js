@@ -27,7 +27,7 @@ if (type === 'tidal') {
   shell.exec('expressvpn connect dk')
 }
 else {
-  shell.exec('expressvpn connect us')
+  shell.exec('expressvpn connect br')
 }
 
 const mails = [
