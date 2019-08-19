@@ -39,7 +39,8 @@ const main = async () => {
 
   const create = async (i = null) => {
     const mail = await getEmail()
-    const email = mail + mails[rand(mails.length)]
+    // const email = mail + mails[rand(mails.length)]
+    const email = mail + '@maildrop.cc'
 
     if (i) {
       await mainPage.rload()
