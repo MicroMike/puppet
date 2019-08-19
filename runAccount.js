@@ -558,12 +558,11 @@ const fct = async () => {
         if (player === 'amazon') {
           const captchaAmazon = async () => {
             try {
+              await page.jInst(password, pass)
               const ca = await page.ext('#auth-captcha-image')
               if (ca) { throw 'fail' }
             }
             catch (e) {
-              try { await checkFill() }
-              catch (e) { }
               await captchaAmazon()
             }
           }

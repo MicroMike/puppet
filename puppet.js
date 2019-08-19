@@ -140,6 +140,30 @@ const addFcts = async (page) => {
     }
   }
 
+  page.jInst = async (selector, text, type = false, noError = true) => {
+    if (page.closed) { return }
+    try {
+      if (!noError) {
+        await page.wfs(selector, true)
+      }
+
+      await page.evaluate(({ selector, text }) => {
+        document.querySelector(selector).value = text
+      }, { selector, text: type ? '' : text })
+
+      if (type) {
+        await page.type(selector, text, { delay: 150 });
+      }
+
+      return true
+    }
+    catch (e) {
+      if (!noError) {
+        throw 'Insert error ' + selector
+      }
+    }
+  }
+
   page.get = async (selector, getter = 'innerHTML') => {
     if (page.closed) { return }
     try {
