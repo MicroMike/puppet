@@ -557,11 +557,11 @@ const fct = async () => {
         if (player === 'amazon') {
           const captchaAmazon = async () => {
             try {
-              await checkFill()
               const ca = await page.jClk('#auth-captcha-image')
               if (ca) { throw 'fail' }
             }
             catch (e) {
+              await checkFill()
               await captchaAmazon()
             }
           }
