@@ -62,7 +62,7 @@ const main = async () => {
       await page.clk('.createAccountLink')
     }
 
-    await mailPage.inst('.inboxform-input input', mail)
+    await mailPage.inst('.inboxform-input input', mail, true)
     await mailPage.clk('.inboxform-container button')
 
     console.log(email)
