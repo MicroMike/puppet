@@ -20,7 +20,7 @@ let trys = 0
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 const time = process.env.TIME
-const wait = process.env.WAIT
+const needWait = process.env.WAIT
 
 let account
 let player
@@ -162,9 +162,10 @@ const fct = async () => {
     await exit(210)
   }
 
-  socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'TIMEOUT', other: true })
-
-  !check && wait && await page.waitFor(rand(1000 * 60 * 5))
+  if (!check && needWait) {
+    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'TIMEOUT', other: true })
+    await page.waitFor(rand(1000 * 60 * 5))
+  }
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CONNECT', other: true })
 

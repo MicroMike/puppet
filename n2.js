@@ -18,7 +18,7 @@ try {
 }
 catch (e) { }
 
-const main = async (wait = false) => {
+const main = async (needWait = false) => {
   if (out) { return }
 
   try {
@@ -31,7 +31,7 @@ const main = async (wait = false) => {
   }
   catch (e) { }
 
-  let cmd = 'WAIT=' + (wait ? 'true' : 'false') + ' CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
+  let cmd = 'WAIT=' + (needWait ? 'true' : 'false') + ' CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
