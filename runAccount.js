@@ -739,11 +739,14 @@ const fct = async () => {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
         }
         else {
+          if (freeze > 0) {
+            socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
+          }
+
           freeze = 0
           retry = false
           retryDom = false
           streamOn = false
-          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
           socket.emit('retryOk')
         }
 
