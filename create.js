@@ -106,10 +106,10 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#ccname', 'OSNAUSE KIME', true)
-    await page.inst('input#cardnumber', '5469230678940319', true)
+    await page.inst('input#cardnumber', '5469230687356234', true)
     await page.inst('input#ccmonth', '08', true)
     await page.inst('input#ccyear', '22', true)
-    await page.inst('input#cvc', '406', true)
+    await page.inst('input#cvc', '393', true)
     await page.waitFor(2000 + rand(2000))
     await page.clk('button.btn-success:enabled')
     await page.waitFor(2000 + rand(2000))
@@ -337,7 +337,7 @@ const main = async () => {
       await waitForAmazon()
 
       await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
-      await payPage.inst('input[name="addCreditCardNumber"]', '5469230653959599')
+      await payPage.inst('input[name="addCreditCardNumber"]', '5469230687356234')
       await payPage.select('select[name="ppw-expirationDate_month"]', '8')
       await payPage.select('select[name="ppw-expirationDate_year"]', '2022')
       await payPage.clk('input[name="ppw-widgetEvent:AddCreditCardEvent"]')
