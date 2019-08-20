@@ -7,22 +7,6 @@ const check = process.env.CHECK
 
 shell.exec('killall chrome', { silent: true })
 
-const rand = (max, min) => {
-  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
-}
-
-const pull = () => {
-  try {
-    const b = shell.exec('git fetch && git status', { silent: true })
-    if (!b.match(/up to date/g)) {
-      shell.exec('npm run rm && npm run clear', { silent: true })
-      shell.exec('git reset --hard origin/master', { silent: true })
-      shell.exec('git pull', { silent: true })
-    }
-  }
-  catch (e) { }
-}
-
 let out = false
 process.on('SIGINT', () => {
   out = true
@@ -37,7 +21,15 @@ catch (e) { }
 const main = async (wait = false) => {
   if (out) { return }
 
-  pull()
+  try {
+    const b = shell.exec('git fetch && git status', { silent: true })
+    if (!b.match(/up to date/g)) {
+      shell.exec('npm run rm && npm run clear', { silent: true })
+      shell.exec('git reset --hard origin/master', { silent: true })
+      shell.exec('git pull', { silent: true })
+    }
+  }
+  catch (e) { }
 
   let cmd = 'WAIT=' + wait + ' CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
