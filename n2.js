@@ -13,6 +13,7 @@ const rand = (max, min) => {
 
 const pull = () => {
   try {
+    shell.exec('git fetch', { silent: true })
     shell.exec('npm run rm && npm run clear', { silent: true })
     shell.exec('git reset --hard origin/master', { silent: true })
     shell.exec('git pull', { silent: true })
