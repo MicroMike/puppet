@@ -41,5 +41,6 @@ const main = async (needWait = false) => {
 }
 
 for (let i = 0; i < 64; i++) {
+  if (out) { return }
   main(true)
 }
