@@ -45,6 +45,6 @@ const main = async () => {
   })
 }
 
-for (let i = 0; i < 70; i++) {
+for (let i = 0; i < 60; i++) {
   main()
 }
