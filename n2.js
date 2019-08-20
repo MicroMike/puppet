@@ -40,6 +40,6 @@ const main = async (wait = false) => {
   })
 }
 
-for (let i = 0; i < 60; i++) {
+for (let i = 0; i < 65; i++) {
   main(true)
 }
