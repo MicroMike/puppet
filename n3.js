@@ -41,6 +41,6 @@ const main = async (needWait = false) => {
 }
 
 for (let i = 0; i < 30; i++) {
-  if (out) { return }
+  if (out) { break }
   main(true)
 }
