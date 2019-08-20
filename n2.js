@@ -1,4 +1,4 @@
-process.setMaxListeners(0)
+process.setMaxListeners(Infinity)
 
 var shell = require('shelljs');
 
@@ -31,20 +31,20 @@ try {
 }
 catch (e) { }
 
-const main = async () => {
+const main = async (wait = false) => {
   if (out) { return }
 
   pull()
 
-  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
+  let cmd = 'WAIT=' + wait + ' CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
-    console.log(`code: ${code}`, b, c)
+    // console.log(`code: ${code}`, b, c)
     main()
   })
 }
 
 for (let i = 0; i < 60; i++) {
-  main()
+  main(true)
 }

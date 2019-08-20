@@ -1,4 +1,4 @@
-process.setMaxListeners(0)
+process.setMaxListeners(Infinity)
 
 var fs = require('fs');
 const puppet = require('./puppet')
@@ -20,6 +20,7 @@ let trys = 0
 const check = process.env.CHECK
 const clientId = process.env.CLIENTID
 const time = process.env.TIME
+const wait = process.env.WAIT
 
 let account
 let player
@@ -163,7 +164,7 @@ const fct = async () => {
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'TIMEOUT', other: true })
 
-  !check && await page.waitFor(rand(1000 * 60 * 5))
+  !check && wait && await page.waitFor(rand(1000 * 60 * 5))
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CONNECT', other: true })
 
