@@ -31,8 +31,9 @@ const main = async (needWait = false) => {
   }
   catch (e) { }
 
-  let cmd = 'WAIT=' + (needWait ? 'true' : 'false') + ' CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
+  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
+  cmd = needWait ? 'WAIT=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
     // console.log(`code: ${code}`, b, c)
@@ -40,7 +41,7 @@ const main = async (needWait = false) => {
   })
 }
 
-for (let i = 0; i < 64; i++) {
+for (let i = 0; i < 60; i++) {
   if (out) { break }
   main(true)
 }
