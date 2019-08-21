@@ -77,7 +77,7 @@ const main = async () => {
 
     try {
       await page.inst('input#email', email, true)
-      await page.clk('button.btn-success:enabled')
+      await page.clk('button.#recap-invisible')
 
       await page.waitFor(5000 + rand(2000))
 
@@ -179,7 +179,7 @@ const main = async () => {
       if (needLog) {
         try {
           await tidalLog.inst(username, m, true)
-          await tidalLog.clk('button.btn-success:enabled')
+          await tidalLog.clk('button.#recap-invisible')
 
           await page.waitFor(5000 + rand(2000))
 
