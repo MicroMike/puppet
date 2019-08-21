@@ -77,7 +77,7 @@ const main = async () => {
 
     try {
       await page.inst('input#email', email, true)
-      await page.clk('button.#recap-invisible')
+      await page.clk('#recap-invisible')
 
       await page.waitFor(5000 + rand(2000))
 
@@ -179,7 +179,7 @@ const main = async () => {
       if (needLog) {
         try {
           await tidalLog.inst(username, m, true)
-          await tidalLog.clk('button.#recap-invisible')
+          await tidalLog.clk('#recap-invisible')
 
           await page.waitFor(5000 + rand(2000))
 
@@ -226,7 +226,7 @@ const main = async () => {
 
     await page.gotoUrl('https://my.tidal.com/')
     await page.inst('.login-email', email, true)
-    await page.inst('[name="password"]', email, true)
+    await page.inst('[name="password"]', '20192019', true)
     await page.clk('.btn.action.login-cta')
     await page.clk('.box-family a')
 
@@ -237,6 +237,7 @@ const main = async () => {
       const addPage = await page.np()
       await addPage.gotoUrl('https://my.tidal.com/dk/family/add')
 
+      await addPage.inst('[name="email"]', tMail, true)
       await addPage.inst('[name="emailConfirm"]', tMail, true)
       await addPage.inst('[name="password"]', tMail, true)
       await addPage.clk('.btn-full')
