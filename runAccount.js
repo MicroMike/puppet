@@ -675,7 +675,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 30 + rand(30)
+    let changePlay = 15 + rand(15)
     let change = false
     let changeOnce = false
 
