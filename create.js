@@ -6,6 +6,10 @@ const puppet = require('./puppet')
 const captcha = require('./captcha')
 const request = require('ajax-request');
 const amazon = false
+const cardNumber = '5273462846829746'
+const month = '8'
+const year = '2024'
+const code = '087'
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -106,10 +110,10 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#ccname', 'OSNAUSE KIME', true)
-    await page.inst('input#cardnumber', '5469230687356234', true)
-    await page.inst('input#ccmonth', '08', true)
-    await page.inst('input#ccyear', '22', true)
-    await page.inst('input#cvc', '393', true)
+    await page.inst('input#cardnumber', cardNumber, true)
+    await page.inst('input#ccmonth', month, true)
+    await page.inst('input#ccyear', year, true)
+    await page.inst('input#cvc', code, true)
     await page.waitFor(2000 + rand(2000))
     await page.clk('button.btn-success:enabled')
     await page.waitFor(2000 + rand(2000))
@@ -337,9 +341,9 @@ const main = async () => {
       await waitForAmazon()
 
       await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
-      await payPage.inst('input[name="addCreditCardNumber"]', '5469230687356234')
-      await payPage.select('select[name="ppw-expirationDate_month"]', '8')
-      await payPage.select('select[name="ppw-expirationDate_year"]', '2022')
+      await payPage.inst('input[name="addCreditCardNumber"]', cardNumber)
+      await payPage.select('select[name="ppw-expirationDate_month"]', month)
+      await payPage.select('select[name="ppw-expirationDate_year"]', year)
       await payPage.clk('input[name="ppw-widgetEvent:AddCreditCardEvent"]')
 
       await payPage.inst('input[name="ppw-line1"]', '23 56st')
