@@ -239,7 +239,7 @@ const main = async () => {
 
       await addPage.inst('[name="email"]', tMail, true)
       await addPage.inst('[name="emailConfirm"]', tMail, true)
-      await addPage.inst('[name="password"]', tMail, true)
+      await addPage.inst('[name="password"]', '20192019', true)
       await addPage.clk('.btn-full')
 
       request('https://online-music.herokuapp.com/addAccount?tidal:' + tMail + ':' + tMail, function (error, response, body) { })
