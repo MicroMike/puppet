@@ -366,10 +366,10 @@ const main = async () => {
       await page.waitFor(2000 + rand(2000))
       await page.clk('#rdbPaymentMethodsCards')
 
-      await page.inst('input#paymentAccountNumberText', '5469230678940319')
-      await page.select('select#expMonth', '8')
-      await page.select('select#expYear', '2022')
-      await page.inst('input#paymentSecurityCode', '406')
+      await page.inst('input#paymentAccountNumberText', cardNumber)
+      await page.select('select#expMonth', month)
+      await page.select('select#expYear', year)
+      await page.inst('input#paymentSecurityCode', code)
       await page.inst('input#firstName', 'Assoune')
       await page.inst('input#lastName', 'Mike')
     }
