@@ -27,6 +27,7 @@ let player
 let login
 let pass
 let page
+let resume = false
 
 const getTime = () => {
   const date = new Date
@@ -69,6 +70,10 @@ socket.on('streams', a => {
   parseAccount(a)
 
   fct()
+})
+
+socket.on('resume', () => {
+  resume = true
 })
 
 // let checkAccounts = null
@@ -670,7 +675,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 30 + rand(30)
+    let changePlay = 15 + rand(15)
     let change = false
     let changeOnce = false
 
@@ -739,7 +744,8 @@ const fct = async () => {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
         }
         else {
-          if (freeze > 0) {
+          if (freeze > 0 || resume) {
+            resume = false
             socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
           }
 
