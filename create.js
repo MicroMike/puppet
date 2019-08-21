@@ -81,7 +81,7 @@ const main = async () => {
 
       await page.waitFor(5000 + rand(2000))
 
-      const exist = await page.ext(password)
+      const exist = await page.ext('input#new-password')
       if (!exist) { throw 'fail' }
     }
     catch (e) {
