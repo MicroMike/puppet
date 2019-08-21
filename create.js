@@ -215,7 +215,7 @@ const main = async () => {
           await page.inst('[name="email"]', tMail, true)
         }
         catch (e) {
-          await tidalLog.waitFor(2000 + rand(2000))
+          await page.waitFor(2000 + rand(2000))
           await tryClick()
         }
       }
