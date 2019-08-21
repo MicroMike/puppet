@@ -75,7 +75,18 @@ const main = async () => {
     // await page.clk('input#email + button')
     // await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
 
-    await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
+    try {
+      await page.inst('input#email', email, true)
+      await page.clk('button.btn-success:enabled')
+
+      await page.waitFor(5000 + rand(2000))
+
+      const exist = await page.ext(password)
+      if (!exist) { throw 'fail' }
+    }
+    catch (e) {
+      await captcha(page, 'https://login.tidal.com/', keyCaptcha, 'input#email', email)
+    }
 
     const waitForPass = async () => {
       try {
@@ -89,9 +100,9 @@ const main = async () => {
 
     await waitForPass()
 
-    await page.inst('input#new-password', email, true)
+    await page.inst('input#new-password', '20192019', true)
     await page.waitFor(2000 + rand(2000))
-    await page.inst('input#password2', email, true)
+    await page.inst('input#password2', '20192019', true)
     await page.waitFor(2000 + rand(2000))
     await page.select('select#tbi-day', String(rand(25, 1)))
     await page.waitFor(2000 + rand(2000))
@@ -166,8 +177,18 @@ const main = async () => {
       const needLog = await tryClick()
 
       if (needLog) {
-        // await tidalLog.inst(username, m, true)
-        await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
+        try {
+          await tidalLog.inst(username, m, true)
+          await tidalLog.clk('button.btn-success:enabled')
+
+          await page.waitFor(5000 + rand(2000))
+
+          const exist = await tidalLog.ext(password)
+          if (!exist) { throw 'fail' }
+        }
+        catch (e) {
+          await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
+        }
 
         const waitForPass = async () => {
           try {
@@ -181,7 +202,7 @@ const main = async () => {
 
         await waitForPass()
 
-        await tidalLog.inst(password, m, true)
+        await tidalLog.inst(password, '20192019', true)
         await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
         const logged = await tidalLog.wfs(loggedDom)
@@ -213,43 +234,25 @@ const main = async () => {
       const tMail = getEmail()
       console.log(tMail)
 
-      const tryClick = async () => {
-        try {
-          await page.jClk('.icon.icon-plus')
-          await page.inst('[name="email"]', tMail, true)
-        }
-        catch (e) {
-          await page.waitFor(2000 + rand(2000))
-          await tryClick()
-        }
-      }
+      const addPage = await page.np()
+      await addPage.gotoUrl('https://my.tidal.com/dk/family/add')
 
-      await tryClick()
-
-      await page.inst('[name="emailConfirm"]', tMail, true)
-      await page.inst('[name="password"]', tMail, true)
-      await page.clk('.btn-full')
+      await addPage.inst('[name="emailConfirm"]', tMail, true)
+      await addPage.inst('[name="password"]', tMail, true)
+      await addPage.clk('.btn-full')
 
       request('https://online-music.herokuapp.com/addAccount?tidal:' + tMail + ':' + tMail, function (error, response, body) { })
 
       await tidalConnect(tMail)
     }
 
-    await addTidal()
-    await addTidal()
-    await addTidal()
-    await addTidal()
-    await addTidal()
+    addTidal()
+    addTidal()
+    addTidal()
+    addTidal()
+    addTidal()
 
     await page.waitFor(5000 + rand(2000))
-
-    await page.cls(true)
-
-    //   await page.gotoUrl('https://my.tidal.com/account/subscription')
-    //   await page.clk('a.cancel-subscription')
-    //   await page.clk('.btn-gray')
-
-    process.exit()
   }
   else if (type === 'napster') {
     const page = await puppet('', true)
