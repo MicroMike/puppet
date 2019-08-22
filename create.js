@@ -396,7 +396,7 @@ const main = async () => {
     await waitForDone()
     await page.cls()
     main()
-    request('https://online-music.herokuapp.com/addAccount?napster:' + email + 'pass, function (error, response, body) { })
+    request('https://online-music.herokuapp.com/addAccount?napster:' + email + ':' + pass, function (error, response, body) { })
   }
 
   // await page.cls(true)
