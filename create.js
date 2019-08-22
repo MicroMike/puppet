@@ -10,6 +10,7 @@ const cardNumber = '5469230692177849'
 const month = '8'
 const year = '2022'
 const code = '623'
+const pass = '20192019'
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -100,9 +101,9 @@ const main = async () => {
 
     await waitForPass()
 
-    await page.inst('input#new-password', '20192019', true)
+    await page.inst('input#new-password', pass, true)
     await page.waitFor(2000 + rand(2000))
-    await page.inst('input#password2', '20192019', true)
+    await page.inst('input#password2', pass, true)
     await page.waitFor(2000 + rand(2000))
     await page.select('select#tbi-day', String(rand(25, 1)))
     await page.waitFor(2000 + rand(2000))
@@ -131,7 +132,7 @@ const main = async () => {
 
     // PAYPAL
     // await page.inst('input#email', 'micro.smith@mega.zik.dj', true)
-    // await page.inst('input#password', '20192019', true)
+    // await page.inst('input#password', pass, true)
     // await page.clk('button#btnLogin')
     // await page.clk('input#confirmButtonTop')
     //PAYPAL
@@ -202,7 +203,7 @@ const main = async () => {
 
         await waitForPass()
 
-        await tidalLog.inst(password, '20192019', true)
+        await tidalLog.inst(password, pass, true)
         await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
 
         const logged = await tidalLog.wfs(loggedDom)
@@ -220,13 +221,13 @@ const main = async () => {
       }
     }
 
-    request('https://online-music.herokuapp.com/addAccount?tidal:' + email + ':' + email, function (error, response, body) { })
+    request('https://online-music.herokuapp.com/addAccount?tidal:' + email + ':' + pass, function (error, response, body) { })
     shell.exec('git add save/tidal_' + email + ' && git commit -m "add account"')
     // await tidalConnect(email)
 
     await page.gotoUrl('https://my.tidal.com/')
     await page.inst('.login-email', email, true)
-    await page.inst('[name="password"]', '20192019', true)
+    await page.inst('[name="password"]', pass, true)
     await page.clk('.btn.action.login-cta')
     await page.clk('.box-family a')
 
@@ -239,10 +240,10 @@ const main = async () => {
 
       await addPage.inst('[name="email"]', tMail, true)
       await addPage.inst('[name="emailConfirm"]', tMail, true)
-      await addPage.inst('[name="password"]', '20192019', true)
+      await addPage.inst('[name="password"]', pass, true)
       await addPage.clk('.btn-full')
 
-      request('https://online-music.herokuapp.com/addAccount?tidal:' + tMail + ':' + tMail, function (error, response, body) { })
+      request('https://online-music.herokuapp.com/addAccount?tidal:' + tMail + ':' + pass, function (error, response, body) { })
 
       await tidalConnect(tMail)
     }
@@ -271,8 +272,8 @@ const main = async () => {
     await page.clk('a.button.extra-large')
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#txtEmail', email)
-    await page.inst('input#txtPassword', '20192019')
-    await page.inst('input#txtConfirmPassword', '20192019')
+    await page.inst('input#txtPassword', pass)
+    await page.inst('input#txtConfirmPassword', pass)
     // await page.waitFor(2000 + rand(2000))
     // await page.select('select#age', String(20 + rand(50)))
     // await page.waitFor(2000 + rand(2000))
@@ -302,8 +303,8 @@ const main = async () => {
       await payPage.clk('#createAccountSubmit')
       await payPage.inst('input#ap_customer_name', email)
       await payPage.inst('input#ap_email', email)
-      await payPage.inst('input#ap_password', '20192019')
-      await payPage.inst('input#ap_password_check', '20192019')
+      await payPage.inst('input#ap_password', pass)
+      await payPage.inst('input#ap_password_check', pass)
       await payPage.clk('#continue')
 
       const waitForMail = async () => {
@@ -395,7 +396,7 @@ const main = async () => {
     await waitForDone()
     await page.cls()
     main()
-    request('https://online-music.herokuapp.com/addAccount?napster:' + email + ':20192019', function (error, response, body) { })
+    request('https://online-music.herokuapp.com/addAccount?napster:' + email + 'pass, function (error, response, body) { })
   }
 
   // await page.cls(true)
