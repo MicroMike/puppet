@@ -264,7 +264,7 @@ const main = async () => {
     await page.gotoUrl(url)
 
     const mailPage = await page.np()
-    await mailPage.gotoUrl('https://temp-mail.org/option/delete/')
+    await mailPage.gotoUrl('https://temp-mail.org')
     const email = await mailPage.get('#mail', 'value')
     console.log(email)
     await page.bringToFront()
