@@ -649,11 +649,9 @@ const fct = async () => {
           }
         }
 
-        if (player === 'tidal') {
-          await page.rload()
-        }
-
         if (player !== 'amazon' || amazonStyle === 'none') {
+          await page.rload()
+
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw 'logout' }
         }
