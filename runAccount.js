@@ -225,7 +225,6 @@ const fct = async () => {
 
     let code = 5
 
-
     code = e === 'loop' ? 1 : code
     code = e === 'firstPlay' ? 210 : code
     code = e === 'failedLoop' ? 210 : code
@@ -233,7 +232,7 @@ const fct = async () => {
     code = e === 'tidalError' ? 6 : code
     code = e === 'amazonError' ? 6 : code
     code = e === 'used' ? 7 : code
-    code = e === 'freeze' ? 210 : code
+    code = e === 'freeze' ? 1 : code
 
     // code = e === 'retry' ? 5 : code
     // code = e === 'crashed' ? 6 : code
