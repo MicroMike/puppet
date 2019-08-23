@@ -638,8 +638,6 @@ const fct = async () => {
           throw playError
         }
 
-        await page.rload()
-
         const logged = await page.wfs(loggedDom)
         if (!logged) { throw 'logout' }
 
