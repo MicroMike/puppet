@@ -634,16 +634,30 @@ const fct = async () => {
         socket.emit('retryOk')
       }
       catch (e) {
-        if (++trys > 1) {
+        if (++trys > 3) {
           throw playError
+        }
+
+        let amazonStyle
+        if (player === 'amazon') {
+          amazonStyle = await page.evaluate(() => {
+            return document.querySelector('#mainContentLoadingSpinner').style['display']
+          })
+
+          if (amazonStyle !== 'none') {
+            takeScreenshot('amazonFreeze')
+          }
+          else { throw 'logout' }
         }
 
         if (player === 'tidal') {
           await page.jClk('[class^="mainLayout"] [class^="playingFrom"] a')
         }
 
-        const logged = await page.wfs(loggedDom)
-        if (!logged) { throw 'logout' }
+        if (player !== 'amazon' || amazonStyle === 'none') {
+          const logged = await page.wfs(loggedDom)
+          if (!logged) { throw 'logout' }
+        }
 
         await waitForPlayBtn(playError)
       }
@@ -752,23 +766,11 @@ const fct = async () => {
         if (freeze >= 3) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
-          if (player === 'amazon') {
-            const amazonStyle = await page.evaluate(() => {
-              return document.querySelector('#mainContentLoadingSpinner').style['display']
-            })
+          const logged = await page.wfs(loggedDom)
+          if (!logged) { throw 'logout' }
 
-            if (amazonStyle !== 'none') {
-              takeScreenshot('amazonFreeze')
-            }
-            else { throw 'logout' }
-          }
-          else {
-            const logged = await page.wfs(loggedDom)
-            if (!logged) { throw 'logout' }
-
-            await page.jClk(playBtn)
-            await page.waitFor(1000 * 5)
-          }
+          await page.jClk(playBtn)
+          await page.waitFor(1000 * 5)
         }
 
         if (freeze > 6) {
