@@ -651,7 +651,7 @@ const fct = async () => {
         }
 
         if (player === 'tidal') {
-          await page.jClk('[class^="mainLayout"] [class^="playingFrom"] a')
+          await page.rload()
         }
 
         if (player !== 'amazon' || amazonStyle === 'none') {
