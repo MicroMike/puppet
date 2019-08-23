@@ -775,6 +775,7 @@ const fct = async () => {
         if (t1 === t2) {
           ++freeze
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
+          if (player === 'napster') { await page.jClk(playBtn) }
         }
         else {
           if (freeze > 0 || resume) {
@@ -794,9 +795,6 @@ const fct = async () => {
 
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw 'logout' }
-
-          await page.jClk(playBtn)
-          await page.waitFor(1000 * 5)
         }
 
         if (freeze > 6) {
