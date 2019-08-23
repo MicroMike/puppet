@@ -638,7 +638,9 @@ const fct = async () => {
           throw playError
         }
 
-        if (player === 'tidal') { await page.rload() }
+        if (player === 'tidal') {
+          await page.jClk('[class^="mainLayout"] [class^="playingFrom"] a')
+        }
 
         const logged = await page.wfs(loggedDom)
         if (!logged) { throw 'logout' }
