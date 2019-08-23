@@ -755,14 +755,7 @@ const fct = async () => {
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
 
-          if (freeze === 3) {
-            await page.rload()
-            await waitForPlayBtn('change')
-          }
-          else {
-            await page.jClk(nextBtn)
-          }
-
+          await page.jClk(nextBtn)
           await page.waitFor(1000 * 5)
         }
 
