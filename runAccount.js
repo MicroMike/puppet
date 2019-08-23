@@ -727,25 +727,6 @@ const fct = async () => {
           }
         }
 
-        let matchTime = Number(t1)
-
-        if (matchTime && matchTime > 30) {
-          if (!nextMusic) {
-            nextMusic = true
-            countPlays++
-
-            await page.jClk(nextBtn)
-            socket.emit('plays', { next: true, currentAlbum })
-          }
-        }
-        else {
-          nextMusic = false
-        }
-
-        if (countPlays > changePlay) {
-          exitLoop = true
-        }
-
         t1 = t2
         t2 = await page.getTime(timeLine, callback)
 
@@ -766,19 +747,44 @@ const fct = async () => {
           socket.emit('retryOk')
         }
 
-        if (freeze > 3) {
+        if (freeze >= 3) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
 
-          await page.rload()
-          await waitForPlayBtn('change')
+          if (freeze === 3) {
+            await page.rload()
+            await waitForPlayBtn('change')
+          }
+          else {
+            await page.jClk(nextBtn)
+          }
+
           await page.waitFor(1000 * 5)
         }
 
         if (freeze > 6) {
           throw 'freeze'
+        }
+
+        let matchTime = Number(t1)
+
+        if (matchTime && matchTime > 30) {
+          if (!nextMusic) {
+            nextMusic = true
+            countPlays++
+
+            await page.jClk(nextBtn)
+            socket.emit('plays', { next: true, currentAlbum })
+          }
+        }
+        else {
+          nextMusic = false
+        }
+
+        if (countPlays > changePlay) {
+          exitLoop = true
         }
 
         if (exitLoop) { throw 'loop' }
