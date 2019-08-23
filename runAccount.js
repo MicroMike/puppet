@@ -638,25 +638,35 @@ const fct = async () => {
           throw playError
         }
 
-        let amazonStyle
         if (player === 'amazon') {
-          amazonStyle = await page.evaluate(() => {
-            return document.querySelector('#mainContentLoadingSpinner').style['display']
-          })
+          const waitForReady = async () => {
+            const amazonStyle = await page.evaluate(() => {
+              return document.querySelector('#mainContentLoadingSpinner').style['display']
+            })
 
-          if (amazonStyle !== 'none') {
-            takeScreenshot('amazonFreeze')
+            if (amazonStyle !== 'none') {
+              takeScreenshot('amazonFreeze')
+              await page.waitFor(2000 + rand(2000))
+              await waitForReady()
+            }
+          }
+
+          await waitForReady()
+
+          try { await page.clk(playBtn) }
+          catch (e) {
+            await page.rload()
+            await waitForPlayBtn(playError)
           }
         }
-
-        if (player !== 'amazon' || amazonStyle === 'none') {
+        else {
           await page.rload()
 
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw 'logout' }
-        }
 
-        await waitForPlayBtn(playError)
+          await waitForPlayBtn(playError)
+        }
       }
     }
 
