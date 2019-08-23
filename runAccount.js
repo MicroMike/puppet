@@ -647,7 +647,6 @@ const fct = async () => {
           if (amazonStyle !== 'none') {
             takeScreenshot('amazonFreeze')
           }
-          else { throw 'logout' }
         }
 
         if (player === 'tidal') {
