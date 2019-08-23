@@ -481,6 +481,8 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
+      await page.gotoUrl(album())
+
       const del = await page.ext(loginError)
       if (del) { throw 'del' }
 
@@ -609,9 +611,9 @@ const fct = async () => {
         // const reload = await page.ext('#main-container .not-found')
       }
       else if (player === 'amazon') {
+        await amazonCheck()
         const play = await page.ext(playBtn)
         !play && await page.gotoUrl(album())
-        await amazonCheck()
       }
     }
 
