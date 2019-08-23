@@ -660,9 +660,9 @@ const fct = async () => {
 
     if (check) {
       request('https://online-music.herokuapp.com/checkOk?' + account, async (error, response, body) => {
-        shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
         // startCheck()
         await page.waitFor(1000 * 35)
+        shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
         await page.cls(true)
 
         catchFct('check')
