@@ -638,6 +638,8 @@ const fct = async () => {
           throw playError
         }
 
+        if (player === 'tidal') { await page.rload() }
+
         const logged = await page.wfs(loggedDom)
         if (!logged) { throw 'logout' }
 
