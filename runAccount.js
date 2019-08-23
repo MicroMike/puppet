@@ -534,7 +534,6 @@ const fct = async () => {
         catch (e) {
           throw 'amazonError'
         }
-        await page.gotoUrl(album())
       }
     }
 
