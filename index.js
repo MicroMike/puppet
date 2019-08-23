@@ -29,6 +29,9 @@ const getTime = () => {
 const main = async () => {
   try {
     shell.exec('expressvpn disconnect', { silent: true })
+    if (check) {
+      shell.exec('expressvpn connect nl', { silent: true })
+    }
   }
   catch (e) { }
 
