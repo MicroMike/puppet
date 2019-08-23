@@ -743,6 +743,25 @@ const fct = async () => {
           }
         }
 
+        let matchTime = Number(t1)
+
+        if (matchTime && matchTime > 30) {
+          if (!nextMusic) {
+            nextMusic = true
+            countPlays++
+
+            await page.jClk(nextBtn)
+            socket.emit('plays', { next: true, currentAlbum })
+          }
+        }
+        else {
+          nextMusic = false
+        }
+
+        if (countPlays > changePlay) {
+          exitLoop = true
+        }
+
         t1 = t2
         t2 = await page.getTime(timeLine, callback)
 
@@ -775,25 +794,6 @@ const fct = async () => {
 
         if (freeze > 6) {
           throw 'freeze'
-        }
-
-        let matchTime = Number(t1)
-
-        if (matchTime && matchTime > 30) {
-          if (!nextMusic) {
-            nextMusic = true
-            countPlays++
-
-            await page.jClk(nextBtn)
-            socket.emit('plays', { next: true, currentAlbum })
-          }
-        }
-        else {
-          nextMusic = false
-        }
-
-        if (countPlays > changePlay) {
-          exitLoop = true
         }
 
         if (exitLoop) { throw 'loop' }
