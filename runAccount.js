@@ -752,11 +752,23 @@ const fct = async () => {
         if (freeze >= 3) {
           socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
 
-          const logged = await page.wfs(loggedDom)
-          if (!logged) { throw player === 'amazon' ? 'amazonError' : 'logout' }
+          if (player === 'amazon') {
+            const amazonStyle = await page.evaluate(() => {
+              return document.querySelector('#mainContentLoadingSpinner').style['display']
+            })
 
-          await page.jClk(nextBtn)
-          await page.waitFor(1000 * 5)
+            if (amazonStyle !== 'none') {
+              takeScreenshot('amazonFreeze')
+            }
+            else { throw 'logout' }
+          }
+          else {
+            const logged = await page.wfs(loggedDom)
+            if (!logged) { throw 'logout' }
+
+            await page.jClk(playBtn)
+            await page.waitFor(1000 * 5)
+          }
         }
 
         if (freeze > 6) {
