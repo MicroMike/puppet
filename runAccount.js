@@ -547,7 +547,7 @@ const fct = async () => {
         }
       }
 
-      const del = await page.ext(loginError)
+      del = await page.ext(loginError)
       if (del) { throw 'del' }
     }
 
