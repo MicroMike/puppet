@@ -414,7 +414,18 @@ const fct = async () => {
         if (needLog) {
           if (!check) { throw 'tidalError' }
 
-          await captcha(page, url, keyCaptcha, username, login)
+          try {
+            await page.inst(username, login, true)
+            await page.clk('#recap-invisible')
+
+            await page.waitFor(5000 + rand(2000))
+
+            const exist = await page.ext(password)
+            if (!exist) { throw 'fail' }
+          }
+          catch (e) {
+            await captcha(page, url, keyCaptcha, username, login)
+          }
 
           const waitForPass = async () => {
             try {
