@@ -481,7 +481,7 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
-      const del = await page.ext(loginError)
+      let del = await page.ext(loginError)
       if (del) { throw 'del' }
 
       const needContinue = await page.jClk('#continue')
