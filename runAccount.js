@@ -481,8 +481,6 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
-      await page.gotoUrl(album())
-
       const del = await page.ext(loginError)
       if (del) { throw 'del' }
 
@@ -548,6 +546,9 @@ const fct = async () => {
           throw 'amazonError'
         }
       }
+
+      const del = await page.ext(loginError)
+      if (del) { throw 'del' }
     }
 
     const connectFct = async () => {
