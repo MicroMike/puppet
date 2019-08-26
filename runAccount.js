@@ -571,7 +571,20 @@ const fct = async () => {
         await page.clk(loginBtn)
 
         if (player === 'napster') {
-          await page.clk('#confirm-authorize')
+          const napsterAuth = async () => {
+            try {
+              await page.jClk('#confirm-authorize')
+              await page.waitFor(2000 + rand(2000))
+
+              const exist = await page.ext('#confirm-authorize')
+              if (exist) { throw 'fail' }
+            }
+            catch (e) {
+              await napsterAuth()
+            }
+          }
+
+          await napsterAuth()
         }
 
         if (player === 'amazon') {
