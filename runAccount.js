@@ -147,6 +147,7 @@ const fct = async () => {
   let callback
   let unlock1
   let unlock2
+  let freezeConnect
 
   let usernameInput = true
   let connected = false
@@ -166,6 +167,10 @@ const fct = async () => {
     console.log('no page')
     await exit(210)
   }
+
+  freezeConnect = setTimeout(() => {
+    exit(0)
+  }, 1000 * 60 * 5);
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CONNECT', other: true })
 
@@ -626,6 +631,8 @@ const fct = async () => {
     }
 
     await connectFct()
+
+    clearTimeout(freezeConnect)
 
     // ***************************************************************************************************************************************************************
     // *************************************************************************** PLAY ******************************************************************************
