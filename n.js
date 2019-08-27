@@ -1,10 +1,22 @@
 process.setMaxListeners(Infinity)
 
 var shell = require('shelljs');
+var socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 const arg = process.argv[2]
 const nb = process.argv[3]
 const check = process.env.CHECK
+
+
+let parentId
+socket.on('activate', id => {
+  socket.emit('parent', { connected: parentId, id: arg })
+  if (!parentId) { parentId = id }
+})
+
+socket.on('run', () => {
+  main()
+})
 
 shell.exec('killall chrome', { silent: true })
 
@@ -18,6 +30,8 @@ try {
   shell.exec('expressvpn disconnect', { silent: true })
 }
 catch (e) { }
+
+let count = 0
 
 const main = async (needWait = false) => {
   if (out) { return }
@@ -34,15 +48,14 @@ const main = async (needWait = false) => {
 
   let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
   cmd = check ? 'CHECK=true ' + cmd : cmd
-  cmd = needWait ? 'WAIT=true ' + cmd : cmd
+  // cmd = needWait ? 'WAIT=true ' + cmd : cmd
 
-  shell.exec(cmd, async (code, b, c) => {
-    // console.log(`code: ${code}`, b, c)
-    main(code === 101)
-  })
-}
-
-for (let i = 0; i < (nb || 20); i++) {
-  if (out) { break }
-  main(true)
+  if (count < (nb || 20)) {
+    count++
+    shell.exec(cmd, async (code, b, c) => {
+      // console.log(`code: ${code}`, b, c)
+      count--
+      main()
+    })
+  }
 }
