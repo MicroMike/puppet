@@ -172,7 +172,7 @@ const fct = async () => {
     await exit(210)
   }
 
-  socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CONNECT', other: true })
+  socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'RUN', other: true })
 
   page.on('close', function (err) {
     if (!close && !check) {
@@ -631,6 +631,8 @@ const fct = async () => {
     }
 
     await connectFct()
+
+    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CONNECT', other: true })
 
     clearTimeout(freezeConnect)
 

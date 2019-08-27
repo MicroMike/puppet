@@ -55,7 +55,7 @@ const main = async (needWait = false) => {
     shell.exec(cmd, async (code, b, c) => {
       // console.log(`code: ${code}`, b, c)
       count--
-      main()
+      // main()
     })
   }
 }
