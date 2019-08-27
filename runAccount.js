@@ -159,9 +159,9 @@ const fct = async () => {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
-  // freezeConnect = setTimeout(() => {
-  //   exit(0)
-  // }, 1000 * 60 * 5);
+  freezeConnect = setTimeout(() => {
+    exit(0)
+  }, 1000 * 60 * 5);
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
@@ -632,7 +632,7 @@ const fct = async () => {
 
     await connectFct()
 
-    // clearTimeout(freezeConnect)
+    clearTimeout(freezeConnect)
 
     // ***************************************************************************************************************************************************************
     // *************************************************************************** PLAY ******************************************************************************
