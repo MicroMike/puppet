@@ -3,6 +3,7 @@ process.setMaxListeners(Infinity)
 var shell = require('shelljs');
 
 const arg = process.argv[2]
+const nb = process.argv[3]
 const check = process.env.CHECK
 
 shell.exec('killall chrome', { silent: true })
@@ -31,7 +32,7 @@ const main = async (needWait = false) => {
   }
   catch (e) { }
 
-  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
+  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node nightRun'
   cmd = check ? 'CHECK=true ' + cmd : cmd
   cmd = needWait ? 'WAIT=true ' + cmd : cmd
 
@@ -41,7 +42,7 @@ const main = async (needWait = false) => {
   })
 }
 
-for (let i = 0; i < 70; i++) {
+for (let i = 0; i < (nb || 20); i++) {
   if (out) { break }
   main(true)
 }
