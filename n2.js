@@ -36,7 +36,7 @@ const main = async (needWait = false) => {
   cmd = check ? 'CHECK=true ' + cmd : cmd
   // cmd = needWait ? 'WAIT=true ' + cmd : cmd
 
-  shell.exec('cross-env ' + cmd, async (code, b, c) => {
+  shell.exec(cmd, async (code, b, c) => {
     // console.log(`code: ${code}`, b, c)
     main(code === 101)
   })
