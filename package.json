@@ -50,7 +50,7 @@
     "fs-extra": "^7.0.1",
     "image-to-base64": "^2.0.1",
     "ip": "^1.1.5",
-    "electron-widevinecdm": "^7.0.0",
+    "electron": "https://github.com/castlabs/electron-releases#v7.0.0-wvvmp-beta.3",
     "nightmare": "^2.0.0",
     "puppeteer": "^1.17.0",
     "shelljs": "^0.8.3",
