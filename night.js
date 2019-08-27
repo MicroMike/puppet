@@ -12,7 +12,7 @@ const page = Nightmare({
 	height: 450,
 	typeInterval: 300,
 	webPreferences: {
-		partition: persist,
+		// partition: persist,
 		webSecurity: false,
 		allowRunningInsecureContent: true,
 		plugins: true,
