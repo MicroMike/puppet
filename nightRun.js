@@ -168,7 +168,7 @@ const fct = async () => {
 	page = await night('save/' + player + '_' + login, noCache)
 
 	if (!page) {
-		console.log('no page')
+		console.log('no page', page)
 		await exit(210)
 	}
 
