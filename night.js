@@ -248,6 +248,8 @@ module.exports = async (userDataDir, noCache) => {
 
 	let page
 	page = Nightmare(params)
+	console.log(page)
 
-	return page && addFcts(page)
+	// return page && addFcts(page)
+	return page
 }
