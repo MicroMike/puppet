@@ -24,3 +24,5 @@ const page = Nightmare({
 const main = async () => {
 	await page.goto('https://micro-napster.herokuapp.com')
 }
+
+main()
