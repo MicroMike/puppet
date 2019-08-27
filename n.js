@@ -7,6 +7,7 @@ const nb = process.argv[3]
 const check = process.env.CHECK
 
 shell.exec('killall chrome', { silent: true })
+shell.exec('killall node', { silent: true })
 
 let out = false
 process.on('SIGINT', () => {
