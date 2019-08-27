@@ -161,7 +161,7 @@ const fct = async () => {
 
   freezeConnect = setTimeout(() => {
     exit(0)
-  }, 1000 * 60 * 5);
+  }, 1000 * 60 * 3);
 
   socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
 
