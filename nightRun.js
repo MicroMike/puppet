@@ -170,7 +170,7 @@ const fct = async () => {
 
 	const Nightmare = require('nightmare')
 	const page = Nightmare({
-		electronPath: require('electron-widevinecdm'),
+		electronPath: require('electron'),
 		// openDevTools: {
 		//   mode: 'detach'
 		// },
