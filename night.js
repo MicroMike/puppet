@@ -22,7 +22,7 @@ const page = Nightmare({
 })
 
 const main = async () => {
-	await page.goto('https://netflix.com')
+	await page.goto('https://listen.tidal.com')
 }
 
 main()
