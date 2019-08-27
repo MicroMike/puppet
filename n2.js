@@ -34,7 +34,7 @@ const main = async (needWait = false) => {
 
   let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node nightRun'
   cmd = check ? 'CHECK=true ' + cmd : cmd
-  cmd = needWait ? 'WAIT=true ' + cmd : cmd
+  // cmd = needWait ? 'WAIT=true ' + cmd : cmd
 
   shell.exec(cmd, async (code, b, c) => {
     // console.log(`code: ${code}`, b, c)
