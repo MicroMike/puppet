@@ -509,25 +509,25 @@ const fct = async () => {
 
 	try {
 		if (player === 'napster') {
-			url = 'https://micro-napster.herokuapp.com/'
-			loggedDom = '#track .content'
+      url = 'https://app.napster.com/login/'
+      loggedDom = '.icon-settings2'
 
-			username = '#username'
-			password = '#password'
-			loginBtn = '.sign-in-btn.button'
-			loginError = '.login-error'
+      username = '#username'
+      password = '#password'
+      loginBtn = '.signin'
+      loginError = '.login-error'
 
-			unlock1 = '.player-btn[title="Next Song"]'
-			playBtn = '#track .content'
-			shuffleBtn = '.player-btn[title="Shuffle"]'
-			// repeatBtn = '.repeat-button'
-			// repeatBtnOk = '.repeat-button.repeat'
-			nextBtn = '.player-btn[title="Next Song"]'
+      unlock1 = '.icon-pause2'
+      unlock2 = '.icon-play-button'
+      playBtn = '.track-list-header .shuffle-button'
+      repeatBtn = '.repeat-button'
+      repeatBtnOk = '.repeat-button.repeat'
+      nextBtn = '.player-advance-button.icon-next2'
 
-			usedDom = '.player-error-box'
+      usedDom = '.player-error-box'
 
-			timeLine = '.demobox > div.text'
-			callback = a => (a.split('/')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
+      timeLine = '.player-time'
+      callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
 		}
 		if (player === 'amazon') {
 			url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
@@ -791,23 +791,6 @@ const fct = async () => {
 				await page.jClk(remember)
 				await page.clk(loginBtn)
 
-				if (player === 'napster') {
-					const napsterAuth = async () => {
-						try {
-							await page.jClk('#confirm-authorize')
-							await page.wait(2000 + rand(2000))
-
-							const exist = await page.ext('#confirm-authorize')
-							if (exist) { throw 'fail' }
-						}
-						catch (e) {
-							await napsterAuth()
-						}
-					}
-
-					await napsterAuth()
-				}
-
 				if (player === 'amazon') {
 					const captchaAmazon = async () => {
 						try {
@@ -828,12 +811,12 @@ const fct = async () => {
 				await page.wait(2000 + rand(2000))
 				// suppressed = await page.wfs(loginError, false)
 
-				if (suppressed) {
-					if (player !== 'napster' || String(suppressed).match(/password/)) {
-						throw 'del'
-					}
-					throw 'login'
-				}
+				// if (suppressed) {
+				// 	if (player !== 'napster' || String(suppressed).match(/password/)) {
+				// 		throw 'del'
+				// 	}
+				// 	throw 'login'
+				// }
 			}
 
 			if (player === 'spotify') {
