@@ -159,7 +159,7 @@ const fct = async () => {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
-  freezeConnect = !check && setTimeout(() => {
+  freezeConnect = setTimeout(() => {
     exit(0)
   }, 1000 * 60 * 3);
 
@@ -483,6 +483,8 @@ const fct = async () => {
       const needContinue = await page.jClk('#continue')
 
       if (needContinue) {
+        clearTimeout(freezeConnect)
+
         try {
           let code
           const waitForCode = async () => {
