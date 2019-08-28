@@ -159,7 +159,7 @@ const fct = async () => {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
-  freezeConnect = setTimeout(() => {
+  freezeConnect = !check && setTimeout(() => {
     exit(0)
   }, 1000 * 60 * 3);
 
