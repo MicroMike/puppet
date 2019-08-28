@@ -75,9 +75,9 @@ const main = async () => {
 
         console.log(inbox)
 
-        code = isCode && inbox.split('suivant :')[1].split('Ne partagez')[0]
+        code = isCode && String(inbox).split('suivant :')[1].split('Ne partagez')[0]
 
-        console.log(code)
+        console.log('CODE: ' + code)
 
         if (code) { return }
 
