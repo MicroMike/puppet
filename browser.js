@@ -77,13 +77,9 @@ const main = async () => {
 
         code = isCode && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
 
-        console.log('CODE: ' + code)
-
         if (code) { return }
 
         url = !isCode && inbox.split('( ')[1].split(' )')[0]
-
-        console.log(url)
 
         if (url) { return }
 
@@ -202,13 +198,13 @@ const main = async () => {
       await page.clk('input.a-button-input')
 
       try {
-        await page.clk('.dialogBox button')
+        // await page.clk('.dialogBox button')
 
         // await page.inst(password, pass)
         // await page.clk('input.a-button-input')
 
-        await page.clk('input.a-button-input')
-        await page.clk('.a-button-inner a')
+        // await page.clk('input.a-button-input')
+        // await page.clk('.a-button-inner a')
       }
       catch (e) { console.log(e) }
     }
