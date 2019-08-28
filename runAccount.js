@@ -487,56 +487,24 @@ const fct = async () => {
 
       if (needContinue) {
         try {
-          const yopmail = await page.np()
-          await yopmail.gotoUrl('http://yopmail.com/')
-          await yopmail.inst('.scpt', login)
-          await yopmail.clk('.sbut')
-
           let code
-          let tries = 0
-          let manual = false
           const waitForCode = async () => {
             try {
-              const mailHere = await yopmail.evaluate(() => {
-                const iframe = document.querySelector('#ifinbox')
-                const m = iframe && iframe.contentDocument.querySelector('#m1')
-                m && m.click()
-                return m
-              })
-              if (!mailHere) { throw 'fail' }
+              const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
 
-              code = await yopmail.evaluate(() => {
-                const iframe = document.querySelector('#ifmail')
-                const selector = iframe && iframe.contentDocument.querySelector('.otp')
-                const code = selector && selector.innerText
+              code = isCode && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
 
-                return code
-              })
-
-              if (code) { return }
-              throw 'fail'
+              if (!code) { throw 'fail' }
             }
             catch (e) {
-              const captcha = await yopmail.ext('.alc')
-              if (!check) {
-                throw 'amazonError'
-              }
-              await yopmail.waitFor(1000 * 10 + rand(2000))
-              await yopmail.clk('#lrefr')
-
-              socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CODE', other: true, code: true })
-
-              manual = await page.get('input[name="code"]', 'value')
-              if (!manual) {
-                await waitForCode()
-              }
+              await page.waitFor(1000 * 3 + rand(2000))
+              await waitFor(isCode)
             }
           }
 
           await waitForCode()
 
-
-          !manual && await page.inst('input[name="code"]', code)
+          await page.inst('input[name="code"]', code)
           await page.clk('input[type="submit"]')
 
           await page.jClk('#ap-account-fixup-phone-skip-link')
