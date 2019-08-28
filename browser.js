@@ -71,7 +71,9 @@ const main = async () => {
 
     const waitFor = async (isCode) => {
       try {
-        const inbox = shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1')
+        const inbox = shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })
+
+        console.log(inbox)
 
         code = isCode && Number(inbox.split('suivant :')[1].split('Ne partagez')[0])
 
