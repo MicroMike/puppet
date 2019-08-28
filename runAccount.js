@@ -496,6 +496,7 @@ const fct = async () => {
               if (!code) { throw 'fail' }
             }
             catch (e) {
+              check && console.log(e)
               await page.waitFor(1000 * 3 + rand(2000))
               await waitForCode()
             }
