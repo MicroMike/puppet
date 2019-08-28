@@ -483,7 +483,7 @@ const fct = async () => {
       const needContinue = await page.jClk('#continue')
 
       if (needContinue) {
-        clearTimeout(freezeConnect)
+        check && clearTimeout(freezeConnect)
 
         try {
           let code
