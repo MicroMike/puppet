@@ -73,8 +73,6 @@ const main = async () => {
       try {
         const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
 
-        console.log(inbox)
-
         code = isCode && String(inbox).split('suivant :')[1].split('Ne partagez')[0]
 
         console.log('CODE: ' + code)
@@ -90,6 +88,7 @@ const main = async () => {
         throw 'fail'
       }
       catch (e) {
+        console.log(e)
         await page.waitFor(1000 * 3 + rand(2000))
         await waitFor(isCode)
       }
