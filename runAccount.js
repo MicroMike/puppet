@@ -480,9 +480,6 @@ const fct = async () => {
     }
 
     const amazonCheck = async () => {
-      let del = await page.ext(loginError)
-      if (del) { throw 'del' }
-
       const needContinue = await page.jClk('#continue')
 
       if (needContinue) {
@@ -498,7 +495,7 @@ const fct = async () => {
             }
             catch (e) {
               await page.waitFor(1000 * 3 + rand(2000))
-              await waitFor(isCode)
+              await waitForCode(isCode)
             }
           }
 
@@ -514,7 +511,7 @@ const fct = async () => {
         }
       }
 
-      del = await page.ext(loginError)
+      const del = await page.ext(loginError)
       if (del) { throw 'del' }
     }
 
@@ -695,7 +692,7 @@ const fct = async () => {
     let exitLoop = false
 
     let countPlays = 0
-    let changePlay = 20 + rand(20)
+    let changePlay = 30 + rand(30)
     let change = false
     let changeOnce = false
 
