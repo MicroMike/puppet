@@ -79,13 +79,9 @@ const main = async () => {
 
         if (code) { return }
 
-        url = !isCode && await mailPage.evaluate(() => {
-          const iframe = document.querySelector('#ifmail')
-          const link = iframe && iframe.contentDocument.querySelector('table tr td a')
-          const url = link && link.href
+        url = !isCode && inbox.split('( ')[1].split(' )')[0]
 
-          return url
-        })
+        console.log(url)
 
         if (url) { return }
 
