@@ -71,11 +71,11 @@ const main = async () => {
 
     const waitFor = async (isCode) => {
       try {
-        const inbox = shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })
+        const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
 
         console.log(inbox)
 
-        code = isCode && Number(inbox.split('suivant :')[1].split('Ne partagez')[0])
+        code = isCode && Number(inbox.split('suivant :\\n\\n')[1].split('\\n\\n')[0])
 
         console.log(code)
 
