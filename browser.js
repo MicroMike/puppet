@@ -71,21 +71,11 @@ const main = async () => {
 
     const waitFor = async (isCode) => {
       try {
-        const mailHere = await mailPage.evaluate(() => {
-          const iframe = document.querySelector('#ifinbox')
-          const m = iframe && iframe.contentDocument.querySelector('#m1')
-          m && m.click()
-          return m
-        })
-        if (!mailHere) { throw 'fail' }
+        const inbox = shell.exec('yogo_linux_amd64 inbox show ' + mail + '1')
 
-        code = isCode && await mailPage.evaluate(() => {
-          const iframe = document.querySelector('#ifmail')
-          const selector = iframe && iframe.contentDocument.querySelector('.otp')
-          const code = selector && selector.innerText
+        code = isCode && Number(inbox.split('suivant :')[1].split('Ne partagez')[0])
 
-          return code
-        })
+        console.log(code)
 
         if (code) { return }
 
@@ -102,13 +92,7 @@ const main = async () => {
         throw 'fail'
       }
       catch (e) {
-        const captcha = await page.ext('.alc')
-        if (captcha) {
-          shell.exec('expressvpn disconnect', { silent: true })
-          shell.exec('expressvpn connect fr', { silent: true })
-        }
-        await mailPage.waitFor(1000 * 10 + rand(2000))
-        await mailPage.clk('#lrefr')
+        await mailPage.waitFor(1000 * 3 + rand(2000))
         await waitFor(isCode)
       }
     }
