@@ -48,10 +48,10 @@ const main = async () => {
     }
 
     const page = !i ? mainPage : await puppet('save/amazon_' + email)
-    const mailPage = await page.np()
+    // const mailPage = await page.np()
 
     await page.gotoUrl('https://music.amazon.fr/home')
-    await mailPage.gotoUrl('http://yopmail.com/')
+    // await mailPage.gotoUrl('http://yopmail.com/')
 
     try {
       await page.clk('.createAccountLink')
@@ -61,8 +61,8 @@ const main = async () => {
       await page.clk('.createAccountLink')
     }
 
-    await mailPage.inst('.scpt', mail)
-    await mailPage.clk('.sbut')
+    // await mailPage.inst('.scpt', mail)
+    // await mailPage.clk('.sbut')
 
     console.log(email)
 
@@ -88,7 +88,7 @@ const main = async () => {
         throw 'fail'
       }
       catch (e) {
-        await mailPage.waitFor(1000 * 3 + rand(2000))
+        await page.waitFor(1000 * 3 + rand(2000))
         await waitFor(isCode)
       }
     }
