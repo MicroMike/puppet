@@ -73,9 +73,9 @@ const main = async () => {
       try {
         const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
 
-        code = isCode && inbox.split('suivant')[1].split('Ne partagez')[0]
+        code = isCode && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '')
 
-        console.log('CODE: ' + code.replace(':', ''))
+        console.log('CODE: ' + code)
 
         if (code) { return }
 
