@@ -75,11 +75,11 @@ const main = async () => {
       try {
         const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
 
-        code = isCode && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
+        code = isCode && inbox.split('suivant')[1] && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
 
         if (code) { return }
 
-        url = !isCode && inbox.split('( ')[1].split(' )')[0]
+        url = !isCode && inbox.split('( ')[1] && inbox.split('( ')[1].split(' )')[0]
 
         if (url) { return }
 
