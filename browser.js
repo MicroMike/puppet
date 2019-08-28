@@ -47,6 +47,8 @@ const main = async () => {
       if (!notfull) { return process.exit() }
     }
 
+    shell.exec('rm -Rf save/amazon_' + email, { silent: true })
+
     const page = !i ? mainPage : await puppet('save/amazon_' + email)
     // const mailPage = await page.np()
 
