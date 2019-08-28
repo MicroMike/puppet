@@ -488,8 +488,9 @@ const fct = async () => {
         try {
           let code
           const waitForCode = async () => {
+            let inbox
             try {
-              const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
+              inbox = (shell.exec('yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
 
               code = inbox.split('suivant')[1] && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
 
