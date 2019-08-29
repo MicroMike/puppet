@@ -36,10 +36,11 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
   }
 
   const exit = async () => {
-    if (!close) {
-      close = true
-      page && await page.cls(true)
-    }
+    close = true
+
+    try { await page.cls(true) }
+    catch (e) { }
+
     socket.emit('Cdisconnect', streamId)
   }
 
@@ -112,7 +113,6 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
 
   page.on('close', function (err) {
     if (!close && !check) {
-      close = true
       exit()
     }
   });
