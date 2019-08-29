@@ -2,6 +2,7 @@ process.setMaxListeners(Infinity)
 
 const puppet = require('./puppet')
 const shell = require('shelljs');
+const runAccount = require('./runAccount');
 const socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 shell.exec('killall chrome', { silent: true })
@@ -55,7 +56,11 @@ socket.on('activate', () => {
 })
 
 socket.on('forceOut', async streamId => {
+  await pages[streamId].cls(true)
+
   delete streams[streamId]
+  delete pages[streamId]
+
   socket.emit('Cdisconnect', streamId)
 })
 
@@ -72,6 +77,14 @@ socket.on('streamOn', streamId => {
 
 socket.on('streamOff', streamId => {
   streams[streamId].streamOn = false
+})
+
+socket.on('screenshot', async streamId => {
+  await takeScreenshot('getScreen', streamId)
+})
+
+socket.on('runScript', async ({ streamId, scriptText }) => {
+  await pages[streamId].evaluate(scriptText)
 })
 
 socket.on('run', () => {
@@ -112,7 +125,7 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
   let login = accountInfo[1]
 
   console.log('account', runnerAccount, player)
-  socket.emit('playerInfos', { parentId, streamId, account: player, time: 'WAIT_PAGE', other: true })
+  socket.emit('playerInfos', { streamId, account: player, time: 'WAIT_PAGE', other: true })
 
   const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
@@ -120,6 +133,7 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
     console.log('no page')
   }
   else {
+    console.log('save/' + player + '_' + login)
     pages[streamId] = page
     streams[streamId].account = runnerAccount
 
