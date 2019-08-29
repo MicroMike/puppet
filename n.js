@@ -121,7 +121,6 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
     console.log('no page')
   }
   else {
-    console.log('save/' + player + '_' + login)
     pages[streamId] = page
     streams[streamId].account = runnerAccount
 
