@@ -16,7 +16,6 @@ const arg = process.argv[2]
 const nb = process.argv[3]
 const streams = {}
 const pages = {}
-let resume = false
 
 let parentId
 
@@ -52,7 +51,6 @@ const stream = async (streamId) => {
 
 socket.on('activate', () => {
   console.log('activate')
-  if (parentId) { resume = true }
   socket.emit('parent', { s: streams, parentId: arg })
   if (!parentId) { parentId = arg }
 })
@@ -138,7 +136,7 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
     pages[streamId] = page
     streams[streamId].account = runnerAccount
 
-    runAccount(page, socket, parentId, streamId, process.env, runnerAccount, resume)
+    runAccount(page, socket, parentId, streamId, process.env, runnerAccount)
   }
 })
 
