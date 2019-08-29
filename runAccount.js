@@ -384,7 +384,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
             try {
               inbox = (shell.exec('yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
 
-              code = inbox.split('suivant')[1] && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
+              code = inbox.split('suivant')[1] && inbox.split('rification')[1].split('Ce code')[0].replace(':', '').trim()
 
               if (!code) { throw 'fail' }
             }
