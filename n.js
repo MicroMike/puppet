@@ -130,7 +130,7 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
   console.log('account', runnerAccount)
   socket.emit('playerInfos', { streamId, account: player, time: 'WAIT_PAGE', other: true })
 
-  const page = await puppet('save/' + player + '_' + login, noCache)
+  const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
   if (!page) {
     console.log('no page')
