@@ -122,9 +122,13 @@ socket.on('run', () => {
   }
 })
 
-socket.on('account', async ({ account, streamId }) => {
-  console.log('account', account)
-  socket.emit('playerInfos', { streamId, account: account.split(':')[0], time: 'WAIT_PAGE', other: true })
+socket.on('account', async ({ runnerAccount, streamId }) => {
+  const accountInfo = runnerAccount.split(':')
+  let player = accountInfo[0]
+  let login = accountInfo[1]
+
+  console.log('account', runnerAccount)
+  socket.emit('playerInfos', { streamId, account: player, time: 'WAIT_PAGE', other: true })
 
   const page = await puppet('save/' + player + '_' + login, noCache)
 
@@ -133,10 +137,10 @@ socket.on('account', async ({ account, streamId }) => {
   }
   else {
     pages[streamId] = page
-    streams[streamId].account = account
+    streams[streamId].account = runnerAccount
     streams[streamId].time = time
 
-    runAccount(page, socket, parentId, streamId, process.env, account)
+    runAccount(page, socket, parentId, streamId, process.env, runnerAccount)
   }
 })
 
