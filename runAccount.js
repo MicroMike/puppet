@@ -4,7 +4,7 @@ const shell = require('shelljs');
 const image2base64 = require('image-to-base64');
 const captcha = require('./captcha')
 
-module.exports = async (page, socket, parentId, streamId, env, account) => {
+module.exports = async (page, socket, parentId, streamId, env, account, resume) => {
   const accountInfo = account.split(':')
   let player = accountInfo[0]
   let login = accountInfo[1]
@@ -653,7 +653,8 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
           socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true, warn: true })
         }
         else {
-          if (freeze > 0) {
+          if (freeze > 0 || resume) {
+            resume = false
             socketEmit('playerInfos', { account: player + ':' + login, time: t1, ok: true })
           }
 
