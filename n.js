@@ -55,8 +55,9 @@ socket.on('activate', () => {
   if (!parentId) { parentId = arg }
 })
 
-socket.on('forceOut', streamId => {
-  pages[streamId].cls(true)
+socket.on('forceOut', async streamId => {
+  await pages[streamId].cls(true)
+
   delete streams[streamId]
   delete pages[streamId]
 
