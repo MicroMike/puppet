@@ -1,9 +1,9 @@
-(async () => {
-  const request = require('ajax-request');
-  const shell = require('shelljs');
-  const image2base64 = require('image-to-base64');
-  const captcha = require('./captcha')
+const request = require('ajax-request');
+const shell = require('shelljs');
+const image2base64 = require('image-to-base64');
+const captcha = require('./captcha')
 
+module.exports = async (page, socket, parentId, streamId, env, account) => {
   const accountInfo = account.split(':')
   let player = accountInfo[0]
   let login = accountInfo[1]
@@ -697,4 +697,4 @@
   catch (e) {
     catchFct(e)
   }
-})()
+}
