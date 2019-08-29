@@ -355,7 +355,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
         await checkFill()
       }
       else {
-        socket.emit('retryOk')
+        socketEmit('retryOk')
       }
     }
 
@@ -509,7 +509,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
     const waitForPlayBtn = async (playError) => {
       try {
         await page.clk(playBtn)
-        socket.emit('retryOk')
+        socketEmit('retryOk')
       }
       catch (e) {
         if (++trys > 3) {
@@ -658,7 +658,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
           }
 
           freeze = 0
-          socket.emit('retryOk')
+          socketEmit('retryOk')
         }
 
         if (freeze) {
