@@ -38,7 +38,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
   const exit = async () => {
     if (!close) {
       close = true
-      await page.cls(true)
+      page && await page.cls(true)
     }
     socket.emit('Cdisconnect', streamId)
   }
