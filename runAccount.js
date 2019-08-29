@@ -513,8 +513,8 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
       try {
         if (player === 'tidal') {
           updateBtn = await page.evaluate(() => {
-            const update = document.querySelectorAll('button').filter(b => b.innerText === 'Update')
-            update && update.click()
+            const update = document.querySelectorAll('button')
+            update && update.forEach(b => b.innerText === 'Update' && update.click())
             return update
           })
           console.log('updateBtn', updateBtn)
