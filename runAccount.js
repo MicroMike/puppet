@@ -520,7 +520,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
         }
 
         if (player === 'tidal') {
-          await page.waitFor(1000 * 5 + rand(2000))
+          await page.waitFor(1000 * 60 + rand(2000))
 
           const updateBtn = await page.evaluate(() => {
             const update = document.querySelectorAll('button')
