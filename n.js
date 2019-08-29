@@ -19,6 +19,10 @@ const pages = {}
 
 let parentId
 
+const rand = (max, min) => {
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+}
+
 const takeScreenshot = async (name, streamId) => {
   let img
   const { account, streamOn } = streams[streamId]
