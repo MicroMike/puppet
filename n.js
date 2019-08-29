@@ -138,7 +138,6 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
   else {
     pages[streamId] = page
     streams[streamId].account = runnerAccount
-    streams[streamId].time = time
 
     runAccount(page, socket, parentId, streamId, process.env, runnerAccount)
   }
