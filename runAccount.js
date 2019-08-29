@@ -514,7 +514,6 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
         socketEmit('retryOk')
       }
       catch (e) {
-        console.log(e)
         if (++trys > 3) {
           throw playError
         }
@@ -524,7 +523,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
 
           const updateBtn = await page.evaluate(() => {
             const update = document.querySelectorAll('button')
-            update && update.forEach(b => b.innerText === 'Update' && update.click())
+            update && update.forEach(b => b.innerText === 'Update' && b.click())
             return update
           })
 
