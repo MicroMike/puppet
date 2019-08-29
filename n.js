@@ -82,7 +82,7 @@ socket.on('runScript', async ({ streamId, scriptText }) => {
 })
 
 socket.on('run', () => {
-  if (Object(streams).values.length >= (nb || 20)) { return }
+  if (Object.values(streams).length >= (nb || 20)) { return }
 
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
