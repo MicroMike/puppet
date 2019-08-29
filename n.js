@@ -56,6 +56,7 @@ socket.on('activate', () => {
 })
 
 socket.on('forceOut', async streamId => {
+  console.log(pages[streamId])
   await pages[streamId].cls(true)
 
   delete streams[streamId]
