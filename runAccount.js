@@ -509,19 +509,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
     }
 
     const waitForPlayBtn = async (playError) => {
-      let updateBtn
       try {
-        if (player === 'tidal') {
-          trys > 0 && await page.waitFor(1000 * 30 + rand(2000))
-
-          updateBtn = await page.evaluate(() => {
-            const update = document.querySelectorAll('button')
-            update && update.forEach(b => b.innerText === 'Update' && update.click())
-            return update
-          })
-          console.log('updateBtn', updateBtn)
-        }
-
         await page.clk(playBtn)
         socketEmit('retryOk')
       }
@@ -531,7 +519,21 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
           throw playError
         }
 
-        if (player === 'amazon') {
+        if (player === 'tidal') {
+          await page.waitFor(1000 * 5 + rand(2000))
+
+          const updateBtn = await page.evaluate(() => {
+            const update = document.querySelectorAll('button')
+            update && update.forEach(b => b.innerText === 'Update' && update.click())
+            return update
+          })
+
+          if (!updateBtn) {
+            await page.rload()
+            await waitForPlayBtn(playError)
+          }
+        }
+        else if (player === 'amazon') {
           const waitForReady = async () => {
             const amazonStyle = await page.evaluate(() => {
               return document.querySelector('#mainContentLoadingSpinner').style['display']
@@ -552,7 +554,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
             await waitForPlayBtn(playError)
           }
         }
-        else if (!updateBtn) {
+        else {
           await page.rload()
 
           const logged = await page.wfs(loggedDom)
