@@ -90,7 +90,6 @@ socket.on('runScript', async ({ streamId, scriptText }) => {
 })
 
 socket.on('run', () => {
-  console.log('run')
   if (Object.values(streams).length >= (nb || 20)) { return }
 
   try {
