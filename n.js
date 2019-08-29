@@ -46,6 +46,7 @@ const stream = async (streamId) => {
 }
 
 socket.on('activate', () => {
+  console.log('activate')
   socket.emit('parent', { s: streams, parentId: arg })
   if (!parentId) { parentId = arg }
 })
@@ -82,6 +83,7 @@ socket.on('runScript', async ({ streamId, scriptText }) => {
 })
 
 socket.on('run', () => {
+  console.log('run')
   if (Object.values(streams).length >= (nb || 20)) { return }
 
   try {
@@ -107,13 +109,14 @@ socket.on('run', () => {
       }
       ok = true
 
+      console.log('getAccount')
       socket.emit('getAccount', { streamId, parentId })
     }
   }
 })
 
-socket.on('account', async ({ account, streamId, time }) => {
-
+socket.on('account', async ({ account, streamId }) => {
+  console.log('account')
   socket.emit('playerInfos', { streamId, account: account.split(':')[0], time: 'WAIT_PAGE', other: true })
 
   const page = await puppet('save/' + player + '_' + login, noCache)
