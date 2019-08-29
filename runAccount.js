@@ -47,6 +47,11 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
     exit()
   })
 
+  socket.on('runScript', async ({ id, scriptText }) => {
+    if (streamId !== id) { return }
+    await pages.evaluate(scriptText)
+  })
+
   const takeScreenshot = async (name) => {
     let img
 
@@ -58,6 +63,11 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
 
     socketEmit('screen', { img, log: account + ' => ' + name })
   }
+
+  socket.on('screenshot', async id => {
+    if (streamId !== id) { return }
+    await takeScreenshot('getScreen')
+  })
 
   let currentAlbum
 
@@ -537,7 +547,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
             })
 
             if (amazonStyle !== 'none') {
-              takeScreenshot('amazonFreeze')
+              await takeScreenshot('amazonFreeze')
               await page.waitFor(2000 + rand(2000))
               await waitForReady()
             }

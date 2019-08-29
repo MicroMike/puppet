@@ -56,12 +56,7 @@ socket.on('activate', () => {
 })
 
 socket.on('forceOut', async streamId => {
-  console.log(pages[streamId])
-  await pages[streamId].cls(true)
-
   delete streams[streamId]
-  delete pages[streamId]
-
   socket.emit('Cdisconnect', streamId)
 })
 
@@ -78,14 +73,6 @@ socket.on('streamOn', streamId => {
 
 socket.on('streamOff', streamId => {
   streams[streamId].streamOn = false
-})
-
-socket.on('screenshot', async streamId => {
-  await takeScreenshot('getScreen', streamId)
-})
-
-socket.on('runScript', async ({ streamId, scriptText }) => {
-  await pages[streamId].evaluate(scriptText)
 })
 
 socket.on('run', () => {
