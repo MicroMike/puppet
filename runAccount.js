@@ -512,6 +512,8 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
       let updateBtn
       try {
         if (player === 'tidal') {
+          trys > 0 && await page.waitFor(1000 * 30 + rand(2000))
+
           updateBtn = await page.evaluate(() => {
             const update = document.querySelectorAll('button')
             update && update.forEach(b => b.innerText === 'Update' && update.click())
