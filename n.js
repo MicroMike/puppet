@@ -2,7 +2,6 @@ process.setMaxListeners(Infinity)
 
 const puppet = require('./puppet')
 const shell = require('shelljs');
-const runAccount = require('./runAccount');
 const socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 shell.exec('killall chrome', { silent: true })
@@ -124,7 +123,8 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
     pages[streamId] = page
     streams[streamId].account = runnerAccount
 
-    runAccount(page, socket, parentId, streamId, process.env, runnerAccount)
+    const runAccount = require('./runAccount');
+    // runAccount(page, socket, parentId, streamId, process.env, runnerAccount)
   }
 })
 
