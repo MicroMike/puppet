@@ -114,7 +114,7 @@ socket.on('run', () => {
       ok = true
 
       console.log('getAccount')
-      socket.emit('getAccount', { streamId, parentId })
+      socket.emit('getAccount', { streamId, parentId, env: process.env })
     }
   }
 })
