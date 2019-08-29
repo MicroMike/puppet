@@ -508,6 +508,12 @@ module.exports = async (page, socket, parentId, streamId, env, account, resume) 
 
     const waitForPlayBtn = async (playError) => {
       try {
+        player === 'tidal' && await page.evaluate(() => {
+          const update = document.querySelectorAll('button').filter(b => b.innerText === 'Update')
+          update && update.click()
+          return update
+        })
+
         await page.clk(playBtn)
         socketEmit('retryOk')
       }
@@ -538,13 +544,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, resume) 
           }
         }
         else {
-          const update = player === 'tidal' && await page.evaluate(() => {
-            const update = document.querySelectorAll('button').filter(b => b.innerText === 'Update')
-            update && update.click()
-            return update
-          })
-
-          !update && await page.rload()
+          await page.rload()
 
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw 'logout' }
