@@ -37,9 +37,11 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
   }
 
   const exit = async () => {
-    close = true
+    if (!close) {
+      close = true
+      await page.cls(true)
+    }
     socket.emit('Cdisconnect', streamId)
-    page && await page.cls(true)
   }
 
   const takeScreenshot = async (name) => {
@@ -111,6 +113,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
 
   page.on('close', function (err) {
     if (!close && !check) {
+      close = true
       exit()
     }
   });
