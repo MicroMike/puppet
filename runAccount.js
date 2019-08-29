@@ -662,7 +662,6 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
           socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true, warn: true })
         }
         else {
-          console.log(account, resume)
           // if (freeze > 0) {
           socketEmit('playerInfos', { account: player + ':' + login, time: t1, ok: true })
           // }
