@@ -113,7 +113,10 @@ socket.on('run', () => {
       }
       ok = true
 
+      socket.emit('playerInfos', { streamId, account: 'null', time: 'GET_ACCOUNT', other: true })
+
       console.log('getAccount')
+
       socket.emit('getAccount', { streamId, parentId, env: process.env })
     }
   }
