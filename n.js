@@ -1,40 +1,88 @@
 process.setMaxListeners(Infinity)
 
-var shell = require('shelljs');
-var socket = require('socket.io-client')('https://online-music.herokuapp.com');
-
-const arg = process.argv[2]
-const nb = process.argv[3]
-const check = process.env.CHECK
-
-
-let parentId
-socket.on('activate', id => {
-  socket.emit('parent', { connected: parentId, id: arg })
-  if (!parentId) { parentId = id }
-})
-
-socket.on('run', () => {
-  main()
-})
+const puppet = require('./puppet')
+const shell = require('shelljs');
+const runAccount = require('./runAccount');
+const socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 shell.exec('killall chrome', { silent: true })
-
-let out = false
-process.on('SIGINT', () => {
-  out = true
-  process.exit()
-});
 
 try {
   shell.exec('expressvpn disconnect', { silent: true })
 }
 catch (e) { }
 
-let count = 0
+const arg = process.argv[2]
+const nb = process.argv[3]
+const streams = {}
+const pages = {}
 
-const main = async (needWait = false) => {
-  if (out) { return }
+let parentId
+
+const takeScreenshot = async (name, streamId) => {
+  let img
+  const { account, streamOn } = streams[streamId]
+
+  try {
+    await pages[streamId].screenshot({ path: name + '_' + account + '.png' });
+    img = await image2base64(name + '_' + account + '.png')
+  }
+  catch (e) { }
+
+  socket.emit('screen', { account, streamOn, streamId, img, log: account + ' => ' + name })
+}
+
+const stream = async (streamId) => {
+  await takeScreenshot('stream', streamId)
+  await pages[streamId].waitFor(3000)
+
+  streams[streamId].countStream = streams[streamId].countStream + 1
+
+  if (streams[streamId].countStream > 5) {
+    streams[streamId].streamOn = false
+  }
+
+  if (streams[streamId].streamOn) { stream(streamId) }
+}
+
+socket.on('activate', () => {
+  socket.emit('parent', { s: streams, parentId: arg })
+  if (!parentId) { parentId = arg }
+})
+
+socket.on('forceOut', streamId => {
+  pages[streamId].cls(true)
+  delete streams[streamId]
+  delete pages[streamId]
+
+  socket.emit('Cdisconnect', streamId)
+})
+
+socket.on('retryOk', streamId => {
+  streams[streamId].streamOn = false
+})
+
+socket.on('streamOn', streamId => {
+  streams[streamId].countStream = 0
+  streams[streamId].streamOn = true
+
+  stream(streamId)
+})
+
+socket.on('streamOff', streamId => {
+  streams[streamId].streamOn = false
+})
+
+socket.on('screenshot', async streamId => {
+  await takeScreenshot('getScreen', streamId)
+})
+
+socket.on('runScript', async ({ streamId, scriptText }) => {
+  await pages[streamId].evaluate(scriptText)
+})
+
+socket.on('run', () => {
+  if (Object(streams).values.length >= (nb || 20)) { return }
 
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
@@ -46,16 +94,48 @@ const main = async (needWait = false) => {
   }
   catch (e) { }
 
-  let cmd = 'CLIENTID=' + arg + ' TIME=' + Date.now() + ' node runAccount'
-  cmd = check ? 'CHECK=true ' + cmd : cmd
-  // cmd = needWait ? 'WAIT=true ' + cmd : cmd
+  let ok = false
+  while (!ok) {
+    const streamId = rand(1000000)
 
-  if (count < (nb || 20)) {
-    count++
-    shell.exec(cmd, async (code, b, c) => {
-      // console.log(`code: ${code}`, b, c)
-      count--
-      // main()
-    })
+    if (!streams[streamId]) {
+      streams[streamId] = {
+        id: streamId,
+        parentId,
+        streamOn: false,
+        countStream: 0,
+      }
+      ok = true
+
+      socket.emit('getAccount', { streamId, parentId })
+    }
   }
-}
+})
+
+socket.on('account', async ({ account, streamId, time }) => {
+
+  socket.emit('playerInfos', { streamId, account: account.split(':')[0], time: 'WAIT_PAGE', other: true })
+
+  const page = await puppet('save/' + player + '_' + login, noCache)
+
+  if (!page) {
+    console.log('no page')
+  }
+  else {
+    pages[streamId] = page
+    streams[streamId].account = account
+    streams[streamId].time = time
+
+    runAccount(page, socket, parentId, streamId, process.env, account)
+  }
+})
+
+socket.on('Cdisconnect', () => {
+  socket.emit('disconnect')
+  process.exit()
+})
+
+process.on('SIGINT', () => {
+  socket.emit('disconnect')
+  process.exit()
+});
