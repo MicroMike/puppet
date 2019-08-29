@@ -519,6 +519,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
             update && update.click()
             return update
           })
+          console.log('updateBtn', updateBtn)
         }
 
         await page.clk(playBtn)
