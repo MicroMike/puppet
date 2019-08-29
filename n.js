@@ -2,7 +2,7 @@ process.setMaxListeners(Infinity)
 
 const puppet = require('./puppet')
 const shell = require('shelljs');
-const runAccount = require('./runAccount');
+// const runAccount = require('./runAccount');
 const socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 shell.exec('killall chrome', { silent: true })
