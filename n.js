@@ -123,7 +123,7 @@ socket.on('run', () => {
 })
 
 socket.on('account', async ({ account, streamId }) => {
-  console.log('account')
+  console.log('account', account)
   socket.emit('playerInfos', { streamId, account: account.split(':')[0], time: 'WAIT_PAGE', other: true })
 
   const page = await puppet('save/' + player + '_' + login, noCache)
