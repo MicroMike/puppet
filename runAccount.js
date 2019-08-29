@@ -512,8 +512,6 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
       let updateBtn
       try {
         if (player === 'tidal') {
-          await page.wfs('button')
-
           updateBtn = await page.evaluate(() => {
             const update = document.querySelectorAll('button').filter(b => b.innerText === 'Update')
             update && update.click()
@@ -526,6 +524,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
         socketEmit('retryOk')
       }
       catch (e) {
+        console.log(e)
         if (++trys > 3) {
           throw playError
         }

@@ -59,7 +59,7 @@ socket.on('forceOut', async streamId => {
   try {
     await pages[streamId].cls(true)
   }
-  catch (e) { console.log(e) }
+  catch (e) { console.log(page) }
 
   delete streams[streamId]
   delete pages[streamId]
