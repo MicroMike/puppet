@@ -538,7 +538,13 @@ module.exports = async (page, socket, parentId, streamId, env, account, resume) 
           }
         }
         else {
-          await page.rload()
+          const update = player === 'tidal' && await page.evaluate(() => {
+            const update = document.querySelectorAll('button').filter(b => b.innerText === 'Update')
+            update && update.click()
+            return update
+          })
+
+          !update && await page.rload()
 
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw 'logout' }
