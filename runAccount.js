@@ -104,7 +104,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     streamOn = false
   });
 
-  eventEmitter.on('ErunScript', id => {
+  eventEmitter.on('ErunScript', async id => {
     if (streamId !== id) { return }
 
     await page.evaluate(scriptText)
