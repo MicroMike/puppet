@@ -3,7 +3,7 @@ const shell = require('shelljs');
 const image2base64 = require('image-to-base64');
 const captcha = require('./captcha')
 
-module.exports = async (page, socket, parentId, streamId, env, account) => {
+module.exports = async (page, socket, parentId, streamId, env, account, eventEmitter) => {
   const accountInfo = account.split(':')
   let player = accountInfo[0]
   let login = accountInfo[1]
@@ -55,6 +55,8 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
 
     socketEmit('screen', { img, log: account + ' => ' + name })
   }
+
+  eventEmitter.on('Escreen', takeScreenshot);
 
   let currentAlbum
 
@@ -687,6 +689,8 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
             await page.jClk(playBtn)
           }
           else { await page.jClk(nextBtn) }
+
+          await page.waitFor(1000 * 5)
 
           if (freeze > 5) {
             socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })

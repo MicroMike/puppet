@@ -1,8 +1,12 @@
 process.setMaxListeners(Infinity)
 
+
 const puppet = require('./puppet')
 const shell = require('shelljs');
 const socket = require('socket.io-client')('https://online-music.herokuapp.com');
+var events = require('events');
+
+const eventEmitter = new events.EventEmitter();
 
 shell.exec('killall chrome', { silent: true })
 
@@ -10,6 +14,11 @@ try {
   shell.exec('expressvpn disconnect', { silent: true })
 }
 catch (e) { }
+
+
+//Assign the event handler to an event:
+
+//Fire the 'scream' event:
 
 const arg = process.argv[2]
 const nb = process.argv[3]
@@ -23,6 +32,8 @@ const rand = (max, min) => {
 }
 
 const takeScreenshot = async (name, streamId) => {
+  eventEmitter.emit('Escreen', name);
+
   let img
   const { account, streamOn } = streams[streamId]
 
@@ -140,7 +151,7 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
     streams[streamId].account = runnerAccount
 
     const runAccount = require('./runAccount');
-    runAccount(page, socket, parentId, streamId, process.env, runnerAccount)
+    runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter)
   }
 })
 
