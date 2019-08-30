@@ -58,8 +58,6 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
   }
 
   const takeScreenshot = async (name, id = false) => {
-    console.log(typeof id, typeof streamId)
-
     if (id && streamId !== Number(id)) { return }
 
     console.log(name)
@@ -95,7 +93,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
   eventEmitter.on('Escreen', takeScreenshot);
 
   eventEmitter.on('EstreamOn', id => {
-    if (streamId !== id) { return }
+    if (id && streamId !== Number(id)) { return }
 
     countStream = 0
     streamOn = true
@@ -104,17 +102,16 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
   });
 
   eventEmitter.on('EstreamOff', id => {
-    if (streamId !== id) { return }
+    if (id && streamId !== Number(id)) { return }
 
     streamOn = false
   });
 
   eventEmitter.on('ErunScript', async id => {
-    if (streamId !== id) { return }
+    if (id && streamId !== Number(id)) { return }
 
     await page.evaluate(scriptText)
   });
-
 
   let currentAlbum
 
