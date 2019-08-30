@@ -58,7 +58,8 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
   }
 
   const takeScreenshot = async (name, id = false) => {
-    console.log(id && streamId !== id, name, id)
+    console.log(name, id, streamId, id && streamId !== id)
+
     if (id && streamId !== id) { return }
 
     console.log(name)
