@@ -32,18 +32,8 @@ const rand = (max, min) => {
 }
 
 const takeScreenshot = async (name, streamId) => {
-  eventEmitter.emit('Escreen', name);
-
-  let img
-  const { account, streamOn } = streams[streamId]
-
-  try {
-    await pages[streamId].screenshot({ path: name + '_' + account + '.png' });
-    img = await image2base64(name + '_' + account + '.png')
-  }
-  catch (e) { }
-
-  socket.emit('screen', { account, streamOn, streamId, img, log: account + ' => ' + name })
+  eventEmitter.emit('Escreen', name, streamId);
+  return
 }
 
 const stream = async (streamId) => {

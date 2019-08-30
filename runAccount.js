@@ -44,7 +44,9 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     socket.emit('Cdisconnect', streamId)
   }
 
-  const takeScreenshot = async (name) => {
+  const takeScreenshot = async (name, id) => {
+    if (streamId !== id) { return }
+
     let img
 
     try {
