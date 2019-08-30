@@ -60,17 +60,19 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
   const takeScreenshot = async (name, id = false) => {
     if (id && streamId !== id) { return }
 
+    console.log(name)
+
     let img
 
     try {
-      await page.screenshot({ path: name + '_' + account + '.png' });
-      img = await image2base64(name + '_' + account + '.png')
+      await page.screenshot({ path: name + '_' + login + '.png' });
+      img = await image2base64(name + '_' + login + '.png')
     }
     catch (e) { console.log(e) }
 
     console.log(img)
 
-    socketEmit('screen', { img, log: account + ' => ' + name })
+    socketEmit('screen', { img, log: login + ' => ' + name })
   }
 
   const stream = async () => {
