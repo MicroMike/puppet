@@ -653,7 +653,6 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
             countPlays++
 
             rand(2) && await page.jClk(nextBtn)
-            console.log(account, currentAlbum, matchTime)
             socketEmit('plays', { next: true, currentAlbum, matchTime })
           }
         }
@@ -681,8 +680,12 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
         if (freeze) {
           socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
 
-          if (player === 'napster') { await page.jClk('.genre-btn') }
+          if (player === 'napster') {
+            await page.jClk('.genre-btn')
+            await page.jClk(playBtn)
+          }
           else { await page.jClk(nextBtn) }
+
           await page.waitFor(1000 * 5)
 
           const logged = await page.wfs(loggedDom)
