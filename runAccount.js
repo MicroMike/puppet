@@ -673,6 +673,14 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
         if (t1 === t2) {
           ++freeze
           socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true, warn: true })
+
+          if (freeze === 1) {
+            if (player === 'napster') {
+              await page.jClk('.genre-btn')
+              await page.jClk(playBtn)
+            }
+            else { await page.jClk(nextBtn) }
+          }
         }
         else {
           // if (freeze > 0) {
@@ -683,23 +691,12 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
           socketEmit('retryOk')
         }
 
-        if (freeze) {
-          if (player === 'napster') {
-            await page.jClk('.genre-btn')
-            await page.jClk(playBtn)
-          }
-          else { await page.jClk(nextBtn) }
-
-          await page.waitFor(1000 * 5)
-          t1 = await page.getTime(timeLine, callback)
-
-          if (t1 !== t2) { freeze = 0 }
-
+        if (freeze > 1) {
           if (freeze > 5) {
-            socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
+            throw player === 'napster' ? 'used' : 'freeze'
           }
           else {
-            throw player === 'napster' ? 'used' : 'freeze'
+            socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
           }
 
           const logged = await page.wfs(loggedDom)
