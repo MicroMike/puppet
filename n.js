@@ -127,7 +127,7 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
   let login = accountInfo[1]
 
   console.log('account', runnerAccount, player)
-  socket.emit('playerInfos', { parentId, streamId, account: player, time: 'WAIT_PAGE', other: true })
+  socket.emit('playerInfos', { parentId, streamId, account: login, time: 'WAIT_PAGE', other: true })
 
   const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
