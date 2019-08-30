@@ -653,7 +653,7 @@ module.exports = async (page, socket, parentId, streamId, env, account) => {
             countPlays++
 
             rand(2) && await page.jClk(nextBtn)
-            console.log(account, currentAlbum, time)
+            console.log(account, currentAlbum, matchTime)
             socketEmit('plays', { next: true, currentAlbum, matchTime })
           }
         }
