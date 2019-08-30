@@ -691,6 +691,9 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
           else { await page.jClk(nextBtn) }
 
           await page.waitFor(1000 * 5)
+          t1 = await page.getTime(timeLine, callback)
+
+          if (t1 !== t2) { freeze = 0 }
 
           if (freeze > 5) {
             socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
