@@ -1,130 +1,76 @@
-process.setMaxListeners(Infinity)
-
-var fs = require('fs');
-const puppet = require('./puppet')
 const request = require('ajax-request');
-var shell = require('shelljs');
-var socket = require('socket.io-client')('https://online-music.herokuapp.com');
+const shell = require('shelljs');
 const image2base64 = require('image-to-base64');
 const captcha = require('./captcha')
 
-let streamId
-let streamOn = false
-let stream
-let maxStream = 10
-let countStream = 0
-let close = false
-let albums
-let trys = 0
-
-const check = process.env.CHECK
-const clientId = process.env.CLIENTID
-const time = process.env.TIME
-const needWait = process.env.WAIT
-
-let account
-let player
-let login
-let pass
-let page
-let resume = false
-
-const getTime = () => {
-  const date = new Date
-  return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
-}
-
-const rand = (max, min) => {
-  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
-}
-
-socket.on('activate', id => {
-  if (!streamId) { streamId = id }
-  socket.emit('runner', { clientId: check ? 'check' : clientId, time, id: streamId, env: { ...process.env, RAND: !check }, account })
-})
-
-const exit = async (code = 0) => {
-  socket.emit('Cdisconnect', account)
-
-  close = true
-  page && await page.cls(true)
-
-  process.exit(code)
-}
-
-const parseAccount = (a) => {
-  account = a
-
+module.exports = async (page, socket, parentId, streamId, env, account) => {
   const accountInfo = account.split(':')
-  player = accountInfo[0]
-  login = accountInfo[1]
-  pass = accountInfo[2]
+  let player = accountInfo[0]
+  let login = accountInfo[1]
+  let pass = accountInfo[2]
 
   const al = require('./albums')
-  albums = al[player]
-}
+  let albums = al[player]
 
-socket.on('streams', a => {
-  if (!a) { return exit(0) }
-  if (check) { console.log(a) }
-  parseAccount(a)
+  const check = env.CHECK
 
-  fct()
-})
-
-socket.on('resume', () => {
-  resume = true
-})
-
-// let checkAccounts = null
-// const startCheck = async () => {
-//   checkAccounts = checkAccounts === null ? await getCheckAccounts() : checkAccounts
-//   a = checkAccounts && checkAccounts.length && checkAccounts.shift()
-
-//   if (!a) { return process.exit(0) }
-//   parseAccount(a)
-//   fct()
-// }
-
-// if (check) { startCheck() }
-
-let currentAlbum
-
-const album = () => {
-  let albumUrl = albums[rand(albums.length)]
-  while (currentAlbum === albumUrl) {
-    albumUrl = albums[rand(albums.length)]
+  const socketEmit = (event, params) => {
+    socket.emit(event, {
+      parentId,
+      streamId,
+      account,
+      ...params,
+    })
   }
-  currentAlbum = albumUrl
-  return albumUrl
-}
 
-const logError = (e) => {
-  socket.emit('log', account + ' => ' + e)
-}
+  let close = false
+  let trys = 0
 
-process.on('SIGINT', function (code) {
-  console.log('exit')
-  exit(100)
-});
+  const getTime = () => {
+    const date = new Date
+    return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
+  }
 
-socket.on('forceOut', () => {
-  if (check) { return }
-  console.log('out')
-  exit(101)
-})
+  const rand = (max, min) => {
+    return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+  }
 
-socket.on('streamOn', () => {
-  countStream = 0
-  streamOn = true
-  stream()
-})
+  const exit = async () => {
+    close = true
 
-socket.on('streamOff', () => {
-  streamOn = false
-})
+    try { await page.cls(true) }
+    catch (e) { }
 
-const fct = async () => {
+    socket.emit('Cdisconnect', streamId)
+  }
+
+  const takeScreenshot = async (name) => {
+    let img
+
+    try {
+      await pages[streamId].screenshot({ path: name + '_' + account + '.png' });
+      img = await image2base64(name + '_' + account + '.png')
+    }
+    catch (e) { }
+
+    socketEmit('screen', { img, log: account + ' => ' + name })
+  }
+
+  let currentAlbum
+
+  const album = () => {
+    let albumUrl = albums[rand(albums.length)]
+    while (currentAlbum === albumUrl) {
+      albumUrl = albums[rand(albums.length)]
+    }
+    currentAlbum = albumUrl
+    return albumUrl
+  }
+
+  const logError = (e) => {
+    socket.emit('log', account + ' => ' + e)
+  }
+
   let username
   let password
   let url
@@ -160,23 +106,14 @@ const fct = async () => {
   }
 
   freezeConnect = setTimeout(() => {
-    exit(0)
+    exit()
   }, 1000 * 60 * 3);
 
-  socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'WAIT_PAGE', other: true })
-
-  page = await puppet('save/' + player + '_' + login, noCache)
-
-  if (!page) {
-    console.log('no page')
-    await exit(210)
-  }
-
-  socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'RUN', other: true })
+  socketEmit('playerInfos', { account: player + ':' + login, time: 'RUN', other: true })
 
   page.on('close', function (err) {
     if (!close && !check) {
-      exit(0)
+      exit()
     }
   });
 
@@ -184,41 +121,6 @@ const fct = async () => {
   //   for (let i = 0; i < msg.args().length; ++i)
   //     logError(`${account} => ${i}: ${msg.args()[i]}`)
   // });
-
-  const takeScreenshot = async (name, e) => {
-    let img
-
-    try {
-      await page.screenshot({ path: name + '_' + account + '.png' });
-      img = await image2base64(name + '_' + account + '.png')
-    }
-    catch (e) { }
-
-    socket.emit('screen', { errorMsg: e, account, streamOn, streamId, img, log: account + ' => ' + (e || name) })
-  }
-
-  stream = async () => {
-    await takeScreenshot('stream')
-    await page.waitFor(3000)
-
-    if (++countStream > maxStream) {
-      streamOn = false
-    }
-
-    if (streamOn) { stream() }
-  }
-
-  socket.on('runScript', async (scriptText) => {
-    await page.evaluate(scriptText)
-  })
-
-  socket.on('runCode', async (code) => {
-    await page.inst('input[name="code"]', code)
-  })
-
-  socket.on('screenshot', async () => {
-    await takeScreenshot('getScreen')
-  })
 
   const catchFct = async (e) => {
     close = true
@@ -228,6 +130,7 @@ const fct = async () => {
     code = e === 'loop' ? 1 : code
     code = e === 'firstPlay' ? 210 : code
     code = e === 'failedLoop' ? 210 : code
+    code = e === 'failedTime' ? 210 : code
     code = e === 'del' ? 4 : code
     code = e === 'tidalError' ? 6 : code
     code = e === 'amazonError' ? 6 : code
@@ -243,7 +146,7 @@ const fct = async () => {
     // code = e === 'check' ? 12 : code
 
     if (code === 1) {
-      socket.emit('retryOk')
+      socketEmit('retryOk')
     }
 
     if (code === 6) {
@@ -254,7 +157,7 @@ const fct = async () => {
       socket.emit('outLog', e)
       logError(e)
       console.log(getTime() + " ERR ", account, e)
-      await takeScreenshot('throw', e)
+      await takeScreenshot(e)
     }
 
     // if (player === "spotify") {
@@ -266,24 +169,12 @@ const fct = async () => {
 
     if (code === 4) {
       request('https://online-music.herokuapp.com/error?del/' + account, function (error, response, body) { })
-
-      // 4 = DEL
-      socket.emit('delete', account)
-
-      fs.readFile('napsterAccountDel.txt', 'utf8', function (err, data) {
-        if (err) return console.log(err);
-        data = data.split(',').filter(e => e)
-        if (data.indexOf(account) < 0) { data.push(account) }
-        fs.writeFile('napsterAccountDel.txt', data.length === 1 ? data[0] : data.join(','), function (err) {
-          if (err) return console.log(err);
-        });
-      });
     }
     else if (code === 7) {
-      socket.emit('loop', { errorMsg: e, account })
+      socket.emit('used', account)
     }
 
-    exit(code)
+    exit()
   }
 
   try {
@@ -466,7 +357,7 @@ const fct = async () => {
         await checkFill()
       }
       else {
-        socket.emit('retryOk')
+        socketEmit('retryOk')
       }
     }
 
@@ -492,7 +383,7 @@ const fct = async () => {
             try {
               inbox = (shell.exec('yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
 
-              code = inbox.split('suivant')[1] && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
+              code = inbox.split('suivant')[1] && inbox.split('rification')[1].split('Ce code')[0].replace(':', '').trim()
 
               if (!code) { throw 'fail' }
             }
@@ -602,7 +493,7 @@ const fct = async () => {
 
     await connectFct()
 
-    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'CONNECT', other: true })
+    socketEmit('playerInfos', { account: player + ':' + login, time: 'CONNECT', other: true })
 
     clearTimeout(freezeConnect)
 
@@ -620,14 +511,28 @@ const fct = async () => {
     const waitForPlayBtn = async (playError) => {
       try {
         await page.clk(playBtn)
-        socket.emit('retryOk')
+        socketEmit('retryOk')
       }
       catch (e) {
         if (++trys > 3) {
           throw playError
         }
 
-        if (player === 'amazon') {
+        if (player === 'tidal') {
+          await page.waitFor(1000 * 60 + rand(2000))
+
+          const updateBtn = await page.evaluate(() => {
+            const update = document.querySelectorAll('button')
+            update && update.forEach(b => b.innerText === 'Update' && b.click())
+            return update
+          })
+
+          if (!updateBtn) {
+            await page.rload()
+            await waitForPlayBtn(playError)
+          }
+        }
+        else if (player === 'amazon') {
           const waitForReady = async () => {
             const amazonStyle = await page.evaluate(() => {
               return document.querySelector('#mainContentLoadingSpinner').style['display']
@@ -661,7 +566,7 @@ const fct = async () => {
 
     await waitForPlayBtn('firstPlay')
     // await page.clk(playBtn, 'firstPlay')
-    socket.emit('playerInfos', { account: player + ':' + login, streamId, time: 'PLAY', ok: true })
+    socketEmit('playerInfos', { account: player + ':' + login, time: 'PLAY', ok: true })
 
     if (player === 'tidal') {
       const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
@@ -690,8 +595,6 @@ const fct = async () => {
     let t2
     let freeze = 0
     let used
-    let retry = false
-    let retryDom = false
     let nextMusic = false
     let startLoop = false
     let exitLoop = false
@@ -739,6 +642,9 @@ const fct = async () => {
           }
         }
 
+        t2 = t1
+        t1 = await page.getTime(timeLine, callback)
+
         let matchTime = Number(t1)
 
         if (matchTime && matchTime > 30) {
@@ -746,8 +652,8 @@ const fct = async () => {
             nextMusic = true
             countPlays++
 
-            await page.jClk(nextBtn)
-            socket.emit('plays', { next: true, currentAlbum })
+            rand(2) && await page.jClk(nextBtn)
+            socketEmit('plays', { next: true, currentAlbum, matchTime })
           }
         }
         else {
@@ -758,31 +664,29 @@ const fct = async () => {
           exitLoop = true
         }
 
-        t1 = t2
-        t2 = await page.getTime(timeLine, callback)
-
         if (t1 === t2) {
           ++freeze
-          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true, warn: true })
+          socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true, warn: true })
         }
         else {
-          if (freeze > 0 || resume) {
-            resume = false
-            socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, ok: true })
-          }
+          // if (freeze > 0) {
+          socketEmit('playerInfos', { account: player + ':' + login, time: t1, ok: true })
+          // }
 
           freeze = 0
-          retry = false
-          retryDom = false
-          streamOn = false
-          socket.emit('retryOk')
+          socketEmit('retryOk')
         }
 
         if (freeze) {
-          socket.emit('playerInfos', { account: player + ':' + login, streamId, time: t1, freeze: true })
+          socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
 
-          if (player === 'napster') { await page.jClk(playBtn) }
+          if (player === 'napster') {
+            await page.jClk('.genre-btn')
+            await page.jClk(playBtn)
+          }
           else { await page.jClk(nextBtn) }
+
+          await page.waitFor(1000 * 5)
 
           const logged = await page.wfs(loggedDom)
           if (!logged) { throw 'logout' }
@@ -798,10 +702,6 @@ const fct = async () => {
     }
 
     loop()
-
-    socket.on('out', async () => {
-      exitLoop = true
-    })
   }
   catch (e) {
     catchFct(e)

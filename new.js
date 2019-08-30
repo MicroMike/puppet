@@ -1,53 +1,155 @@
-var shell = require('shelljs');
+process.setMaxListeners(Infinity)
 
-const arg = process.argv[2]
+const puppet = require('./puppet')
+const shell = require('shelljs');
+const socket = require('socket.io-client')('https://online-music.herokuapp.com');
 
 shell.exec('killall chrome', { silent: true })
+
+try {
+  shell.exec('expressvpn disconnect', { silent: true })
+}
+catch (e) { }
+
+const arg = process.argv[2]
+const nb = process.argv[3]
+const streams = {}
+const pages = {}
+
+let parentId
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-const pull = () => {
-  shell.exec('npm run rm && npm run clear', { silent: true })
-  shell.exec('git reset --hard origin/master', { silent: true })
-  shell.exec('git pull', { silent: true })
+const takeScreenshot = async (name, streamId) => {
+  let img
+  const { account, streamOn } = streams[streamId]
+
+  try {
+    await pages[streamId].screenshot({ path: name + '_' + account + '.png' });
+    img = await image2base64(name + '_' + account + '.png')
+  }
+  catch (e) { }
+
+  socket.emit('screen', { account, streamOn, streamId, img, log: account + ' => ' + name })
 }
 
-const inter = setInterval(pull, 1000 * 60 * 2)
+const stream = async (streamId) => {
+  await takeScreenshot('stream', streamId)
+  await pages[streamId].waitFor(3000)
 
-let out = 0
-let up = 60
-let count = 0
-let timeout = []
+  streams[streamId].countStream = streams[streamId].countStream + 1
 
-const run = async (i) => {
-  shell.exec('node index ' + arg + ' ' + i, code => {
-    if (code === 100) {
-      timeout.forEach(i => {
-        clearTimeout(i)
-      });
-      clearInterval(inter)
-      process.exit()
+  if (streams[streamId].countStream > 5) {
+    streams[streamId].streamOn = false
+  }
+
+  if (streams[streamId].streamOn) { stream(streamId) }
+}
+
+socket.on('activate', () => {
+  console.log('activate')
+  socket.emit('parent', { s: streams, parentId: arg })
+  if (!parentId) { parentId = arg }
+})
+
+socket.on('forceOut', async streamId => {
+  try {
+    await pages[streamId].cls(true)
+    console.log('out')
+  }
+  catch (e) { /*console.log(pages[streamId])*/ }
+
+  delete streams[streamId]
+  delete pages[streamId]
+})
+
+socket.on('retryOk', streamId => {
+  streams[streamId].streamOn = false
+})
+
+socket.on('streamOn', streamId => {
+  streams[streamId].countStream = 0
+  streams[streamId].streamOn = true
+
+  stream(streamId)
+})
+
+socket.on('streamOff', streamId => {
+  streams[streamId].streamOn = false
+})
+
+socket.on('screenshot', async streamId => {
+  await takeScreenshot('getScreen', streamId)
+})
+
+socket.on('runScript', async ({ streamId, scriptText }) => {
+  await pages[streamId].evaluate(scriptText)
+})
+
+socket.on('run', () => {
+  if (Object.values(streams).length >= (nb || 20)) { return }
+
+  try {
+    const b = shell.exec('git fetch && git status', { silent: true })
+    if (!b.match(/up to date/g)) {
+      shell.exec('npm run rm && npm run clear', { silent: true })
+      shell.exec('git reset --hard origin/master', { silent: true })
+      shell.exec('git pull', { silent: true })
     }
-    else {
-      run(i)
-    }
-  })
-}
+  }
+  catch (e) { }
 
-for (let i = 0; i < 50; i++) {
-  timeout.push(
-    setTimeout(() => {
-      run(i)
-    }, rand(1000 * 60 * 10))
-  )
-}
+  let ok = false
+  while (!ok) {
+    const streamId = rand(1000000)
+
+    if (!streams[streamId]) {
+      streams[streamId] = {
+        id: streamId,
+        parentId,
+        streamOn: false,
+        countStream: 0,
+      }
+      ok = true
+
+      console.log('getAccount')
+      socket.emit('getAccount', { streamId, parentId, env: process.env })
+    }
+  }
+})
+
+socket.on('account', async ({ runnerAccount, streamId }) => {
+  const accountInfo = runnerAccount.split(':')
+  let player = accountInfo[0]
+  let login = accountInfo[1]
+
+  console.log('account', runnerAccount, player)
+  socket.emit('playerInfos', { parentId, streamId, account: login, time: 'WAIT_PAGE', other: true })
+
+  const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
+
+  if (!page) {
+    console.log('no page')
+    socket.emit('Cdisconnect', streamId)
+    delete streams[streamId]
+  }
+  else {
+    pages[streamId] = page
+    streams[streamId].account = runnerAccount
+
+    const runAccount = require('./runAccount');
+    runAccount(page, socket, parentId, streamId, process.env, runnerAccount)
+  }
+})
+
+socket.on('Cdisconnect', () => {
+  socket.emit('disconnect')
+  process.exit()
+})
 
 process.on('SIGINT', () => {
-  timeout.forEach(i => {
-    clearTimeout(i)
-  });
-  clearInterval(inter)
+  socket.emit('disconnect')
   process.exit()
 });

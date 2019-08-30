@@ -192,8 +192,7 @@ const addFcts = async (page) => {
       return time
     }
     catch (e) {
-      console.log(e)
-      return false
+      throw 'failedTime'
     }
   }
 
@@ -202,7 +201,8 @@ const addFcts = async (page) => {
 
     try {
       await page.goto('about:blank')
-      await browserContext.browser().close()
+      await page.close()
+      // await browserContext.browser().close()
     }
     catch (e) {
       if (!noError) { throw ('Can\'t close', e) }
