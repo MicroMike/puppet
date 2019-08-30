@@ -134,11 +134,13 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
 })
 
 socket.on('Cdisconnect', () => {
+  console.log('----- RESTART -----')
   socket.emit('disconnect')
   process.exit()
 })
 
 process.on('SIGINT', () => {
+  console.log('----- RESTART -----')
   socket.emit('disconnect')
   process.exit()
 });
