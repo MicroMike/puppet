@@ -68,6 +68,8 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     }
     catch (e) { console.log(e) }
 
+    console.log(img)
+
     socketEmit('screen', { img, log: account + ' => ' + name })
   }
 
