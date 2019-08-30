@@ -57,9 +57,8 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     socket.emit('Cdisconnect', streamId)
   }
 
-  const takeScreenshot = async (name, id) => {
-    console.log(id, streamId, streamId !== id)
-    if (streamId !== id) { return }
+  const takeScreenshot = async (name, id = false) => {
+    if (id && streamId !== id) { return }
 
     let img
 
@@ -67,7 +66,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       await page.screenshot({ path: name + '_' + account + '.png' });
       img = await image2base64(name + '_' + account + '.png')
     }
-    catch (e) { }
+    catch (e) { console.log(e) }
 
     socketEmit('screen', { img, log: account + ' => ' + name })
   }
