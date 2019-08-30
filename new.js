@@ -57,13 +57,12 @@ socket.on('activate', () => {
 socket.on('forceOut', async streamId => {
   try {
     await pages[streamId].cls(true)
+    console.log('out')
   }
   catch (e) { /*console.log(pages[streamId])*/ }
 
   delete streams[streamId]
   delete pages[streamId]
-
-  socket.emit('Cdisconnect', streamId)
 })
 
 socket.on('retryOk', streamId => {
