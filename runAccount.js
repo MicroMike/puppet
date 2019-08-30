@@ -1,9 +1,9 @@
-const request = require('ajax-request');
-const shell = require('shelljs');
-const image2base64 = require('image-to-base64');
-const captcha = require('./captcha')
-
 module.exports = async (page, socket, parentId, streamId, env, account, eventEmitter) => {
+  const request = require('ajax-request');
+  const shell = require('shelljs');
+  const image2base64 = require('image-to-base64');
+  const captcha = require('./captcha')
+
   const accountInfo = account.split(':')
   let player = accountInfo[0]
   let login = accountInfo[1]
@@ -58,6 +58,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
   }
 
   const takeScreenshot = async (name, id = false) => {
+    console.log(id && streamId !== id, name, id)
     if (id && streamId !== id) { return }
 
     console.log(name)
