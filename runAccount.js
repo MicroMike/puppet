@@ -48,7 +48,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     let img
 
     try {
-      await pages[streamId].screenshot({ path: name + '_' + account + '.png' });
+      await pages.screenshot({ path: name + '_' + account + '.png' });
       img = await image2base64(name + '_' + account + '.png')
     }
     catch (e) { }
