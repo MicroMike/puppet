@@ -77,7 +77,9 @@ socket.on('forceOut', async streamId => {
 })
 
 socket.on('retryOk', streamId => {
-  streams[streamId].streamOn = false
+  if (streams[streamId]) {
+    streams[streamId].streamOn = false
+  }
 })
 
 socket.on('streamOn', streamId => {
