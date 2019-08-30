@@ -23,30 +23,11 @@ catch (e) { }
 const arg = process.argv[2]
 const nb = process.argv[3]
 const streams = {}
-const pages = {}
 
 let parentId
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
-}
-
-const takeScreenshot = async (name, streamId) => {
-  eventEmitter.emit('Escreen', name, streamId);
-  return
-}
-
-const stream = async (streamId) => {
-  await takeScreenshot('stream', streamId)
-  await pages[streamId].waitFor(3000)
-
-  streams[streamId].countStream = streams[streamId].countStream + 1
-
-  if (streams[streamId].countStream > 5) {
-    streams[streamId].streamOn = false
-  }
-
-  if (streams[streamId].streamOn) { stream(streamId) }
 }
 
 socket.on('activate', () => {
@@ -56,14 +37,10 @@ socket.on('activate', () => {
 })
 
 socket.on('forceOut', async streamId => {
-  try {
-    await pages[streamId].cls(true)
-    console.log('out')
+  if (streams[streamId]) {
+    eventEmitter.emit('EforceOut', streamId);
+    delete streams[streamId]
   }
-  catch (e) { /*console.log(pages[streamId])*/ }
-
-  delete streams[streamId]
-  delete pages[streamId]
 })
 
 socket.on('retryOk', streamId => {
@@ -73,23 +50,32 @@ socket.on('retryOk', streamId => {
 })
 
 socket.on('streamOn', streamId => {
-  streams[streamId].countStream = 0
-  streams[streamId].streamOn = true
+  eventEmitter.emit('EstreamOn', streamId);
 
   stream(streamId)
 })
 
 socket.on('streamOff', streamId => {
+  eventEmitter.emit('EstreamOff', streamId);
   streams[streamId].streamOn = false
 })
 
 socket.on('screenshot', async streamId => {
-  await takeScreenshot('getScreen', streamId)
+  eventEmitter.emit('Escreen', 'getScreen', streamId);
 })
 
 socket.on('runScript', async ({ streamId, scriptText }) => {
-  await pages[streamId].evaluate(scriptText)
+  eventEmitter.emit('ErunScript', streamId, scriptText);
 })
+
+eventEmitter.on('Escreen', datas => {
+  const stream = streams[datas.streamId]
+
+  if (stream) {
+    streams[datas.streamId].infos = datas
+  }
+});
+
 
 socket.on('run', () => {
   if (Object.values(streams).length >= (nb || 20)) { return }
@@ -140,7 +126,6 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
     delete streams[streamId]
   }
   else {
-    pages[streamId] = page
     streams[streamId].account = runnerAccount
 
     const runAccount = require('./runAccount');

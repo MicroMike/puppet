@@ -8,6 +8,8 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
   let player = accountInfo[0]
   let login = accountInfo[1]
   let pass = accountInfo[2]
+  let countStream = 0
+  let streamOn = false
 
   const al = require('./albums')
   let albums = al[player]
@@ -21,6 +23,15 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       account,
       ...params,
     })
+
+    if (event === 'playerInfos') {
+      eventEmitter.emit('playerInfos', {
+        parentId,
+        streamId,
+        account,
+        ...params,
+      });
+    }
   }
 
   let close = false
@@ -35,7 +46,9 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
   }
 
-  const exit = async () => {
+  const exit = async (id = false) => {
+    if (id && streamId !== id) { return }
+
     close = true
 
     try { await page.cls(true) }
@@ -45,12 +58,13 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
   }
 
   const takeScreenshot = async (name, id) => {
+    console.log(id, streamId)
     if (streamId !== id) { return }
 
     let img
 
     try {
-      await pages.screenshot({ path: name + '_' + account + '.png' });
+      await page.screenshot({ path: name + '_' + account + '.png' });
       img = await image2base64(name + '_' + account + '.png')
     }
     catch (e) { }
@@ -58,7 +72,44 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     socketEmit('screen', { img, log: account + ' => ' + name })
   }
 
+  const stream = async () => {
+    await takeScreenshot('stream')
+    await page.waitFor(3000)
+
+    countStream++
+
+    if (countStream > 5) {
+      streamOn = false
+    }
+
+    if (streamOn) { stream() }
+  }
+
+  eventEmitter.on('EforceOut', exit);
+
   eventEmitter.on('Escreen', takeScreenshot);
+
+  eventEmitter.on('EstreamOn', id => {
+    if (streamId !== id) { return }
+
+    countStream = 0
+    streamOn = true
+
+    stream()
+  });
+
+  eventEmitter.on('EstreamOff', id => {
+    if (streamId !== id) { return }
+
+    streamOn = false
+  });
+
+  eventEmitter.on('ErunScript', id => {
+    if (streamId !== id) { return }
+
+    await page.evaluate(scriptText)
+  });
+
 
   let currentAlbum
 
