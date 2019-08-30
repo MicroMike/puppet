@@ -56,7 +56,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     socketEmit('screen', { img, log: account + ' => ' + name })
   }
 
-  eventEmitter.on('Escreen', takeScreenshot);
+  eventEmitter.on('Escreen', (name) => { console.log('screeshot', name) });
 
   let currentAlbum
 
