@@ -133,6 +133,8 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
 
   if (!page) {
     console.log('no page')
+    socket.emit('Cdisconnect', streamId)
+    delete streams[streamId]
   }
   else {
     pages[streamId] = page
