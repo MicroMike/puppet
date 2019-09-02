@@ -20,7 +20,7 @@ catch (e) { }
 //Fire the 'scream' event:
 
 const arg = process.argv[2]
-const nb = process.argv[3] || 20
+const nb = Number(process.argv[3]) || 20
 const streams = {}
 
 let parentId
