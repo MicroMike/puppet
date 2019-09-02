@@ -5,8 +5,9 @@ module.exports = {
     'https://app.napster.com/artist/lenitap/album/above-everybody-wind',
     'https://app.napster.com/artist/erati/album/he-knows-she-knows',
     'https://app.napster.com/artist/benriam/album/the-gift-give',
-    'https://app.napster.com/artist/prestync/album/marching-smile',
-    'https://app.napster.com/artist/prestync/album/avalanches-of-ability',
+    'https://app.napster.com/artist/john-millson/album/my-stash',
+    // 'https://app.napster.com/artist/prestync/album/marching-smile',
+    // 'https://app.napster.com/artist/prestync/album/avalanches-of-ability',
     // 'https://app.napster.com/artist/micro-beats-and-breaks/album/micro-one',
     // 'https://app.napster.com/artist/mahone/album/stone-distraction',
     // 'https://app.napster.com/artist/hazel/album/electric-nature',
@@ -26,10 +27,12 @@ module.exports = {
     'https://music.amazon.fr/albums/B07QCBN3Z4',
     'https://music.amazon.fr/albums/B07RGRZL9F',
     'https://music.amazon.fr/albums/B07RNYTBXG',
-    'https://music.amazon.fr/albums/B07TC99Y6V',
-    'https://music.amazon.fr/albums/B07VC9S3JM',
     'https://music.amazon.fr/albums/B07VR121QG',
-    'https://music.amazon.fr/albums/B07VV7H96Z',
+    'https://music.amazon.fr/albums/B07VC9S3JM',
+    'https://music.amazon.fr/albums/B07TC99Y6V',
+    'https://music.amazon.fr/albums/B07WCHK4JR',//my-stash
+    'https://music.amazon.fr/albums/B07V1W5978',//marching-smile
+    // 'https://music.amazon.fr/albums/B07VV7H96Z',//avalanches-of-ability
     // 'https://music.amazon.fr/albums/B07V4BZFM2',
     // 'https://music.amazon.fr/albums/B07G9RM2MG',
     // 'https://music.amazon.fr/albums/B07D3NQ235',
@@ -47,10 +50,11 @@ module.exports = {
     'https://listen.tidal.com/album/108790098',
     'https://listen.tidal.com/album/108980716',
     'https://listen.tidal.com/album/111577934',
-    'https://listen.tidal.com/album/112888253',
+    // 'https://listen.tidal.com/album/112888253',//marching-smile
     'https://listen.tidal.com/album/113608807',
     'https://listen.tidal.com/album/113976818',
-    'https://listen.tidal.com/album/114337349',
+    // 'https://listen.tidal.com/album/114337349',//avalanches-of-ability
+    'https://listen.tidal.com/album/115558312',
   ],
   spotify: [
     'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
