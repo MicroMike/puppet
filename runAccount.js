@@ -226,7 +226,8 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       request('https://online-music.herokuapp.com/error?del/' + account, function (error, response, body) { })
     }
     else if (code === 7) {
-      socket.emit('used', account)
+      socket.emit('used', { account, id: streamId })
+      eventEmitter.emit('used', streamId)
     }
 
     exit()

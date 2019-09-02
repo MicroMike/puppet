@@ -77,6 +77,10 @@ eventEmitter.on('forceOut', async streamId => {
   if (streams[streamId]) { delete streams[streamId] }
 })
 
+eventEmitter.on('used', async streamId => {
+  if (streams[streamId]) { delete streams[streamId] }
+})
+
 socket.on('run', () => {
   if (Object.values(streams).length >= nb) { return }
 
