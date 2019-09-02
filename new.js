@@ -20,7 +20,7 @@ catch (e) { }
 //Fire the 'scream' event:
 
 const arg = process.argv[2]
-const nb = process.argv[3]
+const nb = process.argv[3] || 20
 const streams = {}
 
 let parentId
@@ -78,7 +78,7 @@ socket.on('run', () => {
   if (prevent) { return }
   prevent = true
 
-  if (Object.values(streams).length >= (nb || 20)) { return }
+  if (Object.values(streams).length >= nb) { return }
 
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
