@@ -1,3 +1,5 @@
+process.setMaxListeners(Infinity)
+
 var shell = require('shelljs');
 
 const arg = process.argv[2]

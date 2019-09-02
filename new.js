@@ -1,6 +1,5 @@
 process.setMaxListeners(Infinity)
 
-
 const puppet = require('./puppet')
 const shell = require('shelljs');
 const socket = require('socket.io-client')('https://online-music.herokuapp.com');
@@ -32,7 +31,7 @@ const rand = (max, min) => {
 
 socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
-  socket.emit('parent', { parentId: arg, connected: parentId })
+  socket.emit('parent', { parentId: arg, connected: parentId, s: streams })
   if (!parentId) { parentId = arg }
 })
 
@@ -107,7 +106,7 @@ socket.on('run', () => {
 
       console.log('getAccount')
       socket.emit('getAccount', { streamId, parentId, env: process.env })
-    }
+    }.
   }
 })
 
