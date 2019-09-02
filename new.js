@@ -73,11 +73,7 @@ eventEmitter.on('playerInfos', datas => {
   }
 });
 
-let prevent = false
 socket.on('run', () => {
-  if (prevent) { return }
-  prevent = true
-
   if (Object.values(streams).length >= nb) { return }
 
   try {
@@ -111,8 +107,6 @@ socket.on('run', () => {
 })
 
 socket.on('account', async ({ runnerAccount, streamId }) => {
-  prevent = false
-
   const accountInfo = runnerAccount.split(':')
   let player = accountInfo[0]
   let login = accountInfo[1]
