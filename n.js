@@ -4,6 +4,7 @@ const arg = process.argv[2]
 const nb = process.argv[3]
 
 while (true) {
+  console.log('----- START -----')
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
     if (!b.match(/up to date/g)) {
