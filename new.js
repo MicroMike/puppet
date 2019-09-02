@@ -66,14 +66,13 @@ socket.on('runScript', async ({ streamId, scriptText }) => {
   eventEmitter.emit('ErunScript', streamId, scriptText);
 })
 
-eventEmitter.on('Escreen', datas => {
+eventEmitter.on('playerInfos', datas => {
   const stream = streams[datas.streamId]
 
   if (stream) {
     streams[datas.streamId].infos = datas
   }
 });
-
 
 socket.on('run', () => {
   if (Object.values(streams).length >= (nb || 20)) { return }
@@ -131,13 +130,19 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
   }
 })
 
+let inter = setInterval(() => {
+  socket.emit('streamInfos', streams)
+}, 1000 * 10)
+
 socket.on('Cdisconnect', () => {
+  clearInterval(inter)
   console.log('----- RESTART -----')
   socket.emit('disconnect')
   process.exit()
 })
 
 process.on('SIGINT', () => {
+  clearInterval(inter)
   console.log('----- RESTART -----')
   socket.emit('disconnect')
   process.exit()
