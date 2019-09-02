@@ -131,7 +131,7 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
     streams[streamId].account = runnerAccount
 
     const runAccount = require('./runAccount');
-    try { runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter) } catch (e) { console.log(e) }
+    try { runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter) } catch (e) { }
   }
 })
 
