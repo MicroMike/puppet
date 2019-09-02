@@ -32,7 +32,7 @@ const rand = (max, min) => {
 
 socket.on('activate', () => {
   console.log('activate')
-  socket.emit('parent', { s: streams, parentId: arg })
+  socket.emit('parent', { s: streams, parentId: arg, connected: parentId })
   if (!parentId) { parentId = arg }
 })
 
