@@ -51,8 +51,6 @@ socket.on('retryOk', streamId => {
 
 socket.on('streamOn', streamId => {
   eventEmitter.emit('EstreamOn', streamId);
-
-  stream(streamId)
 })
 
 socket.on('streamOff', streamId => {
