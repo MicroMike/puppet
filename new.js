@@ -31,7 +31,7 @@ const rand = (max, min) => {
 
 socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
-  socket.emit('parent', { parentId: arg, connected: parentId, s: streams, env: process.env })
+  socket.emit('parent', { parentId: arg, connected: parentId, s: streams, env: process.env, max: nb })
   if (!parentId) { parentId = arg }
 })
 
@@ -71,8 +71,6 @@ eventEmitter.on('playerInfos', datas => {
 });
 
 socket.on('run', () => {
-  if (Object.values(streams).length >= nb) { return }
-
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
     if (!b.match(/up to date/g)) {
