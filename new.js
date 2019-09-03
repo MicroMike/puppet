@@ -89,14 +89,7 @@ socket.on('run', () => {
     const streamId = rand(1000000)
 
     if (!streams[streamId]) {
-      streams[streamId] = {
-        id: streamId,
-        parentId,
-        streamOn: false,
-        countStream: 0,
-      }
       ok = true
-
       console.log('getAccount')
       socket.emit('getAccount', { streamId, parentId, env: process.env })
     }
@@ -108,6 +101,14 @@ socket.on('account', async ({ runnerAccount, streamId, fail }) => {
     socket.emit('Cdisconnect', streamId)
     delete streams[streamId]
     return
+  }
+
+  streams[streamId] = {
+    id: streamId,
+    parentId,
+    streamOn: false,
+    countStream: 0,
+    account: runnerAccount
   }
 
   const accountInfo = runnerAccount.split(':')
