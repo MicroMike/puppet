@@ -141,12 +141,12 @@ socket.on('streamInfos', () => {
 
 socket.on('Cdisconnect', () => {
   console.log('----- END -----')
-  socket.emit('disconnect')
+  socket.emit('Ddisconnect')
   process.exit()
 })
 
 process.on('SIGINT', () => {
   console.log('----- END -----')
-  socket.emit('disconnect')
+  socket.emit('Ddisconnect')
   process.exit()
 });
