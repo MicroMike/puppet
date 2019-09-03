@@ -436,7 +436,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
               try {
                 inbox = (shell.exec('yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
 
-                code = inbox.split('rification')[1] && inbox.split('rification')[1].split('Ce code')[0].replace(':', '').trim()
+                code = inbox.split('terminer la vérification')[1] && inbox.split('terminer la vérification')[1].split('Ce code')[0].replace(':', '').trim()
 
                 if (!code) { throw 'fail' }
               }
