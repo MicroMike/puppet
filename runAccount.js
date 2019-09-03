@@ -562,8 +562,6 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
           }
 
           if (player === 'tidal') {
-            await page.waitFor(1000 * 60 + rand(2000))
-
             let updateBtn
             try {
               updateBtn = await page.evaluate(() => {
