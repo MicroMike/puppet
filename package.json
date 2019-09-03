@@ -14,7 +14,7 @@
     "reset": "git reset --hard HEAD && git clean -fd && git pull",
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
-    "check": "CHECK=true node index",
+    "check": "CHECK=true node new check 1",
     "start": "xvfb-run node n",
     "xstart": "killall node && node n",
     "clean": "find save/ -type f ! -iname \"Cookies\" -delete",

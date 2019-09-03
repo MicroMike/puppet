@@ -31,7 +31,7 @@ const rand = (max, min) => {
 
 socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
-  socket.emit('parent', { parentId: arg, connected: parentId, s: streams })
+  socket.emit('parent', { parentId: arg, connected: parentId, s: streams, env: process.env })
   if (!parentId) { parentId = arg }
 })
 
@@ -103,7 +103,13 @@ socket.on('run', () => {
   }
 })
 
-socket.on('account', async ({ runnerAccount, streamId }) => {
+socket.on('account', async ({ runnerAccount, streamId, fail }) => {
+  if (fail) {
+    socket.emit('Cdisconnect', streamId)
+    delete streams[streamId]
+    return
+  }
+
   const accountInfo = runnerAccount.split(':')
   let player = accountInfo[0]
   let login = accountInfo[1]
