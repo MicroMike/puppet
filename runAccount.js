@@ -525,14 +525,6 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
           }
 
           await page.waitFor(2000 + rand(2000))
-          // suppressed = await page.wfs(loginError, false)
-
-          if (suppressed) {
-            if (player !== 'napster' || String(suppressed).match(/password/)) {
-              throw 'del'
-            }
-            throw 'login'
-          }
         }
 
         if (player === 'spotify') {

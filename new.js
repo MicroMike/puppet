@@ -127,9 +127,9 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
   }
 })
 
-let inter = setInterval(() => {
+socket.on('streamInfos', () => {
   socket.emit('streamInfos', streams)
-}, 1000 * 2)
+})
 
 socket.on('Cdisconnect', () => {
   streams = {}
