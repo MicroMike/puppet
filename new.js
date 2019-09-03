@@ -36,10 +36,7 @@ socket.on('activate', () => {
 })
 
 socket.on('forceOut', async streamId => {
-  if (streams[streamId]) {
-    eventEmitter.emit('EforceOut', streamId);
-    delete streams[streamId]
-  }
+  eventEmitter.emit('EforceOut', streamId);
 })
 
 socket.on('retryOk', streamId => {
@@ -72,14 +69,6 @@ eventEmitter.on('playerInfos', datas => {
     streams[datas.streamId].infos = datas
   }
 });
-
-eventEmitter.on('forceOut', async streamId => {
-  if (streams[streamId]) { delete streams[streamId] }
-})
-
-eventEmitter.on('used', async streamId => {
-  if (streams[streamId]) { delete streams[streamId] }
-})
 
 socket.on('run', () => {
   if (Object.values(streams).length >= nb) { return }
@@ -133,7 +122,8 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
     streams[streamId].account = runnerAccount
 
     const runAccount = require('./runAccount');
-    try { runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter) } catch (e) { console.log(e) }
+    await runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter)
+    delete streams[streamId]
   }
 })
 
