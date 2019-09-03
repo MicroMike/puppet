@@ -139,7 +139,6 @@ socket.on('streamInfos', () => {
 
 socket.on('Cdisconnect', () => {
   streams = {}
-  clearInterval(inter)
   console.log('----- RESTART -----')
   socket.emit('disconnect')
   process.exit()
@@ -147,7 +146,6 @@ socket.on('Cdisconnect', () => {
 
 process.on('SIGINT', () => {
   streams = {}
-  clearInterval(inter)
   console.log('----- RESTART -----')
   socket.emit('disconnect')
   process.exit()
