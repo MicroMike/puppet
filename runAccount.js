@@ -712,8 +712,9 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
               nextMusic = true
               countPlays++
 
-              rand(2) && await page.jClk(nextBtn)
-              socketEmit('plays', { next: true, currentAlbum, matchTime })
+              const next = rand(2)
+              next && await page.jClk(nextBtn)
+              socketEmit('plays', { next, currentAlbum, matchTime })
             }
           }
           else {
