@@ -99,7 +99,6 @@ socket.on('run', () => {
 socket.on('account', async ({ runnerAccount, streamId, fail }) => {
   if (fail) {
     socket.emit('Cdisconnect', streamId)
-    delete streams[streamId]
     return
   }
 
@@ -116,7 +115,7 @@ socket.on('account', async ({ runnerAccount, streamId, fail }) => {
   let login = accountInfo[1]
 
   console.log('account', runnerAccount, player)
-  socket.emit('playerInfos', { parentId, streamId, account: login, time: 'WAIT_PAGE', other: true })
+  socket.emit('playerInfos', { parentId, streamId, account: player + ':' + login, time: 'WAIT_PAGE', other: true })
 
   if (process.env.CHECK) {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
@@ -130,8 +129,6 @@ socket.on('account', async ({ runnerAccount, streamId, fail }) => {
     delete streams[streamId]
   }
   else {
-    streams[streamId].account = runnerAccount
-
     const runAccount = require('./runAccount');
     await runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter)
     delete streams[streamId]
