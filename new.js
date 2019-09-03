@@ -21,7 +21,7 @@ catch (e) { }
 
 const arg = process.argv[2]
 const nb = process.argv[3]
-const streams = {}
+let streams = {}
 
 let parentId
 
