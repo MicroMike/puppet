@@ -129,9 +129,10 @@ socket.on('account', async ({ runnerAccount, streamId }) => {
 
 let inter = setInterval(() => {
   socket.emit('streamInfos', streams)
-}, 1000 * 1)
+}, 1000 * 2)
 
 socket.on('Cdisconnect', () => {
+  streams = {}
   clearInterval(inter)
   console.log('----- RESTART -----')
   socket.emit('disconnect')
@@ -139,6 +140,7 @@ socket.on('Cdisconnect', () => {
 })
 
 process.on('SIGINT', () => {
+  streams = {}
   clearInterval(inter)
   console.log('----- RESTART -----')
   socket.emit('disconnect')
