@@ -158,7 +158,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     let connected = false
     let suppressed = false
 
-    freezeConnect = setTimeout(() => {
+    freezeConnect = !check && setTimeout(() => {
       exit()
     }, 1000 * 60 * 3);
 
@@ -427,8 +427,6 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
         const needContinue = await page.jClk('#continue')
 
         if (needContinue) {
-          check && clearTimeout(freezeConnect)
-
           try {
             let code
             const waitForCode = async () => {
