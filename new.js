@@ -141,7 +141,6 @@ socket.on('streamInfos', () => {
 
 socket.on('Cdisconnect', () => {
   console.log('----- END -----')
-  socket.emit('Ddisconnect')
   process.exit()
 })
 
