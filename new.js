@@ -70,7 +70,7 @@ eventEmitter.on('playerInfos', datas => {
   }
 });
 
-socket.on('run', () => {
+socket.on('run', ({ runnerAccount, streamId }) => {
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
     if (!b.match(/up to date/g)) {
@@ -81,24 +81,6 @@ socket.on('run', () => {
     }
   }
   catch (e) { }
-
-  let ok = false
-  while (!ok) {
-    const streamId = rand(1000000)
-
-    if (!streams[streamId]) {
-      ok = true
-      console.log('getAccount')
-      socket.emit('getAccount', { streamId, parentId, env: process.env })
-    }
-  }
-})
-
-socket.on('account', async ({ runnerAccount, streamId, fail }) => {
-  if (fail) {
-    socket.emit('Cdisconnect', streamId)
-    return
-  }
 
   streams[streamId] = {
     id: streamId,
