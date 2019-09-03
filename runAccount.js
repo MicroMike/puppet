@@ -715,11 +715,11 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
             socketEmit('playerInfos', { time: t1, freeze: true, warn: true, })
 
             if (freeze === 1) {
-              if (player === 'napster') {
-                await page.jClk('.genre-btn')
-                await page.jClk(playBtn)
-              }
-              else { await page.jClk(nextBtn) }
+              await page.jClk(nextBtn)
+            }
+            if (freeze === 2 && player === 'napster') {
+              await page.jClk('.genre-btn')
+              await page.jClk(playBtn)
             }
           }
           else {
