@@ -11,6 +11,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     let pass = accountInfo[2]
     let countStream = 0
     let streamOn = false
+    let countPlays = 0
 
     const al = require('./albums')
     let albums = al[player]
@@ -23,6 +24,8 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
           parentId,
           streamId,
           account,
+          countPlays,
+          account: player + ':' + login,
           ...params,
         });
       }
@@ -165,7 +168,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       exit()
     }, 1000 * 60 * 3);
 
-    socketEmit('playerInfos', { account: player + ':' + login, time: 'RUN', other: true })
+    socketEmit('playerInfos', { time: 'RUN', other: true })
 
     page.on('close', function (err) {
       if (!close && !check) {
@@ -549,7 +552,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
 
       await connectFct()
 
-      socketEmit('playerInfos', { account: player + ':' + login, time: 'CONNECT', other: true })
+      socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
       clearTimeout(freezeConnect)
 
@@ -626,7 +629,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
 
       await waitForPlayBtn('firstPlay')
       // await page.clk(playBtn, 'firstPlay')
-      socketEmit('playerInfos', { account: player + ':' + login, time: 'PLAY', ok: true })
+      socketEmit('playerInfos', { time: 'PLAY', ok: true })
 
       if (player === 'tidal') {
         const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
@@ -659,7 +662,6 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       let startLoop = false
       let exitLoop = false
 
-      let countPlays = 0
       let changePlay = 30 + rand(30)
       let change = false
       let changeOnce = false
@@ -713,7 +715,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
               countPlays++
 
               await page.jClk(nextBtn)
-              socketEmit('plays', { next: true, currentAlbum, matchTime })
+              socketEmit('plays', { next: true, currentAlbum, matchTime, countPlays })
             }
           }
           else {
@@ -726,7 +728,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
 
           if (t1 === t2) {
             ++freeze
-            socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true, warn: true })
+            socketEmit('playerInfos', { time: t1, freeze: true, warn: true, })
 
             if (freeze === 1) {
               if (player === 'napster') {
@@ -738,7 +740,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
           }
           else {
             // if (freeze > 0) {
-            socketEmit('playerInfos', { account: player + ':' + login, time: t1, ok: true })
+            socketEmit('playerInfos', { time: t1, ok: true })
             // }
 
             freeze = 0
@@ -750,7 +752,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
               throw player === 'napster' ? 'used' : 'freeze'
             }
             else {
-              socketEmit('playerInfos', { account: player + ':' + login, time: t1, freeze: true })
+              socketEmit('playerInfos', { time: t1, freeze: true })
             }
 
             const logged = await page.wfs(loggedDom)
