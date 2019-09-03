@@ -158,12 +158,6 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     let connected = false
     let suppressed = false
 
-    let noCache = player === 'napster' || player === 'spotify'
-
-    if (noCache || check) {
-      shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
-    }
-
     freezeConnect = setTimeout(() => {
       exit()
     }, 1000 * 60 * 3);

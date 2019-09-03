@@ -117,6 +117,10 @@ socket.on('account', async ({ runnerAccount, streamId, fail }) => {
   console.log('account', runnerAccount, player)
   socket.emit('playerInfos', { parentId, streamId, account: login, time: 'WAIT_PAGE', other: true })
 
+  if (process.env.CHECK) {
+    shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+  }
+
   const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
   if (!page) {
