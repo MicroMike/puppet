@@ -70,7 +70,7 @@ eventEmitter.on('playerInfos', datas => {
   }
 });
 
-socket.on('run', ({ runnerAccount, streamId }) => {
+socket.on('run', async ({ runnerAccount, streamId }) => {
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
     if (!b.match(/up to date/g)) {
