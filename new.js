@@ -143,14 +143,14 @@ socket.on('streamInfos', () => {
 
 socket.on('Cdisconnect', () => {
   streams = {}
-  console.log('----- RESTART -----')
+  console.log('----- END -----')
   socket.emit('disconnect')
   process.exit()
 })
 
 process.on('SIGINT', () => {
   streams = {}
-  console.log('----- RESTART -----')
+  console.log('----- END -----')
   socket.emit('disconnect')
   process.exit()
 });
