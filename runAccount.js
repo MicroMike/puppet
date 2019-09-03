@@ -52,7 +52,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     }
 
     const exit = async (id = false) => {
-      if (id && streamId !== id) { return }
+      if (id && streamId !== Number(id)) { return }
 
       close = true
 
