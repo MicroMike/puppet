@@ -32,89 +32,88 @@ const rand = (max, min) => {
 socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
   socket.emit('parent', { parentId: arg, connected: parentId, s: streams, env: process.env, max: nb })
-
   if (!parentId) { parentId = arg }
+})
 
-  socket.on('forceOut', async streamId => {
-    eventEmitter.emit('EforceOut', streamId);
-  })
+socket.on('forceOut', async streamId => {
+  eventEmitter.emit('EforceOut', streamId);
+})
 
-  socket.on('retryOk', streamId => {
-    if (streams[streamId]) {
-      streams[streamId].streamOn = false
-    }
-  })
-
-  socket.on('streamOn', streamId => {
-    eventEmitter.emit('EstreamOn', streamId);
-  })
-
-  socket.on('streamOff', streamId => {
-    eventEmitter.emit('EstreamOff', streamId);
+socket.on('retryOk', streamId => {
+  if (streams[streamId]) {
     streams[streamId].streamOn = false
-  })
+  }
+})
 
-  socket.on('screenshot', async streamId => {
-    eventEmitter.emit('Escreen', 'getScreen', streamId);
-  })
+socket.on('streamOn', streamId => {
+  eventEmitter.emit('EstreamOn', streamId);
+})
 
-  socket.on('runScript', async ({ streamId, scriptText }) => {
-    eventEmitter.emit('ErunScript', streamId, scriptText);
-  })
+socket.on('streamOff', streamId => {
+  eventEmitter.emit('EstreamOff', streamId);
+  streams[streamId].streamOn = false
+})
 
-  socket.on('streamInfos', () => {
-    socket.emit('streamInfos', streams)
-  })
+socket.on('screenshot', async streamId => {
+  eventEmitter.emit('Escreen', 'getScreen', streamId);
+})
 
-  socket.on('Cdisconnect', () => {
-    console.log('----- END -----')
-    process.exit()
-  })
+socket.on('runScript', async ({ streamId, scriptText }) => {
+  eventEmitter.emit('ErunScript', streamId, scriptText);
+})
 
-  socket.on('run', async ({ runnerAccount, streamId }) => {
-    try {
-      const b = shell.exec('git fetch && git status', { silent: true })
-      if (!b.match(/up to date/g)) {
-        console.log('----- PULL -----')
-        shell.exec('npm run rm && npm run clear', { silent: true })
-        shell.exec('git reset --hard origin/master', { silent: true })
-        shell.exec('git pull', { silent: true })
-      }
+socket.on('streamInfos', () => {
+  socket.emit('streamInfos', streams)
+})
+
+socket.on('Cdisconnect', () => {
+  console.log('----- END -----')
+  process.exit()
+})
+
+socket.on('run', async ({ runnerAccount, streamId }) => {
+  try {
+    const b = shell.exec('git fetch && git status', { silent: true })
+    if (!b.match(/up to date/g)) {
+      console.log('----- PULL -----')
+      shell.exec('npm run rm && npm run clear', { silent: true })
+      shell.exec('git reset --hard origin/master', { silent: true })
+      shell.exec('git pull', { silent: true })
     }
-    catch (e) { }
+  }
+  catch (e) { }
 
-    streams[streamId] = {
-      id: streamId,
-      parentId,
-      streamOn: false,
-      countStream: 0,
-      account: runnerAccount
-    }
+  streams[streamId] = {
+    id: streamId,
+    parentId,
+    streamOn: false,
+    countStream: 0,
+    account: runnerAccount
+  }
 
-    const accountInfo = runnerAccount.split(':')
-    let player = accountInfo[0]
-    let login = accountInfo[1]
+  const accountInfo = runnerAccount.split(':')
+  let player = accountInfo[0]
+  let login = accountInfo[1]
 
-    console.log('account', runnerAccount, player)
-    socket.emit('playerInfos', { parentId, streamId, account: player + ':' + login, time: 'WAIT_PAGE', other: true })
+  console.log('account', runnerAccount, player)
+  socket.emit('playerInfos', { parentId, streamId, account: player + ':' + login, time: 'WAIT_PAGE', other: true })
 
-    if (process.env.CHECK) {
-      shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
-    }
+  if (process.env.CHECK) {
+    shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+  }
 
-    const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
+  const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
-    if (!page) {
-      console.log('no page')
-      socket.emit('Cdisconnect', streamId)
-      delete streams[streamId]
-    }
-    else {
-      const runAccount = require('./runAccount');
-      await runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter)
-      delete streams[streamId]
-    }
-  })
+  if (!page) {
+    console.log('no page')
+    socket.emit('Cdisconnect', streamId)
+    delete streams[streamId]
+  }
+  else {
+    const runAccount = require('./runAccount');
+    await runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter)
+    delete streams[streamId]
+  }
 })
 
 eventEmitter.on('playerInfos', datas => {
@@ -128,5 +127,7 @@ eventEmitter.on('playerInfos', datas => {
 process.on('SIGINT', () => {
   console.log('----- END -----')
   socket.emit('Ddisconnect')
-  process.exit()
+  setTimeout(() => {
+    process.exit()
+  }, 1000);
 });
