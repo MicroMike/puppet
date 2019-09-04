@@ -124,10 +124,12 @@ eventEmitter.on('playerInfos', datas => {
   }
 });
 
+const exit = () => {
+  process.exit()
+}
+
 process.on('SIGINT', () => {
   console.log('----- END -----')
   socket.emit('Ddisconnect')
-  setTimeout(() => {
-    process.exit()
-  }, 1000);
+  exit()
 });
