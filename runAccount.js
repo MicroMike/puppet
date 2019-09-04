@@ -519,6 +519,8 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
           await page.waitFor(2000 + rand(2000))
         }
 
+        socketEmit('playerInfos', { time: 'CONNECT', other: true })
+
         if (player === 'spotify') {
           spotCheck()
           await page.gotoUrl(album())
@@ -535,8 +537,6 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       }
 
       await connectFct()
-
-      socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
       clearTimeout(freezeConnect)
 
