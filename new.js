@@ -71,6 +71,11 @@ socket.on('Cdisconnect', () => {
   process.exit()
 })
 
+socket.on('close', () => {
+  console.log('----- END -----')
+  shell.exec('killall node', { silent: true })
+})
+
 socket.on('run', async ({ runnerAccount, streamId }) => {
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
@@ -124,12 +129,8 @@ eventEmitter.on('playerInfos', datas => {
   }
 });
 
-const exit = () => {
-  process.exit()
-}
-
 process.on('SIGINT', () => {
   console.log('----- END -----')
   socket.emit('Ddisconnect')
-  exit()
+  process.exit()
 });
