@@ -15,7 +15,7 @@
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node new check 1",
-    "start": ".apt/usr/bin/xvfb-run -a n h 10",
+    "start": ".apt/usr/bin/xvfb-run -a node n h 10",
     "xstart": "killall node && node n",
     "clean": "find save/ -type f ! -iname \"Cookies\" -delete",
     "clear": "git clean -fd",
