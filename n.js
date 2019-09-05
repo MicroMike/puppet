@@ -17,5 +17,5 @@ while (true) {
   }
   catch (e) { }
 
-  shell.exec('xvfb-run node new ' + arg + ' ' + nb)
+  shell.exec('xvfb-run -a node new ' + arg + ' ' + nb)
 }
