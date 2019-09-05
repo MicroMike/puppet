@@ -52,6 +52,6 @@
     "ip": "^1.1.5",
     "puppeteer-core": "^1.17.0",
     "shelljs": "^0.8.3",
-    "socket.io": "^2.2.0"
+    "socket.io-client": "^2.2.0"
   }
 }
