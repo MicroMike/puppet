@@ -31,7 +31,7 @@ const rand = (max, min) => {
 
 socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
-  socket.emit('parent', { parentId: arg, connected: parentId, s: streams, env: process.env, max: nb })
+  socket.emit('parent', { parentId: arg, connected: parentId, s: streams, env: process.env })
   if (!parentId) { parentId = arg }
 })
 
@@ -65,7 +65,7 @@ socket.on('runScript', async ({ streamId, scriptText }) => {
 socket.on('streamInfos', () => {
   const countPlays = Object.values(streams).map(s => s.plays).reduce((a, b) => a + b, 0)
   Object.keys(streams).forEach(k => { streams[k].plays = 0 })
-  socket.emit('streamInfos', ({ s: streams, parentId, countPlays }))
+  socket.emit('streamInfos', ({ s: streams, parentId, countPlays, env: process.env, max: nb }))
 })
 
 socket.on('Cdisconnect', () => {
