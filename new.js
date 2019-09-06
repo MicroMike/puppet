@@ -63,8 +63,9 @@ socket.on('runScript', async ({ streamId, scriptText }) => {
 })
 
 socket.on('streamInfos', () => {
-  socket.emit('streamInfos', ({ s: streams, parentId }))
+  const countPlays = Object.values(streams).forEach(s => s.plays).reduce((a, b) => a + b, 0)
   Object.keys(streams).forEach(k => { streams[k].plays = 0 })
+  socket.emit('streamInfos', ({ s: streams, parentId, countPlays }))
 })
 
 socket.on('Cdisconnect', () => {
