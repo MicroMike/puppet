@@ -63,7 +63,8 @@ socket.on('runScript', async ({ streamId, scriptText }) => {
 })
 
 socket.on('streamInfos', () => {
-  socket.emit('streamInfos', streams)
+  socket.emit('streamInfos', ({ s: streams, parentId }))
+  Object.keys(streams).forEach(k => { streams[k].plays = 0 })
 })
 
 socket.on('Cdisconnect', () => {
@@ -127,6 +128,10 @@ eventEmitter.on('playerInfos', datas => {
   if (stream) {
     streams[datas.streamId].infos = datas
   }
+});
+
+eventEmitter.on('plays', ({ streamId }) => {
+  streams[streamId].plays = streams[streamId].plays ? streams[streamId].plays + 1 : 1
 });
 
 process.on('SIGINT', () => {
