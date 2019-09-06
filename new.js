@@ -65,7 +65,7 @@ socket.on('runScript', async ({ streamId, scriptText }) => {
 socket.on('streamInfos', () => {
   const countPlays = Object.values(streams).map(s => s.plays).reduce((a, b) => a + b, 0)
   Object.keys(streams).forEach(k => { streams[k].plays = 0 })
-  socket.emit('streamInfos', ({ s: streams, parentId, countPlays, env: process.env, max: nb }))
+  socket.emit('streamInfos', ({ parentId, countPlays, env: process.env, max: nb }))
 })
 
 socket.on('Cdisconnect', () => {
@@ -93,8 +93,6 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   streams[streamId] = {
     id: streamId,
     parentId,
-    streamOn: false,
-    countStream: 0,
     account: runnerAccount
   }
 
@@ -123,13 +121,13 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   }
 })
 
-eventEmitter.on('playerInfos', datas => {
-  const stream = streams[datas.streamId]
+// eventEmitter.on('playerInfos', datas => {
+//   const stream = streams[datas.streamId]
 
-  if (stream) {
-    streams[datas.streamId].infos = datas
-  }
-});
+//   if (stream) {
+//     streams[datas.streamId].infos = datas
+//   }
+// });
 
 eventEmitter.on('plays', ({ streamId }) => {
   streams[streamId].plays = streams[streamId].plays ? streams[streamId].plays + 1 : 1
