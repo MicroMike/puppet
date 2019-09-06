@@ -42,6 +42,7 @@ socket.on('recup', () => {
     let login = accountInfo[1]
     socket.emit('playerInfos', { parentId, streamId: s.id, account: player + ':' + login, time: 'RECO', other: true })
   })
+  socket.emit('go')
 })
 
 socket.on('forceOut', async streamId => {
