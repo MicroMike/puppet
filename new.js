@@ -2,7 +2,7 @@ process.setMaxListeners(Infinity)
 
 const puppet = require('./puppet')
 const shell = require('shelljs');
-const socket = require('socket.io-client')('https://online-music.herokuapp.com');
+const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
 var events = require('events');
 
 const eventEmitter = new events.EventEmitter();
