@@ -31,7 +31,7 @@ const rand = (max, min) => {
 
 socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
-  socket.emit('parent', { parentId: arg, connected: parentId, s: streams, env: process.env })
+  socket.emit('parent', { parentId: arg, connected: parentId, env: process.env })
   if (!parentId) { parentId = arg }
 })
 
