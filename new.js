@@ -73,7 +73,7 @@ socket.on('Cdisconnect', () => {
   process.exit()
 })
 
-socket.on('kill', () => {
+socket.on('killall', () => {
   console.log('----- END -----')
   shell.exec('killall node', { silent: true })
 })
