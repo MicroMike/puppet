@@ -33,6 +33,14 @@ socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
   socket.emit('parent', { parentId: arg, connected: parentId, env: process.env })
   if (!parentId) { parentId = arg }
+  else {
+    Object.values(streams).forEach(s => {
+      const accountInfo = s.account.split(':')
+      let player = accountInfo[0]
+      let login = accountInfo[1]
+      socket.emit('playerInfos', { parentId, streamId: s.id, account: player + ':' + login, time: 'RECO', other: true })
+    })
+  }
 })
 
 socket.on('forceOut', async streamId => {
