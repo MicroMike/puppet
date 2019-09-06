@@ -19,7 +19,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     const check = env.CHECK
 
     const socketEmit = (event, params) => {
-      if (event === 'playerInfos' || event === 'plays') {
+      if (event === 'plays') {
         eventEmitter.emit(event, {
           parentId,
           streamId,
