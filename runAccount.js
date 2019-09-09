@@ -62,14 +62,13 @@ module.exports = async (page, parentId, streamId, env, account) => {
       return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
     }
 
-    const exit = async (id = false) => {
-      if (id && streamId !== Number(id)) { return }
-
+    const exit = async () => {
       close = true
 
       try { await page.cls(true) }
       catch (e) { }
 
+      socket.emit('log', 'out: ' + account + ' => ' + e)
       socket.disconnect()
       r(socket)
     }
