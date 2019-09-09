@@ -152,6 +152,7 @@ module.exports = async (page, parentId, streamId, env, account) => {
     let suppressed = false
 
     freezeConnect = !check && setTimeout(() => {
+      socket.emit('outLog', 'freezeConnect')
       exit()
     }, 1000 * 60 * 3);
 
