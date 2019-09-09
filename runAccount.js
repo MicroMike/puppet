@@ -60,7 +60,7 @@ module.exports = async (page, parentId, streamId, env, account) => {
       try { await page.cls(true) }
       catch (e) { }
 
-      client.disconnect()
+      socket.disconnect()
       r(socket)
     }
 
