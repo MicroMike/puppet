@@ -163,6 +163,7 @@ module.exports = async (page, parentId, streamId, env, account) => {
 
     freezeConnect = !check && setTimeout(() => {
       socket.emit('outLog', 'freezeConnect')
+      console.log('freezeConnect')
       exit()
     }, 1000 * 60 * 3);
 
