@@ -11,19 +11,26 @@ try {
 }
 catch (e) { }
 
+const inter = setInterval(() => {
+  socket.emit('ping')
+}, 1000 * 60);
+
 process.on('SIGINT', () => {
+  clearInterval(inter)
   socket.emit('disconnect')
   console.log('----- END -----')
   process.exit()
 })
 
 socket.on('Cdisconnect', () => {
+  clearInterval(inter)
   socket.emit('disconnect')
   console.log('----- END -----')
   process.exit()
 })
 
 socket.on('killall', () => {
+  clearInterval(inter)
   socket.emit('disconnect')
   console.log('----- END -----')
   shell.exec('killall node')
@@ -42,6 +49,7 @@ socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
   socket.emit('parent', { parentId: arg, connected: parentId, env: process.env, max: nb })
   if (!parentId) { parentId = arg }
+
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
