@@ -85,6 +85,7 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   if (!page) { console.log('no page') }
   else {
     const runAccount = require('./runAccount');
-    await runAccount(page, parentId, streamId, process.env, runnerAccount)
+    const client = await runAccount(page, parentId, streamId, process.env, runnerAccount)
+    client.disconnect()
   }
 })

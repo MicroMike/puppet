@@ -69,7 +69,6 @@ module.exports = async (page, parentId, streamId, env, account) => {
       catch (e) { }
 
       socket.emit('log', 'out: ' + account + ' => ' + e)
-      socket.disconnect()
       r(socket)
     }
 
