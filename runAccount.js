@@ -1,5 +1,6 @@
-module.exports = async (page, socket, parentId, streamId, env, account, eventEmitter) => {
+module.exports = async (page, parentId, streamId, env, account) => {
   return new Promise(async (r) => {
+    const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
     const request = require('ajax-request');
     const shell = require('shelljs');
     const image2base64 = require('image-to-base64');
@@ -19,25 +20,25 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     const check = env.CHECK
 
     const socketEmit = (event, params) => {
-      if (event === 'plays') {
-        eventEmitter.emit(event, {
-          parentId,
-          streamId,
-          account,
-          countPlays,
-          account: player + ':' + login,
-          ...params,
-        });
-      }
-      else {
-        socket.emit(event, {
-          parentId,
-          streamId,
-          account,
-          ...params,
-        })
-      }
+      socket.emit(event, {
+        parentId,
+        streamId,
+        account,
+        ...params,
+      });
     }
+
+    socket.on('activate', () => {
+      socketEmit('client', { env })
+    })
+
+    socket.on('retryOk', () => {
+      streamOn = false
+    })
+
+    socket.on('runScript', async scriptText => {
+      await page.evaluate(scriptText)
+    })
 
     let close = false
     let trys = 0
@@ -59,13 +60,15 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       try { await page.cls(true) }
       catch (e) { }
 
-      socket.emit('Cdisconnect', streamId)
-      r(streamId)
+      client.disconnect()
+      r(socket)
     }
 
-    const takeScreenshot = async (name, id = false) => {
-      if (id && streamId !== Number(id)) { return }
+    socket.on('forceOut', () => {
+      exit()
+    })
 
+    const takeScreenshot = async (name) => {
       let img
 
       try {
@@ -90,30 +93,20 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       if (streamOn) { stream() }
     }
 
-    eventEmitter.on('EforceOut', exit);
+    socket.on('screenshot', () => {
+      takeScreenshot('getScreen')
+    })
 
-    eventEmitter.on('Escreen', takeScreenshot);
-
-    eventEmitter.on('EstreamOn', id => {
-      if (id && streamId !== Number(id)) { return }
-
+    socket.on('streamOn', () => {
       countStream = 0
       streamOn = true
 
       stream()
-    });
+    })
 
-    eventEmitter.on('EstreamOff', id => {
-      if (id && streamId !== Number(id)) { return }
-
+    socket.on('streamOff', () => {
       streamOn = false
-    });
-
-    eventEmitter.on('ErunScript', async id => {
-      if (id && streamId !== Number(id)) { return }
-
-      await page.evaluate(scriptText)
-    });
+    })
 
     let currentAlbum
 
@@ -224,7 +217,7 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
         request('https://online-music.herokuapp.com/error?del/' + account, function (error, response, body) { })
       }
       else if (code === 7) {
-        socket.emit('used', account)
+        socketEmit('used')
       }
 
       exit()
