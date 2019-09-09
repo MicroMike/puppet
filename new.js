@@ -11,10 +11,6 @@ try {
 }
 catch (e) { }
 
-const inter = setInterval(() => {
-  socket.emit('ping')
-}, 1000 * 60);
-
 process.on('SIGINT', () => {
   clearInterval(inter)
   socket.emit('disconnect')
@@ -45,11 +41,20 @@ const nb = process.argv[3]
 
 let parentId
 
+const inter = () => {
+  if (socket.connected) {
+    socket.emit('ping')
+    setTimeout(() => {
+      inter()
+    }, 1000 * 60);
+  }
+}
+
 socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
   socket.emit('parent', { parentId: arg, connected: parentId, env: process.env, max: nb })
   if (!parentId) { parentId = arg }
-
+  inter()
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {

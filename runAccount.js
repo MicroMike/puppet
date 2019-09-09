@@ -28,8 +28,18 @@ module.exports = async (page, parentId, streamId, env, account) => {
       });
     }
 
+    const inter = () => {
+      if (socket.connected) {
+        socket.emit('ping')
+        setTimeout(() => {
+          inter()
+        }, 1000 * 60);
+      }
+    }
+
     socket.on('activate', () => {
       socketEmit('client', { env })
+      inter()
     })
 
     socket.on('retryOk', () => {
