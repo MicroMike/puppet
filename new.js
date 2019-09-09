@@ -12,21 +12,18 @@ try {
 catch (e) { }
 
 process.on('SIGINT', () => {
-  clearInterval(inter)
   socket.emit('disconnect')
   console.log('----- END -----')
   process.exit()
 })
 
 socket.on('Cdisconnect', () => {
-  clearInterval(inter)
   socket.emit('disconnect')
   console.log('----- END -----')
   process.exit()
 })
 
 socket.on('killall', () => {
-  clearInterval(inter)
   socket.emit('disconnect')
   console.log('----- END -----')
   shell.exec('killall node')
