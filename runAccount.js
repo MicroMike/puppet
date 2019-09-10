@@ -73,7 +73,7 @@ module.exports = async (page, parentId, streamId, env, account) => {
     }
 
     socket.on('forceOut', () => {
-      exit()
+      exit('forceOut')
     })
 
     const takeScreenshot = async (name) => {
@@ -162,14 +162,14 @@ module.exports = async (page, parentId, streamId, env, account) => {
     freezeConnect = !check && setTimeout(() => {
       socket.emit('outLog', 'freezeConnect')
       console.log('freezeConnect')
-      exit()
+      exit('freezeConnect')
     }, 1000 * 60 * 3);
 
     socketEmit('playerInfos', { time: 'RUN', other: true })
 
     page.on('close', function (err) {
       if (!close && !check) {
-        exit()
+        exit('close')
       }
     });
 
