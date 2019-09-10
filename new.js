@@ -86,6 +86,7 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   else {
     const runAccount = require('./runAccount');
     const client = await runAccount(page, parentId, streamId, process.env, runnerAccount)
+    socket.emit('playerInfos', { parentId, streamId, remove: true })
     client.disconnect()
   }
 })
