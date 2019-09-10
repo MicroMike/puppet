@@ -1,5 +1,6 @@
-module.exports = async (page, socket, parentId, streamId, env, account, eventEmitter) => {
+module.exports = async (page, parentId, streamId, env, account) => {
   return new Promise(async (r) => {
+    const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
     const request = require('ajax-request');
     const shell = require('shelljs');
     const image2base64 = require('image-to-base64');
@@ -19,25 +20,35 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     const check = env.CHECK
 
     const socketEmit = (event, params) => {
-      if (event === 'plays') {
-        eventEmitter.emit(event, {
-          parentId,
-          streamId,
-          account,
-          countPlays,
-          account: player + ':' + login,
-          ...params,
-        });
-      }
-      else {
-        socket.emit(event, {
-          parentId,
-          streamId,
-          account,
-          ...params,
-        })
+      socket.emit(event, {
+        parentId,
+        streamId,
+        account,
+        ...params,
+      });
+    }
+
+    const inter = () => {
+      if (socket.connected) {
+        socket.emit('ping')
+        setTimeout(() => {
+          inter()
+        }, 1000 * 60);
       }
     }
+
+    socket.on('activate', () => {
+      socketEmit('client', { env })
+      inter()
+    })
+
+    socket.on('retryOk', () => {
+      streamOn = false
+    })
+
+    socket.on('runScript', async scriptText => {
+      await page.evaluate(scriptText)
+    })
 
     let close = false
     let trys = 0
@@ -51,21 +62,21 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
     }
 
-    const exit = async (id = false) => {
-      if (id && streamId !== Number(id)) { return }
-
+    const exit = async (e) => {
       close = true
 
       try { await page.cls(true) }
       catch (e) { }
 
-      socket.emit('Cdisconnect', streamId)
-      r(streamId)
+      socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
+      r(socket)
     }
 
-    const takeScreenshot = async (name, id = false) => {
-      if (id && streamId !== Number(id)) { return }
+    socket.on('forceOut', () => {
+      exit('forceOut')
+    })
 
+    const takeScreenshot = async (name) => {
       let img
 
       try {
@@ -90,30 +101,20 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
       if (streamOn) { stream() }
     }
 
-    eventEmitter.on('EforceOut', exit);
+    socket.on('screenshot', () => {
+      takeScreenshot('getScreen')
+    })
 
-    eventEmitter.on('Escreen', takeScreenshot);
-
-    eventEmitter.on('EstreamOn', id => {
-      if (id && streamId !== Number(id)) { return }
-
+    socket.on('streamOn', () => {
       countStream = 0
       streamOn = true
 
       stream()
-    });
+    })
 
-    eventEmitter.on('EstreamOff', id => {
-      if (id && streamId !== Number(id)) { return }
-
+    socket.on('streamOff', () => {
       streamOn = false
-    });
-
-    eventEmitter.on('ErunScript', async id => {
-      if (id && streamId !== Number(id)) { return }
-
-      await page.evaluate(scriptText)
-    });
+    })
 
     let currentAlbum
 
@@ -159,14 +160,16 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
     let suppressed = false
 
     freezeConnect = !check && setTimeout(() => {
-      exit()
+      socket.emit('outLog', 'freezeConnect')
+      console.log('freezeConnect')
+      exit('freezeConnect')
     }, 1000 * 60 * 3);
 
     socketEmit('playerInfos', { time: 'RUN', other: true })
 
     page.on('close', function (err) {
       if (!close && !check) {
-        exit()
+        exit('close')
       }
     });
 
@@ -224,10 +227,10 @@ module.exports = async (page, socket, parentId, streamId, env, account, eventEmi
         request('https://online-music.herokuapp.com/error?del/' + account, function (error, response, body) { })
       }
       else if (code === 7) {
-        socket.emit('used', account)
+        socketEmit('used')
       }
 
-      exit()
+      exit(e)
     }
 
     try {

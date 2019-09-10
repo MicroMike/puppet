@@ -3,9 +3,6 @@ process.setMaxListeners(Infinity)
 const puppet = require('./puppet')
 const shell = require('shelljs');
 const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
-var events = require('events');
-
-const eventEmitter = new events.EventEmitter();
 
 shell.exec('killall chrome', { silent: true })
 
@@ -14,6 +11,23 @@ try {
 }
 catch (e) { }
 
+process.on('SIGINT', () => {
+  socket.emit('disconnect')
+  console.log('----- END -----')
+  process.exit()
+})
+
+socket.on('Cdisconnect', () => {
+  socket.emit('disconnect')
+  console.log('----- END -----')
+  process.exit()
+})
+
+socket.on('killall', () => {
+  socket.emit('disconnect')
+  console.log('----- END -----')
+  shell.exec('killall node')
+})
 
 //Assign the event handler to an event:
 
@@ -21,71 +35,23 @@ catch (e) { }
 
 const arg = process.argv[2]
 const nb = process.argv[3]
-let streams = {}
 
 let parentId
 
-const rand = (max, min) => {
-  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+const inter = () => {
+  if (socket.connected) {
+    socket.emit('ping')
+    setTimeout(() => {
+      inter()
+    }, 1000 * 60);
+  }
 }
 
 socket.on('activate', () => {
   console.log('activate', 'connected:' + !!parentId)
-  socket.emit('parent', { parentId: arg, connected: parentId, env: process.env })
+  socket.emit('parent', { parentId: arg, connected: parentId, env: process.env, max: nb })
   if (!parentId) { parentId = arg }
-})
-
-socket.on('recup', () => {
-  Object.values(streams).forEach(s => {
-    const accountInfo = s.account.split(':')
-    let player = accountInfo[0]
-    let login = accountInfo[1]
-    socket.emit('playerInfos', { parentId, streamId: s.id, account: player + ':' + login, time: 'RECO', other: true })
-  })
-  socket.emit('go')
-})
-
-socket.on('forceOut', async streamId => {
-  eventEmitter.emit('EforceOut', streamId);
-})
-
-socket.on('retryOk', streamId => {
-  if (streams[streamId]) {
-    streams[streamId].streamOn = false
-  }
-})
-
-socket.on('streamOn', streamId => {
-  eventEmitter.emit('EstreamOn', streamId);
-})
-
-socket.on('streamOff', streamId => {
-  eventEmitter.emit('EstreamOff', streamId);
-  streams[streamId].streamOn = false
-})
-
-socket.on('screenshot', async streamId => {
-  eventEmitter.emit('Escreen', 'getScreen', streamId);
-})
-
-socket.on('runScript', async ({ streamId, scriptText }) => {
-  eventEmitter.emit('ErunScript', streamId, scriptText);
-})
-
-socket.on('streamInfos', () => {
-  const countPlays = Object.values(streams).map(s => s.plays).reduce((a, b) => a + b, 0)
-  Object.keys(streams).forEach(k => { streams[k].plays = 0 })
-  socket.emit('streamInfos', ({ parentId, countPlays, env: process.env, max: nb }))
-})
-
-socket.on('Cdisconnect', () => {
-  console.log('----- END -----')
-  process.exit()
-})
-
-socket.on('killall', () => {
-  console.log('----- END -----')
-  shell.exec('killall node', { silent: true })
+  inter()
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
@@ -100,12 +66,6 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   }
   catch (e) { }
 
-  streams[streamId] = {
-    id: streamId,
-    parentId,
-    account: runnerAccount
-  }
-
   const accountInfo = runnerAccount.split(':')
   let player = accountInfo[0]
   let login = accountInfo[1]
@@ -119,32 +79,10 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
 
   const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
-  if (!page) {
-    console.log('no page')
-    socket.emit('Cdisconnect', streamId)
-    delete streams[streamId]
-  }
+  if (!page) { console.log('no page') }
   else {
     const runAccount = require('./runAccount');
-    await runAccount(page, socket, parentId, streamId, process.env, runnerAccount, eventEmitter)
-    delete streams[streamId]
+    const client = await runAccount(page, parentId, streamId, process.env, runnerAccount)
+    client.disconnect()
   }
 })
-
-// eventEmitter.on('playerInfos', datas => {
-//   const stream = streams[datas.streamId]
-
-//   if (stream) {
-//     streams[datas.streamId].infos = datas
-//   }
-// });
-
-eventEmitter.on('plays', ({ streamId }) => {
-  streams[streamId].plays = streams[streamId].plays ? streams[streamId].plays + 1 : 1
-});
-
-process.on('SIGINT', () => {
-  console.log('----- END -----')
-  socket.emit('Ddisconnect')
-  process.exit()
-});
