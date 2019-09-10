@@ -79,7 +79,10 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
 
   const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
-  if (!page) { console.log('no page') }
+  if (!page) {
+    console.log('no page')
+    socket.emit('playerInfos', { parentId, streamId, remove: true })
+  }
   else {
     const runAccount = require('./runAccount');
     const client = await runAccount(page, parentId, streamId, process.env, runnerAccount)
