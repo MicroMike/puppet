@@ -243,6 +243,7 @@ module.exports = async (userDataDir, noCache) => {
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
+      '--disable-gpu',
     ],
     timeout: 0,
     defaultViewport: {
