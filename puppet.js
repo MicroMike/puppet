@@ -242,6 +242,7 @@ module.exports = async (userDataDir, noCache) => {
     headless: false,
     args: [
       '--no-sandbox',
+      '--disable-setuid-sandbox',
     ],
     timeout: 0,
     defaultViewport: {
