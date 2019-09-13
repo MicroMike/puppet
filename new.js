@@ -56,7 +56,6 @@ socket.on('activate', () => {
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
   try {
-    shell.exec('npm run buff', { silent: true })
     const b = shell.exec('git fetch && git status', { silent: true })
     if (!b.match(/up to date/g)) {
       console.log('----- PULL -----')
@@ -64,6 +63,7 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
       shell.exec('git reset --hard origin/master', { silent: true })
       shell.exec('git pull', { silent: true })
     }
+    shell.exec('npm run buff', { silent: true })
   }
   catch (e) { }
 
