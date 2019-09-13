@@ -71,22 +71,22 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   let login = accountInfo[1]
 
   console.log('account', runnerAccount, player)
-  socket.emit('playerInfos', { parentId, streamId, account: player + ':' + login, time: 'WAIT_PAGE', other: true })
 
   if (process.env.CHECK) {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
+  socket.emit('playerInfos', { parentId, streamId, account: player + ':' + login, time: 'WAIT_PAGE', other: true })
+
   const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
   if (!page) {
     console.log('no page')
-    socket.emit('playerInfos', { parentId, streamId, remove: true })
+    socket.emit('playerInfos', { parentId, streamId, exit: true })
   }
   else {
     const runAccount = require('./runAccount');
     const client = await runAccount(page, parentId, streamId, process.env, runnerAccount)
-    socket.emit('playerInfos', { parentId, streamId, remove: true })
     client.disconnect()
   }
 })
