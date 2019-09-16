@@ -18,30 +18,30 @@ process.on('SIGINT', () => {
 })
 
 const fct = async (i) => {
-  while (true) {
-    if (close) { break }
-    console.log('----- START ' + i + ' ----- ')
+  if (close) { break }
+  console.log('----- START ' + i + ' ----- ')
 
-    // const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
-    // sockets[i] = socket
+  // const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
+  // sockets[i] = socket
 
-    try {
-      const b = shell.exec('git fetch && git status', { silent: true })
-      if (!b.match(/up to date/g)) {
-        shell.exec('npm run rm && npm run clear', { silent: true })
-        shell.exec('git reset --hard origin/master', { silent: true })
-        shell.exec('git pull', { silent: true })
-      }
+  try {
+    const b = shell.exec('git fetch && git status', { silent: true })
+    if (!b.match(/up to date/g)) {
+      shell.exec('npm run rm && npm run clear', { silent: true })
+      shell.exec('git reset --hard origin/master', { silent: true })
+      shell.exec('git pull', { silent: true })
     }
-    catch (e) { }
-
-    // const start = require('./new')
-    // await start(socket, arg, nb, i)
-    // socket.disconnect()
-    // sockets[i] = null
-
-    shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + thread)
   }
+  catch (e) { }
+
+  // const start = require('./new')
+  // await start(socket, arg, nb, i)
+  // socket.disconnect()
+  // sockets[i] = null
+
+  shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + thread, () => {
+    fct(i)
+  })
 }
 
 shell.exec('killall chrome', { silent: true })
