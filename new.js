@@ -16,19 +16,19 @@ try {
 catch (e) { }
 
 process.on('SIGINT', () => {
-  console.log('----- END -----')
+  console.log('----- END ' + thread + ' -----')
   socket.disconnect()
   process.exit()
 })
 
 socket.on('Cdisconnect', () => {
-  socket.disconnect()
   console.log('----- END ' + thread + ' -----')
+  socket.disconnect()
 })
 
 socket.on('killall', () => {
-  socket.disconnect()
   console.log('----- END ' + thread + ' -----')
+  socket.disconnect()
 })
 
 //Assign the event handler to an event:
