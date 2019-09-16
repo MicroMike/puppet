@@ -48,7 +48,7 @@ const inter = () => {
 
 socket.on('activate', () => {
   console.log(thread + ' activate', 'connected:' + !!parentId)
-  socket.emit('parent', { parentId: arg, connected: parentId, env: process.env, max: nb })
+  socket.emit('parent', { parentId: arg + thread, connected: parentId, env: process.env, max: nb })
   if (!parentId) { parentId = arg + thread }
   inter()
 })
@@ -79,7 +79,6 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   socket.emit('wait', parentId)
 
   const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
-
   if (!page) {
     console.log(thread + ' no page')
     socket.emit('stopWait', parentId)
