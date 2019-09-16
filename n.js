@@ -18,7 +18,7 @@ process.on('SIGINT', () => {
 })
 
 const fct = async (i) => {
-  if (close) { break }
+  if (close) { return }
   console.log('----- START ' + i + ' ----- ')
 
   // const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
