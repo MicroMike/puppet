@@ -15,6 +15,12 @@ try {
 }
 catch (e) { }
 
+process.on('SIGINT', () => {
+  console.log('----- END -----')
+  socket.disconnect()
+  process.exit()
+})
+
 socket.on('Cdisconnect', () => {
   socket.disconnect()
   console.log('----- END ' + thread + ' -----')
