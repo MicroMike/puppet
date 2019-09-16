@@ -523,7 +523,6 @@ module.exports = async (page, parentId, streamId, env, account) => {
         }
 
         socketEmit('playerInfos', { time: 'CONNECT', other: true })
-        socketEmit('stopWait')
 
         if (player === 'spotify') {
           spotCheck()
