@@ -41,7 +41,7 @@ const fct = async (i) => {
     // socket.disconnect()
     // sockets[i] = null
 
-    shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + thread)
+    shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + thread, () => { })
   }
 }
 
