@@ -12,7 +12,6 @@ let close = false
 process.on('SIGINT', () => {
   close = true
   console.log('----- END -----')
-  // sockets.forEach(s => s && s.disconnect())
   shell.exec('killall node', { silent: true })
   process.exit()
 })
@@ -20,9 +19,6 @@ process.on('SIGINT', () => {
 const fct = async (i) => {
   if (close) { return }
   console.log('----- START ' + i + ' ----- ')
-
-  // const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
-  // sockets[i] = socket
 
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
@@ -33,11 +29,6 @@ const fct = async (i) => {
     }
   }
   catch (e) { }
-
-  // const start = require('./new')
-  // await start(socket, arg, nb, i)
-  // socket.disconnect()
-  // sockets[i] = null
 
   shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + i, () => {
     fct(i)
