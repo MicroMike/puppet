@@ -523,6 +523,7 @@ module.exports = async (page, parentId, streamId, env, account) => {
         }
 
         socketEmit('playerInfos', { time: 'CONNECT', other: true })
+        socketEmit('stopWait')
 
         if (player === 'spotify') {
           spotCheck()
@@ -614,7 +615,7 @@ module.exports = async (page, parentId, streamId, env, account) => {
 
       await waitForPlayBtn('firstPlay')
       // await page.clk(playBtn, 'firstPlay')
-      socketEmit('playerInfos', { time: 'PLAY', ok: true, stopWait: true })
+      socketEmit('playerInfos', { time: 'PLAY', ok: true })
 
       if (player === 'tidal') {
         const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
