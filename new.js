@@ -38,7 +38,7 @@ module.exports = async (socket, arg, nb, thread) => {
     }
 
     socket.on('activate', () => {
-      console.log('activate', 'connected:' + !!parentId)
+      console.log(thread + ' activate', 'connected:' + !!parentId)
       socket.emit('parent', { parentId: arg, connected: parentId, env: process.env, max: nb })
       if (!parentId) { parentId = arg + thread }
       inter()
@@ -48,7 +48,7 @@ module.exports = async (socket, arg, nb, thread) => {
       try {
         const b = shell.exec('git fetch && git status', { silent: true })
         if (!b.match(/up to date/g)) {
-          console.log('----- PULL -----')
+          console.log('----- PULL ' + thread + ' -----')
           shell.exec('npm run rm && npm run clear', { silent: true })
           shell.exec('git reset --hard origin/master', { silent: true })
           shell.exec('git pull', { silent: true })
@@ -61,7 +61,7 @@ module.exports = async (socket, arg, nb, thread) => {
       let player = accountInfo[0]
       let login = accountInfo[1]
 
-      console.log('account', runnerAccount, player)
+      console.log(thread + ' account', runnerAccount, player)
 
       if (process.env.CHECK) {
         shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
@@ -72,7 +72,7 @@ module.exports = async (socket, arg, nb, thread) => {
       const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
 
       if (!page) {
-        console.log('no page')
+        console.log(thread + ' no page')
         socket.emit('stopWait', parentId)
       }
       else {
