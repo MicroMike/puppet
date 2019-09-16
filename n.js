@@ -43,6 +43,6 @@ const fct = async (i) => {
   }
 }
 
-for (let i = 1; i <= thread || 1; i++) {
+for (let i = 1; i <= thread; i++) {
   fct(i)
 }
