@@ -12,6 +12,7 @@ process.on('SIGINT', () => {
   close = true
   console.log('----- END -----')
   sockets.forEach(s => s && s.disconnect())
+  shell.exec('killall node', { silent: true })
   process.exit()
 })
 
