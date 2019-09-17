@@ -8,6 +8,8 @@ const arg = process.argv[2]
 const nb = process.argv[3]
 const thread = process.argv[4]
 
+let CS = {}
+
 shell.exec('killall chrome', { silent: true })
 
 try {
@@ -15,22 +17,24 @@ try {
 }
 catch (e) { }
 
-process.on('SIGINT', () => {
+const exit = () => {
   console.log('----- END ' + thread + ' -----')
+  Object.values(CS).forEach(s => s.disconnect())
+  CS = {}
   socket.disconnect()
   process.exit()
+}
+
+process.on('SIGINT', () => {
+  exit()
 })
 
 socket.on('Cdisconnect', () => {
-  console.log('----- END ' + thread + ' -----')
-  socket.disconnect()
-  process.exit()
+  exit()
 })
 
 socket.on('killall', () => {
-  console.log('----- END ' + thread + ' -----')
-  socket.disconnect()
-  process.exit()
+  exit()
 })
 
 //Assign the event handler to an event:
@@ -81,14 +85,18 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   socket.emit('wait', parentId)
 
   const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
+
   if (!page) {
     console.log(thread + ' no page')
-    socket.emit('stopWait', parentId)
   }
   else {
+    const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
+    CS[streamId] = clientSocket
+
     const runAccount = require('./runAccount');
-    const client = await runAccount(page, parentId, streamId, process.env, runnerAccount)
-    socket.emit('stopWait', parentId)
-    client.disconnect()
+    await runAccount(clientSocket, page, parentId, streamId, process.env, runnerAccount)
+
+    delete CS[streamId]
+    clientSocket.disconnect()
   }
 })

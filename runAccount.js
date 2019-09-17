@@ -1,6 +1,5 @@
-module.exports = async (page, parentId, streamId, env, account) => {
+module.exports = async (socket, page, parentId, streamId, env, account) => {
   return new Promise(async (r) => {
-    const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
     const request = require('ajax-request');
     const shell = require('shelljs');
     const image2base64 = require('image-to-base64');
