@@ -24,11 +24,13 @@ process.on('SIGINT', () => {
 socket.on('Cdisconnect', () => {
   console.log('----- END ' + thread + ' -----')
   socket.disconnect()
+  process.exit()
 })
 
 socket.on('killall', () => {
   console.log('----- END ' + thread + ' -----')
   socket.disconnect()
+  process.exit()
 })
 
 //Assign the event handler to an event:
