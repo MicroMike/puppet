@@ -18,21 +18,18 @@ catch (e) { }
 process.on('SIGINT', () => {
   console.log('----- END ' + thread + ' -----')
   socket.disconnect()
-  shell.exec('killall node', { silent: true })
   process.exit()
 })
 
 socket.on('Cdisconnect', () => {
   console.log('----- END ' + thread + ' -----')
   socket.disconnect()
-  shell.exec('killall node', { silent: true })
   process.exit()
 })
 
 socket.on('killall', () => {
   console.log('----- END ' + thread + ' -----')
   socket.disconnect()
-  shell.exec('killall node', { silent: true })
   process.exit()
 })
 
