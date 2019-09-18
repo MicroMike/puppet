@@ -20,7 +20,7 @@ const fct = async (i) => {
   if (close) { return }
   console.log('----- START ' + i + ' ----- ')
 
-  const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true })
+  const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.replace('\n', '')
   console.log(ram)
   shell.exec('xvfb-run -a node --max-old-space-size=' + ram + ' new ' + arg + ' ' + nb + ' ' + i, () => {
     try {
