@@ -58,7 +58,7 @@ let parentId
 
 const inter = () => {
   if (Object.values(CS).length < max) {
-    socket.emit('ping')
+    socket.emit('ping', { parentId, env: process.env, max })
   }
 
   setTimeout(() => {
