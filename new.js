@@ -5,7 +5,7 @@ const shell = require('shelljs');
 const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
 
 const arg = process.argv[2]
-const nb = Number(process.argv[3])
+const max = Number(process.argv[3])
 const thread = Number(process.argv[4])
 
 let CS = {}
@@ -68,7 +68,7 @@ const inter = () => {
 
 socket.on('activate', () => {
   console.log(thread + ' activate', 'connected:' + !!parentId)
-  socket.emit('parent', { parentId: arg + thread, connected: parentId, env: process.env, max: nb })
+  socket.emit('parent', { parentId: arg + thread, connected: parentId, env: process.env, max })
   if (!parentId) { parentId = arg + thread }
   inter()
 })
