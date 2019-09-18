@@ -9,6 +9,7 @@ const max = Number(process.argv[3])
 const thread = Number(process.argv[4])
 
 let CS = {}
+let timeout
 let close = false
 
 shell.exec('killall chrome', { silent: true })
@@ -28,6 +29,7 @@ const exit = (noExit = false) => {
   })
 
   if (!noExit) {
+    clearTimeout(timeout)
     close = true
     socket.disconnect()
     process.exit()
@@ -56,17 +58,20 @@ socket.on('killall', () => {
 
 let parentId
 
+
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
 const inter = () => {
-  if (Object.values(CS).length < max) {
-    socket.emit('run', { parentId, env: process.env, max })
-  }
+  timeout = setTimeout(() => {
+    if (close) { return }
 
-  setTimeout(() => {
-    if (!close) { inter() }
+    if (Object.values(CS).length < max) {
+      socket.emit('run', { parentId, env: process.env, max })
+    }
+
+    inter()
   }, 1000 * 60 + rand(1000 * 60 * 2));
 }
 
