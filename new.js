@@ -69,8 +69,10 @@ const inter = () => {
 socket.on('activate', () => {
   console.log(thread + ' activate', 'connected:' + !!parentId)
   socket.emit('parent', { parentId: arg + thread, connected: parentId, env: process.env, max })
-  if (!parentId) { parentId = arg + thread }
-  inter()
+  if (!parentId) {
+    parentId = arg + thread
+    inter()
+  }
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
