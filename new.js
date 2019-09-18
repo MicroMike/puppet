@@ -78,7 +78,6 @@ socket.on('activate', () => {
     parentId = arg + thread
     inter()
   }
-
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
@@ -106,7 +105,12 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
 
   socket.emit('wait', parentId)
 
-  const page = await puppet('save/' + player + '_' + login, player.match(/napster/))
+  let page
+
+  try {
+    page = await puppet('save/' + player + '_' + login, player.match(/napster/))
+  }
+  catch (e) { page = false }
 
   if (!page) {
     console.log(thread + ' no page')
