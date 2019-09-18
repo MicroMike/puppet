@@ -20,8 +20,7 @@ const fct = async (i) => {
   if (close) { return }
   console.log('----- START ' + i + ' ----- ')
 
-  const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.replace('\n', '')
-  console.log(ram)
+  const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
   shell.exec('xvfb-run -a node --max-old-space-size=' + ram + ' new ' + arg + ' ' + nb + ' ' + i, () => {
     try {
       const b = shell.exec('git fetch && git status', { silent: true })
