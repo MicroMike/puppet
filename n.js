@@ -34,7 +34,7 @@ const fct = async (i) => {
 
     setTimeout(() => {
       fct(i)
-    }, 1000 * 5);
+    }, 1000 * 3);
   })
 }
 
