@@ -67,7 +67,7 @@ const inter = () => {
 
   setTimeout(() => {
     if (!close) { inter() }
-  }, 1000 * 60 + rand(1000 * 60));
+  }, 1000 * 60 + rand(1000 * 60 * 2));
 }
 
 socket.on('activate', () => {
