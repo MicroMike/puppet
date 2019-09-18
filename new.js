@@ -59,7 +59,7 @@ let parentId
 const inter = () => {
   console.log(Object.values(CS).length, max, Object.values(CS).length < max)
   if (Object.values(CS).length < max) {
-    socket.emit('ping', { parentId, env: process.env, max })
+    socket.emit('run', { parentId, env: process.env, max })
   }
 
   setTimeout(() => {
