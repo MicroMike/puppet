@@ -70,9 +70,11 @@ socket.on('activate', () => {
   console.log(thread + ' activate', 'connected:' + !!parentId)
 
   socket.emit('parent', { parentId: arg + thread, connected: parentId, env: process.env, max })
-  if (!parentId) { parentId = arg + thread }
+  if (!parentId) {
+    parentId = arg + thread
+    inter()
+  }
 
-  inter()
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
