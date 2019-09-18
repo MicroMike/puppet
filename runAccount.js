@@ -159,6 +159,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
     let suppressed = false
 
     freezeConnect = !check && setTimeout(() => {
+      takeScreenshot('freezeConnect')
       socket.emit('outLog', 'freezeConnect')
       console.log('freezeConnect')
       exit('freezeConnect')
