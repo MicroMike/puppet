@@ -63,7 +63,7 @@ const inter = () => {
 
   setTimeout(() => {
     if (!close) { inter() }
-  }, 1000 * 30);
+  }, 1000 * 60);
 }
 
 socket.on('activate', () => {
