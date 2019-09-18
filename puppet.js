@@ -267,7 +267,7 @@ module.exports = async (userDataDir, noCache) => {
       browserContext = launch.defaultBrowserContext()
     }
     catch (f) {
-      console.log(e)
+      // console.log(e)
       return false
     }
   }
