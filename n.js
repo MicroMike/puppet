@@ -16,6 +16,17 @@ process.on('SIGINT', () => {
   process.exit()
 })
 
+try {
+  const b = shell.exec('git fetch && git status', { silent: true })
+  if (!b.match(/up to date/g)) {
+    console.log('----- PULL ' + thread + ' -----')
+    shell.exec('npm run rm && npm run clear', { silent: true })
+    shell.exec('git reset --hard origin/master', { silent: true })
+    shell.exec('git pull', { silent: true })
+  }
+}
+catch (e) { }
+
 const fct = async (i) => {
   if (close) { return }
   console.log('----- START ' + i + ' ----- ')
