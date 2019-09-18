@@ -56,6 +56,10 @@ socket.on('killall', () => {
 
 let parentId
 
+const rand = (max, min) => {
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+}
+
 const inter = () => {
   if (Object.values(CS).length < max) {
     socket.emit('run', { parentId, env: process.env, max })
