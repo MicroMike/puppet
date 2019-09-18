@@ -31,9 +31,11 @@ const fct = async (i) => {
   }
   catch (e) { }
 
-  shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + i, () => {
-    fct(i)
-  })
+  setTimeout(() => {
+    shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + i, () => {
+      fct(i)
+    })
+  }, 1000 * 5);
 }
 
 shell.exec('killall chrome', { silent: true })
