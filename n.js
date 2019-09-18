@@ -20,7 +20,8 @@ const fct = async (i) => {
   if (close) { return }
   console.log('----- START ' + i + ' ----- ')
 
-  shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + i, () => {
+  const ram = shell.exec('npm run getRam', { silent: true })
+  shell.exec('xvfb-run -a node --max-old-space-size=' + Number(ram) + ' new ' + arg + ' ' + nb + ' ' + i, () => {
     try {
       const b = shell.exec('git fetch && git status', { silent: true })
       if (!b.match(/up to date/g)) {
