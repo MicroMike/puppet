@@ -57,6 +57,7 @@ socket.on('killall', () => {
 let parentId
 
 const inter = () => {
+  console.log(Object.values(CS).length, max)
   if (Object.values(CS).length < max) {
     socket.emit('ping', { parentId, env: process.env, max })
   }
