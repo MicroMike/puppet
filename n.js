@@ -20,22 +20,22 @@ const fct = async (i) => {
   if (close) { return }
   console.log('----- START ' + i + ' ----- ')
 
-  try {
-    const b = shell.exec('git fetch && git status', { silent: true })
-    if (!b.match(/up to date/g)) {
-      console.log('----- PULL ' + thread + ' -----')
-      shell.exec('npm run rm && npm run clear', { silent: true })
-      shell.exec('git reset --hard origin/master', { silent: true })
-      shell.exec('git pull', { silent: true })
+  shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + i, () => {
+    try {
+      const b = shell.exec('git fetch && git status', { silent: true })
+      if (!b.match(/up to date/g)) {
+        console.log('----- PULL ' + thread + ' -----')
+        shell.exec('npm run rm && npm run clear', { silent: true })
+        shell.exec('git reset --hard origin/master', { silent: true })
+        shell.exec('git pull', { silent: true })
+      }
     }
-  }
-  catch (e) { }
+    catch (e) { }
 
-  setTimeout(() => {
-    shell.exec('xvfb-run -a node --max-old-space-size=12288 new ' + arg + ' ' + nb + ' ' + i, () => {
+    setTimeout(() => {
       fct(i)
-    })
-  }, 1000 * 5);
+    }, 1000 * 5);
+  })
 }
 
 shell.exec('killall chrome', { silent: true })
