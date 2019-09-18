@@ -713,7 +713,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
           if (t1 === t2) {
             ++freeze
-            socketEmit('playerInfos', { time: t1, freeze: true, warn: true, })
+            socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
 
             if (freeze === 1) {
               await page.jClk(nextBtn)
@@ -725,7 +725,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
           }
           else {
             // if (freeze > 0) {
-            socketEmit('playerInfos', { time: t1, ok: true })
+            socketEmit('playerInfos', { time: t1, ok: true, countPlays })
             // }
 
             freeze = 0
@@ -737,7 +737,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
               throw player === 'napster' ? 'used' : 'freeze'
             }
             else {
-              socketEmit('playerInfos', { time: t1, freeze: true })
+              socketEmit('playerInfos', { time: t1, freeze: true, countPlays })
             }
 
             const logged = await page.wfs(loggedDom)
