@@ -158,8 +158,8 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
     let connected = false
     let suppressed = false
 
-    freezeConnect = !check && setTimeout(() => {
-      takeScreenshot('freezeConnect')
+    freezeConnect = !check && setTimeout(async () => {
+      await takeScreenshot('freezeConnect')
       socket.emit('outLog', 'freezeConnect')
       console.log('freezeConnect')
       exit('freezeConnect')
@@ -587,7 +587,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
               })
 
               if (amazonStyle !== 'none') {
-                takeScreenshot('amazonFreeze')
+                await takeScreenshot('amazonFreeze')
                 await page.waitFor(2000 + rand(2000))
                 await waitForReady()
               }
