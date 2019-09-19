@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "i": "npm run cp && npm i",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tidal": "TYPE=tidal node index",
     "spotify": "TYPE=spotify node index",
@@ -19,7 +20,7 @@
     "xstart": "killall node && node n",
     "clean": "find save/ -type f ! -iname \"Cookies\" -delete",
     "clear": "git clean -fd",
-    "cp": "yogo_linux_amd64 /bin/",
+    "cp": "cp yogo_linux_amd64 /bin/",
     "rm": "rm -R *.png",
     "rc": "CHECK=true RAND=true FILE=check.txt node index",
     "gg": "FILE=ggAccounts.txt RAND=true node gg",
