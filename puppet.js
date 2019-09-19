@@ -234,12 +234,12 @@ const addFcts = async (page) => {
   return page
 }
 
-module.exports = async (userDataDir, noCache) => {
+module.exports = async (userDataDir, noCache, headless = false) => {
 
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
     userDataDir,
-    headless: false,
+    headless,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
