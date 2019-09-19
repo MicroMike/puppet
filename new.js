@@ -102,7 +102,7 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   let player = accountInfo[0]
   let login = accountInfo[1]
 
-  console.log(thread + ' account', runnerAccount, player)
+  // console.log(thread + ' account', runnerAccount, player)
 
   if (process.env.CHECK) {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
