@@ -438,6 +438,17 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
                 inbox = (shell.exec('./yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
 
                 console.log(inbox)
+
+                if (inbox.match(/empty/)) {
+                  await page.evaluate(() => {
+                    document.querySelectorAll('button,a').forEach(n => {
+                      if (n.innerText && n.innerText.trim().match(/^renvoyer le code$/i)) {
+                        n.click()
+                      }
+                    })
+                  })
+                }
+
                 code = inbox.split('terminer la vérification')[1] && inbox.split('terminer la vérification')[1].split('Ce code')[0].replace(':', '').trim()
 
                 if (!code) { throw 'fail' }
