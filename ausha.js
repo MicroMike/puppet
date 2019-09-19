@@ -2,6 +2,16 @@ process.setMaxListeners(Infinity)
 
 const puppet = require('./puppet')
 
+const rand = (max, min) => {
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+}
+
+const episodes = [
+  'https://podcast.ausha.co/micro/tuto-strea',
+  'https://podcast.ausha.co/micro/l-histoire-insolite-le-turc',
+  'https://podcast.ausha.co/micro/le-go',
+]
+
 const run = async () => {
   let page
 
@@ -14,7 +24,7 @@ const run = async () => {
     console.log(thread + ' no page')
   }
   else {
-    await page.gotoUrl('https://podcast.ausha.co/micro/l-histoire-insolite-le-turc')
+    await page.gotoUrl(episodes[rand(episodes.length)])
     await page.evaluate(() => {
       const play = document.querySelector('button[class^="PlayButton__"]')
       play && play.click()
@@ -35,6 +45,11 @@ const run = async () => {
 
 }
 
+run()
+run()
+run()
+run()
+run()
 run()
 run()
 run()
