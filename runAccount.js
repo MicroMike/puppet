@@ -435,8 +435,9 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
             const waitForCode = async () => {
               let inbox
               try {
-                inbox = (shell.exec('yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
+                inbox = (shell.exec('./yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
 
+                console.log(inbox)
                 code = inbox.split('terminer la vérification')[1] && inbox.split('terminer la vérification')[1].split('Ce code')[0].replace(':', '').trim()
 
                 if (!code) { throw 'fail' }
@@ -647,7 +648,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
       let startLoop = false
       let exitLoop = false
 
-      let changePlay = 30 + rand(30)
+      let changePlay = 60 + rand(30)
       let change = false
       let changeOnce = false
 
