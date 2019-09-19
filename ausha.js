@@ -14,7 +14,7 @@ const run = async () => {
     console.log(thread + ' no page')
   }
   else {
-    await page.gotoUrl('https://podcast.ausha.co/micro/tuto-strea')
+    await page.gotoUrl('https://podcast.ausha.co/micro/l-histoire-insolite-le-turc')
     await page.evaluate(() => {
       const play = document.querySelector('button[class^="PlayButton__"]')
       play && play.click()
