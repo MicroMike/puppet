@@ -246,9 +246,9 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         unlock1 = '.player-btn[title="Next Song"]'
         playBtn = '#track .content'
         shuffleBtn = '.player-btn[title="Shuffle"]'
+        nextBtn = '.player-btn[title="Next Song"]'
         // repeatBtn = '.repeat-button'
         // repeatBtnOk = '.repeat-button.repeat'
-        nextBtn = '.player-btn[title="Next Song"]'
 
         usedDom = '.player-error-box'
 
@@ -267,9 +267,9 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
         playBtn = '.playerIconPlayRing'
         pauseBtn = '.playerIconPauseRing'
-        shuffleBtn = '.playbackControlsView .shuffleButton:not(.on)'
-        repeatBtn = '.repeatButton:not(.on)'
-        nextBtn = '.nextButton'
+        shuffleBtn = '.rightSide .shuffleButton:not(.on)'
+        repeatBtn = '.rightSide .repeatButton:not(.on)'
+        nextBtn = '#transportPlayNext'
 
         usedDom = '.concurrentStreamsPopover'
 
@@ -290,8 +290,8 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         unlock2 = '[class*="playbackToggle"]'
         playBtn = 'main [data-test="header-controls"] button + button'
         pauseBtn = '.playerIconPauseRing'
-        repeatBtn = '[class*="repeatButton"]'
-        repeatBtnOk = '[class*="repeatStateIcon"][class*="all"]'
+        repeatBtn = '[class*="leftColumn"] [class*="repeat"]:not([class*="all"])'
+        shuffleBtn = '[class*="leftColumn"] [class*="shuffleButton"]:not([class*="active"])'
         nextBtn = '[data-test="next"]'
 
         keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
@@ -657,13 +657,8 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
       const loop = async () => {
         try {
-          const existRepeatBtnOk = await page.ext(repeatBtnOk)
-
-          if (!existRepeatBtnOk || !repeatBtnOk) {
-            await page.jClk(repeatBtn)
-          }
-
-          await page.jClk(shuffleBtn)
+          repeatBtn && await page.jClk(repeatBtn)
+          shuffleBtn && await page.jClk(shuffleBtn)
 
           used = await page.ext(usedDom)
 
