@@ -5,7 +5,7 @@ const shell = require('shelljs');
 
 const arg = process.argv[2]
 const nb = process.argv[3]
-const thread = process.argv[4]
+const thread = Number(process.argv[4]) || 1
 
 let close = false
 
