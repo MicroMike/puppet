@@ -439,7 +439,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
                 if (inbox.match(/empty/)) { await page.jClk('a.cvf-widget-link-resend') }
                 else { code = inbox.match(/\d{6}/)[0].trim() }
-                console.log(!code ? inbox : code)
+                console.log(!code ? login + ' => ' + inbox : code)
 
                 // code = inbox.split('terminer la vérification')[1] && inbox.split('terminer la vérification')[1].split('Ce code')[0].replace(':', '').trim()
 
@@ -448,7 +448,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
               catch (e) {
                 // check && console.log(inbox, login.split('@')[0], e)
                 await page.waitFor(1000 * 30 + rand(2000))
-                await waitForCode()
+                if (!close) { await waitForCode() }
               }
             }
 
