@@ -651,7 +651,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
       let startLoop = false
       let exitLoop = false
 
-      let changePlay = 60 + rand(30)
+      let changePlay = 60 + rand(60)
       let change = false
       let changeOnce = false
 
