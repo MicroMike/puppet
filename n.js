@@ -18,7 +18,6 @@ process.on('SIGINT', () => {
 
 const fct = async (i) => {
   if (close) { return }
-  console.log('----- START ' + i + ' ----- ')
 
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
@@ -30,6 +29,8 @@ const fct = async (i) => {
     }
   }
   catch (e) { }
+
+  console.log('----- START ' + i + ' ----- ')
 
   const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
   shell.exec('xvfb-run -a node --max-old-space-size=' + ram + ' new ' + arg + ' ' + nb + ' ' + i, () => {
