@@ -6,10 +6,10 @@ const puppet = require('./puppet')
 const captcha = require('./captcha')
 const request = require('ajax-request');
 const amazon = false
-const cardNumber = '5273462897923331'
+const cardNumber = '5273462818190804'
 const month = '9'
 const year = '2024'
-const code = '733'
+const code = '597'
 const pass = '20192019'
 
 const rand = (max, min) => {
