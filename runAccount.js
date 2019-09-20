@@ -437,10 +437,9 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
               try {
                 inbox = (shell.exec('./yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
 
-                console.log(inbox)
                 if (inbox.match(/empty/)) { await page.jClk('a.cvf-widget-link-resend') }
                 else { code = inbox.match(/\d{6}/)[0].trim() }
-                console.log(code)
+                console.log(!code ? inbox : code)
 
                 // code = inbox.split('terminer la vérification')[1] && inbox.split('terminer la vérification')[1].split('Ce code')[0].replace(':', '').trim()
 
