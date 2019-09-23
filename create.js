@@ -122,10 +122,24 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#cardholderName', 'OSNAUSE KIME', true)
-    await page.inst('input#encryptedCardNumber', cardNumber, true)
-    await page.inst('input#encryptedExpiryDate', Number(month) > 9 ? month : '0' + month + year.slice(2))
-    // await page.inst('input#ccyear', year.slice(2), true)
-    await page.inst('input#encryptedSecurityCode', code, true)
+
+    await page.evaluate(({ cardNumber, month, year, code }) => {
+      const iframe = document.querySelector('.adyen-input iframe')
+
+      const encryptedCardNumber = iframe && iframe.contentDocument.querySelector('input#encryptedCardNumber')
+      encryptedCardNumber.value = cardNumber
+
+      const encryptedExpiryDate = iframe && iframe.contentDocument.querySelector('input#encryptedExpiryDate')
+      encryptedExpiryDate.value = Number(month) > 9 ? month : '0' + month + year.slice(2)
+
+      const encryptedSecurityCode = iframe && iframe.contentDocument.querySelector('input#encryptedSecurityCode')
+      encryptedSecurityCode.value = code
+
+    }, { cardNumber, month, year, code })
+
+    // await page.inst('input#encryptedCardNumber', cardNumber, true)
+    // await page.inst('input#encryptedExpiryDate', Number(month) > 9 ? month : '0' + month + year.slice(2), true)
+    // await page.inst('input#encryptedSecurityCode', code, true)
     await page.waitFor(2000 + rand(2000))
     await page.clk('button.btn-success:enabled')
     await page.waitFor(2000 + rand(2000))
