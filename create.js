@@ -125,14 +125,17 @@ const main = async () => {
 
     await page.evaluate(({ cardNumber, month, year, code }) => {
       let iframe = document.querySelector('[data-cse="encryptedCardNumber"] iframe')
+      console.log(iframe.contentDocument)
       const encryptedCardNumber = iframe && iframe.contentDocument.querySelector('input#encryptedCardNumber')
       encryptedCardNumber.value = cardNumber
 
       iframe = document.querySelector('[data-cse="encryptedExpiryDate"] iframe')
+      console.log(iframe.contentDocument)
       const encryptedExpiryDate = iframe && iframe.contentDocument.querySelector('input#encryptedExpiryDate')
       encryptedExpiryDate.value = Number(month) > 9 ? month : '0' + month + year.slice(2)
-      
+
       iframe = document.querySelector('[data-cse="encryptedSecurityCode"] iframe')
+      console.log(iframe.contentDocument)
       const encryptedSecurityCode = iframe && iframe.contentDocument.querySelector('input#encryptedSecurityCode')
       encryptedSecurityCode.value = code
 
