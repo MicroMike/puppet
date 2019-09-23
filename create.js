@@ -124,14 +124,15 @@ const main = async () => {
     await page.inst('input#cardholderName', 'OSNAUSE KIME', true)
 
     await page.evaluate(({ cardNumber, month, year, code }) => {
-      const iframe = document.querySelector('.adyen-input iframe')
-
+      let iframe = document.querySelector('[data-cse="encryptedCardNumber"] iframe')
       const encryptedCardNumber = iframe && iframe.contentDocument.querySelector('input#encryptedCardNumber')
       encryptedCardNumber.value = cardNumber
 
+      iframe = document.querySelector('[data-cse="encryptedExpiryDate"] iframe')
       const encryptedExpiryDate = iframe && iframe.contentDocument.querySelector('input#encryptedExpiryDate')
       encryptedExpiryDate.value = Number(month) > 9 ? month : '0' + month + year.slice(2)
-
+      
+      iframe = document.querySelector('[data-cse="encryptedSecurityCode"] iframe')
       const encryptedSecurityCode = iframe && iframe.contentDocument.querySelector('input#encryptedSecurityCode')
       encryptedSecurityCode.value = code
 
