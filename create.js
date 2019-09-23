@@ -123,23 +123,14 @@ const main = async () => {
     await page.waitFor(2000 + rand(2000))
     await page.inst('input#cardholderName', 'OSNAUSE KIME', true)
 
-    await page.evaluate(({ cardNumber, month, year, code }) => {
-      let iframe = document.querySelector('[data-cse="encryptedCardNumber"] iframe')
-      console.log(iframe.contentDocument)
-      const encryptedCardNumber = iframe && iframe.contentDocument.querySelector('input#encryptedCardNumber')
-      encryptedCardNumber.value = cardNumber
+    await page.keyboard.press('Tab');
+    await page.keyboard.type(cardNumber);
 
-      iframe = document.querySelector('[data-cse="encryptedExpiryDate"] iframe')
-      console.log(iframe.contentDocument)
-      const encryptedExpiryDate = iframe && iframe.contentDocument.querySelector('input#encryptedExpiryDate')
-      encryptedExpiryDate.value = Number(month) > 9 ? month : '0' + month + year.slice(2)
+    await page.keyboard.press('Tab');
+    await page.keyboard.type(Number(month) > 9 ? month : '0' + month + year.slice(2));
 
-      iframe = document.querySelector('[data-cse="encryptedSecurityCode"] iframe')
-      console.log(iframe.contentDocument)
-      const encryptedSecurityCode = iframe && iframe.contentDocument.querySelector('input#encryptedSecurityCode')
-      encryptedSecurityCode.value = code
-
-    }, { cardNumber, month, year, code })
+    await page.keyboard.press('Tab');
+    await page.keyboard.type(code);
 
     // await page.inst('input#encryptedCardNumber', cardNumber, true)
     // await page.inst('input#encryptedExpiryDate', Number(month) > 9 ? month : '0' + month + year.slice(2), true)
