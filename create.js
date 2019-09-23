@@ -125,15 +125,18 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
     await page.keyboard.press('Tab');
+    await page.waitFor(2000 + rand(2000))
     await page.keyboard.type(cardNumber, { delay: 150 })
 
     await page.waitFor(2000 + rand(2000))
     await page.keyboard.press('Tab');
+    await page.waitFor(2000 + rand(2000))
     await page.keyboard.type(Number(month) > 9 ? month : '0' + month, { delay: 150 })
     await page.keyboard.type(year.slice(2), { delay: 150 })
 
     await page.waitFor(2000 + rand(2000))
     await page.keyboard.press('Tab');
+    await page.waitFor(2000 + rand(2000))
     await page.keyboard.type(code, { delay: 150 })
 
     // await page.inst('input#encryptedCardNumber', cardNumber, true)
