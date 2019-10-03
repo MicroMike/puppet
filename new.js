@@ -28,8 +28,9 @@ const exit = (noExit = false) => {
     delete CS[streamId]
   })
 
+  clearTimeout(timeout)
+
   if (!noExit) {
-    clearTimeout(timeout)
     close = true
     socket.disconnect()
     process.exit()
