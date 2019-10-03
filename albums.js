@@ -76,5 +76,14 @@ module.exports = {
     // 'https://open.spotify.com/episode/4AFzaLO87GuTdtSuIk82r2',
     // 'https://open.spotify.com/episode/5YwlHKInZK9O6So8trYhBm',
     // 'https://open.spotify.com/album/5509gS9cZUrbTFege0fpTk',
+  ],
+  heart: [
+    'https://www.iheart.com/artist/yokem-32334534/albums/boombeats-60010808',
+    'https://www.iheart.com/artist/lenitap-33087636/albums/above-everybody-wind-75190189',
+    'https://www.iheart.com/artist/erati-33145722/albums/he-knows-she-knows-76470160',
+    'https://www.iheart.com/artist/benriam-33203186/albums/the-gift-give-77322266',
+    'https://www.iheart.com/artist/john-millson-33246171/albums/my-stash-77992029',
+    'https://www.iheart.com/artist/yonne-32474174/albums/loser-62529736',
+    '',
   ]
 }

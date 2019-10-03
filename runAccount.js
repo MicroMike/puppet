@@ -326,6 +326,28 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         timeLine = '.playback-bar__progress-time'
         callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
       }
+      if (player === 'heart') {
+        url = 'https://www.iheart.com'
+        loggedDom = '[data-test="no-user-icon-wrapper"]'
+
+        username = '#username'
+        password = '#password'
+        loginBtn = '[data-test="login-button"]'
+        // loginError = '.alert.alert-warning'
+
+        unlock1 = '.spoticon-pause-16'
+        unlock2 = '.spoticon-play-16'
+        playBtn = '[data-test="hero-container"] [data-test="play-button"]'
+        // repeatBtn = '[class*="spoticon-repeat"]'
+        // repeatBtnOk = '.spoticon-repeat-16.control-button--active'
+        // shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
+        nextBtn = '[data-test="skip-button"]'
+
+        // usedDom = '.ConnectBar'
+
+        timeLine = '[data-test="player-current-time"]'
+        callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
+      }
 
       // ***************************************************************************************************************************************************************
       // *************************************************************************** CONNECT ***************************************************************************
@@ -465,7 +487,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
           }
         }
 
-        const del = await page.ext(loginError)
+        const del = loginError && await page.ext(loginError)
         if (del) { throw 'del' }
       }
 
@@ -480,9 +502,18 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
           check && console.log('amazon: ' + connected)
         }
 
-        if (!connected && player !== 'tidal') {
+        if (player === 'heart') {
+          await page.gotoUrl(album())
           await page.waitFor(2000 + rand(2000))
-          await page.gotoUrl(url)
+          const notConnected = await page.ext(loggedDom)
+          if (!notConnected) { connected = true }
+        }
+
+        if (!connected && player !== 'tidal') {
+          if (player !== 'heart') {
+            await page.waitFor(2000 + rand(2000))
+            await page.gotoUrl(url)
+          }
 
           await checkFill()
 
