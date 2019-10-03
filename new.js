@@ -64,6 +64,7 @@ const rand = (max, min) => {
 }
 
 const inter = () => {
+  clearTimeout(timeout)
   timeout = setTimeout(() => {
     if (close) { return }
 
@@ -81,8 +82,8 @@ socket.on('activate', () => {
   socket.emit('parent', { parentId: arg + thread, connected: parentId, env: process.env, max })
   if (!parentId) {
     parentId = arg + thread
-    inter()
   }
+  inter()
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
