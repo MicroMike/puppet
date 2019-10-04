@@ -422,10 +422,10 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         }
 
         if (usernameInput) {
-          await page.inst(username, login)
+          await page.inst(username, login, true)
         }
 
-        await page.inst(password, pass)
+        await page.inst(password, pass, true)
 
         let loginFill = player === 'amazon' || await page.get(username, 'value')
         let passFill = await page.get(password, 'value')
