@@ -4,7 +4,7 @@ const shell = require('shelljs');
 // const sockets = []
 
 const arg = process.argv[2]
-const nb = process.argv[3]
+const nb = Number(process.argv[3]) || 1
 const thread = Number(process.argv[4]) || 1
 
 let close = false
