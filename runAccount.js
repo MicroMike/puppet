@@ -506,6 +506,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
           if (check) {
             shell.exec('expressvpn disconnect', { silent: true })
             shell.exec('expressvpn connect us')
+            await page.waitFor(5000 + rand(2000))
           }
 
           await page.gotoUrl(album())
