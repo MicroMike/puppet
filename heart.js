@@ -4,10 +4,10 @@ var fs = require('fs');
 var shell = require('shelljs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
-const cardNumber = '5469230689581292'
-const month = '8'
-const year = '2022'
-const code = '982'
+const cardNumber = '5144720700495913'
+const month = '4'
+const year = '2023'
+const code = '144'
 const pass = '20192019'
 
 const rand = (max, min) => {
