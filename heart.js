@@ -50,7 +50,7 @@ const getEmail = () => {
 
 const main = async () => {
   const email = getEmail()
-  const page = await puppet('save/heart_' + email, false)
+  const page = await puppet('save/heart_' + email)
 
   if (!page) { return }
 

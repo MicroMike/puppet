@@ -65,7 +65,7 @@ let count
 const main = async () => {
   if (type === 'tidal') {
     const email = getEmail()
-    const page = await puppet('save/tidal_' + email, false)
+    const page = await puppet('save/tidal_' + email)
 
     if (!page) { return }
 
@@ -175,7 +175,7 @@ const main = async () => {
       const reLog = 'body > div > div.main > div > div > div > div > div > button'
       const playBtn = '[class*="controls"] button + button'
 
-      const tidalLog = await puppet('save/tidal_' + m, false)
+      const tidalLog = await puppet('save/tidal_' + m)
       await tidalLog.gotoUrl('https://listen.tidal.com/')
       await tidalLog.jClk(goToLogin)
 

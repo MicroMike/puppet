@@ -234,7 +234,7 @@ const addFcts = async (page) => {
   return page
 }
 
-module.exports = async (userDataDir, noCache, headless = false) => {
+module.exports = async (userDataDir, noCache = false, headless = false) => {
 
   const params = {
     executablePath: '/usr/bin/google-chrome-stable',
