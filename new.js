@@ -111,7 +111,7 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   // console.log(thread + ' account', runnerAccount, player)
 
   if (process.env.CHECK) {
-    shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+    // shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
   socket.emit('wait', parentId)
