@@ -5,8 +5,8 @@ const shell = require('shelljs');
 const socket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
 
 const arg = process.argv[2]
-const max = Number(process.argv[3])
-const thread = Number(process.argv[4])
+const max = Number(process.argv[3]) || 1
+const thread = Number(process.argv[4]) || 1
 
 let CS = {}
 let timeout
