@@ -511,16 +511,11 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
           await page.gotoUrl(album())
           await page.waitFor(2000 + rand(2000))
-          const notConnected = await page.ext(loggedDom)
+          const notConnected = await page.jClk(loggedDom)
           if (!notConnected) { connected = true }
         }
 
         if (!connected && player !== 'tidal') {
-          if (player !== 'heart') {
-            await page.waitFor(2000 + rand(2000))
-            await page.gotoUrl(url)
-          }
-
           await checkFill()
 
           await page.jClk(remember)
