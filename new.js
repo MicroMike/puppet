@@ -77,12 +77,17 @@ const inter = () => {
   }, rand(1000 * 60));
 }
 
-socket.on('activate', () => {
+socket.on('activate', async () => {
   console.log(thread + ' activate', 'connected:' + !!parentId)
   console.log(close, Object.values(CS).length, max)
 
   socket.emit('parent', { parentId: arg + thread, connected: parentId, env: process.env, max })
   if (!parentId) { parentId = arg + thread }
+
+  if (process.env.CHECK) {
+    await socket.emit('run', { parentId, env: process.env, max })
+  }
+
   inter()
 })
 
