@@ -84,6 +84,5 @@ module.exports = {
     'https://www.iheart.com/artist/benriam-33203186/albums/the-gift-give-77322266',
     'https://www.iheart.com/artist/john-millson-33246171/albums/my-stash-77992029',
     'https://www.iheart.com/artist/yonne-32474174/albums/loser-62529736',
-    '',
   ]
 }
