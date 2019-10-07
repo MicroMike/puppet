@@ -516,6 +516,11 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         }
 
         if (!connected && player !== 'tidal') {
+          if (player !== 'napster') {
+            await page.gotoUrl(url)
+            await page.waitFor(2000 + rand(2000))
+          }
+
           await checkFill()
 
           await page.jClk(remember)
