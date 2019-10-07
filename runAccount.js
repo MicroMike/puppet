@@ -516,7 +516,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         }
 
         if (!connected && player !== 'tidal') {
-          if (player !== 'napster') {
+          if (player !== 'heart') {
             await page.gotoUrl(url)
             await page.waitFor(2000 + rand(2000))
           }
