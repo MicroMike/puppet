@@ -67,7 +67,8 @@ const getCard = async () => {
 
 let count
 const main = async () => {
-  const { cardNumber, cardMonth, cardYear, cardCode } = await getCard()
+  const cardData = await getCard()
+  const { cardNumber, cardMonth, cardYear, cardCode } = cardData
   console.log(cardNumber, cardMonth, cardYear, cardCode)
   return
   if (type === 'tidal') {
