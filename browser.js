@@ -73,6 +73,9 @@ const main = async () => {
 
     const waitFor = async (isCode) => {
       try {
+        const lookForCode = await page.ext('input[name="code"]')
+        if (!lookForCode) { throw 'fail' }
+
         const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
 
         if (isCode) {
@@ -113,6 +116,7 @@ const main = async () => {
       await page.inst('input#ap_password_check', '20192019')
     }
 
+    await page.waitFor(2000 + rand(2000))
     await waitFor(true)
 
     await page.inst('input[name="code"]', code)
