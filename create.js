@@ -6,10 +6,10 @@ const puppet = require('./puppet')
 const captcha = require('./captcha')
 const request = require('ajax-request');
 const amazon = false
-const cardNumber = '5144720700495913'
-const month = '4'
-const year = '2023'
-const code = '144'
+let cardNumber = '5144720700495913'
+let month = '4'
+let year = '2023'
+let code = '144'
 const pass = '20192019'
 
 const rand = (max, min) => {
@@ -61,8 +61,20 @@ const getEmail = () => {
   return mail + mails[rand(mails.length)]
 }
 
+const getCard = async () => {
+  return new Promise(r => {
+    request('https://online-music.herokuapp.com/card', (error, response, body) => {
+      console.log(response, body)
+      // r(response.json())
+    })
+  })
+}
+
+
 let count
 const main = async () => {
+  await getCard()
+  return
   if (type === 'tidal') {
     const email = getEmail()
     const page = await puppet('save/tidal_' + email)
