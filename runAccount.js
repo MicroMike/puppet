@@ -506,12 +506,12 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
           if (check) {
             shell.exec('expressvpn disconnect', { silent: true })
             shell.exec('expressvpn connect us')
-            await page.waitFor(5000 + rand(2000))
+            await page.waitFor(2000 + rand(2000))
           }
 
           await page.gotoUrl(album())
           await page.waitFor(2000 + rand(2000))
-          const notConnected = await page.jClk(loggedDom)
+          const notConnected = await page.wfs(loggedDom)
           if (!notConnected) { connected = true }
         }
 
