@@ -64,8 +64,8 @@ const getEmail = () => {
 const getCard = async () => {
   return new Promise(r => {
     request('https://online-music.herokuapp.com/card', (error, response, body) => {
-      console.log(response, body)
-      r(response.json())
+      console.log(body.json())
+      r(body.json())
     })
   })
 }
