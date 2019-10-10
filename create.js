@@ -68,8 +68,7 @@ const getCard = async () => {
 let count
 const main = async () => {
   const { cardNumber, month, year, code } = await getCard()
-  console.log(cardNumber, month, year, code)
-  return
+
   if (type === 'tidal') {
     const email = getEmail()
     const page = await puppet('save/tidal_' + email)

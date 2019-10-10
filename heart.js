@@ -4,10 +4,6 @@ var fs = require('fs');
 var shell = require('shelljs');
 const puppet = require('./puppet')
 const request = require('ajax-request');
-const cardNumber = '5144720700495913'
-const month = '4'
-const year = '2023'
-const code = '144'
 const pass = '20192019'
 
 const rand = (max, min) => {
@@ -48,7 +44,16 @@ const getEmail = () => {
   return mail + mails[rand(mails.length)]
 }
 
+const getCard = async () => {
+  return new Promise(r => {
+    request('https://online-music.herokuapp.com/card', (error, response, body) => {
+      r(JSON.parse(body))
+    })
+  })
+}
+
 const main = async () => {
+  const { cardNumber, month, year, code } = await getCard()
   const email = getEmail()
   const page = await puppet('save/heart_' + email)
 
