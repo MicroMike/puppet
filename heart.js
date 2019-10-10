@@ -81,8 +81,8 @@ const main = async () => {
   await formPage.gotoUrl(frameUrl)
 
   await formPage.inst('#paymentAccountNumberText', cardNumber)
-  await formPage.select('#expMonth', month)
-  await formPage.select('#expYear', year)
+  await formPage.select('#expMonth', String(month))
+  await formPage.select('#expYear', String(year))
   await formPage.inst('#paymentSecurityCode', code)
   await formPage.inst('#addressPostalCodeText', '75019')
   await formPage.clk('#btn-payflow-submit')
