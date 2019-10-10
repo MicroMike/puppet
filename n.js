@@ -12,7 +12,7 @@ let close = false
 process.on('SIGINT', () => {
   close = true
   console.log('----- END -----')
-  shell.exec('killall node', { silent: true })
+  shell.exec('killall -9 node', { silent: true })
   process.exit()
 })
 
@@ -51,7 +51,7 @@ const fct = async (i) => {
   })
 }
 
-shell.exec('killall chrome', { silent: true })
+shell.exec('killall -9 chrome', { silent: true })
 
 for (let i = 1; i <= thread; i++) {
   fct(i)

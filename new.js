@@ -12,7 +12,7 @@ let CS = {}
 let timeout
 let close = false
 
-shell.exec('killall chrome', { silent: true })
+shell.exec('killall -9 chrome', { silent: true })
 
 try {
   shell.exec('expressvpn disconnect', { silent: true })
