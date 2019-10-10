@@ -67,9 +67,8 @@ const getCard = async () => {
 
 let count
 const main = async () => {
-  const cardData = await getCard()
-  const { cardNumber, cardMonth, cardYear, cardCode } = cardData
-  console.log(cardData, cardNumber, cardMonth, cardYear, cardCode)
+  const { cardNumber, month, year, code } = await getCard()
+  console.log(cardNumber, month, year, code)
   return
   if (type === 'tidal') {
     const email = getEmail()
@@ -139,8 +138,8 @@ const main = async () => {
     await page.waitFor(2000 + rand(2000))
     await page.keyboard.press('Tab');
     await page.waitFor(2000 + rand(2000))
-    await page.keyboard.type(Number(cardMonth) > 9 ? cardMonth : '0' + cardMonth, { delay: 150 })
-    await page.keyboard.type(cardYear.slice(2), { delay: 150 })
+    await page.keyboard.type(Number(month) > 9 ? month : '0' + month, { delay: 150 })
+    await page.keyboard.type(year.slice(2), { delay: 150 })
 
     await page.waitFor(2000 + rand(2000))
     await page.keyboard.press('Tab');
@@ -374,8 +373,8 @@ const main = async () => {
 
       await payPage.inst('input[name="ppw-accountHolderName"]', 'Assoune Mike')
       await payPage.inst('input[name="addCreditCardNumber"]', cardNumber)
-      await payPage.select('select[name="ppw-expirationDate_month"]', cardMonth)
-      await payPage.select('select[name="ppw-expirationDate_year"]', cardYear)
+      await payPage.select('select[name="ppw-expirationDate_month"]', month)
+      await payPage.select('select[name="ppw-expirationDate_year"]', year)
       await payPage.clk('input[name="ppw-widgetEvent:AddCreditCardEvent"]')
 
       await payPage.inst('input[name="ppw-line1"]', '23 56st')
@@ -399,9 +398,9 @@ const main = async () => {
       await page.clk('#rdbPaymentMethodsCards')
 
       await page.inst('input#paymentAccountNumberText', cardNumber)
-      await page.select('select#expMonth', cardMonth)
-      await page.select('select#expYear', cardYear)
-      await page.inst('input#paymentSecurityCode', cardCode)
+      await page.select('select#expMonth', month)
+      await page.select('select#expYear', year)
+      await page.inst('input#paymentSecurityCode', code)
       await page.inst('input#firstName', 'Assoune')
       await page.inst('input#lastName', 'Mike')
     }
