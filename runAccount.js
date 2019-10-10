@@ -760,12 +760,8 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
             }
           }
           else {
-            // if (freeze > 0) {
             socketEmit('playerInfos', { time: t1, ok: true, countPlays })
-            // }
-
             freeze = 0
-            socketEmit('retryOk')
           }
 
           if (freeze > 1) {
