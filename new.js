@@ -53,12 +53,8 @@ socket.on('killall', () => {
   exit()
 })
 
-//Assign the event handler to an event:
-
-//Fire the 'scream' event:
-
 let parentId
-
+let back
 
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -67,10 +63,13 @@ const rand = (max, min) => {
 const inter = () => {
   clearTimeout(timeout)
   timeout = setTimeout(() => {
+    close && console.log('close true')
+    back && console.log('back true')
+
     if (close) { return }
 
     if (Object.values(CS).length < max) {
-      socket.emit('run', { parentId, env: process.env, max })
+      socket.emit('run', { parentId, env: process.env, max, back })
     }
 
     inter()
@@ -78,15 +77,14 @@ const inter = () => {
 }
 
 socket.on('activate', async () => {
-  console.log(thread + ' activate', 'connected:' + !!parentId)
+  back = !!parentId
+  console.log(thread + ' activate', 'connected:' + back)
   console.log(close, Object.values(CS).length, max)
 
   socket.emit('parent', { parentId: arg + thread, connected: parentId, env: process.env, max })
-  if (!parentId) { parentId = arg + thread }
+  if (!back) { parentId = arg + thread }
 
-  if (process.env.CHECK) {
-    await socket.emit('run', { parentId, env: process.env, max })
-  }
+  if (process.env.CHECK) { await socket.emit('run', { parentId, env: process.env, max }) }
 
   inter()
 })
