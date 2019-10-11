@@ -142,6 +142,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
     let repeatBtn
     let repeatBtnOk
     let loggedDom
+    let notLoggedDom
     let goToLogin
     let keyCaptcha
     let usedDom
@@ -328,7 +329,8 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
       }
       if (player === 'heart') {
         url = 'https://www.iheart.com'
-        loggedDom = '[data-test="no-user-icon-wrapper"]'
+        notLoggedDom = '[data-test="no-user-icon-wrapper"]'
+        loggedDom = '[data-test="hero-container"] [data-test="play-button"]'
 
         username = '#username'
         password = '#password'
@@ -511,7 +513,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
           await page.gotoUrl(album())
           await page.waitFor(2000 + rand(2000))
-          const notConnected = await page.wfs(loggedDom)
+          const notConnected = await page.wfs(notLoggedDom)
           if (!notConnected) { connected = true }
         }
 
