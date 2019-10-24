@@ -396,7 +396,7 @@ const main = async () => {
       await page.clk('#rdbPaymentMethodsCards')
 
       await page.inst('input#paymentAccountNumberText', cardNumber)
-      await page.select('select#expMonth', month)
+      await page.select('select#expMonth', String(month))
       await page.select('select#expYear', year)
       await page.inst('input#paymentSecurityCode', code)
       await page.inst('input#firstName', 'Assoune')
