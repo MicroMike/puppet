@@ -25,7 +25,7 @@ const getEmail = async () => {
 }
 
 const mails = [
-  'dispostable.com',
+  '@dispostable.com',
   // '@mega.zik.dj',
   // '@nospam.ze.tc',
   // '@speed.1s.fr',
