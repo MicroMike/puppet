@@ -25,10 +25,11 @@ const getEmail = async () => {
 }
 
 const mails = [
-  '@mega.zik.dj',
-  '@nospam.ze.tc',
-  '@speed.1s.fr',
-  '@cool.fr.nf',
+  'dispostable.com',
+  // '@mega.zik.dj',
+  // '@nospam.ze.tc',
+  // '@speed.1s.fr',
+  // '@cool.fr.nf',
 ]
 
 shell.exec('expressvpn disconnect', { silent: true })
