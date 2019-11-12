@@ -21,11 +21,11 @@ const getEmail = async () => {
     mail += letters[rand(letters.length)]
   }
 
-  return 'detfg.detsg'
+  return mail
 }
 
 const mails = [
-  '@protonmail.com',
+  '@micro123.33mail.com',
   // '@mega.zik.dj',
   // '@nospam.ze.tc',
   // '@speed.1s.fr',
