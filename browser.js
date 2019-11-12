@@ -68,10 +68,10 @@ const main = async () => {
 
     console.log(email)
 
-    let code
-    let url
-
     const waitFor = async (isCode) => {
+      let code
+      let url
+
       try {
         const lookForCode = await page.ext('input[name="code"]')
         if (isCode && !lookForCode) { throw 'fail' }
@@ -84,12 +84,13 @@ const main = async () => {
           console.log(!code ? inbox : code)
           // code = isCode && inbox.split('suivant')[1] && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
 
-          if (code) { return }
+          if (code) { return code }
         }
 
         url = !isCode && inbox.split('( ')[1] && inbox.split('( ')[1].split(' )')[0]
+        console.log(!url ? inbox : url)
 
-        if (url) { return }
+        if (url) { return url }
 
         throw 'fail'
       }
@@ -117,7 +118,7 @@ const main = async () => {
     }
 
     await page.waitFor(2000 + rand(2000))
-    await waitFor(true)
+    const code = await waitFor(true)
 
     await page.inst('input[name="code"]', code)
     await page.clk('input[type="submit"]')
@@ -126,7 +127,7 @@ const main = async () => {
       await mainPage.inst('#enterEmail', email)
       await mainPage.inst('#confirmEmail', email)
       await mainPage.clk('input.a-button-input')
-      await waitFor()
+      const url = await waitFor()
       await page.gotoUrl(url)
     }
     else {
