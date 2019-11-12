@@ -74,7 +74,7 @@ const main = async () => {
     const waitFor = async (isCode) => {
       try {
         const lookForCode = await page.ext('input[name="code"]')
-        if (!lookForCode) { throw 'fail' }
+        if (isCode && !lookForCode) { throw 'fail' }
 
         const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
 
