@@ -121,6 +121,7 @@ const main = async () => {
             console.log(!url ? 'no url' : 'url ok')
 
             if (url) {
+              await mailPage.clk('.button.delete')
               return url
             }
           }
