@@ -86,12 +86,13 @@ const main = async () => {
       let url
 
       try {
-        await mailPage.bringToFront()
         await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
         await mailPage.waitFor(1000 * 10 + rand(2000))
 
         const lookForCode = await page.ext('input[name="code"]')
         if (isCode && !lookForCode) { throw 'fail' }
+
+        await mailPage.bringToFront()
 
         await mailPage.inst('#quicksearchbox', mail, true)
         const getChecked = await mailPage.get('#s_mod_to', 'checked')
@@ -112,7 +113,7 @@ const main = async () => {
 
             console.log(!code ? 'no code' : 'code ok')
 
-            if (code) {
+            if (code && code != 'undefined') {
               await mailPage.clk('.button.delete')
               return code
             }
@@ -121,7 +122,7 @@ const main = async () => {
             url = await mailPage.get('#messagebody a', 'href')
             console.log(!url ? 'no url' : 'url ok')
 
-            if (url) {
+            if (url && url != 'undefined') {
               await mailPage.clk('.button.delete')
               return url
             }
