@@ -41,7 +41,9 @@ const main = async () => {
   const mailPage = await puppet('gandiWeb')
 
   await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
-  const mailLog = await mailPage.jClk('#rcmloginsubmit')
+  const mailLog = await mailPage.ext('#rcmloginsubmit')
+
+  console.log('mail log ' + mailLog)
 
   if (!mailLog) {
     await mailPage.inst('#rcmloginuser', 'micromike@musicsmix.club')
