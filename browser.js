@@ -86,7 +86,8 @@ const main = async () => {
       let url
 
       try {
-        await page.waitFor(1000 * 10 + rand(2000))
+        await mailPage.bringToFront()
+        await mailPage.waitFor(1000 * 10 + rand(2000))
 
         const lookForCode = await page.ext('input[name="code"]')
         if (isCode && !lookForCode) { throw 'fail' }
