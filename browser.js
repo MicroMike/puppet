@@ -35,8 +35,19 @@ const mails = [
 shell.exec('expressvpn disconnect', { silent: true })
 shell.exec('expressvpn connect fr', { silent: true })
 
+
 const main = async () => {
   const mainPage = await puppet('', true)
+  const mailPage = await puppet('gandiWeb')
+
+  await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
+  const mailLog = await mailPage.ext('#rcmloginsubmit')
+
+  if (!mailLog) {
+    await mailPage.inst('#rcmloginuser', 'micromike@musicsmix.club')
+    await mailPage.inst('#rcmloginpwd', '055625f7430')
+    await mailPage.clk('#rcmloginsubmit')
+  }
 
   const create = async (i = null) => {
     const mail = await getEmail()
@@ -68,6 +79,7 @@ const main = async () => {
     // await mailPage.clk('.sbut')
 
     console.log(email)
+    let oneTry
 
     const waitFor = async (isCode) => {
       let code
@@ -80,7 +92,11 @@ const main = async () => {
         const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
 
         if (isCode) {
-          if (inbox.match(/empty/)) { await page.jClk('a.cvf-widget-link-resend') }
+          if (inbox.match(/empty/) && !oneTry) {
+            oneTry = true
+            await page.waitFor(1000 * 10 + rand(2000))
+            await page.jClk('a.cvf-widget-link-resend')
+          }
           else { code = inbox.match(/\d{6}/)[0].trim() }
           console.log(!code ? inbox : code)
           // code = isCode && inbox.split('suivant')[1] && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
