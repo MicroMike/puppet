@@ -87,6 +87,7 @@ const main = async () => {
 
       try {
         await mailPage.bringToFront()
+        await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
         await mailPage.waitFor(1000 * 10 + rand(2000))
 
         const lookForCode = await page.ext('input[name="code"]')
@@ -113,7 +114,6 @@ const main = async () => {
 
             if (code) {
               await mailPage.clk('.button.delete')
-              await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
               return code
             }
           }
@@ -123,7 +123,6 @@ const main = async () => {
 
             if (url) {
               await mailPage.clk('.button.delete')
-              await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
               return url
             }
           }
