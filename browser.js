@@ -25,7 +25,7 @@ const getEmail = async () => {
 }
 
 const mails = [
-  '@musicsmix.me',
+  '@musicsmix.club',
   // '@mega.zik.dj',
   // '@nospam.ze.tc',
   // '@speed.1s.fr',
