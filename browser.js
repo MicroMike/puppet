@@ -21,7 +21,7 @@ const getEmail = async () => {
     mail += letters[rand(letters.length)]
   }
 
-  return mail
+  return 'mm' + mail
 }
 
 const mails = [
