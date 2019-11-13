@@ -41,13 +41,11 @@ const main = async () => {
   const mailPage = await puppet('gandiWeb')
 
   await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
-  const mailLog = await mailPage.ext('#rcmloginsubmit')
+  const needLog = await mailPage.ext('#rcmloginsubmit')
 
-  console.log('mail log ' + mailLog)
-
-  if (!mailLog) {
-    await mailPage.inst('#rcmloginuser', 'micromike@musicsmix.club')
-    await mailPage.inst('#rcmloginpwd', '055625f7430')
+  if (needLog) {
+    await mailPage.inst('#rcmloginuser', 'micromike@musicsmix.club', true)
+    await mailPage.inst('#rcmloginpwd', '055625f7430', true)
     await mailPage.clk('#rcmloginsubmit')
   }
 
@@ -91,25 +89,35 @@ const main = async () => {
         const lookForCode = await page.ext('input[name="code"]')
         if (isCode && !lookForCode) { throw 'fail' }
 
-        const inbox = (shell.exec('yogo_linux_amd64 inbox show ' + mail + ' 1', { silent: true })).stdout
+        await mailPage.inst('#quicksearchbox', mail, true)
+        const getChecked = await mailPage.get('#s_mod_to', 'checked')
+        if (!getChecked) { await mailPage.clk('#s_mod_to') }
+        await mailPage.clk('#s_scope_all')
+        await mailPage.select('#messagessearchfilter', 'UNSEEN')
 
-        if (isCode) {
-          if (inbox.match(/empty/) && !oneTry) {
-            oneTry = true
-            await page.waitFor(1000 * 10 + rand(2000))
-            await page.jClk('a.cvf-widget-link-resend')
+        const isMail = await mailPage.jClk('#messagelist tbody tr a')
+
+        if (isMail) {
+          if (isCode) {
+            code = await mailPage.get('.otp', 'innerText')
+
+            if (!code && !oneTry) {
+              oneTry = true
+              await page.waitFor(1000 * 10 + rand(2000))
+              await page.jClk('a.cvf-widget-link-resend')
+            }
+
+            console.log(code)
+
+            if (code) { return code }
           }
-          else { code = inbox.match(/\d{6}/)[0].trim() }
-          console.log(!code ? inbox : code)
-          // code = isCode && inbox.split('suivant')[1] && inbox.split('suivant')[1].split('Ne partagez')[0].replace(':', '').trim()
+          else {
+            url = !isCode && inbox.split('( ')[1] && inbox.split('( ')[1].split(' )')[0]
+            console.log(!url ? inbox : url)
 
-          if (code) { return code }
+            if (url) { return url }
+          }
         }
-
-        url = !isCode && inbox.split('( ')[1] && inbox.split('( ')[1].split(' )')[0]
-        console.log(!url ? inbox : url)
-
-        if (url) { return url }
 
         throw 'fail'
       }
