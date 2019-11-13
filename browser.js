@@ -38,7 +38,7 @@ shell.exec('expressvpn connect fr', { silent: true })
 
 const main = async () => {
   const mainPage = await puppet('', true)
-  const mailPage = await puppet('gandiWeb')
+  const mailPage = await puppet('', true)
 
   await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
   const needLog = await mailPage.ext('#rcmloginsubmit')
@@ -113,6 +113,7 @@ const main = async () => {
 
             if (code) {
               await mailPage.clk('.button.delete')
+              await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
               return code
             }
           }
@@ -122,6 +123,7 @@ const main = async () => {
 
             if (url) {
               await mailPage.clk('.button.delete')
+              await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
               return url
             }
           }
