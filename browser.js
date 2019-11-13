@@ -111,7 +111,7 @@ const main = async () => {
               await page.jClk('a.cvf-widget-link-resend')
             }
 
-            console.log(!code ? 'no code' : 'code ok')
+            console.log('code ' + code)
 
             if (code && code != 'undefined') {
               await mailPage.clk('.button.delete')
@@ -120,7 +120,7 @@ const main = async () => {
           }
           else {
             url = await mailPage.get('#messagebody a', 'href')
-            console.log(!url ? 'no url' : 'url ok')
+            console.log('url ' + url)
 
             if (url && url != 'undefined') {
               await mailPage.clk('.button.delete')
