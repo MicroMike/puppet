@@ -86,6 +86,8 @@ const main = async () => {
       let url
 
       try {
+        await page.waitFor(1000 * 10 + rand(2000))
+
         const lookForCode = await page.ext('input[name="code"]')
         if (isCode && !lookForCode) { throw 'fail' }
 
@@ -103,26 +105,29 @@ const main = async () => {
 
             if (!code && !oneTry) {
               oneTry = true
-              await page.waitFor(1000 * 10 + rand(2000))
               await page.jClk('a.cvf-widget-link-resend')
             }
 
-            console.log(code)
+            console.log(!code ? 'no code' : 'code ok')
 
-            if (code) { return code }
+            if (code) {
+              await mailPage.clk('.button.delete')
+              return code
+            }
           }
           else {
-            url = !isCode && inbox.split('( ')[1] && inbox.split('( ')[1].split(' )')[0]
-            console.log(!url ? inbox : url)
+            url = await mailPage.get('#messagebody a', 'href')
+            console.log(!url ? 'no url' : 'url ok')
 
-            if (url) { return url }
+            if (url) {
+              return url
+            }
           }
         }
 
         throw 'fail'
       }
       catch (e) {
-        await page.waitFor(1000 * 3 + rand(2000))
         await waitFor(isCode)
       }
     }
