@@ -49,6 +49,7 @@ const main = async () => {
     await mailPage.clk('#rcmloginsubmit')
   }
 
+  await mailPage.waitFor(1000 * 5 + rand(2000))
   const urlPage = await mailPage.np()
   await urlPage.gotoUrl('https://webmail.gandi.net/roundcube/')
 
