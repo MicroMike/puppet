@@ -457,7 +457,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         if (!lookForCode) { throw 'fail' }
 
         if (needContinue) {
-          const mailPage = await puppet('', true)
+          const mailPage = await page.np()
 
           await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
           const needLog = await mailPage.ext('#rcmloginsubmit')
@@ -507,6 +507,8 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
             throw 'amazonError'
           }
         }
+
+        await page.bringToFront()
 
         const del = loginError && await page.ext(loginError)
         if (del) { throw 'del' }
