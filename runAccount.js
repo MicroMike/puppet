@@ -467,44 +467,38 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
             await mailPage.clk('#rcmloginsubmit')
           }
 
-          try {
-            let code
-            const waitForCode = async () => {
-              await mailPage.waitFor(1000 * 10 + rand(2000))
-              await mailPage.bringToFront()
+          let code
+          const waitForCode = async () => {
+            await mailPage.waitFor(1000 * 10 + rand(2000))
+            await mailPage.bringToFront()
 
-              await mailPage.inst('#quicksearchbox', mail, true)
-              const getChecked = await mailPage.get('#s_mod_to', 'checked')
-              if (!getChecked) { await mailPage.clk('#s_mod_to') }
-              await mailPage.clk('#s_scope_all')
-              await mailPage.select('#messagessearchfilter', 'UNSEEN')
+            await mailPage.inst('#quicksearchbox', mail, true)
+            const getChecked = await mailPage.get('#s_mod_to', 'checked')
+            if (!getChecked) { await mailPage.clk('#s_mod_to') }
+            await mailPage.clk('#s_scope_all')
+            await mailPage.select('#messagessearchfilter', 'UNSEEN')
 
-              const isMail = await mailPage.jClk('#messagelist tbody tr a')
+            const isMail = await mailPage.jClk('#messagelist tbody tr a')
 
-              if (isMail) {
-                code = await mailPage.get('.otp', 'innerText')
-                console.log('code ' + code)
+            if (isMail) {
+              code = await mailPage.get('.otp', 'innerText')
+              console.log('code ' + code)
 
-                if (code && code != 'undefined') {
-                  await mailPage.clk('.button.delete')
-                  return code
-                }
+              if (code && code != 'undefined') {
+                await mailPage.clk('.button.delete')
+                return code
               }
-
-              throw 'fail'
             }
 
-            await waitForCode()
-
-            await page.inst('input[name="code"]', code)
-            await page.clk('input[type="submit"]')
-
-            await page.jClk('#ap-account-fixup-phone-skip-link')
-          }
-          catch (e) {
-            // check && console.log(e)
             throw 'amazonError'
           }
+
+          await waitForCode()
+
+          await page.inst('input[name="code"]', code)
+          await page.clk('input[type="submit"]')
+
+          await page.jClk('#ap-account-fixup-phone-skip-link')
         }
 
         await page.bringToFront()
