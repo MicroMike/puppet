@@ -86,12 +86,12 @@ const main = async () => {
       let url
 
       try {
-        await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
         await mailPage.waitFor(1000 * 10 + rand(2000))
 
         const lookForCode = await page.ext('input[name="code"]')
         if (isCode && !lookForCode) { throw 'fail' }
 
+        await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
         await mailPage.bringToFront()
 
         await mailPage.inst('#quicksearchbox', mail, true)
@@ -111,20 +111,25 @@ const main = async () => {
               await page.jClk('a.cvf-widget-link-resend')
             }
 
-            console.log('code ' + code)
-
             if (code && code != 'undefined') {
+              console.log('code ok')
               await mailPage.clk('.button.delete')
               return code
+            }
+            else {
+              console.log('code not ok')
             }
           }
           else {
             url = await mailPage.get('#messagebody a', 'href')
-            console.log('url ' + url)
 
             if (url && url != 'undefined') {
+              console.log('url ok')
               await mailPage.clk('.button.delete')
               return url
+            }
+            else {
+              console.log('url not ok')
             }
           }
         }
@@ -163,6 +168,9 @@ const main = async () => {
       await mainPage.inst('#enterEmail', email)
       await mainPage.inst('#confirmEmail', email)
       await mainPage.clk('input.a-button-input')
+
+      create(true)
+
       const url = await waitFor()
       await page.gotoUrl(url)
     }
@@ -256,7 +264,6 @@ const main = async () => {
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
       shell.exec('git add save/amazon_' + email + ' && git commit -m "add account" && git push')
-      create(true)
     })
   }
 
