@@ -12,6 +12,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
     let countStream = 0
     let streamOn = false
     let countPlays = 0
+    let mailPage
 
     const al = require('./albums')
     let albums = al[player]
@@ -456,7 +457,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         const lookForCode = await page.ext('input[name="code"]')
 
         if (needContinue && lookForCode) {
-          const mailPage = await page.np()
+          mailPage = await page.np()
 
           await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
           const needLog = await mailPage.ext('#rcmloginsubmit')
