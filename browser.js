@@ -264,6 +264,7 @@ const main = async () => {
 
     request('https://online-music.herokuapp.com/addAccount?amazon:' + email + ':20192019', function (error, response, body) {
       shell.exec('git add save/amazon_' + email + ' && git commit -m "add account" && git push')
+      if (!i) { create(true) }
     })
   }
 
