@@ -685,6 +685,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
           // startCheck()
           await page.waitFor(1000 * 35)
           shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
+          await mailPage.cls(true)
           await page.cls(true)
 
           catchFct('check')
