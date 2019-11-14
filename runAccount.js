@@ -453,27 +453,46 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
       const amazonCheck = async () => {
         const needContinue = await page.jClk('#continue')
 
+        const lookForCode = await page.ext('input[name="code"]')
+        if (!lookForCode) { throw 'fail' }
+
         if (needContinue) {
+          const mailPage = await puppet('', true)
+
+          await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
+          const needLog = await mailPage.ext('#rcmloginsubmit')
+
+          if (needLog) {
+            await mailPage.inst('#rcmloginuser', 'micromike@musicsmix.club', true)
+            await mailPage.inst('#rcmloginpwd', '055625f7430', true)
+            await mailPage.clk('#rcmloginsubmit')
+          }
+
           try {
             let code
             const waitForCode = async () => {
-              let inbox
-              try {
-                inbox = (shell.exec('./yogo_linux_amd64 inbox show ' + login.split('@')[0] + ' 1', { silent: true })).stdout
+              await mailPage.waitFor(1000 * 10 + rand(2000))
+              await mailPage.bringToFront()
 
-                if (inbox.match(/empty/)) { await page.jClk('a.cvf-widget-link-resend') }
-                else { code = inbox.match(/\d{6}/)[0].trim() }
-                console.log(!code ? login + ' => ' + inbox : code)
+              await mailPage.inst('#quicksearchbox', mail, true)
+              const getChecked = await mailPage.get('#s_mod_to', 'checked')
+              if (!getChecked) { await mailPage.clk('#s_mod_to') }
+              await mailPage.clk('#s_scope_all')
+              await mailPage.select('#messagessearchfilter', 'UNSEEN')
 
-                // code = inbox.split('terminer la vérification')[1] && inbox.split('terminer la vérification')[1].split('Ce code')[0].replace(':', '').trim()
+              const isMail = await mailPage.jClk('#messagelist tbody tr a')
 
-                if (!code) { throw 'fail' }
+              if (isMail) {
+                code = await mailPage.get('.otp', 'innerText')
+                console.log('code ' + code)
+
+                if (code && code != 'undefined') {
+                  await mailPage.clk('.button.delete')
+                  return code
+                }
               }
-              catch (e) {
-                // check && console.log(inbox, login.split('@')[0], e)
-                await page.waitFor(1000 * 30 + rand(2000))
-                if (!close) { await waitForCode() }
-              }
+
+              throw 'fail'
             }
 
             await waitForCode()
