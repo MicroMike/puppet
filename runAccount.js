@@ -776,7 +776,8 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
             }
           }
           else {
-            if (!countPlays || freeze > 0) { socketEmit('playerInfos', { time: t1, ok: true, countPlays }) }
+            // if (!countPlays || freeze > 0) { socketEmit('playerInfos', { time: t1, ok: true, countPlays }) }
+            socketEmit('playerInfos', { time: t1, ok: true, countPlays })
             freeze = 0
           }
 
