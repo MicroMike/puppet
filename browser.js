@@ -31,6 +31,7 @@ const mails = [
   // '@speed.1s.fr',
   // '@cool.fr.nf',
 ]
+let count = 0
 
 shell.exec('expressvpn disconnect', { silent: true })
 shell.exec('expressvpn connect fr', { silent: true })
@@ -169,7 +170,9 @@ const main = async () => {
       await mainPage.inst('#confirmEmail', email)
       await mainPage.clk('input.a-button-input')
 
-      create(true)
+      if (++count <= 5) {
+        create(true)
+      }
 
       const url = await waitFor()
       await page.gotoUrl(url)
