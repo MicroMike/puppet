@@ -36,7 +36,6 @@ let count = 0
 shell.exec('expressvpn disconnect', { silent: true })
 shell.exec('expressvpn connect fr', { silent: true })
 
-
 const main = async () => {
   const mainPage = await puppet('', true)
   const mailPage = await puppet('', true)
@@ -49,6 +48,9 @@ const main = async () => {
     await mailPage.inst('#rcmloginpwd', '055625f7430', true)
     await mailPage.clk('#rcmloginsubmit')
   }
+
+  const urlPage = await mailPage.np()
+  await urlPage.gotoUrl('https://webmail.gandi.net/roundcube/')
 
   const create = async (i = null) => {
     const mail = await getEmail()
@@ -85,36 +87,37 @@ const main = async () => {
     const waitFor = async (isCode) => {
       let code
       let url
+      let currentPage = isCode ? mailPage : urlPage
 
       try {
-        await mailPage.waitFor(1000 * 10 + rand(2000))
+        await currentPage.waitFor(1000 * 10 + rand(2000))
 
         const lookForCode = await page.ext('input[name="code"]')
         if (isCode && !lookForCode) { throw 'fail' }
 
-        await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
-        await mailPage.bringToFront()
+        await currentPage.gotoUrl('https://webmail.gandi.net/roundcube/')
+        await currentPage.bringToFront()
 
-        await mailPage.inst('#quicksearchbox', mail, true)
-        const getChecked = await mailPage.get('#s_mod_to', 'checked')
-        if (!getChecked) { await mailPage.clk('#s_mod_to') }
-        await mailPage.clk('#s_scope_all')
-        await mailPage.select('#messagessearchfilter', 'UNSEEN')
+        await currentPage.inst('#quicksearchbox', mail, true)
+        const getChecked = await currentPage.get('#s_mod_to', 'checked')
+        if (!getChecked) { await currentPage.clk('#s_mod_to') }
+        await currentPage.clk('#s_scope_all')
+        await currentPage.select('#messagessearchfilter', 'UNSEEN')
 
-        const isMail = await mailPage.jClk('#messagelist tbody tr a')
+        const isMail = await currentPage.jClk('#messagelist tbody tr a')
 
         if (isMail) {
           if (isCode) {
-            code = await mailPage.get('.otp', 'innerText')
+            code = await currentPage.get('.otp', 'innerText')
 
             if (!code && !oneTry) {
               oneTry = true
               await page.jClk('a.cvf-widget-link-resend')
             }
 
-            if (code && code != 'undefined') {
+            if (code && code !== 'undefined') {
               console.log('code ok')
-              await mailPage.clk('.button.delete')
+              await currentPage.clk('.button.delete')
               return code
             }
             else {
@@ -122,11 +125,11 @@ const main = async () => {
             }
           }
           else {
-            url = await mailPage.get('#messagebody a', 'href')
+            url = await currentPage.get('#messagebody a', 'href')
 
-            if (url && url != 'undefined') {
+            if (url && url !== 'undefined') {
               console.log('url ok')
-              await mailPage.clk('.button.delete')
+              await currentPage.clk('.button.delete')
               return url
             }
             else {

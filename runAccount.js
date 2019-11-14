@@ -484,13 +484,13 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
               code = await mailPage.get('.otp', 'innerText')
               console.log('code ' + code)
 
-              if (code && code != 'undefined') {
+              if (code && code !== 'undefined') {
                 await mailPage.clk('.button.delete')
                 return code
               }
             }
 
-            throw 'amazonError'
+            catchFct('amazonError')
           }
 
           await waitForCode()
