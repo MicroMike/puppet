@@ -472,7 +472,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
             await mailPage.waitFor(1000 * 10 + rand(2000))
             await mailPage.bringToFront()
 
-            await mailPage.inst('#quicksearchbox', mail, true)
+            await mailPage.inst('#quicksearchbox', login.split('@')[0], true)
             const getChecked = await mailPage.get('#s_mod_to', 'checked')
             if (!getChecked) { await mailPage.clk('#s_mod_to') }
             await mailPage.clk('#s_scope_all')
