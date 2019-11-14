@@ -56,7 +56,7 @@ const main = async () => {
     if (i) {
       await mainPage.rload()
       const notfull = await mainPage.ext('#enterEmail:not(.hide)')
-      if (!notfull) { return process.exit() }
+      // if (!notfull) { return process.exit() }
     }
 
     shell.exec('rm -Rf save/amazon_' + email, { silent: true })
