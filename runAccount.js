@@ -452,11 +452,10 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
       const amazonCheck = async () => {
         const needContinue = await page.jClk('#continue')
-
+        await page.waitFor(1000 * 3 + rand(2000))
         const lookForCode = await page.ext('input[name="code"]')
-        if (!lookForCode) { throw 'fail' }
 
-        if (needContinue) {
+        if (needContinue && lookForCode) {
           const mailPage = await page.np()
 
           await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
