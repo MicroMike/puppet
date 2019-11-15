@@ -43,7 +43,7 @@ const waitFor = async (p, currentPage, isCode) => {
   try {
     await currentPage.waitFor(1000 * 10 + rand(2000))
 
-    const lookForCode = await page.ext('input[name="code"]')
+    const lookForCode = await p.ext('input[name="code"]')
     if (isCode && !lookForCode) { throw 'fail' }
 
     await currentPage.gotoUrl('https://webmail.gandi.net/roundcube/')
