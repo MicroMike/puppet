@@ -36,6 +36,78 @@ let count = 0
 shell.exec('expressvpn disconnect', { silent: true })
 shell.exec('expressvpn connect fr', { silent: true })
 
+const waitFor = async (p, currentPage, isCode) => {
+  let code
+  let url
+
+  try {
+    await currentPage.waitFor(1000 * 10 + rand(2000))
+
+    const lookForCode = await page.ext('input[name="code"]')
+    if (isCode && !lookForCode) { throw 'fail' }
+
+    await currentPage.gotoUrl('https://webmail.gandi.net/roundcube/')
+    await currentPage.bringToFront()
+
+    await currentPage.inst('#quicksearchbox', mail, true)
+    const getChecked = await currentPage.get('#s_mod_to', 'checked')
+    if (!getChecked) { await currentPage.clk('#s_mod_to') }
+    await currentPage.clk('#s_scope_all')
+    await currentPage.select('#messagessearchfilter', 'UNSEEN')
+
+    const isMail = await currentPage.jClk('#messagelist tbody tr a')
+
+    if (isMail) {
+      if (isCode) {
+        code = await currentPage.get('.otp', 'innerText')
+
+        if (!code && !oneTry) {
+          oneTry = true
+          await page.jClk('a.cvf-widget-link-resend')
+        }
+
+        if (code && code !== 'undefined') {
+          console.log('code ok ' + code)
+          await currentPage.clk('.button.delete')
+
+          await p.bringToFront()
+          await p.inst('input[name="code"]', code)
+          await p.clk('input[type="submit"]')
+
+          return true
+        }
+        else {
+          console.log('code not ok')
+        }
+      }
+      else {
+        url = await currentPage.get('#messagebody a', 'href')
+
+        if (url && url !== 'undefined') {
+          console.log('url ok')
+          await currentPage.clk('.button.delete')
+
+          await p.gotoUrl(url)
+
+          return true
+        }
+        else {
+          console.log('url not ok')
+        }
+      }
+    }
+
+    throw 'fail'
+  }
+  catch (e) {
+    await waitFor(isCode)
+  }
+}
+
+const waitForCode = async (p, currentPage) => {
+  await waitFor(p, currentPage, true)
+}
+
 const main = async () => {
   const mainPage = await puppet('', true)
   const mailPage = await puppet('', true)
@@ -83,77 +155,6 @@ const main = async () => {
     // await mailPage.clk('.sbut')
 
     console.log(email)
-    let oneTry
-
-    const waitFor = async (p, isCode) => {
-      let code
-      let url
-      let currentPage = isCode ? mailPage : urlPage
-
-      try {
-        await currentPage.waitFor(1000 * 10 + rand(2000))
-
-        const lookForCode = await page.ext('input[name="code"]')
-        if (isCode && !lookForCode) { throw 'fail' }
-
-        await currentPage.gotoUrl('https://webmail.gandi.net/roundcube/')
-        await currentPage.bringToFront()
-
-        await currentPage.inst('#quicksearchbox', mail, true)
-        const getChecked = await currentPage.get('#s_mod_to', 'checked')
-        if (!getChecked) { await currentPage.clk('#s_mod_to') }
-        await currentPage.clk('#s_scope_all')
-        await currentPage.select('#messagessearchfilter', 'UNSEEN')
-
-        const isMail = await currentPage.jClk('#messagelist tbody tr a')
-
-        if (isMail) {
-          if (isCode) {
-            code = await currentPage.get('.otp', 'innerText')
-
-            if (!code && !oneTry) {
-              oneTry = true
-              await page.jClk('a.cvf-widget-link-resend')
-            }
-
-            if (code && code !== 'undefined') {
-              console.log('code ok ' + code)
-              await currentPage.clk('.button.delete')
-
-              await p.bringToFront()
-              await p.inst('input[name="code"]', code)
-              await p.clk('input[type="submit"]')
-
-              return true
-            }
-            else {
-              console.log('code not ok')
-            }
-          }
-          else {
-            url = await currentPage.get('#messagebody a', 'href')
-
-            if (url && url !== 'undefined') {
-              console.log('url ok')
-              await currentPage.clk('.button.delete')
-
-              await p.gotoUrl(url)
-
-              return true
-            }
-            else {
-              console.log('url not ok')
-            }
-          }
-        }
-
-        throw 'fail'
-      }
-      catch (e) {
-        await waitFor(isCode)
-      }
-    }
-
 
     await page.inst('input#ap_customer_name', mail)
     await page.inst('input#ap_email', email)
@@ -171,7 +172,7 @@ const main = async () => {
     }
 
     await page.waitFor(2000 + rand(2000))
-    await waitFor(page, true)
+    await waitForCode(page, mailPage)
 
     if (i) {
       await mainPage.inst('#enterEmail', email)
@@ -182,7 +183,7 @@ const main = async () => {
         create(true)
       }
 
-      await waitFor(page)
+      await waitFor(page, urlPage)
     }
     else {
       await page.clk('.buttonOption')
