@@ -753,7 +753,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
               nextMusic = true
               countPlays++
 
-              await page.jClk(nextBtn)
+              // await page.jClk(nextBtn)
               socketEmit('plays', { next: true, currentAlbum, matchTime, countPlays })
             }
           }
