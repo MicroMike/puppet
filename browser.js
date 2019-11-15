@@ -104,10 +104,6 @@ const waitFor = async (p, currentPage, isCode) => {
   }
 }
 
-const waitForCode = async (p, currentPage) => {
-  await waitFor(p, currentPage, true)
-}
-
 const main = async () => {
   const mainPage = await puppet('', true)
   const mailPage = await puppet('', true)
@@ -172,7 +168,7 @@ const main = async () => {
     }
 
     await page.waitFor(2000 + rand(2000))
-    await waitForCode(page, mailPage)
+    await waitFor(page, mailPage, true)
 
     if (i) {
       await mainPage.inst('#enterEmail', email)
