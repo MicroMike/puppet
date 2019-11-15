@@ -61,11 +61,6 @@ const waitFor = async (p, currentPage, isCode) => {
       if (isCode) {
         code = await currentPage.get('.otp', 'innerText')
 
-        if (!code && !oneTry) {
-          oneTry = true
-          await page.jClk('a.cvf-widget-link-resend')
-        }
-
         if (code && code !== 'undefined') {
           console.log('code ok ' + code)
           await currentPage.clk('.button.delete')
