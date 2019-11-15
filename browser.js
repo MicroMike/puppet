@@ -85,7 +85,7 @@ const main = async () => {
     console.log(email)
     let oneTry
 
-    const waitFor = async (isCode) => {
+    const waitFor = async (p, isCode) => {
       let code
       let url
       let currentPage = isCode ? mailPage : urlPage
@@ -117,9 +117,14 @@ const main = async () => {
             }
 
             if (code && code !== 'undefined') {
-              console.log('code ok' + code)
+              console.log('code ok ' + code)
               await currentPage.clk('.button.delete')
-              return code
+
+              await p.bringToFront()
+              await p.inst('input[name="code"]', code)
+              await p.clk('input[type="submit"]')
+
+              return true
             }
             else {
               console.log('code not ok')
@@ -131,7 +136,10 @@ const main = async () => {
             if (url && url !== 'undefined') {
               console.log('url ok')
               await currentPage.clk('.button.delete')
-              return url
+
+              await p.gotoUrl(url)
+
+              return true
             }
             else {
               console.log('url not ok')
@@ -163,11 +171,7 @@ const main = async () => {
     }
 
     await page.waitFor(2000 + rand(2000))
-    const code = await waitFor(true)
-
-    await page.bringToFront()
-    await page.inst('input[name="code"]', code)
-    await page.clk('input[type="submit"]')
+    await waitFor(page, true)
 
     if (i) {
       await mainPage.inst('#enterEmail', email)
@@ -178,8 +182,7 @@ const main = async () => {
         create(true)
       }
 
-      const url = await waitFor()
-      await page.gotoUrl(url)
+      await waitFor(page)
     }
     else {
       await page.clk('.buttonOption')
