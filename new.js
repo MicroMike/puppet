@@ -102,6 +102,8 @@ socket.on('run', async ({ runnerAccount, streamId }) => {
   }
   catch (e) { }
 
+  if (!runnerAccount) { return console.log('no account') }
+
   const accountInfo = runnerAccount.split(':')
   let player = accountInfo[0]
   let login = accountInfo[1]
