@@ -100,7 +100,7 @@ const waitFor = async (p, currentPage, isCode) => {
     throw 'fail'
   }
   catch (e) {
-    await waitFor(isCode)
+    await waitFor(p, currentPage, isCode)
   }
 }
 
