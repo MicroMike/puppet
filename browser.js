@@ -36,7 +36,7 @@ let count = 0
 shell.exec('expressvpn disconnect', { silent: true })
 shell.exec('expressvpn connect fr', { silent: true })
 
-const waitFor = async (p, currentPage, isCode) => {
+const waitFor = async (p, currentPage, isCode, mail) => {
   let code
   let url
 
