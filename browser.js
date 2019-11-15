@@ -100,6 +100,7 @@ const waitFor = async (p, currentPage, isCode) => {
     throw 'fail'
   }
   catch (e) {
+    console.log(e)
     await waitFor(p, currentPage, isCode)
   }
 }
