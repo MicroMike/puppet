@@ -117,7 +117,7 @@ const main = async () => {
             }
 
             if (code && code !== 'undefined') {
-              console.log('code ok')
+              console.log('code ok' + code)
               await currentPage.clk('.button.delete')
               return code
             }
@@ -146,7 +146,6 @@ const main = async () => {
       }
     }
 
-    await page.bringToFront()
 
     await page.inst('input#ap_customer_name', mail)
     await page.inst('input#ap_email', email)
@@ -166,6 +165,7 @@ const main = async () => {
     await page.waitFor(2000 + rand(2000))
     const code = await waitFor(true)
 
+    await page.bringToFront()
     await page.inst('input[name="code"]', code)
     await page.clk('input[type="submit"]')
 
