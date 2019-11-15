@@ -96,6 +96,9 @@ const waitFor = async (p, currentPage, isCode) => {
         }
       }
     }
+    else if (isCode) {
+      await p.jClk('a.cvf-widget-link-resend')
+    }
 
     throw 'fail'
   }
@@ -169,7 +172,7 @@ const main = async () => {
     }
 
     await page.waitFor(2000 + rand(2000))
-    await waitFor(page, mailPage, true)
+    await waitFor(page, mailPage, mail, true)
 
     if (i) {
       await mainPage.inst('#enterEmail', email)
@@ -180,7 +183,7 @@ const main = async () => {
         create(true)
       }
 
-      await waitFor(page, urlPage)
+      await waitFor(page, urlPage, mail)
     }
     else {
       await page.clk('.buttonOption')
