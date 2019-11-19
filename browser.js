@@ -36,7 +36,8 @@ let count = 0
 shell.exec('expressvpn disconnect', { silent: true })
 shell.exec('expressvpn connect fr', { silent: true })
 
-let mailPage
+const mainPage = await puppet('', true)
+const mailPage = await puppet('', true)
 
 const waitFor = async (p, mail, isCode, loop = null) => {
   let code
@@ -109,9 +110,6 @@ const waitFor = async (p, mail, isCode, loop = null) => {
 }
 
 const main = async () => {
-  const mainPage = await puppet('', true)
-  mailPage = await puppet('', true)
-
   await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
   const needLog = await mailPage.ext('#rcmloginsubmit')
 
