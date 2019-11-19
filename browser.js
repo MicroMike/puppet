@@ -36,15 +36,12 @@ let count = 0
 shell.exec('expressvpn disconnect', { silent: true })
 shell.exec('expressvpn connect fr', { silent: true })
 
-let checking = false
-const waitFor = async (p, currentPage, mail, isCode) => {
+const waitFor = async (p, mail, isCode, loop = null) => {
   let code
   let url
+  const currentPage = loop || await mailPage.np()
 
   try {
-    if (checking) { throw 'fail' }
-    checking = true
-
     await currentPage.waitFor(1000 * 10 + rand(2000))
 
     const lookForCode = await p.ext('input[name="code"]')
@@ -65,7 +62,6 @@ const waitFor = async (p, currentPage, mail, isCode) => {
       if (isCode) {
         code = await currentPage.get('.otp', 'innerText')
 
-        checking = false
         if (code && code !== 'undefined') {
           console.log('code ok ' + code)
           await currentPage.clk('.button.delete')
@@ -74,6 +70,7 @@ const waitFor = async (p, currentPage, mail, isCode) => {
           await p.inst('input[name="code"]', code)
           await p.clk('input[type="submit"]')
 
+          await currentPage.cls()
           return true
         }
         else {
@@ -83,13 +80,13 @@ const waitFor = async (p, currentPage, mail, isCode) => {
       else {
         url = await currentPage.get('#messagebody a', 'href')
 
-        checking = false
         if (url && url !== 'undefined') {
           console.log('url ok')
           await currentPage.clk('.button.delete')
 
           await p.gotoUrl(url)
 
+          await currentPage.cls()
           return true
         }
         else {
@@ -105,7 +102,7 @@ const waitFor = async (p, currentPage, mail, isCode) => {
   }
   catch (e) {
     console.log(e)
-    await waitFor(p, currentPage, isCode)
+    await waitFor(p, mail, isCode, currentPage)
   }
 }
 
@@ -121,10 +118,6 @@ const main = async () => {
     await mailPage.inst('#rcmloginpwd', '055625f7430', true)
     await mailPage.clk('#rcmloginsubmit')
   }
-
-  await mailPage.waitFor(1000 * 5 + rand(2000))
-  const urlPage = await mailPage.np()
-  await urlPage.gotoUrl('https://webmail.gandi.net/roundcube/')
 
   const create = async (i = null) => {
     const mail = await getEmail()
@@ -173,7 +166,7 @@ const main = async () => {
     }
 
     await page.waitFor(2000 + rand(2000))
-    await waitFor(page, mailPage, mail, true)
+    await waitFor(page, mail, true)
 
     if (i) {
       await mainPage.inst('#enterEmail', email)
@@ -184,7 +177,7 @@ const main = async () => {
         create(true)
       }
 
-      await waitFor(page, urlPage, mail)
+      await waitFor(page, mail)
     }
     else {
       await page.clk('.buttonOption')
