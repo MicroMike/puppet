@@ -36,11 +36,15 @@ let count = 0
 shell.exec('expressvpn disconnect', { silent: true })
 shell.exec('expressvpn connect fr', { silent: true })
 
+let checking = false
 const waitFor = async (p, currentPage, mail, isCode) => {
   let code
   let url
 
   try {
+    if (checking) { throw 'fail' }
+    checking = true
+
     await currentPage.waitFor(1000 * 10 + rand(2000))
 
     const lookForCode = await p.ext('input[name="code"]')
@@ -61,6 +65,7 @@ const waitFor = async (p, currentPage, mail, isCode) => {
       if (isCode) {
         code = await currentPage.get('.otp', 'innerText')
 
+        checking = false
         if (code && code !== 'undefined') {
           console.log('code ok ' + code)
           await currentPage.clk('.button.delete')
@@ -78,6 +83,7 @@ const waitFor = async (p, currentPage, mail, isCode) => {
       else {
         url = await currentPage.get('#messagebody a', 'href')
 
+        checking = false
         if (url && url !== 'undefined') {
           console.log('url ok')
           await currentPage.clk('.button.delete')
