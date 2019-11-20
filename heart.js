@@ -71,7 +71,7 @@ const main = async () => {
 
   await page.waitFor(1000 * 5)
   await page.gotoUrl('https://www.iheart.com/subscribe?subscriptionId=IHEART_US_PREMIUM_TRIAL')
-  await page.waitFor(1000 * 5)
+  await page.wfs('[data-test="subscription-iframe"]')
 
   const frameUrl = await page.evaluate(() => {
     const frame = document.querySelector('[data-test="subscription-iframe"]')
