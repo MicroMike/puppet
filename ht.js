@@ -23,7 +23,7 @@ const main = async () => {
 
   setTimeout(() => {
     main()
-  }, 1000 * 60);
+  }, 1000 * 10);
 }
 
 main()

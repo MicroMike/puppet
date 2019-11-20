@@ -54,5 +54,6 @@ const fct = async (i) => {
 shell.exec('killall -9 chrome', { silent: true })
 
 for (let i = 1; i <= thread; i++) {
+  if (close) { break }
   fct(i)
 }
