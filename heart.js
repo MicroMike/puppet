@@ -91,7 +91,7 @@ const main = async () => {
     shell.exec('git add save/heart_' + email + ' && git commit -m "add account"')
     setTimeout(() => {
       process.exit()
-    }, 1000 * 60 * 30);
+    }, 1000 * 30);
   })
 }
 
