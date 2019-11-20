@@ -15,6 +15,7 @@ const rand = (max, min) => {
 const type = process.env.TYPE
 let check = false
 let url
+const promises = []
 
 if (type === 'tidal') {
   url = 'http://offer.tidal.com'
@@ -253,29 +254,37 @@ const main = async () => {
     await page.clk('.box-family a')
 
     const addTidal = async () => {
-      const tMail = getEmail()
-      console.log(tMail)
+      return new Promise(r => {
+        const tMail = getEmail()
+        console.log(tMail)
 
-      const addPage = await page.np()
-      await addPage.gotoUrl('https://my.tidal.com/dk/family/add')
+        const addPage = await page.np()
+        await addPage.gotoUrl('https://my.tidal.com/dk/family/add')
 
-      await addPage.inst('[name="email"]', tMail, true)
-      await addPage.inst('[name="emailConfirm"]', tMail, true)
-      await addPage.inst('[name="password"]', pass, true)
-      await addPage.clk('.btn-full')
+        await addPage.inst('[name="email"]', tMail, true)
+        await addPage.inst('[name="emailConfirm"]', tMail, true)
+        await addPage.inst('[name="password"]', pass, true)
+        await addPage.clk('.btn-full')
 
-      request('https://online-music.herokuapp.com/addAccount?tidal:' + tMail + ':' + pass, function (error, response, body) { })
+        request('https://online-music.herokuapp.com/addAccount?tidal:' + tMail + ':' + pass, function (error, response, body) { })
 
-      await tidalConnect(tMail)
+        await tidalConnect(tMail)
+
+        r(true)
+      })
     }
 
-    addTidal()
-    addTidal()
-    addTidal()
-    addTidal()
-    addTidal()
+    promises.push(addTidal())
+    promises.push(addTidal())
+    promises.push(addTidal())
+    promises.push(addTidal())
+    promises.push(addTidal())
 
-    await page.waitFor(5000 + rand(2000))
+    Promise.all(promises).then(() => {
+      shell.exec('npm run push', () => {
+        process.exit()
+      })
+    })
   }
   else if (type === 'napster') {
     const page = await puppet('', true)
