@@ -254,7 +254,7 @@ const main = async () => {
     await page.clk('.box-family a')
 
     const addTidal = async () => {
-      return new Promise(r => {
+      return new Promise(async r => {
         const tMail = getEmail()
         console.log(tMail)
 
