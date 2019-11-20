@@ -89,6 +89,9 @@ const main = async () => {
 
   request('https://online-music.herokuapp.com/addAccount?heart:' + email + ':20192019', function (error, response, body) {
     shell.exec('git add save/heart_' + email + ' && git commit -m "add account"')
+    setTimeout(() => {
+      process.exit()
+    }, 1000 * 60 * 30);
   })
 }
 
