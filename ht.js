@@ -1,7 +1,7 @@
 const shell = require('shelljs');
 const request = require('ajax-request');
 
-const old = {};
+let old;
 
 const main = async () => {
   const getCard = async () => {
@@ -14,7 +14,7 @@ const main = async () => {
 
   const newCard = await getCard()
 
-  if (!old.cardNumber || old.cardNumber !== newCard.cardNumber) {
+  if (!old || old.cardNumber !== newCard.cardNumber) {
     old = { ...newCard }
 
     shell.exec('node heart')
