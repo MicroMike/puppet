@@ -73,7 +73,7 @@ const inter = () => {
     }
 
     inter()
-  }, rand(1000 * 60 * 3));
+  }, rand(1000 * 60 * 2));
 }
 
 socket.on('activate', async () => {
