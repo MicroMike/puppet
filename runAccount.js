@@ -368,7 +368,6 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
         notConnected = await page.jClk(goToLogin)
 
         if (notConnected) {
-
           const tryClick = async () => {
             const done = await page.jClk(reLog, true)
             const existInput = await page.ext(username)
@@ -686,7 +685,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
           // startCheck()
           await page.waitFor(1000 * 35)
           shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
-          await mailPage.cls(true)
+          mailPage && await mailPage.cls(true)
           await page.cls(true)
 
           catchFct('check')
