@@ -82,7 +82,7 @@ socket.on('activate', async () => {
   console.log(close, Object.values(CS).length, max)
 
   socket.emit('parent', { parentId: arg, connected: back, env: process.env, max })
-  if (!back) { parentId = arg + thread }
+  if (!back) { parentId = arg }
 
   if (process.env.CHECK) { await socket.emit('run', { parentId, env: process.env, max }) }
 
