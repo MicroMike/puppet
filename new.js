@@ -64,7 +64,7 @@ const inter = () => {
   clearTimeout(timeout)
   timeout = setTimeout(() => {
     close && console.log('close true')
-    back && console.log('back true')
+    // back && console.log('back true')
 
     if (close) { return }
 
