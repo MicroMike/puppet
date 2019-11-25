@@ -79,7 +79,7 @@ const inter = () => {
 socket.on('activate', async () => {
   back = !!parentId
   console.log(thread + ' activate', 'connected:' + back)
-  console.log(close, Object.values(CS).length, max)
+  // console.log(close, Object.values(CS).length, max)
 
   socket.emit('parent', { parentId: arg + thread, connected: back, env: process.env, max })
   if (!back) { parentId = arg + thread }
