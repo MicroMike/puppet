@@ -90,7 +90,7 @@ socket.on('activate', async (socketId) => {
 })
 
 socket.on('disconnect', why => {
-  console.log(why)
+  console.log(parentId, why)
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
