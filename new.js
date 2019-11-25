@@ -79,7 +79,7 @@ const inter = () => {
 socket.on('activate', async (socketId) => {
   back = !!parentId
   console.log(thread + ' activate', 'connected:' + back, socketId)
-  // console.log(close, Object.values(CS).length, max)
+  console.log(close, Object.values(CS).length, max)
 
   socket.emit('parent', { parentId: arg + thread, connected: back, env: process.env, max })
   if (!back) { parentId = arg + thread }
@@ -87,6 +87,10 @@ socket.on('activate', async (socketId) => {
   if (process.env.CHECK) { await socket.emit('run', { parentId, env: process.env, max }) }
 
   inter()
+})
+
+socket.on('disconnect', why => {
+  console.log(why)
 })
 
 socket.on('run', async ({ runnerAccount, streamId }) => {
