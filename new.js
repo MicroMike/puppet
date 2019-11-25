@@ -76,9 +76,9 @@ const inter = () => {
   }, rand(1000 * 60 * 2));
 }
 
-socket.on('activate', async () => {
+socket.on('activate', async (socketId) => {
   back = !!parentId
-  console.log(thread + ' activate', 'connected:' + back)
+  console.log(thread + ' activate', 'connected:' + back, socketId)
   // console.log(close, Object.values(CS).length, max)
 
   socket.emit('parent', { parentId: arg + thread, connected: back, env: process.env, max })
