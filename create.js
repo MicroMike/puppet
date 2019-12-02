@@ -119,8 +119,9 @@ const main = async () => {
     await page.select('select#tbi-year', String(1954 + rand(47)))
 
     await page.waitFor(2000 + rand(2000))
-    await page.jClk('#terms1')
-    await page.clk('#registration-step-2 > button > div')
+    // await page.jClk('#terms1')
+    // await page.clk('#registration-step-2 > button > div')
+    await page.clk('button.btn-success')
 
     await page.waitFor(2000 + rand(2000))
 
