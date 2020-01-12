@@ -754,6 +754,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
               // await page.jClk(nextBtn)
               socketEmit('plays', { next: true, currentAlbum, matchTime, countPlays })
+              socketEmit('playerInfos', { time: t1, ok: true, countPlays })
             }
           }
           else {
@@ -777,8 +778,7 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
             }
           }
           else {
-            // if (!countPlays || freeze > 0) { socketEmit('playerInfos', { time: t1, ok: true, countPlays }) }
-            socketEmit('playerInfos', { time: t1, ok: true, countPlays })
+            if (freeze > 0) { socketEmit('playerInfos', { time: t1, ok: true, countPlays }) }
             freeze = 0
           }
 
