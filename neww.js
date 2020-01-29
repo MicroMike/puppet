@@ -43,18 +43,6 @@ process.on('SIGINT', () => {
   exit()
 })
 
-socket.on('Cdisconnect', () => {
-  exit()
-})
-
-socket.on('CdisconnectU', () => {
-  exit(true)
-})
-
-socket.on('killall', () => {
-  exit()
-})
-
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
@@ -101,6 +89,18 @@ const createCallback = async (error, response, runnerAccount) => {
       const runAccount = require('./runAccount');
       await runAccount(clientSocket, page, arg, streamId, process.env, account)
 
+      exit()
+    })
+
+    clientSocket.on('Cdisconnect', () => {
+      exit()
+    })
+
+    clientSocket.on('CdisconnectU', () => {
+      exit(true)
+    })
+
+    clientSocket.on('killall', () => {
       exit()
     })
   }
