@@ -108,7 +108,7 @@ clientSocket.on('activate', async (socketId) => {
 })
 
 clientSocket.on('mRun', async () => {
-  createCallback
+  createCallback()
 })
 
 const main = () => {
