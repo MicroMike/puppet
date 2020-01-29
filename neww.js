@@ -88,7 +88,7 @@ const createCallback = async (error, response, body) => {
 
     clientSocket.on('mRun', async () => {
       const runAccount = require('./runAccount');
-      await runAccount(clientSocket, page, arg, streamId, process.env, account)
+      await runAccount(clientSocket, page, parentId, streamId, process.env, account)
 
       exit()
     })
