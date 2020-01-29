@@ -48,11 +48,13 @@ const fct = async (i = 1) => {
     }
     catch (e) { }
 
+    if (close) { return }
     fct(i)
   })
 
   setTimeout(() => {
     if (i <= nb) {
+      if (close) { return }
       fct(++i)
     }
   }, rand(1000 * 60 * 2));
