@@ -140,8 +140,7 @@ const main = async () => {
     await page.waitFor(2000 + rand(2000))
     await page.keyboard.press('Tab');
     await page.waitFor(2000 + rand(2000))
-    console.log(month + String(year).slice(2))
-    await page.keyboard.type(month + String(year).slice(2), { delay: 150 })
+    await page.keyboard.type((month < 10 ? '0' + month : month) + String(year).slice(2), { delay: 150 })
     // await page.keyboard.type(String(year).slice(2), { delay: 150 })
 
     await page.waitFor(2000 + rand(2000))
