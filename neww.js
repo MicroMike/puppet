@@ -82,7 +82,7 @@ const createCallback = async (error, response, runnerAccount) => {
       back = !!parentId
       parentId = arg
 
-      socket.emit('client', { parentId, streamId, account, back })
+      clientSocket.emit('client', { parentId, streamId, account, back })
     })
 
     clientSocket.on('mRun', async () => {
