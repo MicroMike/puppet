@@ -116,7 +116,6 @@ clientSocket.on('activate', async (socketId) => {
     account = JSON.parse(body).account;
     clientSocket.emit('client', { parentId, streamId, account, max })
   })
-
 })
 
 clientSocket.on('mRun', async () => {
