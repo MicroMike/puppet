@@ -5,6 +5,7 @@ const shell = require('shelljs');
 const request = require('ajax-request');
 
 const arg = process.argv[2]
+const max = process.argv[3]
 
 let CS = {}
 let timeout
@@ -75,7 +76,7 @@ const createCallback = async (error, response, body) => {
   catch (e) { page = false }
 
   if (!page) {
-    console.log(thread + ' no page')
+    console.log(arg + ' no page')
   }
   else {
     const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
@@ -84,7 +85,7 @@ const createCallback = async (error, response, body) => {
       back = !!parentId
       parentId = arg
 
-      clientSocket.emit('client', { parentId, streamId, account, back })
+      clientSocket.emit('client', { parentId, streamId, account, max })
     })
 
     clientSocket.on('mRun', async () => {
@@ -112,7 +113,7 @@ const main = () => {
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
     if (!b.match(/up to date/g)) {
-      console.log('----- PULL ' + thread + ' -----')
+      console.log('----- PULL ' + arg + ' -----')
       shell.exec('npm run rm && npm run clear', { silent: true })
       shell.exec('git reset --hard origin/master', { silent: true })
       shell.exec('git pull', { silent: true })
