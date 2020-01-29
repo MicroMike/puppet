@@ -19,8 +19,9 @@ try {
 catch (e) { }
 
 const exit = (noExit = false) => {
-  request('https://online-music.herokuapp.com/noUseAccount?' + account)
-  process.exit()
+  request('https://online-music.herokuapp.com/noUseAccount?' + account, () => {
+    process.exit()
+  })
 
   // !noExit && console.log('----- END ' + thread + ' -----')
 
@@ -93,17 +94,17 @@ const createCallback = async (error, response, body) => {
       exit()
     })
 
-    clientSocket.on('Cdisconnect', () => {
-      exit()
-    })
+    // clientSocket.on('Cdisconnect', () => {
+    //   exit()
+    // })
 
-    clientSocket.on('CdisconnectU', () => {
-      exit(true)
-    })
+    // clientSocket.on('CdisconnectU', () => {
+    //   exit(true)
+    // })
 
-    clientSocket.on('killall', () => {
-      exit()
-    })
+    // clientSocket.on('killall', () => {
+    //   exit()
+    // })
   }
 }
 
