@@ -53,8 +53,7 @@ let parentId
 const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
 
 const createCallback = async (error, response, body) => {
-  console.log(body)
-  account = body.account;
+  account = JSON.parse(body).account;
 
   if (!account) { return console.log('no account') }
 
