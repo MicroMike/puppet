@@ -3,6 +3,7 @@ process.setMaxListeners(Infinity)
 const puppet = require('./puppet')
 const shell = require('shelljs');
 const request = require('ajax-request');
+const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
 
 const arg = process.argv[2]
 const max = process.argv[3]
@@ -54,10 +55,7 @@ let parentId
 
 const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
 
-const createCallback = async (error, response, body) => {
-  account = JSON.parse(body).account;
-  console.log(account)
-
+const createCallback = async () => {
   if (!account) { return console.log('no account') }
 
   const accountInfo = account.split(':')
@@ -79,21 +77,10 @@ const createCallback = async (error, response, body) => {
     console.log(arg + ' no page')
   }
   else {
-    const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
-
-    clientSocket.on('activate', async (socketId) => {
-      back = !!parentId
-      parentId = arg
-
-      clientSocket.emit('client', { parentId, streamId, account, max })
-    })
-
-    clientSocket.on('mRun', async () => {
-      const runAccount = require('./runAccount');
-      await runAccount(clientSocket, page, parentId, streamId, process.env, account)
-
-      exit()
-    })
+    const runAccount = require('./runAccount');
+    await runAccount(clientSocket, page, parentId, streamId, process.env, account)
+  
+    exit()
 
     // clientSocket.on('Cdisconnect', () => {
     //   exit()
@@ -109,6 +96,21 @@ const createCallback = async (error, response, body) => {
   }
 }
 
+clientSocket.on('activate', async (socketId) => {
+  back = !!parentId
+  parentId = arg
+
+  request('https://online-music.herokuapp.com/useAccount', (error, response, body)=>{
+    account = JSON.parse(body).account;
+    clientSocket.emit('client', { parentId, streamId, account, max })
+  })
+
+})
+
+clientSocket.on('mRun', async () => {
+  createCallback
+})
+
 const main = () => {
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
@@ -122,7 +124,6 @@ const main = () => {
   }
   catch (e) { }
 
-  request('https://online-music.herokuapp.com/useAccount', createCallback)
 }
 
 main()
