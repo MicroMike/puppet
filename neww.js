@@ -100,18 +100,6 @@ clientSocket.on('activate', async (socketId) => {
   back = !!parentId
   parentId = arg
 
-  request('https://online-music.herokuapp.com/useAccount', (error, response, body)=>{
-    account = JSON.parse(body).account;
-    clientSocket.emit('client', { parentId, streamId, account, max })
-  })
-
-})
-
-clientSocket.on('mRun', async () => {
-  createCallback()
-})
-
-const main = () => {
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
     if (!b.match(/up to date/g)) {
@@ -124,6 +112,13 @@ const main = () => {
   }
   catch (e) { }
 
-}
+  request('https://online-music.herokuapp.com/useAccount', (error, response, body)=>{
+    account = JSON.parse(body).account;
+    clientSocket.emit('client', { parentId, streamId, account, max })
+  })
 
-main()
+})
+
+clientSocket.on('mRun', async () => {
+  createCallback()
+})
