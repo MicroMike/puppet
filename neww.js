@@ -90,10 +90,19 @@ const createCallback = async (error, response, runnerAccount) => {
   else {
     const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
 
-    const runAccount = require('./runAccount');
-    await runAccount(clientSocket, page, arg, streamId, process.env, account)
+    clientSocket.on('activate', async (socketId) => {
+      back = !!parentId
+      parentId = arg
 
-    exit()
+      socket.emit('client', { parentId, streamId, account, back })
+    })
+
+    clientSocket.on('mRun', async () => {
+      const runAccount = require('./runAccount');
+      await runAccount(clientSocket, page, arg, streamId, process.env, account)
+
+      exit()
+    })
   }
 }
 
@@ -114,10 +123,3 @@ const main = () => {
 }
 
 main()
-
-socket.on('activate', async (socketId) => {
-  back = !!parentId
-  parentId = arg
-
-  socket.emit('client', { parentId, streamId, account, back })
-})
