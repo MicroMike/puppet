@@ -36,7 +36,7 @@ const fct = async (i = 1) => {
   console.log('----- START ' + i + ' ----- ')
 
   const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
-  shell.exec('xvfb-run -a node --max-old-space-size=' + ram + ' neww ' + arg + ' ' + nb, () => {
+  shell.exec('node --max-old-space-size=' + ram + ' neww ' + arg + ' ' + nb, () => {
     try {
       const b = shell.exec('git fetch && git status', { silent: true })
       if (!b.match(/up to date/g)) {
