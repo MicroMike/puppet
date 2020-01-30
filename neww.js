@@ -3,7 +3,6 @@ process.setMaxListeners(Infinity)
 const puppet = require('./puppet')
 const shell = require('shelljs');
 const request = require('ajax-request');
-const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
 
 const arg = process.argv[2]
 const max = process.argv[3]
@@ -37,7 +36,45 @@ let parentId
 
 const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
 
-const createCallback = async () => {
+const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
+
+clientSocket.on('activate', async (socketId) => {
+  back = !!parentId
+  parentId = arg
+
+  try {
+    const b = shell.exec('git fetch && git status', { silent: true })
+    if (!b.match(/up to date/g)) {
+      console.log('----- PULL ' + arg + ' -----')
+      shell.exec('npm run rm && npm run clear', { silent: true })
+      shell.exec('git reset --hard origin/master', { silent: true })
+      shell.exec('git pull', { silent: true })
+    }
+    shell.exec('npm run buff', { silent: true })
+  }
+  catch (e) { }
+
+  if (!account) {
+    clientSocket.emit('canRun', { parentId, streamId, max })
+  }
+  else {
+    clientSocket.emit('client', { parentId, streamId, account, max, back })
+  }
+})
+
+clientSocket.on('canRun', async () => {
+  request('https://online-music.herokuapp.com/useAccount', (error, response, body) => {
+    account = JSON.parse(body).account;
+    if (account) {
+      clientSocket.emit('client', { parentId, streamId, account, max })
+    }
+    else {
+      exit()
+    }
+  })
+})
+
+clientSocket.on('mRun', async () => {
   if (!account) { return console.log('no account') }
 
   const accountInfo = account.split(':')
@@ -78,44 +115,4 @@ const createCallback = async () => {
     //   exit()
     // })
   }
-}
-
-clientSocket.on('activate', async (socketId) => {
-  back = !!parentId
-  parentId = arg
-
-  try {
-    const b = shell.exec('git fetch && git status', { silent: true })
-    if (!b.match(/up to date/g)) {
-      console.log('----- PULL ' + arg + ' -----')
-      shell.exec('npm run rm && npm run clear', { silent: true })
-      shell.exec('git reset --hard origin/master', { silent: true })
-      shell.exec('git pull', { silent: true })
-    }
-    shell.exec('npm run buff', { silent: true })
-  }
-  catch (e) { }
-
-  if (!account) {
-    clientSocket.emit('canRun', { parentId, streamId, max })
-  }
-  else {
-    clientSocket.emit('client', { parentId, streamId, account, max, back })
-  }
-})
-
-clientSocket.on('canRun', async () => {
-  request('https://online-music.herokuapp.com/useAccount', (error, response, body) => {
-    account = JSON.parse(body).account;
-    if (account) {
-      clientSocket.emit('client', { parentId, streamId, account, max })
-    }
-    else {
-      exit()
-    }
-  })
-})
-
-clientSocket.on('mRun', async () => {
-  createCallback()
 })
