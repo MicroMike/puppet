@@ -112,9 +112,12 @@ clientSocket.on('activate', async (socketId) => {
   }
   catch (e) { }
 
-  if (back) { return }
-
-  clientSocket.emit('canRun', { parentId, max })
+  if (back) {
+    clientSocket.emit('client', { parentId, streamId, account, max, back })
+  }
+  else {
+    clientSocket.emit('canRun', { parentId, max })
+  }
 })
 
 clientSocket.on('canRun', async () => {
