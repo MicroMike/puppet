@@ -59,7 +59,7 @@ const fct = async (i = 1) => {
       if (close) { return }
       fct(++i)
     }
-  }, 1000 * 60 * 3);
+  }, rand(1000 * 60 * 2));
 }
 
 shell.exec('killall -9 chrome', { silent: true })

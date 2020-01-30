@@ -79,7 +79,7 @@ const createCallback = async () => {
 
     const runAccount = require('./runAccount');
     await runAccount(clientSocket, page, parentId, streamId, process.env, account)
-  
+
     exit()
 
     // clientSocket.on('Cdisconnect', () => {
@@ -112,7 +112,7 @@ clientSocket.on('activate', async (socketId) => {
   }
   catch (e) { }
 
-  request('https://online-music.herokuapp.com/useAccount', (error, response, body)=>{
+  request('https://online-music.herokuapp.com/useAccount', (error, response, body) => {
     account = JSON.parse(body).account;
     clientSocket.emit('client', { parentId, streamId, account, max })
   })
