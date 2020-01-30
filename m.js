@@ -58,8 +58,9 @@ const fct = async (i = 1) => {
 shell.exec('killall -9 chrome', { silent: true })
 
 for (let i = 1; i <= nb; i++) {
+  if (close) { break }
   setTimeout(() => {
-    if (close) { break }
+    if (close) { return }
     fct(i)
   }, 1000 * 10 * i);
 }
