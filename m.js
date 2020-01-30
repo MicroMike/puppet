@@ -15,8 +15,10 @@ const rand = (max, min) => {
 process.on('SIGINT', () => {
   close = true
   console.log('----- END -----')
-  shell.exec('killall -9 node', { silent: true })
-  process.exit()
+  request('https://online-music.herokuapp.com/clearUsed', () => {
+    shell.exec('killall -9 node', { silent: true })
+    process.exit()
+  })
 })
 
 const fct = async (i = 1) => {
