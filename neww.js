@@ -96,7 +96,7 @@ clientSocket.on('activate', async (socketId) => {
   }
   catch (e) { }
 
-  clientSocket.emit('canRun', { parentId, streamId, max, back })
+  clientSocket.emit('canRun', { parentId, streamId, max, back, account })
 })
 
 clientSocket.on('canRun', async () => {
