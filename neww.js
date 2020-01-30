@@ -123,7 +123,12 @@ clientSocket.on('activate', async (socketId) => {
 clientSocket.on('canRun', async () => {
   request('https://online-music.herokuapp.com/useAccount', (error, response, body) => {
     account = JSON.parse(body).account;
-    clientSocket.emit('client', { parentId, streamId, account, max })
+    if (account) {
+      clientSocket.emit('client', { parentId, streamId, account, max })
+    }
+    else {
+      clientSocket.emit('canRun', { parentId, max })
+    }
   })
 })
 
