@@ -127,7 +127,7 @@ clientSocket.on('canRun', async () => {
       clientSocket.emit('client', { parentId, streamId, account, max })
     }
     else {
-      clientSocket.emit('canRun', { parentId, max })
+      exit()
     }
   })
 })
