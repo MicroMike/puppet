@@ -18,26 +18,10 @@ try {
 }
 catch (e) { }
 
-const exit = (noExit = false) => {
+const exit = () => {
   request('https://online-music.herokuapp.com/noUseAccount?' + account, () => {
     process.exit()
   })
-
-  // !noExit && console.log('----- END ' + thread + ' -----')
-
-  // Object.values(CS).forEach(({ clientSocket, page, streamId }) => {
-  //   clientSocket.disconnect()
-  //   page.cls(true)
-  //   delete CS[streamId]
-  // })
-
-  // clearTimeout(timeout)
-
-  // if (!noExit) {
-  //   close = true
-  //   socket.disconnect()
-  //   process.exit()
-  // }
 }
 
 process.on('SIGINT', () => {
