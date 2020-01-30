@@ -37,7 +37,7 @@ const fct = async (i = 1) => {
   }
   catch (e) { }
 
-  console.log('----- START ' + i + ' ----- ')
+  console.log('----- START ' + arg + ' ' + nb + ' ----- ')
 
   const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
   shell.exec('node neww ' + arg + ' ' + nb, () => {
