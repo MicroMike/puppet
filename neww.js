@@ -77,6 +77,8 @@ const createCallback = async () => {
     console.log(arg + ' no page')
   }
   else {
+    await page.gotoUrl('https://google.com')
+
     const runAccount = require('./runAccount');
     await runAccount(clientSocket, page, parentId, streamId, process.env, account)
   
