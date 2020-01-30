@@ -13,8 +13,6 @@ let timeout
 let close = false
 let account
 
-shell.exec('killall -9 chrome', { silent: true })
-
 try {
   shell.exec('expressvpn disconnect', { silent: true })
 }

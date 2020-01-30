@@ -16,7 +16,6 @@ process.on('SIGINT', () => {
   close = true
   console.log('----- END -----')
   request('https://online-music.herokuapp.com/clearUsed', () => {
-    shell.exec('killall -9 chrome', { silent: true })
     shell.exec('killall -9 node', { silent: true })
     process.exit()
   })
@@ -62,5 +61,7 @@ const fct = async (i = 1) => {
     }
   }, 1000 * 60 * 3);
 }
+
+shell.exec('killall -9 chrome', { silent: true })
 
 fct()
