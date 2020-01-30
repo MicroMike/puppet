@@ -53,15 +53,11 @@ const fct = async (i = 1) => {
     if (close) { return }
     fct(i)
   })
-
-  setTimeout(() => {
-    if (i <= nb) {
-      if (close) { return }
-      fct(++i)
-    }
-  }, rand(1000 * 60 * 2));
 }
 
 shell.exec('killall -9 chrome', { silent: true })
 
-fct()
+for (let i = 1; i <= thread; i++) {
+  if (close) { break }
+  fct(i)
+}

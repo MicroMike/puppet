@@ -82,9 +82,9 @@ const createCallback = async () => {
 
     exit()
 
-    // clientSocket.on('Cdisconnect', () => {
-    //   exit()
-    // })
+    clientSocket.on('Cdisconnect', () => {
+      exit()
+    })
 
     // clientSocket.on('CdisconnectU', () => {
     //   exit(true)
