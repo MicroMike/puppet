@@ -65,6 +65,18 @@ clientSocket.on('canRun', async () => {
   })
 })
 
+clientSocket.on('Cdisconnect', () => {
+  exit()
+})
+
+// clientSocket.on('CdisconnectU', () => {
+//   exit(true)
+// })
+
+// clientSocket.on('killall', () => {
+//   exit()
+// })
+
 clientSocket.on('mRun', async () => {
   if (!account) { return console.log('no account') }
 
@@ -91,17 +103,5 @@ clientSocket.on('mRun', async () => {
     await runAccount(clientSocket, page, parentId, streamId, process.env, account)
 
     exit()
-
-    clientSocket.on('Cdisconnect', () => {
-      exit()
-    })
-
-    // clientSocket.on('CdisconnectU', () => {
-    //   exit(true)
-    // })
-
-    // clientSocket.on('killall', () => {
-    //   exit()
-    // })
   }
 })
