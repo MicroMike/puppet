@@ -16,9 +16,7 @@ const rand = (max, min) => {
 process.on('SIGINT', () => {
   close = true
   request('https://online-music.herokuapp.com/clearUsed', () => {
-    console.log('----- END -----')
-    shell.exec('killall -9 chrome', { silent: true })
-    shell.exec('killall -9 node', { silent: true })
+    console.log('----- END ' + arg + ' -----')
     process.exit()
   })
 })
@@ -26,32 +24,10 @@ process.on('SIGINT', () => {
 const fct = async (i = 1) => {
   if (close) { return }
 
-  try {
-    const b = shell.exec('git fetch && git status', { silent: true })
-    if (!b.match(/up to date/g)) {
-      console.log('----- PULL ' + thread + ' -----')
-      shell.exec('npm run rm && npm run clear', { silent: true })
-      shell.exec('git reset --hard origin/master', { silent: true })
-      shell.exec('git pull', { silent: true })
-    }
-  }
-  catch (e) { }
-
-  console.log('----- START ' + arg + ' ' + nb + ' ----- ')
+  console.log('----- START ' + arg + ' ----- ')
 
   const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
   shell.exec('node neww ' + arg + ' ' + nb, () => {
-    try {
-      const b = shell.exec('git fetch && git status', { silent: true })
-      if (!b.match(/up to date/g)) {
-        console.log('----- PULL ' + thread + ' -----')
-        shell.exec('npm run rm && npm run clear', { silent: true })
-        shell.exec('git reset --hard origin/master', { silent: true })
-        shell.exec('git pull', { silent: true })
-      }
-    }
-    catch (e) { }
-
     if (close) { return }
     fct(i)
   })
