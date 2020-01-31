@@ -56,6 +56,11 @@ const fct = async (i = 1) => {
 
 shell.exec('killall -9 chrome', { silent: true })
 
+try {
+  shell.exec('expressvpn disconnect', { silent: true })
+}
+catch (e) { }
+
 for (let i = 1; i <= thread; i++) {
   if (close) { break }
   fct(i)

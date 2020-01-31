@@ -7,17 +7,19 @@ const request = require('ajax-request');
 const arg = process.argv[2]
 const max = process.argv[3]
 
-let CS = {}
-let timeout
-let close = false
-let account
-
-try {
-  shell.exec('expressvpn disconnect', { silent: true })
+const rand = (max, min) => {
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
-catch (e) { }
+
+const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
+const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
+
+let account
+let back
+let parentId
 
 const exit = () => {
+  clientSocket && clientSocket.disconnect()
   request('https://online-music.herokuapp.com/noUseAccount?' + account, () => {
     process.exit()
   })
@@ -26,17 +28,6 @@ const exit = () => {
 process.on('SIGINT', () => {
   exit()
 })
-
-const rand = (max, min) => {
-  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
-}
-
-let back
-let parentId
-
-const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
-
-const clientSocket = require('socket.io-client')('https://online-music.herokuapp.com', { transports: ['websocket'] });
 
 clientSocket.on('activate', async (socketId) => {
   back = !!parentId
