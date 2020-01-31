@@ -9,10 +9,6 @@ const nb = Number(process.argv[3]) || 1
 
 let close = false
 
-const rand = (max, min) => {
-  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
-}
-
 process.on('SIGINT', () => {
   close = true
   request('https://online-music.herokuapp.com/clearUsed', () => {
@@ -35,8 +31,5 @@ const fct = async (i = 1) => {
 
 for (let i = 1; i <= nb; i++) {
   if (close) { break }
-  setTimeout(() => {
-    if (close) { return }
-    fct(i)
-  }, 1000 * 3 * i);
+  fct(i)
 }
