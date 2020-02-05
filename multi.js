@@ -11,10 +11,8 @@ let close = false
 
 process.on('SIGINT', () => {
   close = true
-  request('https://online-music.herokuapp.com/clearUsed', () => {
-    console.log('----- END ' + arg + ' -----')
-    process.exit()
-  })
+  console.log('----- END ' + arg + ' -----')
+  process.exit()
 })
 
 const fct = async (i = 1) => {
