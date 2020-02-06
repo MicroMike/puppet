@@ -249,9 +249,11 @@ const main = async () => {
     // await tidalConnect(email)
 
     await page.gotoUrl('https://my.tidal.com/')
-    await page.inst('.login-email', email, true)
-    await page.inst('[name="password"]', pass, true)
-    await page.clk('.btn.action.login-cta')
+    await page.clk('#login-form button')
+    // await page.inst('.login-email', email, true)
+    // await page.inst('[name="password"]', pass, true)
+    // await page.clk('.btn.action.login-cta')
+    await page.clk('.btn-primary-outline')
     await page.clk('.box-family a')
 
     const addTidal = async () => {
