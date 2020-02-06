@@ -227,7 +227,8 @@ const main = async () => {
         await waitForPass()
 
         await tidalLog.inst(password, pass, true)
-        await tidalLog.clk('.btn-client-primary', 'tidal connect')
+        await page.waitFor(5000 + rand(2000))
+        await tidalLog.clk('button.btn-success.btn-client-primary', 'tidal connect')
 
         const logged = await tidalLog.wfs(loggedDom)
         if (!logged) { throw 'del' }
