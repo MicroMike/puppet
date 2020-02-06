@@ -130,7 +130,7 @@ const main = async () => {
     // await page.clk('button.btn-success:enabled')
 
     await page.waitFor(2000 + rand(2000))
-    await page.inst('input#cardholderName', 'OSNAUSE KIME', true)
+    await page.inst('input#cardholderName', email.split('@')[0].replace('.', ' '), true)
 
     await page.waitFor(2000 + rand(2000))
     await page.keyboard.press('Tab');
@@ -227,7 +227,7 @@ const main = async () => {
         await waitForPass()
 
         await tidalLog.inst(password, pass, true)
-        await tidalLog.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
+        await tidalLog.clk('.btn-client-primary', 'tidal connect')
 
         const logged = await tidalLog.wfs(loggedDom)
         if (!logged) { throw 'del' }
