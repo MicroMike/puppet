@@ -101,7 +101,7 @@ clientSocket.on('mRun', async () => {
   }
   else {
     const runAccount = require('./runAccount');
-    await runAccount(clientSocket, page, parentId, streamId, process.env, account)
+    await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
 
     exit()
   }

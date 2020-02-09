@@ -1,4 +1,4 @@
-module.exports = async (socket, page, parentId, streamId, env, account) => {
+module.exports = async (socket, page, parentId, streamId, check, account) => {
   return new Promise(async (r) => {
     const request = require('ajax-request');
     const shell = require('shelljs');
@@ -16,8 +16,6 @@ module.exports = async (socket, page, parentId, streamId, env, account) => {
 
     const al = require('./albums')
     let albums = al[player]
-
-    const check = env.CHECK
 
     const socketEmit = (event, params) => {
       socket.emit(event, {
