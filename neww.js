@@ -7,6 +7,8 @@ const request = require('ajax-request');
 const arg = process.argv[2]
 const max = process.argv[3]
 
+const check = arg === 'check'
+
 const rand = (max, min) => {
   return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
@@ -54,7 +56,7 @@ clientSocket.on('activate', async (socketId) => {
 })
 
 clientSocket.on('canRun', async () => {
-  const accountType = process.env.CHECK ? 'checkAccount' : 'useAccount'
+  const accountType = check ? 'checkAccount' : 'useAccount'
   request('https://online-music.herokuapp.com/' + accountType, (error, response, body) => {
     account = JSON.parse(body).account;
     if (account) {
@@ -85,7 +87,7 @@ clientSocket.on('mRun', async () => {
   let player = accountInfo[0]
   let login = accountInfo[1]
 
-  if (process.env.CHECK) {
+  if (check) {
     shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
   }
 
