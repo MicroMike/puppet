@@ -407,7 +407,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
             await waitForPass()
             await page.inst(password, pass, true)
-            await page.clk('body > div > div > div > div > div > div > div > form > button', 'tidal connect')
+            await page.waitFor(5000 + rand(2000))
+            await page.clk('button.btn-success.btn-client-primary', 'tidal connect')
 
             const logged = await page.wfs(loggedDom)
             if (!logged) { throw 'del' }
