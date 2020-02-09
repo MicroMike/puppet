@@ -54,7 +54,8 @@ clientSocket.on('activate', async (socketId) => {
 })
 
 clientSocket.on('canRun', async () => {
-  request('https://online-music.herokuapp.com/useAccount', (error, response, body) => {
+  const accountType = process.env.CHECK ? 'checkAccount' : 'useAccount'
+  request('https://online-music.herokuapp.com/' + accountType, (error, response, body) => {
     account = JSON.parse(body).account;
     if (account) {
       clientSocket.emit('client', { parentId, streamId, account, max })
