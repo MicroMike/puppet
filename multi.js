@@ -9,16 +9,11 @@ const nb = Number(process.argv[3]) || 1
 
 let close = false
 
-const exit = () => {
+process.on('SIGINT', () => {
   close = true
   shell.exec('killall -9 chrome', { silent: true })
-  shell.exec('killall -9 node', { silent: true })
   console.log('----- END ' + arg + ' -----')
   process.exit()
-}
-
-process.on('SIGINT', () => {
-  exit()
 })
 
 const fct = async (i = 1) => {
@@ -39,7 +34,9 @@ const fct = async (i = 1) => {
     }
     catch (e) { }
 
-    if (b === '1') { exit() }
+    if (b === '1') {
+      shell.exec('killall -9 chrome', { silent: true })
+    }
 
     if (close) { return }
     fct(i)
