@@ -80,6 +80,10 @@ clientSocket.on('Cdisconnect', () => {
 //   exit()
 // })
 
+clientSocket.on('accountAlreadyUsed', async () => {
+  clientSocket.emit('canRun', { parentId, streamId, max })
+})
+
 clientSocket.on('mRun', async () => {
   if (!account) { return console.log('no account') }
 
