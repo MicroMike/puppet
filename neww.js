@@ -20,10 +20,10 @@ let account
 let back
 let parentId
 
-const exit = () => {
+const exit = (code = '0') => {
   clientSocket && clientSocket.disconnect()
   request('https://online-music.herokuapp.com/noUseAccount?' + account, () => {
-    process.exit()
+    process.exit(code)
   })
 }
 
@@ -69,7 +69,7 @@ clientSocket.on('canRun', async () => {
 })
 
 clientSocket.on('Cdisconnect', () => {
-  exit()
+  exit('1')
 })
 
 // clientSocket.on('CdisconnectU', () => {

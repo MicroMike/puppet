@@ -9,10 +9,16 @@ const nb = Number(process.argv[3]) || 1
 
 let close = false
 
-process.on('SIGINT', () => {
+const exit = () => {
   close = true
+  shell.exec('killall -9 chrome', { silent: true })
+  shell.exec('killall -9 node', { silent: true })
   console.log('----- END ' + arg + ' -----')
   process.exit()
+}
+
+process.on('SIGINT', () => {
+  exit()
 })
 
 const fct = async (i = 1) => {
@@ -21,7 +27,7 @@ const fct = async (i = 1) => {
   console.log('----- START ' + arg + ' ----- ')
 
   const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
-  shell.exec('node --max-old-space-size=' + ram + ' neww ' + arg + ' ' + nb, () => {
+  shell.exec('node --max-old-space-size=' + ram + ' neww ' + arg + ' ' + nb, (a, b, c) => {
     try {
       const b = shell.exec('git fetch && git status', { silent: true })
       if (!b.match(/up to date/g)) {
@@ -32,6 +38,8 @@ const fct = async (i = 1) => {
       }
     }
     catch (e) { }
+
+    if (b === '1') { exit() }
 
     if (close) { return }
     fct(i)
