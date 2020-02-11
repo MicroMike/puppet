@@ -19,8 +19,6 @@ process.on('SIGINT', () => {
 const fct = async (i = 1) => {
   if (close) { return }
 
-  console.log('----- START ' + arg + ' ----- ')
-
   const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
   shell.exec('node --max-old-space-size=' + ram + ' neww ' + arg + ' ' + nb, (a, b, c) => {
     try {
