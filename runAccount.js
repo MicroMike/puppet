@@ -297,7 +297,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
 
         usedDom = '.WARN'
-        reLog = 'button.btn-success.btn-client-primary'
+        reLog = 'button.btn-client-primary'
 
         timeLine = '[class*="currentTime"]'
         callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
