@@ -25,6 +25,8 @@ const fct = async (i = 1) => {
 
   const current = arg + i
 
+  console.log('----- START ' + current + ' ----- ')
+
   try {
     const b = shell.exec('git fetch && git status', { silent: true })
     if (!b.match(/up to date/g)) {
