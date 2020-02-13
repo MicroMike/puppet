@@ -100,15 +100,12 @@ clientSocket.on('mRun', async () => {
   try {
     page = await puppet('save/' + player + '_' + login, player.match(/napster/))
   }
-  catch (e) { page = false }
-
-  if (!page) {
-    console.log(arg + ' no page')
-  }
-  else {
-    const runAccount = require('./runAccount');
-    await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
-
+  catch (e) {
     exit()
   }
+
+  const runAccount = require('./runAccount');
+  await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
+
+  exit()
 })
