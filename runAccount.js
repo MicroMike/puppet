@@ -236,7 +236,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
     try {
       if (player === 'napster') {
         url = 'https://app.napster.com/login/'
-        loggedDom = '#track .content'
+        loggedDom = '.icon-settings2'
 
         username = '#username'
         password = '#password'
