@@ -235,18 +235,18 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
     try {
       if (player === 'napster') {
-        url = 'https://micro-napster.herokuapp.com/'
+        url = 'https://app.napster.com/login/'
         loggedDom = '#track .content'
 
         username = '#username'
         password = '#password'
-        loginBtn = '.sign-in-btn.button'
+        loginBtn = '.signin'
         loginError = '.login-error'
 
         unlock1 = '.player-btn[title="Next Song"]'
-        playBtn = '#track .content'
-        shuffleBtn = '.player-btn[title="Shuffle"]'
-        nextBtn = '.player-btn[title="Next Song"]'
+        playBtn = '.track-list-header .shuffle-button.icon-shuffle2'
+        shuffleBtn = ''
+        nextBtn = 'player-advance-button.icon-next2'
         // repeatBtn = '.repeat-button'
         // repeatBtnOk = '.repeat-button.repeat'
 
@@ -724,6 +724,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
           if (player === 'napster') { await napsterCheck() }
 
+          if (player === 'tidal') {
+            await page.evaluate(() => {
+              document.querySelectorAll('[class*=notification] button').forEach(e => e.click())
+            })
+          }
+
           if (used) {
             if (player === 'tidal') {
               used = await page.get(usedDom)
@@ -783,7 +789,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
           if (freeze > 1) {
             if (freeze > 5) {
-              throw player === 'napster' ? 'used' : 'freeze'
+              throw 'freeze'
             }
             else {
               socketEmit('playerInfos', { time: t1, freeze: true, countPlays })
