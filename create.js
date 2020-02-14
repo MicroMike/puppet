@@ -34,7 +34,7 @@ else {
 }
 
 const mails = [
-  '@gmail.com',
+  '@netmail.dk',
   '@hotmail.com',
   '@hotmail.fr',
 ]
