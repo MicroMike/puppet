@@ -34,10 +34,9 @@ else {
 }
 
 const mails = [
-  '@mega.zik.dj',
-  '@nospam.ze.tc',
-  '@speed.1s.fr',
-  '@cool.fr.nf',
+  '@gmail.com',
+  '@hotmail.com',
+  '@hotmail.fr',
 ]
 
 const getEmail = () => {

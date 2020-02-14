@@ -55,10 +55,6 @@ clientSocket.on('activate', async (socketId) => {
   }
 })
 
-clientSocket.on('retry', () => {
-  clientSocket.emit('canRun', { parentId, streamId, max })
-})
-
 clientSocket.on('canRun', async () => {
   const accountType = check ? 'checkAccount' : 'useAccount'
   request('https://online-music.herokuapp.com/' + accountType, (error, response, body) => {
