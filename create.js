@@ -35,8 +35,6 @@ else {
 
 const mails = [
   '@netmail.dk',
-  '@hotmail.com',
-  '@hotmail.fr',
 ]
 
 const getEmail = () => {

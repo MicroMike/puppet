@@ -662,7 +662,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             }
           }
           else {
-            await page.rload()
+            await page.gotoUrl(album())
 
             const logged = await page.wfs(loggedDom)
             if (!logged) { throw 'logout' }
