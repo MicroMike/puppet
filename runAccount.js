@@ -252,8 +252,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
         usedDom = '.player-error-box'
 
-        timeLine = '.demobox > div.text'
-        callback = a => (a.split('/')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
+        timeLine = '.player-time'
+        callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
       }
       if (player === 'amazon') {
         url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
