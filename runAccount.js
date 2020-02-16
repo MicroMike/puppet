@@ -355,7 +355,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
       // ***************************************************************************************************************************************************************
 
       const napsterCheck = async () => {
-        const issueAccount = await page.ext('#del')
+        const issueAccount = await page.ext('.account-issue')
         if (issueAccount) { throw 'del' }
       }
 
