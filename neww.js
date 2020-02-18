@@ -5,7 +5,7 @@ const shell = require('shelljs');
 const request = require('ajax-request');
 
 const arg = process.argv[2]
-const max = process.argv[3]
+const max = process.argv[3] || 1
 
 const check = arg === 'check'
 
