@@ -227,6 +227,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         request('https://online-music.herokuapp.com/error?del/' + account, function (error, response, body) { })
       }
       else if (code === 7) {
+        if (player === 'napster') {
+          await takeScreenshot(e)
+        }
         socketEmit('used')
       }
 
