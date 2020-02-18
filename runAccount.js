@@ -800,10 +800,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
                 await page.jClk(replayBtn)
               }
             }
-            if (freeze === 2) {
-              await page.jClk(nextBtn)
-              await takeScreenshot('nextBtn')
-            }
           }
           else {
             if (freeze > 0) { socketEmit('playerInfos', { time: t1, ok: true, countPlays }) }
@@ -811,7 +807,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           }
 
           if (freeze > 0) {
-            if (freeze > 5) {
+            if (freeze > 3) {
               await takeScreenshot('freeze')
               throw 'freeze'
             }
