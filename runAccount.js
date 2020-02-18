@@ -137,6 +137,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
     let playBtn
     let nextBtn
     let pauseBtn
+    let replayBtn
     let shuffleBtn
     let repeatBtn
     let repeatBtnOk
@@ -248,8 +249,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
         unlock1 = '.player-btn[title="Next Song"]'
         playBtn = '.track-list-header .shuffle-button.icon-shuffle2'
-        shuffleBtn = ''
-        nextBtn = 'player-advance-button.icon-next2'
+        pauseBtn = '.icon-pause2'
+        replayBtn = '.icon-play-button'
+        // shuffleBtn = ''
+        nextBtn = '.player-advance-button.icon-next2'
         // repeatBtn = '.repeat-button'
         // repeatBtnOk = '.repeat-button.repeat'
 
@@ -292,9 +295,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         unlock1 = '[class*="playbackToggle"]'
         unlock2 = '[class*="playbackToggle"]'
         playBtn = '[data-test="header-controls"] [data-track--button-id="shuffleAll"]'
-        pauseBtn = '.playerIconPauseRing'
-        repeatBtn = '[class*="leftColumn"] [class*="repeat"]:not([class*="all"])'
-        shuffleBtn = '[class*="leftColumn"] [class*="shuffleButton"]:not([class*="active"])'
+        pauseBtn = '[class*="playbackToggle"]'
+        replayBtn = '[class*="playbackToggle"]'
+        // repeatBtn = '[class*="leftColumn"] [class*="repeat"]:not([class*="all"])'
+        // shuffleBtn = '[class*="leftColumn"] [class*="shuffleButton"]:not([class*="active"])'
         nextBtn = '[data-test="next"]'
 
         keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
@@ -717,8 +721,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
       const loop = async () => {
         try {
-          repeatBtn && await page.jClk(repeatBtn)
-          shuffleBtn && await page.jClk(shuffleBtn)
+          // repeatBtn && await page.jClk(repeatBtn)
+          // shuffleBtn && await page.jClk(shuffleBtn)
 
           used = await page.ext(usedDom)
 
@@ -782,11 +786,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
 
             if (freeze === 1) {
-              await page.jClk(nextBtn)
+              await page.jClk(pauseBtn)
+              await page.waitFor(5000 + rand(2000))
+              await page.jClk(replayBtn)
             }
-            if (freeze === 2 && player === 'napster') {
-              await page.jClk('.genre-btn')
-              await page.jClk(playBtn)
+            if (freeze === 2) {
+              await page.jClk(nextBtn)
             }
           }
           else {
