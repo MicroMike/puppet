@@ -793,14 +793,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             if (freeze === 1) {
               if (player === 'tidal') {
                 await page.jClk(playBtn)
-                await takeScreenshot('playBtn')
               }
               else {
-                await takeScreenshot('pauseBtn')
                 await page.jClk(pauseBtn)
                 await page.waitFor(rand(2000))
                 await page.jClk(replayBtn)
-                await takeScreenshot('replayBtn')
               }
             }
             if (freeze === 2) {
