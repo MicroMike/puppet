@@ -785,12 +785,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             ++freeze
             socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
 
-            if (freeze === 1) {
+            if (freeze === 3) {
               await page.jClk(pauseBtn)
               await page.waitFor(5000 + rand(2000))
               await page.jClk(replayBtn)
             }
-            if (freeze === 2) {
+            if (freeze === 4) {
               await page.jClk(nextBtn)
             }
           }
@@ -799,7 +799,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             freeze = 0
           }
 
-          if (freeze > 1) {
+          if (freeze > 0) {
             if (freeze > 5) {
               throw 'freeze'
             }
