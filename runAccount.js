@@ -802,7 +802,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             freeze = 0
           }
 
-          if (freeze > 0) {
+          if (freeze > 2) {
             if (freeze > 5) {
               await takeScreenshot('freeze')
               throw 'freeze'
