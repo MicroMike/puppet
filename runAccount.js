@@ -66,7 +66,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
       try { await page.cls(true) }
       catch (e) { }
 
-      socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
+      if (e !== 'loop') {
+        socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
+      }
+
       r(socket)
     }
 
