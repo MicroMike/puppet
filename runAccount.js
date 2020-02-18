@@ -791,11 +791,17 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
 
             if (freeze === 1) {
-              await takeScreenshot('pauseBtn')
-              await page.jClk(pauseBtn)
-              await page.waitFor(rand(2000))
-              await page.jClk(replayBtn)
-              await takeScreenshot('replayBtn')
+              if (player === 'tidal') {
+                await page.jClk(playBtn)
+                await takeScreenshot('playBtn')
+              }
+              else {
+                await takeScreenshot('pauseBtn')
+                await page.jClk(pauseBtn)
+                await page.waitFor(rand(2000))
+                await page.jClk(replayBtn)
+                await takeScreenshot('replayBtn')
+              }
             }
             if (freeze === 2) {
               await page.jClk(nextBtn)
