@@ -291,7 +291,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
         unlock1 = '[class*="playbackToggle"]'
         unlock2 = '[class*="playbackToggle"]'
-        playBtn = 'main [data-test="header-controls"] button + button'
+        playBtn = '[data-test="header-controls"] [data-track--button-id="shuffleAll"]'
         pauseBtn = '.playerIconPauseRing'
         repeatBtn = '[class*="leftColumn"] [class*="repeat"]:not([class*="all"])'
         shuffleBtn = '[class*="leftColumn"] [class*="shuffleButton"]:not([class*="active"])'
