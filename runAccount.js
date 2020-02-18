@@ -791,7 +791,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             if (freeze === 1) {
               await takeScreenshot('pauseBtn')
               await page.jClk(pauseBtn)
-              await page.waitFor(5000 + rand(2000))
+              await page.waitFor(rand(2000))
               await page.jClk(replayBtn)
               await takeScreenshot('replayBtn')
             }
