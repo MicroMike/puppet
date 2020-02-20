@@ -8,6 +8,8 @@ const arg = process.argv[2]
 const nb = Number(process.argv[3]) || 1
 const thread = Number(process.argv[4]) || 1
 
+const check = arg === 'check'
+
 let close = false
 
 process.on('SIGINT', () => {
@@ -39,7 +41,7 @@ const fct = async (i = 1) => {
   catch (e) { }
 
   const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
-  shell.exec((process.env.CHECK ? '' : 'xvfb-run -a') + ' node --max-old-space-size=' + ram + ' multi ' + (process.env.CHECK ? 'check' : current) + ' ' + nb, () => {
+  shell.exec((check ? '' : 'xvfb-run -a') + ' node --max-old-space-size=' + ram + ' multi ' + (check ? 'check' : current) + ' ' + nb, () => {
     if (close) { return }
     fct(i)
   })
