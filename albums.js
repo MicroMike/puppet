@@ -5,7 +5,7 @@ module.exports = {
     'https://app.napster.com/artist/lenitap/album/above-everybody-wind', //hanke
     'https://app.napster.com/artist/erati/album/he-knows-she-knows', // yohann
     'https://app.napster.com/artist/benriam/album/the-gift-give', // benriam
-    // 'https://app.napster.com/artist/john-millson/album/my-stash', // 
+    'https://app.napster.com/artist/john-millson/album/my-stash', // 
     // 'https://app.napster.com/artist/prestync/album/marching-smile',
     // 'https://app.napster.com/artist/prestync/album/avalanches-of-ability',
     // 'https://app.napster.com/artist/micro-beats-and-breaks/album/micro-one',
@@ -54,7 +54,7 @@ module.exports = {
     'https://listen.tidal.com/album/113608807',
     'https://listen.tidal.com/album/113976818',
     // 'https://listen.tidal.com/album/114337349',//avalanches-of-ability
-    // 'https://listen.tidal.com/album/115558312', // my stash
+    'https://listen.tidal.com/album/115558312', // my stash
   ],
   spotify: [
     'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
