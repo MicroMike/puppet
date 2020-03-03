@@ -197,6 +197,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
       code = e === 'firstPlay' ? 210 : code
       code = e === 'failedLoop' ? 210 : code
       code = e === 'failedTime' ? 210 : code
+      code = e === 'logout' ? 220 : code
 
       // code = e === 'retry' ? 5 : code
       // code = e === 'crashed' ? 6 : code
@@ -213,7 +214,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         request('https://online-music.herokuapp.com/error?check/' + account, function (error, response, body) { })
       }
 
-      if (code >= 4 && code !== 7) {
+      if (code >= 4 && code !== 7 && code !== 220) {
         socket.emit('outLog', e)
         logError(e)
         console.log(getTime() + " ERR ", account, e)
