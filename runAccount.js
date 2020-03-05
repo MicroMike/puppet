@@ -771,7 +771,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
               nextMusic = true
               countPlays++
 
-              // await page.jClk(nextBtn)
+              if (currentAlbum === 'https://app.napster.com/artist/john-millson/album/my-stash') {
+                rand(2) && await page.jClk(nextBtn)
+              }
+
               socketEmit('plays', { next: true, currentAlbum, matchTime, countPlays })
               socketEmit('playerInfos', { time: t1, ok: true, countPlays })
             }
