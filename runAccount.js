@@ -719,9 +719,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
       let startLoop = false
       let exitLoop = false
 
-      let changePlay = rand(60)
-      let change = false
-      let changeOnce = false
+      let changePlay = rand(15)
+      let changeLoop = 0
 
       const loop = async () => {
         try {
@@ -784,6 +783,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           }
 
           if (countPlays > changePlay) {
+            await page.gotoUrl(album())
+            await waitForPlayBtn('changePlay')
+
+            countPlays === 0
+            changePlay = rand(15)
+            changeLoop++
+          }
+
+          if (changeLoop > 4) {
             exitLoop = true
           }
 
