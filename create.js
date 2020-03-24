@@ -126,7 +126,7 @@ const main = async () => {
     await page.clk('#premium > div:nth-child(2) div > button')
     // await page.clk('button.btn-success:enabled')
 
-    await page.waitFor(2000 + rand(2000))
+    await page.waitFor('#cardholderName')
     await page.inst('input#cardholderName', email.split('@')[0].replace('.', ' '), true)
 
     await page.waitFor(2000 + rand(2000))
