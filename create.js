@@ -123,6 +123,7 @@ const main = async () => {
 
     await page.waitFor(2000 + rand(2000))
 
+    await page.waitFor('#premium > div:nth-child(2) div > button')
     await page.clk('#premium > div:nth-child(2) div > button')
     // await page.clk('button.btn-success:enabled')
 
