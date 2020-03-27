@@ -22,7 +22,7 @@ if (type === 'tidal') {
   keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
 }
 else if (type === 'napster') {
-  url = 'https://order.napster.com/checkout/nl/pe/monthly/30d'
+  url = 'https://us.napster.com/soundtracking/special'
 }
 
 shell.exec('expressvpn disconnect', { silent: true })
@@ -30,7 +30,7 @@ if (type === 'tidal') {
   shell.exec('expressvpn connect dk')
 }
 else {
-  shell.exec('expressvpn connect nl')
+  shell.exec('expressvpn connect us')
 }
 
 const mails = [
@@ -304,8 +304,8 @@ const main = async () => {
     console.log(email)
     await page.bringToFront()
 
-    // await page.clk('a.button.extra-large')
-    await page.waitFor('input#txtEmail')
+    await page.clk('a.button.extra-large')
+    await page.waitFor(2000 + rand(2000))
     await page.inst('input#txtEmail', email)
     await page.inst('input#txtPassword', pass)
     await page.inst('input#txtConfirmPassword', pass)
