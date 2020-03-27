@@ -304,8 +304,8 @@ const main = async () => {
     console.log(email)
     await page.bringToFront()
 
-    await page.clk('a.button.extra-large')
-    await page.waitFor(2000 + rand(2000))
+    // await page.clk('a.button.extra-large')
+    await page.waitFor('input#txtEmail')
     await page.inst('input#txtEmail', email)
     await page.inst('input#txtPassword', pass)
     await page.inst('input#txtConfirmPassword', pass)
