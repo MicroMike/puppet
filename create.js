@@ -22,7 +22,7 @@ if (type === 'tidal') {
   keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
 }
 else if (type === 'napster') {
-  url = 'https://order.napster.com/checkout/winback-3for1'
+  url = 'https://order.napster.com/checkout/nl/pe/monthly/30d'
 }
 
 shell.exec('expressvpn disconnect', { silent: true })
