@@ -518,13 +518,18 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
       }
 
       const tidalCheck = async () => {
-        await page.evaluate((rand) => {
+        await page.evaluate(() => {
+          const rand = (max, min) => {
+            return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+          }
           const artist = document.querySelectorAll('[class*="artistContainer"]')
-          artist[rand(artist)].click()
-          artist[rand(artist)].click()
-          artist[rand(artist)].click()
+
+          artist[rand(artist.length)].click()
+          artist[rand(artist.length)].click()
+          artist[rand(artist.length)].click()
+          
           document.querySelector('[class*="continueButtonContainer"] buton')
-        }, rand)
+        })
       }
 
       const connectFct = async () => {
