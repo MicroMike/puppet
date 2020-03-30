@@ -517,6 +517,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         if (del) { throw 'del' }
       }
 
+      const tidalCheck = async () => {
+        await page.evaluate((rand) => {
+          const artist = document.querySelectorAll('[class*="artistContainer"]')
+          artist[rand(artist)].click()
+          artist[rand(artist)].click()
+          artist[rand(artist)].click()
+          document.querySelector('[class*="continueButtonContainer"] buton')
+        }, rand)
+      }
+
       const connectFct = async () => {
         if (player === 'tidal') {
           await tidalConnect()
@@ -607,6 +617,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           await amazonCheck()
           const play = await page.ext(playBtn)
           !play && await page.gotoUrl(album())
+        }
+        else if (player === 'tidal') {
+          const artistCheck = await page.ext('[class*="artistContainer"]')
+          artistCheck && await tidalCheck()
+          await page.gotoUrl(album())
         }
       }
 
