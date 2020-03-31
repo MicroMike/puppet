@@ -528,7 +528,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           artist[rand(artist.length)].click()
           artist[rand(artist.length)].click()
 
-          document.querySelector('[class*="continueButtonContainer"] buton').click()
+          document.querySelector('[class*="continueButtonContainer"] button').click()
         })
       }
 
