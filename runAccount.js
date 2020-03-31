@@ -624,7 +624,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           !play && await page.gotoUrl(album())
         }
         else if (player === 'tidal') {
-          const artistCheck = await page.ext('[class*="artistContainer"]')
+          const artistCheck = await page.ext('[class*="continueButtonContainer"] buton')
           artistCheck && await tidalCheck()
           await page.gotoUrl(album())
         }
