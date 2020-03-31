@@ -522,17 +522,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           const artist = document.querySelectorAll('[class*="artistContainer"]')
           let count = 0
 
-          const clickArtist = setTimeout(() => {
+          const clickArtist = () => {
             if (count++ < 3) {
               const nb = Math.floor(Math.random() * Math.floor(artist.length));
               artist[nb].click()
-              clickArtist()
+              setTimeout(() => {
+                clickArtist()
+              }, 1000);
             }
             else {
-              document.querySelector('[class*="continueButtonContainer"] button').click()
+              setTimeout(() => {
+                document.querySelector('[class*="continueButtonContainer"] button').click()
+              }, 1000);
             }
-          }, 1000);
+          }
 
+          clickArtist()
         })
       }
 
