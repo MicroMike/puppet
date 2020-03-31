@@ -522,9 +522,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           const artist = document.querySelectorAll('[class*="artistContainer"]')
           let count = 0
 
+          console.log('artist', artist)
+
           const clickArtist = () => {
             if (count++ < 3) {
               const nb = Math.floor(Math.random() * Math.floor(artist.length));
+              console.log('artist[nb]', artist[nb])
               artist[nb].click()
               setTimeout(() => {
                 clickArtist()
