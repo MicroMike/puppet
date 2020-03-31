@@ -624,7 +624,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           !play && await page.gotoUrl(album())
         }
         else if (player === 'tidal') {
-          await tidalCheck()
+          const artistCheck = await page.wfs('[class*="artistContainer"]')
+          console.log('artistCheck', artistCheck)
+          artistCheck && await tidalCheck()
           await page.gotoUrl(album())
         }
       }
