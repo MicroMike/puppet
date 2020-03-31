@@ -519,28 +519,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
       const tidalCheck = async () => {
         await page.evaluate(() => {
-          const artist = document.querySelectorAll('[class*="artistContainer"]')
-          let count = 0
-
-          console.log('artist', artist)
-
-          const clickArtist = () => {
-            if (count++ < 3) {
-              const nb = Math.floor(Math.random() * Math.floor(artist.length));
-              console.log('artist[nb]', artist[nb])
-              artist[nb].click()
-              setTimeout(() => {
-                clickArtist()
-              }, 1000);
-            }
-            else {
-              setTimeout(() => {
-                document.querySelector('[class*="continueButtonContainer"] button').click()
-              }, 1000);
-            }
+          const rand = (max, min) => {
+            return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
           }
+          const artist = document.querySelectorAll('[class*="artistContainer"]')
 
-          clickArtist()
+          artist[rand(artist.length)].click()
+          artist[rand(artist.length)].click()
+          artist[rand(artist.length)].click()
+
+          document.querySelector('[class*="continueButtonContainer"] button').click()
         })
       }
 
@@ -639,6 +627,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           const artistCheck = await page.wfs('[class*="artistContainer"]')
           console.log('artistCheck', artistCheck)
           artistCheck && await tidalCheck()
+
+          await page.waitFor(10 * 1000 + rand(2000))
+
           await page.gotoUrl(album())
         }
       }
