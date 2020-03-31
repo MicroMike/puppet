@@ -528,7 +528,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           artist[rand(artist.length)].click()
           artist[rand(artist.length)].click()
 
-          document.querySelector('[class*="continueButtonContainer"] buton')
+          document.querySelector('[class*="continueButtonContainer"] buton').click()
         })
       }
 
@@ -624,10 +624,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           !play && await page.gotoUrl(album())
         }
         else if (player === 'tidal') {
-          await page.waitFor(5000 + rand(2000))
-          const artistCheck = await page.ext('[class*="artistContainer"]')
-          console.log('artistCheck', artistCheck)
-          artistCheck && await tidalCheck()
+          await tidalCheck()
           await page.gotoUrl(album())
         }
       }
