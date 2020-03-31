@@ -628,7 +628,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
           console.log('artistCheck', artistCheck)
           artistCheck && await tidalCheck()
 
-          await page.waitFor(10 * 1000 + rand(2000))
+          await page.waitFor(5 * 1000 + rand(2000))
 
           await page.gotoUrl(album())
         }
