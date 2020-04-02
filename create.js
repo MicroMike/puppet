@@ -252,7 +252,7 @@ const main = async () => {
     // await page.inst('.login-email', email, true)
     // await page.inst('[name="password"]', pass, true)
     // await page.clk('.btn.action.login-cta')
-    await page.clk('.btn-primary-outline')
+    await page.clk('.btn-primary')
     await page.clk('.box-family a')
 
     const addTidal = async () => {
