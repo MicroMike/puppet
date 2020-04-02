@@ -234,7 +234,27 @@ const main = async () => {
         const al = require('./albums')
         album = al['tidal'][rand(al['tidal'].length)]
 
-        await tidalLog.gotoUrl(album)
+        const artistCheck = await tidalLog.wfs('[class*="artistContainer"]')
+        
+        if (artistCheck) {
+          await tidalLog.evaluate(() => {
+            const rand = (max, min) => {
+              return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+            }
+            const artist = document.querySelectorAll('[class*="artistContainer"]')
+
+            artist[rand(artist.length)].click()
+            artist[rand(artist.length)].click()
+            artist[rand(artist.length)].click()
+
+            document.querySelector('[class*="continueButtonContainer"] button').click()
+          })
+
+          await tidalLog.waitFor(5 * 1000 + rand(2000))
+        }
+
+        await tidalLog.gotoUrl(album())
+
         await tidalLog.clk(playBtn)
         await tidalLog.waitFor(1000 * 45)
 

@@ -625,7 +625,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         }
         else if (player === 'tidal') {
           const artistCheck = await page.wfs('[class*="artistContainer"]')
-          console.log('artistCheck', artistCheck)
           artistCheck && await tidalCheck()
 
           await page.waitFor(5 * 1000 + rand(2000))
