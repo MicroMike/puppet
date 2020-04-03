@@ -6,7 +6,7 @@ module.exports = {
     'https://app.napster.com/artist/erati/album/he-knows-she-knows', // yohann
     'https://app.napster.com/artist/benriam/album/the-gift-give', // benriam
     'https://app.napster.com/artist/john-millson/album/my-stash', // yoan
-    // 'https://app.napster.com/artist/prestync/album/marching-smile',
+    'https://app.napster.com/artist/prestync/album/marching-smile',
     // 'https://app.napster.com/artist/prestync/album/avalanches-of-ability',
     // 'https://app.napster.com/artist/micro-beats-and-breaks/album/micro-one',
     // 'https://app.napster.com/artist/mahone/album/stone-distraction',
@@ -50,7 +50,7 @@ module.exports = {
     'https://listen.tidal.com/album/108790098',
     'https://listen.tidal.com/album/108980716',
     'https://listen.tidal.com/album/111577934',
-    // 'https://listen.tidal.com/album/112888253',//marching-smile
+    'https://listen.tidal.com/album/112888253',//marching-smile
     'https://listen.tidal.com/album/113608807',
     'https://listen.tidal.com/album/113976818',
     // 'https://listen.tidal.com/album/114337349',//avalanches-of-ability
