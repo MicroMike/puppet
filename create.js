@@ -253,7 +253,7 @@ const main = async () => {
           await tidalLog.waitFor(5 * 1000 + rand(2000))
         }
 
-        await tidalLog.gotoUrl(album())
+        await tidalLog.gotoUrl(album)
 
         await tidalLog.clk(playBtn)
         await tidalLog.waitFor(1000 * 45)
