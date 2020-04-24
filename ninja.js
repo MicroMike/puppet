@@ -55,6 +55,7 @@ const main = async () => {
     await page.waitFor(1000 * 5)
   }
   catch (e) {
+    console.log('recaptcha error')
     browser && await browser.close()
   }
 
