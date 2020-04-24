@@ -54,7 +54,7 @@ const main = async () => {
         await page.waitFor(1000 * 5)
     }
     catch (e) {
-        await page.waitFor(1000 * 60)
+        await page.waitFor(1000 * 30)
     }
 
     await browser.close();
