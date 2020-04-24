@@ -2,65 +2,67 @@ const puppeteer = require('puppeteer');
 
 let exit = false;
 process.on('SIGINT', () => {
-    exit = true
+  exit = true
 })
 
 const rand = (max, min) => {
-    return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+  return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
 const urls = [
-    "tripadvisor.com",
-    "qq.com",
-    "fastcompany.com",
-    "amazon.com",
-    "shop-pro.jp",
-    "flavors.me",
-    "npr.org",
-    "arstechnica.com",
-    "pinterest.com",
-    "bloglines.com",
-    "deliciousdays.com",
-    "qq.com",
-    "feedburner.com",
-    "github.com",
-    "nsw.gov.au",
-    "cornell.edu",
-    "columbia.edu",
-    "paypal.com",
-    "google.es",
-    "deliciousdays.com"
+  "tripadvisor.com",
+  "qq.com",
+  "fastcompany.com",
+  "amazon.com",
+  "shop-pro.jp",
+  "flavors.me",
+  "npr.org",
+  "arstechnica.com",
+  "pinterest.com",
+  "bloglines.com",
+  "deliciousdays.com",
+  "qq.com",
+  "feedburner.com",
+  "github.com",
+  "nsw.gov.au",
+  "cornell.edu",
+  "columbia.edu",
+  "paypal.com",
+  "google.es",
+  "deliciousdays.com"
 ]
 
 const main = async () => {
-    try {
-        const browser = await puppeteer.launch({
-            headless: false,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-gpu',
-            ],
-        });
-        const pages = await browser.pages()
-        const page = pages[0]
+  let browser;
 
-        await page.goto('http://sh.st/st/445f592bec4c2e1aaa4e0c4ad0c22836/' + urls[rand(urls.length)]);
+  try {
+    browser = await puppeteer.launch({
+      headless: false,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-gpu',
+      ],
+    });
+    const pages = await browser.pages()
+    const page = pages[0]
 
-        await page.waitForSelector('.skip-btn.show', { timeout: 1000 * 30 })
-        await page.waitFor(2000)
-        await page.click('.skip-btn.show')
-        await page.waitFor(1000 * 5)
-    }
-    catch (e) {
-        browser && await browser.close()
-    }
-    
-    await browser.close();
+    await page.goto('http://sh.st/st/445f592bec4c2e1aaa4e0c4ad0c22836/' + urls[rand(urls.length)]);
 
-    setTimeout(async () => {
-        !exit && await main()
-    }, 2000);
+    await page.waitForSelector('.skip-btn.show', { timeout: 1000 * 30 })
+    await page.waitFor(2000)
+    await page.click('.skip-btn.show')
+    await page.waitFor(1000 * 5)
+  }
+  catch (e) {
+    browser && await browser.close()
+  }
+
+  browser && await browser.close();
+
+  setTimeout(async () => {
+    !exit && await main()
+  }, 2000);
 }
 
 main()
