@@ -17,6 +17,7 @@ const main = async () => {
         await page.waitForSelector('.skip-btn.show', { timeout: 1000 * 10 })
         await page.waitFor(2000)
         await page.click('.skip-btn.show')
+        await page.waitFor(1000 * 5)
     }
     catch (e) { }
 
