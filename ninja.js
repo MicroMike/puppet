@@ -18,7 +18,7 @@ const main = async () => {
 
     await browser.close();
 
-    setTimeout(() => {
+    setTimeout(async () => {
         !exit && await main()
     }, 2000);
 }
