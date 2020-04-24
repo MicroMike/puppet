@@ -51,10 +51,12 @@ const main = async () => {
         await page.waitFor(2000)
         await page.click('.skip-btn.show')
         await page.waitFor(1000 * 5)
-        await browser.close();
     }
-    catch (e) { }
-
+    catch (e) {
+        browser && await browser.close()
+    }
+    
+    await browser.close();
 
     setTimeout(async () => {
         !exit && await main()
