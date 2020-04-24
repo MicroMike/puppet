@@ -19,7 +19,9 @@ const main = async () => {
         await page.click('.skip-btn.show')
         await page.waitFor(1000 * 5)
     }
-    catch (e) { }
+    catch (e) {
+        await page.waitFor(1000 * 60)
+    }
 
     await browser.close();
 
