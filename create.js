@@ -75,7 +75,7 @@ const main = async () => {
     if (!page) { return }
 
     await page.gotoUrl(url)
-    await page.clk('body > div.content > div > div > div > div:nth-child(2) > div > button > div')
+    await page.clk('.btn-primary')
 
     // await page.inst('input#email', email, true)
     // await page.clk('input#email + button')
@@ -127,7 +127,7 @@ const main = async () => {
     await page.clk('#premium > div:nth-child(2) div > button')
     // await page.clk('button.btn-success:enabled')
 
-    await page.waitFor('#cardholderName')
+    await page.wfs('#cardholderName')
     await page.inst('input#cardholderName', email.split('@')[0].replace('.', ' '), true)
 
     await page.waitFor(2000 + rand(2000))
@@ -253,7 +253,7 @@ const main = async () => {
           await tidalLog.waitFor(5 * 1000 + rand(2000))
         }
 
-        await tidalLog.gotoUrl(album())
+        await tidalLog.gotoUrl(album)
 
         await tidalLog.clk(playBtn)
         await tidalLog.waitFor(1000 * 45)
