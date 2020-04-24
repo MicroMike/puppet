@@ -33,31 +33,28 @@ const urls = [
 ]
 
 const main = async () => {
-
-    const browser = await puppeteer.launch({
-        headless: false,
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-gpu',
-        ],
-    });
-    const pages = await browser.pages()
-    const page = pages[0]
-
-    await page.goto('http://sh.st/st/445f592bec4c2e1aaa4e0c4ad0c22836/' + urls[rand(urls.length)]);
-
     try {
-        await page.waitForSelector('.skip-btn.show', { timeout: 1000 * 10 })
+        const browser = await puppeteer.launch({
+            headless: false,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-gpu',
+            ],
+        });
+        const pages = await browser.pages()
+        const page = pages[0]
+
+        await page.goto('http://sh.st/st/445f592bec4c2e1aaa4e0c4ad0c22836/' + urls[rand(urls.length)]);
+
+        await page.waitForSelector('.skip-btn.show', { timeout: 1000 * 30 })
         await page.waitFor(2000)
         await page.click('.skip-btn.show')
         await page.waitFor(1000 * 5)
+        await browser.close();
     }
-    catch (e) {
-        await page.waitFor(1000 * 30)
-    }
+    catch (e) { }
 
-    await browser.close();
 
     setTimeout(async () => {
         !exit && await main()
