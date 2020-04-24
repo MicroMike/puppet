@@ -53,6 +53,8 @@ const main = async () => {
     await page.waitFor(2000)
     await page.click('.skip-btn.show')
     await page.waitFor(1000 * 5)
+
+    console.log('done')
   }
   catch (e) {
     console.log('recaptcha error')
