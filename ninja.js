@@ -34,7 +34,14 @@ const urls = [
 
 const main = async () => {
 
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+        headless: false,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-gpu',
+        ],
+    });
     const pages = await browser.pages()
     const page = pages[0]
 
