@@ -23,4 +23,4 @@ const main = async () => {
     }, 2000);
 }
 
-await main()
+main()
