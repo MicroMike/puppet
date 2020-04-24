@@ -12,9 +12,13 @@ const main = async () => {
     const page = pages[0]
 
     await page.goto('http://gestyy.com/w91ZBb');
-    await page.waitForSelector('.skip-btn.show')
-    await page.waitFor(2000)
-    await page.click('.skip-btn.show')
+
+    try {
+        await page.waitForSelector('.skip-btn.show')
+        await page.waitFor(2000)
+        await page.click('.skip-btn.show')
+    }
+    catch (e) { }
 
     await browser.close();
 
