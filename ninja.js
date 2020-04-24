@@ -32,6 +32,8 @@ const urls = [
   "deliciousdays.com"
 ]
 
+let count = 0
+
 const main = async () => {
   let browser;
 
@@ -47,12 +49,14 @@ const main = async () => {
     const pages = await browser.pages()
     const page = pages[0]
 
-    await page.goto('http://sh.st/st/445f592bec4c2e1aaa4e0c4ad0c22836/' + urls[rand(urls.length)]);
+    await page.goto('http://sh.st/st/445f592bec4c2e1aaa4e0c4ad0c22836/' + urls[count]);
 
     await page.waitForSelector('.skip-btn.show', { timeout: 1000 * 30 })
     await page.waitFor(2000)
     await page.click('.skip-btn.show')
     await page.waitFor(1000 * 5)
+
+    count++
 
     console.log('done')
   }
