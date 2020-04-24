@@ -11,7 +11,7 @@ const main = async () => {
     const pages = await browser.pages()
     const page = pages[0]
 
-    await page.goto('http://gestyy.com/w91ZBb');
+    await page.goto('http://gestyy.com/w91Mg8');
 
     try {
         await page.waitForSelector('.skip-btn.show', { timeout: 1000 * 10 })
