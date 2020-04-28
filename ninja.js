@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 let exit = false;
 process.on('SIGINT', () => {
   exit = true
+  process.exit()
 })
 
 const rand = (max, min) => {
@@ -57,6 +58,12 @@ const main = async () => {
     await page.waitFor(1000 * 5)
 
     count++
+
+    if (count === 5) {
+      browser && await browser.close()
+      exit = true
+      process.exit()
+    }
 
     console.log('done')
   }
