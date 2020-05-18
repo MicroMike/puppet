@@ -440,7 +440,7 @@ const main = async () => {
 
     const waitForDone = async () => {
       try {
-        const exist = await page.ext('#add-earn-account-successful')
+        const exist = await page.ext('article.lead')
         if (!exist) { throw 'Failed' }
       }
       catch (e) {
