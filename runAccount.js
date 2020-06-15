@@ -611,7 +611,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
         if (player === 'spotify') {
-          spotCheck()
+          // spotCheck()
           await page.gotoUrl(album())
         }
         else if (player === 'napster') {
@@ -793,7 +793,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
               nextMusic = true
               countPlays++
 
-              if (currentAlbum === 'https://app.napster.com/artist/john-millson/album/my-stash') {
+              if (player === 'tidal') {
                 rand(2) && await page.jClk(nextBtn)
               }
 
