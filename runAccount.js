@@ -810,7 +810,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             await waitForPlayBtn('changePlay')
 
             countPlays === 0
-            changePlay = rand(15)
+            changePlay = rand(10)
             changeLoop++
           }
 
