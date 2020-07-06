@@ -843,7 +843,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
           if (freeze > 0) {
             if (freeze > 3) {
-              await takeScreenshot('freeze')
+              await takeScreenshot('freeze' + countPlays)
               throw 'freeze'
             }
             else {
