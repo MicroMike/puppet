@@ -742,7 +742,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
       let startLoop = false
       let exitLoop = false
 
-      let changePlay = rand(15)
+      let changePlay = rand(10)
       let changeLoop = 0
 
       const loop = async () => {
