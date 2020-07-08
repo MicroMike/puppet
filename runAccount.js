@@ -171,7 +171,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
     socketEmit('playerInfos', { time: 'RUN', other: true })
 
-    page.on('close', function (err) {
+    page && page.on('close', function (err) {
       if (!close && !check) {
         exit('close')
       }
