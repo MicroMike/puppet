@@ -742,7 +742,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
       let startLoop = false
       let exitLoop = false
 
-      let changePlay = rand(10)
+      let changePlay = rand(15)
       let changeLoop = 0
 
       const loop = async () => {
@@ -810,7 +810,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
             await waitForPlayBtn('changePlay')
 
             countPlays === 0
-            changePlay = rand(10)
+            changePlay = rand(15)
             changeLoop++
           }
 
