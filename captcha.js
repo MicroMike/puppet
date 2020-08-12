@@ -83,7 +83,9 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
           let client = clients[key]
           Object.keys(client).map(k => {
             let l = client[k]
-            l && l.callback && l.callback(captcha)
+            const callback = l && l.callback
+            callback && console.log(callback)
+            callback && callback(captcha)
           })
         })
       }, 5000);
