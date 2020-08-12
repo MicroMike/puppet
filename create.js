@@ -19,7 +19,7 @@ const promises = []
 
 if (type === 'tidal') {
   url = 'http://offer.tidal.com'
-  keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
+  keyCaptcha = '6LcaN-0UAAAAAN056lYOwirUdIJ70tvy9QwNBajZ'
 }
 else if (type === 'napster') {
   url = 'https://order.napster.com/checkout/nl/3-for-1'
