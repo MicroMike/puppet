@@ -305,7 +305,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         // shuffleBtn = '[class*="leftColumn"] [class*="shuffleButton"]:not([class*="active"])'
         nextBtn = '[data-test="next"]'
 
-        keyCaptcha = '6Lf-ty8UAAAAAE5YTgJXsS3B-frcWP41G15z-Va2'
+        keyCaptcha = '6Lf-N-0UAAAAAOm0_ZBFblrmIr7KRswyRawEBonm'
 
         usedDom = '.WARN'
         reLog = 'button.btn-client-primary'
