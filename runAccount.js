@@ -305,7 +305,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
         // shuffleBtn = '[class*="leftColumn"] [class*="shuffleButton"]:not([class*="active"])'
         nextBtn = '[data-test="next"]'
 
-        keyCaptcha = '6Lf-N-0UAAAAAOm0_ZBFblrmIr7KRswyRawEBonm'
+        keyCaptcha = '6LcaN-0UAAAAAN056lYOwirUdIJ70tvy9QwNBajZ'
 
         usedDom = '.WARN'
         reLog = 'button.btn-client-primary'
@@ -403,7 +403,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
               if (!exist) { throw 'fail' }
             }
             catch (e) {
-              await captcha(page, url, keyCaptcha, username, login)
+              await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
             }
 
             const waitForPass = async () => {
