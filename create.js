@@ -209,7 +209,7 @@ const main = async () => {
           if (!exist) { throw 'fail' }
         }
         catch (e) {
-          await captcha(tidalLog, 'https://listen.tidal.com/', keyCaptcha, username, m)
+          await captcha(tidalLog, 'https://login.tidal.com/', keyCaptcha, username, m)
         }
 
         const waitForPass = async () => {
