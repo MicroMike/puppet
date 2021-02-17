@@ -569,7 +569,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
           if (player === 'napster') {
             const error = loginError && await page.ext(loginError)
-            if (error) { throw 'napsterLogin' }
+            if (error) { throw 'del' }
+            // if (error) { throw 'napsterLogin' }
 
             await page.gotoUrl(album())
             //   const napsterAuth = async () => {
