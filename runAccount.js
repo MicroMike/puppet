@@ -737,7 +737,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (check) {
 				request('https://online-music.herokuapp.com/checkOk?' + account, async (error, response, body) => {
 					// startCheck()
-					await page.waitFor(1000 * 35)
 					shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
 					mailPage && await mailPage.cls(true)
 					await page.cls(true)
@@ -745,6 +744,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					catchFct('check')
 				})
 				return
+			}
+			else if (player === 'tidal') {
+				await page.waitFor(1000 * 35)
+				shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
 			}
 
 			// ***************************************************************************************************************************************************************
