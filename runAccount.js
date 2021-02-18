@@ -167,7 +167,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			socket.emit('outLog', 'freezeConnect')
 			console.log('freezeConnect')
 			exit('freezeConnect')
-		}, 1000 * 60 * 5);
+		}, 1000 * 60 * 10);
 
 		socketEmit('playerInfos', { time: 'RUN', other: true })
 
