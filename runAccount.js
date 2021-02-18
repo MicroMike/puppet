@@ -388,6 +388,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (!relogTidal) {
 							await page.clk(reLog)
+							return
 						}
 						else {
 							await page.inst(username, login, true)
