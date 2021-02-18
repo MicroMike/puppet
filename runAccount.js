@@ -167,7 +167,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			socket.emit('outLog', 'freezeConnect')
 			console.log('freezeConnect')
 			exit('freezeConnect')
-		}, 1000 * 60 * 3);
+		}, 1000 * 60 * 5);
 
 		socketEmit('playerInfos', { time: 'RUN', other: true })
 
@@ -373,7 +373,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const tidalConnect = async () => {
 				let notConnected = true
-				let relogTidal = false
+				let needLog = false
 
 				await page.gotoUrl(album())
 				notConnected = await page.ext(notLoggedDom)
@@ -384,9 +384,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					try {
 						await page.clk(notLoggedDom)
 
-						relogTidal = await page.ext(username)
+						needLog = await page.ext(username)
 
-						if (!relogTidal) {
+						if (!needLog) {
 							await page.clk(reLog)
 						}
 						else {
@@ -413,7 +413,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 					}
 
-					if (relogTidal) {
+					if (needLog) {
 						await waitForPass()
 						await page.inst(password, pass, true)
 						await page.waitFor(5000 + rand(2000))
