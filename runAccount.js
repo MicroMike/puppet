@@ -381,13 +381,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!check) { throw 'tidalError' }
 
 					try {
-						await page.inst(username, login, true)
-						await page.clk('#recap-invisible')
+						await page.clk(notLoggedDom)
 
-						await page.waitFor(5000 + rand(2000))
+						const relogTidal = await page.ext(username)
 
-						const exist = await page.ext(password)
-						if (!exist) { throw 'fail' }
+						if (!relogTidal) {
+							await page.clk(reLog)
+						}
+						else {
+							await page.inst(username, login, true)
+							await page.clk('#recap-invisible')
+
+							await page.waitFor(5000 + rand(2000))
+
+							const exist = await page.ext(password)
+							if (!exist) { throw 'fail' }
+						}
 					}
 					catch (e) {
 						await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
@@ -403,10 +412,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 					}
 
-					await waitForPass()
-					await page.inst(password, pass, true)
-					await page.waitFor(5000 + rand(2000))
-					await page.clk('button.btn-success.btn-client-primary', 'tidal connect')
+					if (relogTidal) {
+						await waitForPass()
+						await page.inst(password, pass, true)
+						await page.waitFor(5000 + rand(2000))
+						await page.clk('button.btn-success.btn-client-primary', 'tidal connect')
+					}
 
 					const logged = await page.wfs(loggedDom)
 					if (!logged) { throw 'del' }
@@ -427,449 +438,450 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				//   }
 
 				//   const needLog = await tryClick()
+				// }
 			}
-		}
 
 			const checkFill = async () => {
-			if (player === 'amazon') {
-				await page.jClk('a.cvf-widget-btn-verify-account-switcher')
-				usernameInput = await page.ext(username)
-			}
-
-			if (usernameInput) {
-				await page.inst(username, login, true)
-			}
-
-			await page.inst(password, pass, true)
-
-			let loginFill = player === 'amazon' || await page.get(username, 'value')
-			let passFill = await page.get(password, 'value')
-
-			if (!loginFill || !passFill) {
-				await takeScreenshot('fillForm')
-				await checkFill()
-			}
-			else {
-				socketEmit('retryOk')
-			}
-		}
-
-		const spotCheck = async () => {
-			const spotCheck = await page.np()
-			await spotCheck.gotoUrl('https://www.spotify.com/en/account/overview')
-			const productName = await spotCheck.get('.product-name')
-			if (String(productName).match(/Free|free/)) { throw 'del' }
-
-			await spotCheck.close()
-		}
-
-		const amazonCheck = async () => {
-			const needContinue = await page.jClk('#continue')
-			await page.waitFor(1000 * 3 + rand(2000))
-			const lookForCode = await page.ext('input[name="code"]')
-
-			if (needContinue && lookForCode) {
-				mailPage = await page.np()
-
-				await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
-				const needLog = await mailPage.ext('#rcmloginsubmit')
-
-				if (needLog) {
-					await mailPage.inst('#rcmloginuser', 'micromike@musicsmix.club', true)
-					await mailPage.inst('#rcmloginpwd', '055625f7430', true)
-					await mailPage.clk('#rcmloginsubmit')
-				}
-
-				let code
-				const waitForCode = async () => {
-					await mailPage.waitFor(1000 * 10 + rand(2000))
-					await mailPage.bringToFront()
-
-					await mailPage.inst('#quicksearchbox', login.split('@')[0], true)
-					const getChecked = await mailPage.get('#s_mod_to', 'checked')
-					if (!getChecked) { await mailPage.clk('#s_mod_to') }
-					await mailPage.clk('#s_scope_all')
-					await mailPage.select('#messagessearchfilter', 'UNSEEN')
-
-					const isMail = await mailPage.jClk('#messagelist tbody tr a')
-
-					if (isMail) {
-						code = await mailPage.get('.otp', 'innerText')
-						console.log('code ' + code)
-
-						if (code && code !== 'undefined') {
-							await mailPage.clk('.button.delete')
-							return code
-						}
-					}
-
-					catchFct('amazonError')
-				}
-
-				await waitForCode()
-
-				await page.inst('input[name="code"]', code)
-				await page.clk('input[type="submit"]')
-
-				await page.jClk('#ap-account-fixup-phone-skip-link')
-			}
-
-			await page.bringToFront()
-
-			const del = loginError && await page.ext(loginError)
-			if (del) { throw 'del' }
-		}
-
-		const tidalCheck = async () => {
-			await page.evaluate(() => {
-				const rand = (max, min) => {
-					return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
-				}
-				const artist = document.querySelectorAll('[class*="artistContainer"]')
-
-				artist[rand(artist.length)].click()
-				artist[rand(artist.length)].click()
-				artist[rand(artist.length)].click()
-
-				document.querySelector('[class*="continueButtonContainer"] button').click()
-			})
-		}
-
-		const connectFct = async () => {
-			if (player === 'tidal') {
-				await tidalConnect()
-			}
-
-			if (player === 'amazon') {
-				await page.gotoUrl(album())
-				connected = await page.ext(loggedDom)
-				check && console.log('amazon: ' + connected)
-			}
-
-			if (player === 'heart') {
-				if (check) {
-					shell.exec('expressvpn disconnect', { silent: true })
-					shell.exec('expressvpn connect us')
-					await page.waitFor(2000 + rand(2000))
-				}
-
-				await page.gotoUrl(album())
-				await page.waitFor(2000 + rand(2000))
-				const notConnected = await page.wfs(notLoggedDom)
-				if (!notConnected) { connected = true }
-			}
-
-			if (!connected && player !== 'tidal') {
-				if (player !== 'heart') {
-					await page.gotoUrl(url)
-					await page.waitFor(2000 + rand(2000))
-				}
-
-				await checkFill()
-
-				await page.jClk(remember)
-				await page.clk(loginBtn)
-
-				if (player === 'napster') {
-					const error = loginError && await page.ext(loginError)
-					if (error) { throw 'del' }
-					// if (error) { throw 'napsterLogin' }
-
-					await page.gotoUrl(album())
-					//   const napsterAuth = async () => {
-					//     try {
-					//       await page.jClk('#confirm-authorize')
-					//       await page.waitFor(2000 + rand(2000))
-
-					//       const exist = await page.ext('#confirm-authorize')
-					//       if (exist) { throw 'fail' }
-					//     }
-					//     catch (e) {
-					//       await napsterAuth()
-					//     }
-					//   }
-
-					//   await napsterAuth()
-				}
-
 				if (player === 'amazon') {
-					const captchaAmazon = async () => {
-						try {
-							await page.jInst(password, pass)
-							const ca = await page.ext('#auth-captcha-image')
-							if (ca) { throw 'fail' }
-						}
-						catch (e) {
-							await captchaAmazon()
-						}
+					await page.jClk('a.cvf-widget-btn-verify-account-switcher')
+					usernameInput = await page.ext(username)
+				}
+
+				if (usernameInput) {
+					await page.inst(username, login, true)
+				}
+
+				await page.inst(password, pass, true)
+
+				let loginFill = player === 'amazon' || await page.get(username, 'value')
+				let passFill = await page.get(password, 'value')
+
+				if (!loginFill || !passFill) {
+					await takeScreenshot('fillForm')
+					await checkFill()
+				}
+				else {
+					socketEmit('retryOk')
+				}
+			}
+
+			const spotCheck = async () => {
+				const spotCheck = await page.np()
+				await spotCheck.gotoUrl('https://www.spotify.com/en/account/overview')
+				const productName = await spotCheck.get('.product-name')
+				if (String(productName).match(/Free|free/)) { throw 'del' }
+
+				await spotCheck.close()
+			}
+
+			const amazonCheck = async () => {
+				const needContinue = await page.jClk('#continue')
+				await page.waitFor(1000 * 3 + rand(2000))
+				const lookForCode = await page.ext('input[name="code"]')
+
+				if (needContinue && lookForCode) {
+					mailPage = await page.np()
+
+					await mailPage.gotoUrl('https://webmail.gandi.net/roundcube/')
+					const needLog = await mailPage.ext('#rcmloginsubmit')
+
+					if (needLog) {
+						await mailPage.inst('#rcmloginuser', 'micromike@musicsmix.club', true)
+						await mailPage.inst('#rcmloginpwd', '055625f7430', true)
+						await mailPage.clk('#rcmloginsubmit')
 					}
 
-					await captchaAmazon()
+					let code
+					const waitForCode = async () => {
+						await mailPage.waitFor(1000 * 10 + rand(2000))
+						await mailPage.bringToFront()
+
+						await mailPage.inst('#quicksearchbox', login.split('@')[0], true)
+						const getChecked = await mailPage.get('#s_mod_to', 'checked')
+						if (!getChecked) { await mailPage.clk('#s_mod_to') }
+						await mailPage.clk('#s_scope_all')
+						await mailPage.select('#messagessearchfilter', 'UNSEEN')
+
+						const isMail = await mailPage.jClk('#messagelist tbody tr a')
+
+						if (isMail) {
+							code = await mailPage.get('.otp', 'innerText')
+							console.log('code ' + code)
+
+							if (code && code !== 'undefined') {
+								await mailPage.clk('.button.delete')
+								return code
+							}
+						}
+
+						catchFct('amazonError')
+					}
+
+					await waitForCode()
+
+					await page.inst('input[name="code"]', code)
+					await page.clk('input[type="submit"]')
 
 					await page.jClk('#ap-account-fixup-phone-skip-link')
 				}
 
-				await page.waitFor(2000 + rand(2000))
+				await page.bringToFront()
+
+				const del = loginError && await page.ext(loginError)
+				if (del) { throw 'del' }
 			}
 
-			socketEmit('playerInfos', { time: 'CONNECT', other: true })
+			const tidalCheck = async () => {
+				await page.evaluate(() => {
+					const rand = (max, min) => {
+						return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+					}
+					const artist = document.querySelectorAll('[class*="artistContainer"]')
 
-			if (player === 'spotify') {
-				// spotCheck()
-				await page.gotoUrl(album())
+					artist[rand(artist.length)].click()
+					artist[rand(artist.length)].click()
+					artist[rand(artist.length)].click()
+
+					document.querySelector('[class*="continueButtonContainer"] button').click()
+				})
 			}
-			else if (player === 'napster') {
-				await napsterCheck()
-				// const reload = await page.ext('#main-container .not-found')
-			}
-			else if (player === 'amazon') {
-				await amazonCheck()
-				const play = await page.ext(playBtn)
-				!play && await page.gotoUrl(album())
-			}
-			else if (player === 'tidal') {
-				const artistCheck = await page.wfs('[class*="artistContainer"]')
-				artistCheck && await tidalCheck()
 
-				await page.waitFor(5 * 1000 + rand(2000))
-
-				await page.gotoUrl(album())
-			}
-		}
-
-		await connectFct()
-
-		clearTimeout(freezeConnect)
-
-		// ***************************************************************************************************************************************************************
-		// *************************************************************************** PLAY ******************************************************************************
-		// ***************************************************************************************************************************************************************
-
-		if (player === 'spotify') {
-			await page.waitFor(2000 + rand(2000))
-			const check1 = await page.ext(usedDom)
-			const check2 = await page.ext('.Root__now-playing-bar .control-button.spoticon-pause-16.control-button--circled')
-			if (check1 && check2) { throw 'used' }
-		}
-
-		const waitForPlayBtn = async (playError) => {
-			try {
-				await page.clk(playBtn)
-				socketEmit('retryOk')
-			}
-			catch (e) {
-				if (++trys > 3) {
-					throw playError
+			const connectFct = async () => {
+				if (player === 'tidal') {
+					await tidalConnect()
+					await page.gotoUrl(album())
 				}
 
-				if (player === 'tidal') {
-					let updateBtn
-					try {
-						updateBtn = await page.evaluate(() => {
-							const update = document.querySelectorAll('button')
-							update && update.forEach(b => b.innerText === 'Update' && b.click())
-							return update
-						})
-					}
-					catch (e) { }
+				if (player === 'amazon') {
+					await page.gotoUrl(album())
+					connected = await page.ext(loggedDom)
+					check && console.log('amazon: ' + connected)
+				}
 
-					if (!updateBtn) {
-						await page.rload()
+				if (player === 'heart') {
+					if (check) {
+						shell.exec('expressvpn disconnect', { silent: true })
+						shell.exec('expressvpn connect us')
+						await page.waitFor(2000 + rand(2000))
+					}
+
+					await page.gotoUrl(album())
+					await page.waitFor(2000 + rand(2000))
+					const notConnected = await page.wfs(notLoggedDom)
+					if (!notConnected) { connected = true }
+				}
+
+				if (!connected && player !== 'tidal') {
+					if (player !== 'heart') {
+						await page.gotoUrl(url)
+						await page.waitFor(2000 + rand(2000))
+					}
+
+					await checkFill()
+
+					await page.jClk(remember)
+					await page.clk(loginBtn)
+
+					if (player === 'napster') {
+						const error = loginError && await page.ext(loginError)
+						if (error) { throw 'del' }
+						// if (error) { throw 'napsterLogin' }
+
+						await page.gotoUrl(album())
+						//   const napsterAuth = async () => {
+						//     try {
+						//       await page.jClk('#confirm-authorize')
+						//       await page.waitFor(2000 + rand(2000))
+
+						//       const exist = await page.ext('#confirm-authorize')
+						//       if (exist) { throw 'fail' }
+						//     }
+						//     catch (e) {
+						//       await napsterAuth()
+						//     }
+						//   }
+
+						//   await napsterAuth()
+					}
+
+					if (player === 'amazon') {
+						const captchaAmazon = async () => {
+							try {
+								await page.jInst(password, pass)
+								const ca = await page.ext('#auth-captcha-image')
+								if (ca) { throw 'fail' }
+							}
+							catch (e) {
+								await captchaAmazon()
+							}
+						}
+
+						await captchaAmazon()
+
+						await page.jClk('#ap-account-fixup-phone-skip-link')
+					}
+
+					await page.waitFor(2000 + rand(2000))
+				}
+
+				socketEmit('playerInfos', { time: 'CONNECT', other: true })
+
+				if (player === 'spotify') {
+					// spotCheck()
+					await page.gotoUrl(album())
+				}
+				else if (player === 'napster') {
+					await napsterCheck()
+					// const reload = await page.ext('#main-container .not-found')
+				}
+				else if (player === 'amazon') {
+					await amazonCheck()
+					const play = await page.ext(playBtn)
+					!play && await page.gotoUrl(album())
+				}
+				else if (player === 'tidal') {
+					const artistCheck = await page.wfs('[class*="artistContainer"]')
+					artistCheck && await tidalCheck()
+
+					await page.waitFor(5 * 1000 + rand(2000))
+
+					await page.gotoUrl(album())
+				}
+			}
+
+			await connectFct()
+
+			clearTimeout(freezeConnect)
+
+			// ***************************************************************************************************************************************************************
+			// *************************************************************************** PLAY ******************************************************************************
+			// ***************************************************************************************************************************************************************
+
+			if (player === 'spotify') {
+				await page.waitFor(2000 + rand(2000))
+				const check1 = await page.ext(usedDom)
+				const check2 = await page.ext('.Root__now-playing-bar .control-button.spoticon-pause-16.control-button--circled')
+				if (check1 && check2) { throw 'used' }
+			}
+
+			const waitForPlayBtn = async (playError) => {
+				try {
+					await page.clk(playBtn)
+					socketEmit('retryOk')
+				}
+				catch (e) {
+					if (++trys > 3) {
+						throw playError
+					}
+
+					if (player === 'tidal') {
+						let updateBtn
+						try {
+							updateBtn = await page.evaluate(() => {
+								const update = document.querySelectorAll('button')
+								update && update.forEach(b => b.innerText === 'Update' && b.click())
+								return update
+							})
+						}
+						catch (e) { }
+
+						if (!updateBtn) {
+							await page.rload()
+							await waitForPlayBtn(playError)
+						}
+					}
+					else if (player === 'amazon') {
+						const waitForReady = async () => {
+							const amazonStyle = await page.evaluate(() => {
+								return document.querySelector('#mainContentLoadingSpinner').style['display']
+							})
+
+							if (amazonStyle !== 'none') {
+								await takeScreenshot('amazonFreeze')
+								await page.waitFor(2000 + rand(2000))
+								await waitForReady()
+							}
+						}
+
+						await waitForReady()
+
+						try { await page.clk(playBtn) }
+						catch (e) {
+							await page.rload()
+							await waitForPlayBtn(playError)
+						}
+					}
+					else {
+						await page.gotoUrl(album())
+
+						const logged = await page.wfs(loggedDom)
+						if (!logged) { throw 'logout' }
+
 						await waitForPlayBtn(playError)
 					}
 				}
-				else if (player === 'amazon') {
-					const waitForReady = async () => {
-						const amazonStyle = await page.evaluate(() => {
-							return document.querySelector('#mainContentLoadingSpinner').style['display']
-						})
+			}
 
-						if (amazonStyle !== 'none') {
-							await takeScreenshot('amazonFreeze')
-							await page.waitFor(2000 + rand(2000))
-							await waitForReady()
+			await waitForPlayBtn('firstPlay')
+			// await page.clk(playBtn, 'firstPlay')
+			socketEmit('playerInfos', { time: 'PLAY', ok: true })
+
+			if (player === 'tidal') {
+				const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
+				if (String(delTidal).match(/expired/)) {
+					throw 'del'
+				}
+			}
+
+			if (check) {
+				request('https://online-music.herokuapp.com/checkOk?' + account, async (error, response, body) => {
+					// startCheck()
+					await page.waitFor(1000 * 35)
+					shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
+					mailPage && await mailPage.cls(true)
+					await page.cls(true)
+
+					catchFct('check')
+				})
+				return
+			}
+
+			// ***************************************************************************************************************************************************************
+			// *************************************************************************** LOOP ******************************************************************************
+			// ***************************************************************************************************************************************************************
+
+			let t1
+			let t2
+			let freeze = 0
+			let used
+			let nextMusic = false
+			let startLoop = false
+			let exitLoop = false
+
+			let changePlay = rand(15)
+			let changeLoop = 0
+
+			const loop = async () => {
+				try {
+					// repeatBtn && await page.jClk(repeatBtn)
+					// shuffleBtn && await page.jClk(shuffleBtn)
+
+					used = await page.ext(usedDom)
+
+					if (player === 'tidal') {
+						const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
+						if (String(delTidal).match(/expired/)) {
+							throw 'del'
 						}
 					}
 
-					await waitForReady()
+					if (player === 'napster') { await napsterCheck() }
 
-					try { await page.clk(playBtn) }
-					catch (e) {
-						await page.rload()
-						await waitForPlayBtn(playError)
-					}
-				}
-				else {
-					await page.gotoUrl(album())
-
-					const logged = await page.wfs(loggedDom)
-					if (!logged) { throw 'logout' }
-
-					await waitForPlayBtn(playError)
-				}
-			}
-		}
-
-		await waitForPlayBtn('firstPlay')
-		// await page.clk(playBtn, 'firstPlay')
-		socketEmit('playerInfos', { time: 'PLAY', ok: true })
-
-		if (player === 'tidal') {
-			const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
-			if (String(delTidal).match(/expired/)) {
-				throw 'del'
-			}
-		}
-
-		if (check) {
-			request('https://online-music.herokuapp.com/checkOk?' + account, async (error, response, body) => {
-				// startCheck()
-				await page.waitFor(1000 * 35)
-				shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
-				mailPage && await mailPage.cls(true)
-				await page.cls(true)
-
-				catchFct('check')
-			})
-			return
-		}
-
-		// ***************************************************************************************************************************************************************
-		// *************************************************************************** LOOP ******************************************************************************
-		// ***************************************************************************************************************************************************************
-
-		let t1
-		let t2
-		let freeze = 0
-		let used
-		let nextMusic = false
-		let startLoop = false
-		let exitLoop = false
-
-		let changePlay = rand(15)
-		let changeLoop = 0
-
-		const loop = async () => {
-			try {
-				// repeatBtn && await page.jClk(repeatBtn)
-				// shuffleBtn && await page.jClk(shuffleBtn)
-
-				used = await page.ext(usedDom)
-
-				if (player === 'tidal') {
-					const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
-					if (String(delTidal).match(/expired/)) {
-						throw 'del'
-					}
-				}
-
-				if (player === 'napster') { await napsterCheck() }
-
-				if (player === 'tidal') {
-					await page.evaluate(() => {
-						document.querySelectorAll('[class*=notification] button').forEach(e => e.click())
-					})
-				}
-
-				if (used) {
 					if (player === 'tidal') {
-						used = await page.get(usedDom)
-						used = String(used).match(/currently/) ? used : false
+						await page.evaluate(() => {
+							document.querySelectorAll('[class*=notification] button').forEach(e => e.click())
+						})
+					}
 
-						if (!used) {
-							await page.jClk('.WARN + div + button[data-test="notification-close"]')
+					if (used) {
+						if (player === 'tidal') {
+							used = await page.get(usedDom)
+							used = String(used).match(/currently/) ? used : false
+
+							if (!used) {
+								await page.jClk('.WARN + div + button[data-test="notification-close"]')
+							}
+							else {
+								throw 'used'
+							}
 						}
 						else {
 							throw 'used'
 						}
 					}
-					else {
-						throw 'used'
-					}
-				}
 
-				t2 = t1
+					t2 = t1
 
-				let matchTime = Number(t1)
+					let matchTime = Number(t1)
 
-				if (matchTime && matchTime > 30) {
-					if (!nextMusic) {
-						nextMusic = true
-						countPlays++
+					if (matchTime && matchTime > 30) {
+						if (!nextMusic) {
+							nextMusic = true
+							countPlays++
 
-						if (player === 'tidal') {
-							rand(2) && await page.jClk(nextBtn)
+							if (player === 'tidal') {
+								rand(2) && await page.jClk(nextBtn)
+							}
+
+							socketEmit('plays', { next: true, currentAlbum, matchTime, countPlays })
+							socketEmit('playerInfos', { time: t1, ok: true, countPlays })
 						}
-
-						socketEmit('plays', { next: true, currentAlbum, matchTime, countPlays })
-						socketEmit('playerInfos', { time: t1, ok: true, countPlays })
 					}
-				}
-				else {
-					nextMusic = false
-				}
+					else {
+						nextMusic = false
+					}
 
-				if (countPlays > changePlay) {
-					await page.gotoUrl(album())
-					await waitForPlayBtn('changePlay')
+					if (countPlays > changePlay) {
+						await page.gotoUrl(album())
+						await waitForPlayBtn('changePlay')
 
-					countPlays === 0
-					changePlay = rand(15)
-					changeLoop++
-				}
+						countPlays === 0
+						changePlay = rand(15)
+						changeLoop++
+					}
 
-				if (changeLoop > 4) {
-					exitLoop = true
-				}
+					if (changeLoop > 4) {
+						exitLoop = true
+					}
 
-				await page.waitFor(rand(2000))
-				t1 = await page.getTime(timeLine, callback)
+					await page.waitFor(rand(2000))
+					t1 = await page.getTime(timeLine, callback)
 
-				if (t1 === t2) {
-					++freeze
-					socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
+					if (t1 === t2) {
+						++freeze
+						socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
 
-					if (freeze === 1) {
-						if (player === 'tidal') {
-							await page.jClk(playBtn)
+						if (freeze === 1) {
+							if (player === 'tidal') {
+								await page.jClk(playBtn)
+							}
+							else {
+								await page.jClk(pauseBtn)
+								await page.waitFor(rand(2000))
+								await page.jClk(replayBtn)
+							}
+						}
+					}
+					else {
+						if (freeze > 0) { socketEmit('playerInfos', { time: t1, ok: true, countPlays }) }
+						freeze = 0
+					}
+
+					if (freeze > 0) {
+						if (freeze > 3) {
+							await takeScreenshot(parentId + 'freeze' + countPlays)
+							throw 'freeze'
 						}
 						else {
-							await page.jClk(pauseBtn)
-							await page.waitFor(rand(2000))
-							await page.jClk(replayBtn)
+							socketEmit('playerInfos', { time: t1, freeze: true, countPlays })
 						}
-					}
-				}
-				else {
-					if (freeze > 0) { socketEmit('playerInfos', { time: t1, ok: true, countPlays }) }
-					freeze = 0
-				}
 
-				if (freeze > 0) {
-					if (freeze > 3) {
-						await takeScreenshot(parentId + 'freeze' + countPlays)
-						throw 'freeze'
-					}
-					else {
-						socketEmit('playerInfos', { time: t1, freeze: true, countPlays })
+						const logged = await page.wfs(loggedDom)
+						if (!logged) { throw 'logout' }
 					}
 
-					const logged = await page.wfs(loggedDom)
-					if (!logged) { throw 'logout' }
+					if (exitLoop) { throw 'loop' }
+					else { loop() }
 				}
-
-				if (exitLoop) { throw 'loop' }
-				else { loop() }
+				catch (e) {
+					catchFct(e)
+				}
 			}
-			catch (e) {
-				catchFct(e)
-			}
+
+			loop()
 		}
-
-		loop()
-	}
 		catch (e) {
-		catchFct(e)
-	}
-})
+			catchFct(e)
+		}
+	})
 }
