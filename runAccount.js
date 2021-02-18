@@ -311,7 +311,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				usedDom = '.WARN'
 				reLog = 'button.btn-client-primary'
 
-				timeLine = '[class*="currentTime"]'
+				timeLine = '[data-test="current-time"]'
 				callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
 			}
 			if (player === 'spotify') {
