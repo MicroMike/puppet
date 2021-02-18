@@ -373,6 +373,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const tidalConnect = async () => {
 				let notConnected = true
+				let relogTidal = false
 
 				await page.gotoUrl(album())
 				notConnected = await page.ext(notLoggedDom)
@@ -383,7 +384,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					try {
 						await page.clk(notLoggedDom)
 
-						const relogTidal = await page.ext(username)
+						relogTidal = await page.ext(username)
 
 						if (!relogTidal) {
 							await page.clk(reLog)
