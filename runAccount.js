@@ -420,8 +420,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.clk('button.btn-success.btn-client-primary', 'tidal connect')
 					}
 
-					const logged = await page.wfs(loggedDom)
-					if (!logged) { throw 'del' }
+					const delTidal = await page.wfs('.box-error')
+					if (delTidal) { throw 'del' }
 				}
 
 				// notConnected = await page.jClk(goToLogin)
