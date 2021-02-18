@@ -379,7 +379,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				notConnected = await page.ext(notLoggedDom)
 
 				if (notConnected) {
-					if (!check) { throw 'tidalError' }
+					// if (!check) { throw 'tidalError' }
 
 					try {
 						await page.clk(notLoggedDom)
@@ -388,7 +388,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (!relogTidal) {
 							await page.clk(reLog)
-							return
 						}
 						else {
 							await page.inst(username, login, true)
