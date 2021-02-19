@@ -420,6 +420,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.clk('button.btn-success.btn-client-primary', 'tidal connect')
 					}
 
+					await page.gotoUrl(album())
+
 					const delTidal = await page.wfs('.box-error')
 					if (delTidal) { throw 'del' }
 				}
@@ -550,7 +552,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const connectFct = async () => {
 				if (player === 'tidal') {
 					await tidalConnect()
-					await page.gotoUrl(album())
 				}
 
 				if (player === 'amazon') {
@@ -641,12 +642,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					!play && await page.gotoUrl(album())
 				}
 				else if (player === 'tidal') {
-					const artistCheck = await page.wfs('[class*="artistContainer"]')
-					artistCheck && await tidalCheck()
+					// creation compte tidal plus besoin pour le moment
 
-					await page.waitFor(5 * 1000 + rand(2000))
+						/*
+						const artistCheck = await page.wfs('[class*="artistContainer"]')
+						artistCheck && await tidalCheck()
 
-					await page.gotoUrl(album())
+						await page.waitFor(5 * 1000 + rand(2000))
+
+						await page.gotoUrl(album())
+						*/
 				}
 			}
 
