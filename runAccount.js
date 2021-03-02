@@ -735,7 +735,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			if (player === 'tidal') {
 				const delTidal = await page.get('.ReactModal__Overlay', 'innerText')
-				if (String(delTidal).match(/expired/)) {
+				if (String(delTidal).match(/expired|free/)) {
 					throw 'del'
 				}
 			}
