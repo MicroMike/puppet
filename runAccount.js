@@ -470,12 +470,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const spotCheck = async () => {
-				const spotCheck = await page.np()
-				await spotCheck.gotoUrl('https://www.spotify.com/en/account/overview')
-				const productName = await spotCheck.get('.product-name')
-				if (String(productName).match(/Free|free/)) { throw 'del' }
+				await page.waitFor(2000 + rand(2000))
+				const noLogged = await page.ext(username)
 
-				await spotCheck.close()
+				if (noLogged) {
+					throw 'del'
+				}
 			}
 
 			const amazonCheck = async () => {
@@ -630,7 +630,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
 				if (player === 'spotify') {
-					// spotCheck()
+					spotCheck()
 					await page.gotoUrl(album())
 				}
 				else if (player === 'napster') {
@@ -645,14 +645,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				else if (player === 'tidal') {
 					// creation compte tidal plus besoin pour le moment
 
-						/*
-						const artistCheck = await page.wfs('[class*="artistContainer"]')
-						artistCheck && await tidalCheck()
-
+					const artistCheck = await page.wfs('[class*="artistContainer"]')
+					if (artistCheck) {
+						await tidalCheck()
 						await page.waitFor(5 * 1000 + rand(2000))
-
 						await page.gotoUrl(album())
-						*/
+					}
+
 				}
 			}
 
