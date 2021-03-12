@@ -630,7 +630,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
 				if (player === 'spotify') {
-					spotCheck()
+					await spotCheck()
 					await page.gotoUrl(album())
 				}
 				else if (player === 'napster') {
