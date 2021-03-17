@@ -483,7 +483,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await page.waitFor(2000 + rand(2000))
 					await page.keyboard.press("Tab");
 
-					login.forEach(async (lettre) => {
+					login.split('').forEach(async (lettre) => {
 						await page.waitFor(2000 + rand(2000))
 						await page.keyboard.press(lettre);
 					})
