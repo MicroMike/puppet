@@ -373,7 +373,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				unlock1 = '.spoticon-pause-16'
 				unlock2 = '.spoticon-play-16'
-				playBtn = '[data-test="hero-container"] [data-test="play-button"]'
+				playBtn = '.shuffle-button.action-button'
 				// repeatBtn = '[class*="spoticon-repeat"]'
 				// repeatBtnOk = '.spoticon-repeat-16.control-button--active'
 				// shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
