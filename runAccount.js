@@ -482,8 +482,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await page.keyboard.press("Tab");
 					await page.waitFor(2000 + rand(2000))
 					await page.keyboard.press("Tab");
-					await page.waitFor(2000 + rand(2000))
-					await page.keyboard.press("a");
+
+					login.forEach(async (lettre) => {
+						await page.waitFor(2000 + rand(2000))
+						await page.keyboard.press(lettre);
+					})
 				}
 				else {
 					if (usernameInput) {
