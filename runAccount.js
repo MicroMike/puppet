@@ -476,9 +476,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				if (player === 'apple') {
 					await page.clk(notLoggedDom)
+					await page.waitFor(5000 + rand(2000))
 					await page.keyboard.press("Tab");
+					await page.waitFor(2000 + rand(2000))
 					await page.keyboard.press("Tab");
+					await page.waitFor(2000 + rand(2000))
 					await page.keyboard.press("Tab");
+					await page.waitFor(2000 + rand(2000))
 					await page.keyboard.press("a");
 				}
 				else {
