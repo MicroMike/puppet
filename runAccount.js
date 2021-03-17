@@ -474,39 +474,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					usernameInput = await page.ext(username)
 				}
 
-				if (player === 'apple') {
-					await page.clk(notLoggedDom)
-					await page.waitFor(5000 + rand(2000))
-					await page.keyboard.press("Tab");
-					await page.waitFor(2000 + rand(2000))
-					await page.keyboard.press("Tab");
-					await page.waitFor(2000 + rand(2000))
-					await page.keyboard.press("Tab");
+				if (usernameInput) {
+					await page.inst(username, login, true)
+				}
 
-					login.split('').forEach(async (lettre) => {
-						await page.waitFor(2000 + rand(2000))
-						await page.keyboard.press(lettre);
-					})
+				await page.inst(password, pass, true)
+
+				let loginFill = player === 'amazon' || await page.get(username, 'value')
+				let passFill = await page.get(password, 'value')
+
+				if (!loginFill || !passFill) {
+					await takeScreenshot('fillForm')
+					await checkFill()
 				}
 				else {
-					if (usernameInput) {
-						await page.inst(username, login, true)
-					}
-
-					await page.inst(password, pass, true)
-
-					let loginFill = player === 'amazon' || await page.get(username, 'value')
-					let passFill = await page.get(password, 'value')
-
-					if (!loginFill || !passFill) {
-						await takeScreenshot('fillForm')
-						await checkFill()
-					}
-					else {
-						socketEmit('retryOk')
-					}
+					socketEmit('retryOk')
 				}
-
 			}
 
 			const spotCheck = async () => {
@@ -614,7 +597,29 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!notConnected) { connected = true }
 				}
 
-				if (!connected && player !== 'tidal') {
+				if (player === 'apple') {
+					await page.clk(notLoggedDom)
+					await page.waitFor(5000 + rand(2000))
+					await page.keyboard.press("Tab");
+					await page.waitFor(2000 + rand(2000))
+					await page.keyboard.press("Tab");
+					await page.waitFor(2000 + rand(2000))
+					await page.keyboard.press("Tab");
+
+					login.split('').forEach(async (lettre) => {
+						await page.keyboard.press(lettre);
+					})
+
+					await page.waitFor(2000 + rand(2000))
+					await page.keyboard.press("Enter");
+
+					await page.waitFor(2000 + rand(2000))
+					await page.gotoUrl(album())
+
+					return;
+				}
+
+				if (!connected && player !== 'tidal' && player !== 'apple') {
 					if (player !== 'heart') {
 						await page.gotoUrl(url)
 						await page.waitFor(2000 + rand(2000))
@@ -691,7 +696,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.waitFor(5 * 1000 + rand(2000))
 						await page.gotoUrl(album())
 					}
-
 				}
 			}
 
