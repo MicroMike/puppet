@@ -474,22 +474,31 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					usernameInput = await page.ext(username)
 				}
 
-				if (usernameInput) {
-					await page.inst(username, login, true)
-				}
-
-				await page.inst(password, pass, true)
-
-				let loginFill = player === 'amazon' || await page.get(username, 'value')
-				let passFill = await page.get(password, 'value')
-
-				if (!loginFill || !passFill) {
-					await takeScreenshot('fillForm')
-					await checkFill()
+				if (player === 'apple') {
+					await page.keyboard.press("Tab");
+					await page.keyboard.press("Tab");
+					await page.keyboard.press("Tab");
+					await page.keyboard.press("a");
 				}
 				else {
-					socketEmit('retryOk')
+					if (usernameInput) {
+						await page.inst(username, login, true)
+					}
+
+					await page.inst(password, pass, true)
+
+					let loginFill = player === 'amazon' || await page.get(username, 'value')
+					let passFill = await page.get(password, 'value')
+
+					if (!loginFill || !passFill) {
+						await takeScreenshot('fillForm')
+						await checkFill()
+					}
+					else {
+						socketEmit('retryOk')
+					}
 				}
+
 			}
 
 			const spotCheck = async () => {
