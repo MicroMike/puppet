@@ -895,7 +895,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					await page.waitFor(rand(2000))
-					t1 = await page.getTime(timeLine, callback)
+					if (player === 'apple') {
+						t1 = await page.getAppleTime()
+					}
+					else {
+						t1 = await page.getTime(timeLine, callback)
+					}
 
 					if (t1 === t2) {
 						++freeze
