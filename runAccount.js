@@ -613,6 +613,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.keyboard.press(lettre);
 					})
 
+					pass.split('').forEach(async (lettre) => {
+						await page.keyboard.press(lettre);
+					})
+
 					await page.waitFor(2000 + rand(2000))
 					await page.keyboard.press("Enter");
 
