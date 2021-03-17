@@ -86,5 +86,17 @@ module.exports = {
     'https://www.iheart.com/artist/benriam-33203186/albums/the-gift-give-77322266',
     'https://www.iheart.com/artist/john-millson-33246171/albums/my-stash-77992029',
     'https://www.iheart.com/artist/yonne-32474174/albums/loser-62529736',
-  ]
+  ],
+	apple: [
+		'https://music.apple.com/library/albums/l.lctFTFc',
+		'https://music.apple.com/library/albums/l.VH8Q3lt',
+		'https://music.apple.com/library/albums/l.P8vwS4',
+		'https://music.apple.com/library/albums/l.8IRjwWq',
+		'https://music.apple.com/library/albums/l.iqxS944',
+		'https://music.apple.com/library/albums/l.NpMxpv6',
+		'https://music.apple.com/library/albums/l.BxwcW4n',
+		'https://music.apple.com/library/albums/l.vNMyWct',
+		'https://music.apple.com/library/albums/l.9WdKkgh',
+		'https://music.apple.com/library/albums/l.mHtPeC6',
+	]
 }

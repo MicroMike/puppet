@@ -361,6 +361,29 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				timeLine = '[data-test="player-current-time"]'
 				callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
 			}
+			if (player === 'apple') {
+				url = 'https://music.apple.com/login'
+				notLoggedDom = '.web-navigation__auth-button--sign-in'
+				loggedDom = '.web-navigation__auth-button--sign-out'
+
+				username = '#account_name_text_field'
+				password = '#password_text_field'
+				loginBtn = '#sign-in'
+				// loginError = '.alert.alert-warning'
+
+				unlock1 = '.spoticon-pause-16'
+				unlock2 = '.spoticon-play-16'
+				playBtn = '[data-test="hero-container"] [data-test="play-button"]'
+				// repeatBtn = '[class*="spoticon-repeat"]'
+				// repeatBtnOk = '.spoticon-repeat-16.control-button--active'
+				// shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
+				nextBtn = '[data-test="skip-button"]'
+
+				// usedDom = '.ConnectBar'
+
+				timeLine = '[data-test="player-current-time"]'
+				callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
+			}
 
 			// ***************************************************************************************************************************************************************
 			// *************************************************************************** CONNECT ***************************************************************************
