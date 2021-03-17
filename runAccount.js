@@ -475,6 +475,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 
 				if (player === 'apple') {
+					await page.clk(notLoggedDom)
 					await page.keyboard.press("Tab");
 					await page.keyboard.press("Tab");
 					await page.keyboard.press("Tab");
