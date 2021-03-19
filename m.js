@@ -13,7 +13,7 @@ const check = arg === 'check'
 let close = false
 process.on('SIGINT', () => {
 	close = true
-	request('http://127.0.0.1:3000' + '/clearUsed', () => {
+	request('http://173.249.43.6:3000' + '/clearUsed', () => {
 		console.log('----- END -----')
 		shell.exec('killall -9 chrome', { silent: true })
 		shell.exec('killall -9 node', { silent: true })
