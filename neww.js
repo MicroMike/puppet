@@ -13,7 +13,7 @@ const rand = (max, min) => {
 	return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-const clientSocket = require('socket.io-client')(process.env.MUSIC_APP_BASE_URL, { transports: ['websocket'] });
+const clientSocket = require('socket.io-client')('127.0.0.1:3000', { transports: ['websocket'] });
 const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
 
 let account
@@ -22,7 +22,7 @@ let parentId
 
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
-	request(process.env.MUSIC_APP_BASE_URL + '/noUseAccount?' + account, () => {
+	request('127.0.0.1:3000' + '/noUseAccount?' + account, () => {
 		process.exit(code)
 	})
 }
@@ -57,7 +57,7 @@ clientSocket.on('activate', async (socketId) => {
 
 clientSocket.on('canRun', async () => {
 	const accountType = check ? 'checkAccount' : 'useAccount'
-	request(process.env.MUSIC_APP_BASE_URL + '/' + accountType, (error, response, body) => {
+	request('127.0.0.1:3000' + '/' + accountType, (error, response, body) => {
 		account = JSON.parse(body).account;
 		if (account) {
 			clientSocket.emit('client', { parentId, streamId, account, max })
