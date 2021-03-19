@@ -211,7 +211,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (code === 6) {
-				request('127.0.0.1:3000' + '/error?check/' + account, function (error, response, body) { })
+				request('http://127.0.0.1:3000' + '/error?check/' + account, function (error, response, body) { })
 			}
 
 			if (code >= 4 && code !== 7 && code !== 220) {
@@ -229,7 +229,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// }
 
 			if (code === 4) {
-				request('127.0.0.1:3000' + '/error?del/' + account, function (error, response, body) { })
+				request('http://127.0.0.1:3000' + '/error?del/' + account, function (error, response, body) { })
 			}
 			else if (code === 7) {
 				if (player === 'napster') {
@@ -795,7 +795,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (check) {
-				request('127.0.0.1:3000' + '/checkOk?' + account, async (error, response, body) => {
+				request('http://127.0.0.1:3000' + '/checkOk?' + account, async (error, response, body) => {
 					// startCheck()
 					shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
 					mailPage && await mailPage.cls(true)
