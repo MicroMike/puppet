@@ -11,7 +11,7 @@ const thread = Number(process.argv[4]) || 1
 const check = arg === 'check'
 
 let close = false
-
+console.log(process.env.MUSIC_APP_BASE_URL);
 process.on('SIGINT', () => {
 	close = true
 	request(process.env.MUSIC_APP_BASE_URL + '/clearUsed', () => {
