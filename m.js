@@ -13,48 +13,48 @@ const check = arg === 'check'
 let close = false
 
 process.on('SIGINT', () => {
-  close = true
-  request('https://online-music.herokuapp.com/clearUsed', () => {
-    console.log('----- END -----')
-    shell.exec('killall -9 chrome', { silent: true })
-    shell.exec('killall -9 node', { silent: true })
-    process.exit()
-  })
+	close = true
+	request(process.env.MUSIC_APP_BASE_URL + '/clearUsed', () => {
+		console.log('----- END -----')
+		shell.exec('killall -9 chrome', { silent: true })
+		shell.exec('killall -9 node', { silent: true })
+		process.exit()
+	})
 })
 
 const fct = async (i = 1) => {
-  if (close) { return }
+	if (close) { return }
 
-  const current = arg + i
+	const current = arg + i
 
-  console.log('----- START ' + current + ' ----- ')
+	console.log('----- START ' + current + ' ----- ')
 
-  try {
-    const b = shell.exec('git fetch && git status', { silent: true })
-    if (!b.match(/up to date/g)) {
-      console.log('----- PULL ' + current + ' -----')
-      shell.exec('npm run rm && npm run clear', { silent: true })
-      shell.exec('git reset --hard origin/master', { silent: true })
-      shell.exec('git pull', { silent: true })
-    }
-  }
-  catch (e) { }
+	try {
+		const b = shell.exec('git fetch && git status', { silent: true })
+		if (!b.match(/up to date/g)) {
+			console.log('----- PULL ' + current + ' -----')
+			shell.exec('npm run rm && npm run clear', { silent: true })
+			shell.exec('git reset --hard origin/master', { silent: true })
+			shell.exec('git pull', { silent: true })
+		}
+	}
+	catch (e) { }
 
-  const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
-  shell.exec((check ? '' : 'xvfb-run -a') + ' node --max-old-space-size=' + ram + ' multi ' + (check ? 'check' : current) + ' ' + nb, () => {
-    if (close) { return }
-    fct(i)
-  })
+	const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
+	shell.exec((check ? '' : 'xvfb-run -a') + ' node --max-old-space-size=' + ram + ' multi ' + (check ? 'check' : current) + ' ' + nb, () => {
+		if (close) { return }
+		fct(i)
+	})
 }
 
 shell.exec('killall -9 chrome', { silent: true })
 
 try {
-  shell.exec('expressvpn disconnect', { silent: true })
+	shell.exec('expressvpn disconnect', { silent: true })
 }
 catch (e) { }
 
 for (let i = 1; i <= thread; i++) {
-  if (close) { break }
-  fct(i)
+	if (close) { break }
+	fct(i)
 }
