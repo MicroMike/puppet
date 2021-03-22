@@ -200,7 +200,7 @@ const addFcts = async (page) => {
 		if (page.closed) { return }
 		try {
 			await page.waitFor(1000 + rand(2000))
-			let time = await page.evaluate(timeLine => {
+			let time = await page.evaluate(() => {
 				const times = document.querySelector('.web-chrome-playback-lcd__scrub').getAttribute('aria-valuetext').split(' ').filter(v => !isNaN(v))
 				if (times.length > 1) {
 					return time[0] * 60 + time[1]
