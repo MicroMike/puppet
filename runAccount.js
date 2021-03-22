@@ -601,30 +601,34 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await page.gotoUrl(url)
 					await page.waitFor(2000 + rand(2000))
 
-					await page.clk(notLoggedDom)
-					await page.waitFor(5000 + rand(2000))
-					await page.keyboard.press("Tab");
-					await page.waitFor(2000 + rand(2000))
-					await page.keyboard.press("Tab");
-					await page.waitFor(2000 + rand(2000))
-					await page.keyboard.press("Tab");
+					const appleNotConnected = await page.ext(notLoggedDom)
 
-					login.split('').forEach(async (lettre) => {
-						await page.keyboard.press(lettre);
-					})
+					if (appleNotConnected) {
+						await page.clk(notLoggedDom)
+						await page.waitFor(5000 + rand(2000))
+						await page.keyboard.press("Tab");
+						await page.waitFor(2000 + rand(2000))
+						await page.keyboard.press("Tab");
+						await page.waitFor(2000 + rand(2000))
+						await page.keyboard.press("Tab");
 
-					await page.waitFor(2000 + rand(2000))
-					await page.keyboard.press("Enter");
+						login.split('').forEach(async (lettre) => {
+							await page.keyboard.press(lettre);
+						})
 
-					await page.waitFor(5000 + rand(2000))
-					pass.split('').forEach(async (lettre) => {
-						await page.keyboard.press(lettre);
-					})
+						await page.waitFor(2000 + rand(2000))
+						await page.keyboard.press("Enter");
 
-					await page.waitFor(2000 + rand(2000))
-					await page.keyboard.press("Enter");
+						await page.waitFor(5000 + rand(2000))
+						pass.split('').forEach(async (lettre) => {
+							await page.keyboard.press(lettre);
+						})
 
-					await page.waitFor(2000 + rand(2000))
+						await page.waitFor(2000 + rand(2000))
+						await page.keyboard.press("Enter");
+
+						await page.waitFor(2000 + rand(2000))
+					}
 					await page.gotoUrl(album())
 
 					return;
@@ -794,7 +798,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			if (check && player !== 'apple') {
+			if (check) {
 				request('http://173.249.43.6:3000' + '/checkOk?' + account, async (error, response, body) => {
 					// startCheck()
 					shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
