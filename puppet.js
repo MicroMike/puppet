@@ -203,10 +203,10 @@ const addFcts = async (page) => {
 			let time = await page.evaluate(() => {
 				const times = document.querySelector('.web-chrome-playback-lcd__scrub').getAttribute('aria-valuetext').split(' ').filter(v => !isNaN(v))
 				if (times.length > 1) {
-					return time[0] * 60 + time[1]
+					return Number(times[0]) * 60 + Number(times[1])
 				}
 				else {
-					return time[0]
+					return Number(times[0])
 				}
 			})
 
