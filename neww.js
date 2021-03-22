@@ -91,14 +91,14 @@ clientSocket.on('mRun', async () => {
 	let player = accountInfo[0]
 	let login = accountInfo[1]
 
-	if (check) {
+	if (check || player.match(/spotify|napster|apple/)) {
 		shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
 	}
 
 	let page
 
 	try {
-		page = await puppet('save/' + player + '_' + login, player.match(/spotify|napster/))
+		page = await puppet('save/' + player + '_' + login, player.match(/spotify|napster|apple/))
 	}
 	catch (e) {
 		exit()
