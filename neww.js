@@ -91,7 +91,7 @@ clientSocket.on('mRun', async () => {
 	let player = accountInfo[0]
 	let login = accountInfo[1]
 
-	if (check && player !== 'apple') {
+	if (check) {
 		shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
 	}
 
