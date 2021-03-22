@@ -213,6 +213,7 @@ const addFcts = async (page) => {
 			return time
 		}
 		catch (e) {
+			console.log(e)
 			throw 'failedTime'
 		}
 	}
