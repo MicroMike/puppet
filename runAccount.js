@@ -794,7 +794,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			if (check) {
+			if (check && player !== 'apple') {
 				request('http://173.249.43.6:3000' + '/checkOk?' + account, async (error, response, body) => {
 					// startCheck()
 					shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
