@@ -95,7 +95,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			countStream++
 
-			if (countStream > 5) {
+			if (countStream > 30) {
 				streamOn = false
 			}
 
