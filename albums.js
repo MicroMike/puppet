@@ -55,6 +55,7 @@ module.exports = {
     'https://listen.tidal.com/album/113976818',
     // 'https://listen.tidal.com/album/114337349',//avalanches-of-ability
     'https://listen.tidal.com/album/115558312', // my stash
+    'https://listen.tidal.com/album/107892456', // my stash
   ],
   spotify: [
     'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
