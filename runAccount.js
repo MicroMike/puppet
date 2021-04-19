@@ -848,6 +848,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						})
 					}
 
+					if (player === 'spotify') {
+						await page.evaluate(() => {
+							document.querySelectorAll('#onetrust-accept-btn-handler').forEach(e => e.click())
+						})
+					}
+
 					if (used) {
 						if (player === 'tidal') {
 							used = await page.get(usedDom)
