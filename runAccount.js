@@ -442,7 +442,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.waitFor(5000 + rand(2000))
 						await page.clk('button.btn-success.btn-client-primary', 'tidal connect')
 
-						const delTidal = await page.wfs('.box-error')
+						const delTidal = await page.ext('.box-error')
 						if (delTidal) { throw 'del' }
 
 						await page.waitFor(5000 + rand(2000))
