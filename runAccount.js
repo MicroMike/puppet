@@ -447,8 +447,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						await page.waitFor(5000 + rand(2000))
 					}
-
-					await page.gotoUrl(album())
 				}
 
 				// notConnected = await page.jClk(goToLogin)
