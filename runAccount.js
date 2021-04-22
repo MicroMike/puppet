@@ -646,26 +646,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await page.jClk(remember)
 					await page.clk(loginBtn)
 
-					if (player === 'napster') {
+					await page.waitFor(2000 + rand(2000))
+
+					if (player === 'napster' || player === 'spotify') {
 						const error = loginError && await page.ext(loginError)
 						if (error) { throw 'del' }
-						// if (error) { throw 'napsterLogin' }
 
 						await page.gotoUrl(album())
-						//   const napsterAuth = async () => {
-						//     try {
-						//       await page.jClk('#confirm-authorize')
-						//       await page.waitFor(2000 + rand(2000))
-
-						//       const exist = await page.ext('#confirm-authorize')
-						//       if (exist) { throw 'fail' }
-						//     }
-						//     catch (e) {
-						//       await napsterAuth()
-						//     }
-						//   }
-
-						//   await napsterAuth()
 					}
 
 					if (player === 'amazon') {
@@ -690,11 +677,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
-				if (player === 'spotify') {
-					await spotCheck()
-					await page.gotoUrl(album())
-				}
-				else if (player === 'napster') {
+				if (player === 'napster') {
 					await napsterCheck()
 					// const reload = await page.ext('#main-container .not-found')
 				}
