@@ -102,16 +102,18 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (streamOn) { stream() }
 		}
 
-		socket.on('screenshot', () => {
-			takeScreenshot('getScreen')
-		})
-
-		socket.on('streamOn', () => {
+		const startStream = () => {
 			countStream = 0
 			streamOn = true
 
 			stream()
+		}
+
+		socket.on('screenshot', () => {
+			takeScreenshot('getScreen')
 		})
+
+		socket.on('streamOn', startStream)
 
 		socket.on('streamOff', () => {
 			streamOn = false
@@ -916,6 +918,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
 
 						if (freeze === 1) {
+							startStream()
 							if (player === 'tidal') {
 								await page.jClk(playBtn)
 							}
