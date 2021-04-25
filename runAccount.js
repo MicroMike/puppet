@@ -901,7 +901,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
 
 						if (freeze === 1) {
-							startStream()
+							// startStream()
 							if (player === 'tidal') {
 								await page.jClk(playBtn)
 							}
@@ -913,7 +913,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 					}
 					else {
-						streamOn = false
+						// streamOn = false
 						if (freeze > 0) { socketEmit('playerInfos', { time: t1, ok: true, countPlays }) }
 						freeze = 0
 					}
