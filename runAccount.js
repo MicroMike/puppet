@@ -635,53 +635,56 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					return;
 				}
 
-				if (!connected && player !== 'tidal' && player !== 'apple') {
-					if (player !== 'heart') {
-						await page.gotoUrl(url)
+				if (player === 'spotify' || player === 'napster' || player === 'amazon') {
+					let notConnected = true
+
+					await page.gotoUrl(album())
+					notConnected = await page.ext(notLoggedDom)
+
+					if (notConnected) {
+						// if (player !== 'heart') {
+						// 	await page.gotoUrl(url)
+						// 	await page.waitFor(2000 + rand(2000))
+						// }
+
+						await checkFill()
+
+						await page.jClk(remember)
+						await page.clk(loginBtn)
+
 						await page.waitFor(2000 + rand(2000))
-					}
 
-					await checkFill()
+						if (player === 'napster' || player === 'spotify') {
+							const error = loginError && await page.ext(loginError)
+							if (error) { throw 'del' }
 
-					await page.jClk(remember)
-					await page.clk(loginBtn)
-
-					await page.waitFor(2000 + rand(2000))
-
-					if (player === 'napster' || player === 'spotify') {
-						const error = loginError && await page.ext(loginError)
-						if (error) { throw 'del' }
-
-						await page.gotoUrl(album())
-					}
-
-					if (player === 'amazon') {
-						const captchaAmazon = async () => {
-							try {
-								await page.jInst(password, pass)
-								const ca = await page.ext('#auth-captcha-image')
-								if (ca) { throw 'fail' }
-							}
-							catch (e) {
-								await captchaAmazon()
-							}
+							// await page.gotoUrl(album())
 						}
 
-						await captchaAmazon()
+						if (player === 'amazon') {
+							const captchaAmazon = async () => {
+								try {
+									await page.jInst(password, pass)
+									const ca = await page.ext('#auth-captcha-image')
+									if (ca) { throw 'fail' }
+								}
+								catch (e) {
+									await captchaAmazon()
+								}
+							}
 
-						await page.jClk('#ap-account-fixup-phone-skip-link')
+							await captchaAmazon()
+
+							await page.jClk('#ap-account-fixup-phone-skip-link')
+						}
+
+						await page.waitFor(2000 + rand(2000))
 					}
-
-					await page.waitFor(2000 + rand(2000))
 				}
 
 				socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
-				if (player === 'napster') {
-					await napsterCheck()
-					// const reload = await page.ext('#main-container .not-found')
-				}
-				else if (player === 'amazon') {
+				if (player === 'amazon') {
 					await amazonCheck()
 					const play = await page.ext(playBtn)
 					!play && await page.gotoUrl(album())
