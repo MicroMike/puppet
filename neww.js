@@ -98,7 +98,7 @@ clientSocket.on('mRun', async () => {
 	let page
 
 	try {
-		page = await puppet('save/' + player + '_' + login, player.match(/napster|apple/))
+		page = await puppet('save/' + player + '_' + login, player.match(/apple/))
 	}
 	catch (e) {
 		exit()

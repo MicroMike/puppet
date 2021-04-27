@@ -247,6 +247,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (player === 'napster') {
 				url = 'https://app.napster.com/login/'
 				loggedDom = '.icon-settings2'
+				notLoggedDom = '#nav-login-btn'
 
 				username = '#username'
 				password = '#password'
@@ -319,6 +320,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (player === 'spotify') {
 				url = 'https://accounts.spotify.com/login'
 				loggedDom = '.sessionInfo'
+				notLoggedDom = '[data-testid="login-button"]'
 
 				username = '#login-username'
 				password = '#login-password'
