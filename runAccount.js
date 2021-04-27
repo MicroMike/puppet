@@ -644,10 +644,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					notConnected = await page.ext(notLoggedDom)
 
 					if (notConnected) {
-						// if (player !== 'heart') {
-						// 	await page.gotoUrl(url)
-						// 	await page.waitFor(2000 + rand(2000))
-						// }
+						await page.gotoUrl(url)
 
 						await checkFill()
 
