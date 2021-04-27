@@ -677,9 +677,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							await page.jClk('#ap-account-fixup-phone-skip-link')
 						}
 
-						await page.gotoUrl(album())
-
 						await page.waitFor(2000 + rand(2000))
+						await page.gotoUrl(album())
 					}
 				}
 
