@@ -729,6 +729,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (player === 'tidal') {
 						let updateBtn
 						try {
+							await page.evaluate(() => {
+								const update = document.querySelector('.client-eula-font + .btn-client-primary')
+								update && update.click()
+							})
+
 							updateBtn = await page.evaluate(() => {
 								const update = document.querySelectorAll('button')
 								update && update.forEach(b => b.innerText === 'Update' && b.click())
