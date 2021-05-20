@@ -869,13 +869,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (matchTime && matchTime > 30) {
 						if (!nextMusic) {
 							nextMusic = true
+							let nextOk = false
 							countPlays++
 
-							if (player === 'tidal') {
-								rand(2) && await page.jClk(nextBtn)
+							if (player === 'tidal' && rand(2) && currentAlbum === 'https://listen.tidal.com/album/88716570') {
+								nextOk = true
+								await page.jClk(nextBtn)
 							}
 
-							socketEmit('plays', { next: true, currentAlbum, matchTime, countPlays })
+							socketEmit('plays', { next: nextOk, currentAlbum, matchTime, countPlays })
 							socketEmit('playerInfos', { time: t1, ok: true, countPlays })
 						}
 					}
