@@ -846,7 +846,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (player === 'amazon') {
 						await page.evaluate(() => {
-							document.querySelector('#dialogCloseButton > *').click()
+							document.querySelectorAll('#dialogCloseButton > *').forEach(e => e.click())
 						})
 					}
 
