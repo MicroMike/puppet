@@ -844,6 +844,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						})
 					}
 
+					if (player === 'amazon') {
+						await page.evaluate(() => {
+							document.querySelector('#dialogCloseButton > *').click()
+						})
+					}
+
 					if (player === 'spotify') {
 						await page.evaluate(() => {
 							document.querySelectorAll('#onetrust-accept-btn-handler').forEach(e => e.click())
