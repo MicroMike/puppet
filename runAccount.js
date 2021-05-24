@@ -271,6 +271,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (player === 'amazon') {
 				url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
 				loggedDom = '.actionSection.settings'
+				notLoggedDom = '#signInButton'
 
 				username = '#ap_email'
 				password = '#ap_password'
@@ -278,16 +279,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				loginBtn = '#signInSubmit'
 				loginError = '.upsellButton'
 
-				playBtn = '.playerIconPlayRing'
-				pauseBtn = '.playerIconPauseRing'
-				shuffleBtn = '.rightSide .shuffleButton:not(.on)'
-				repeatBtn = '.rightSide .repeatButton:not(.on)'
-				nextBtn = '#transportPlayNext'
+				playBtn = '#detailHeaderButton2'
+				pauseBtn = '[icon-name="pause"]'
+				nextBtn = '[icon-name="next"]'
 
 				usedDom = '.concurrentStreamsPopover'
 
-				timeLine = '.listViewDuration'
-				callback = a => (100 - a.split(':').reduce((a, b) => Math.abs(a * 60) + Number(b)))
+				timeLine = '#transport > :last-child > :last-child span'
+				callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
 			}
 			if (player === 'tidal') {
 				url = 'https://listen.tidal.com/'
@@ -472,10 +471,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const checkFill = async () => {
-				if (player === 'amazon') {
-					await page.jClk('a.cvf-widget-btn-verify-account-switcher')
-					usernameInput = await page.ext(username)
-				}
+				// if (player === 'amazon') {
+				// 	await page.jClk('a.cvf-widget-btn-verify-account-switcher')
+				// 	usernameInput = await page.ext(username)
+				// }
 
 				if (usernameInput) {
 					await page.inst(username, login, true)
@@ -644,7 +643,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					notConnected = await page.ext(notLoggedDom)
 
 					if (notConnected) {
-						await page.gotoUrl(url)
+						if (player === 'amazon') {
+							await page.evaluate(() => {
+								window.location.href = document.querySelector('#signInButton').href
+							})
+						} else {
+							await page.gotoUrl(url)
+						}
 
 						await checkFill()
 
@@ -660,22 +665,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							// await page.gotoUrl(album())
 						}
 
-						if (player === 'amazon') {
-							const captchaAmazon = async () => {
-								try {
-									await page.jInst(password, pass)
-									const ca = await page.ext('#auth-captcha-image')
-									if (ca) { throw 'fail' }
-								}
-								catch (e) {
-									await captchaAmazon()
-								}
-							}
+						// if (player === 'amazon') {
+						// 	const captchaAmazon = async () => {
+						// 		try {
+						// 			await page.jInst(password, pass)
+						// 			const ca = await page.ext('#auth-captcha-image')
+						// 			if (ca) { throw 'fail' }
+						// 		}
+						// 		catch (e) {
+						// 			await captchaAmazon()
+						// 		}
+						// 	}
 
-							await captchaAmazon()
+						// 	await captchaAmazon()
 
-							await page.jClk('#ap-account-fixup-phone-skip-link')
-						}
+						// 	await page.jClk('#ap-account-fixup-phone-skip-link')
+						// }
 
 						await page.waitFor(2000 + rand(2000))
 						await page.gotoUrl(album())
@@ -685,7 +690,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
 				if (player === 'amazon') {
-					await amazonCheck()
+					// await amazonCheck()
 					const play = await page.ext(playBtn)
 					!play && await page.gotoUrl(album())
 				}

@@ -30,7 +30,7 @@ module.exports = {
     'https://music.amazon.fr/albums/B07VR121QG',
     'https://music.amazon.fr/albums/B07VC9S3JM',
     'https://music.amazon.fr/albums/B07TC99Y6V',
-    // 'https://music.amazon.fr/albums/B07WCHK4JR',//my-stash
+    'https://music.amazon.fr/albums/B07WCHK4JR',//my-stash
     'https://music.amazon.fr/albums/B07V1W5978',//marching-smile
     // 'https://music.amazon.fr/albums/B07VV7H96Z',//avalanches-of-ability
     // 'https://music.amazon.fr/albums/B07V4BZFM2',
