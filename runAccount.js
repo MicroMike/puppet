@@ -877,7 +877,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							let nextOk = false
 							countPlays++
 
-							if (player === 'tidal' && rand(2) && currentAlbum === 'https://listen.tidal.com/album/88716570') {
+							const clickNext = rand(2) &&
+								(currentAlbum === 'https://listen.tidal.com/album/88716570')
+								|| (currentAlbum === 'https://music.amazon.fr/albums/B07CZDXC9B')
+
+							if (clickNext) {
 								nextOk = true
 								await page.jClk(nextBtn)
 							}
