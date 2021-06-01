@@ -105,6 +105,7 @@ const addFcts = async (page) => {
 			}
 
 			if (exist) {
+				await page.waitFor(1000 + rand(2000))
 				await page.evaluate(selector => {
 					document.querySelector(selector) && document.querySelector(selector).click()
 				}, selector)
@@ -128,7 +129,7 @@ const addFcts = async (page) => {
 			}, { selector, text: type ? '' : text })
 
 			if (type) {
-				await page.type(selector, text, { delay: 150 });
+				await page.type(selector, text, { delay: 1000 + rand(1000) });
 			}
 
 			return true
@@ -152,7 +153,7 @@ const addFcts = async (page) => {
 			}, { selector, text: type ? '' : text })
 
 			if (type) {
-				await page.type(selector, text, { delay: 150 });
+				await page.type(selector, text, { delay: 1000 + rand(1000) });
 			}
 
 			return true
