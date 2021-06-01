@@ -406,6 +406,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				const elementHandle = await page.$('iframe');
 				const frame = await elementHandle.contentFrame();
+				const elementHandle2 = await frame.$('iframe');
+				const frame2 = await elementHandle2.contentFrame();
 
 				const captchaCheck = await frame.evaluate(() => {
 					return document.body.textContent
@@ -418,6 +420,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				})
 
 				console.log(recaptcha)
+
+				const recaptcha2 = await frame2.evaluate(() => {
+					return document.body.parentElement.outerHTML
+				})
+
+				console.log(recaptcha2)
 
 				if (/want to make sure it/.test(captchaCheck)) {
 					await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
