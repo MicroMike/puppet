@@ -420,7 +420,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					console.log(humanUrl)
 					await page.gotoUrl(humanUrl)
-					return
 
 					await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
 
