@@ -416,7 +416,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (/want to make sure it/.test(captchaCheck)) {
 					await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
 					await page.waitFor(5000 + rand(2000))
-					takeScreenshot('humanNextStep')
 				}
 			}
 
@@ -470,6 +469,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
 						}
 					}
+
+					takeScreenshot('humanNextStep')
 
 					const waitForPass = async () => {
 						try {
