@@ -446,6 +446,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('titdalError', e)
 						page = await page.cbc()
 
+						await page.waitFor(5000 + rand(2000))
+
 						const captchaCheck = await page.evaluate(() => {
 							return document.body.textContent
 						})

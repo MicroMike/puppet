@@ -300,7 +300,6 @@ module.exports = async (userDataDir, noCache = false, headless = false) => {
 
 	page.cbc = async () => {
 		const pagesR = await browserContext.pages()
-		console.log(pagesR.length)
 		const pageR = pagesR[0]
 		return pageR && addFcts(pageR)
 	}
