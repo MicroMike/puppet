@@ -434,8 +434,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						await page.waitFor(5000 + rand(2000))
 
-						await page.evaluate(() => {
-							window.scrollTo(0, document.body.scrollHeight);
+						const captchaBody = await page.evaluate(() => {
+							return document.body.parentElement.outerHTML
 						})
 
 						const elementHandle = await page.$('iframe');
@@ -449,9 +449,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
 						}
 
-						const captchaBody = await frame.evaluate(() => {
-							return document.body.parentElement.outerHTML
-						})
+						// const captchaBody = await frame.evaluate(() => {
+						// 	return document.body.parentElement.outerHTML
+						// })
 
 						const grecaptcha_cfg = await frame.evaluate(() => {
 							return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients[0]
