@@ -460,8 +460,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('captchaCheck', captchaCheck)
 						console.log('captchaBody', captchaBody)
 						console.log('___grecaptcha_cfg', grecaptcha_cfg)
+
+						throw 'humanCaptcha'
 						// await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
-						await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
+						// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
 					}
 
 					const waitForPass = async () => {
