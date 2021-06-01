@@ -18,6 +18,28 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		? invisibleTask
 		: v2task
 
+
+	let frame
+
+	if (username) {
+		await page.rload()
+		await page.inst(username, login, true)
+	} else {
+		const elementHandle = await page.$('iframe');
+		frame = await elementHandle.contentFrame();
+	}
+
+	console.log(captcha)
+
+	const currentPage = frame || page
+
+	const recaptcha = await currentPage.evaluate(() => {
+		return document.body.parentElement.outerHTML
+	})
+
+	console.log(recaptcha)
+	return
+
 	try {
 		const anticaptcha = (invisible = false) => {
 			return new Promise((resolve, reject) => {
@@ -99,7 +121,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		const currentPage = frame || page
 
 		const recaptcha = await currentPage.evaluate(() => {
-			return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients
+			return document.body.parentElement.outerHTML
 		})
 
 		console.log(recaptcha)
