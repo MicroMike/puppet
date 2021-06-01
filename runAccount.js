@@ -441,7 +441,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							return document.body.textContent
 						})
 
-						console.log(captchaCheck)
+						console.log(/want to make sure it/.test(captchaCheck))
 						if (/want to make sure it/.test(captchaCheck)) {
 							await captcha(frame, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
 							tidalConnect()
