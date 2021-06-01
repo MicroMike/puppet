@@ -423,7 +423,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('captchaCheck', captchaCheck)
 						console.log('captchaBody', captchaBody)
 
-						if (test(/want to make sure it/).captchaCheck) {
+						if (/want to make sure it/.test(captchaCheck)) {
 							await captcha(page, 'https://login.tidal.com', keyCaptcha)
 						}
 
