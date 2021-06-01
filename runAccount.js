@@ -462,7 +462,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// console.log('___grecaptcha_cfg', grecaptcha_cfg)
 						tidalConnect()
 
-						throw 'humanCaptcha'
+						// throw 'humanCaptcha'
 						// await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
 						// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
 					}
