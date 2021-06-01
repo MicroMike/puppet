@@ -86,8 +86,9 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 		let frame
 
+		await page.rload()
+
 		if (username) {
-			await page.rload()
 			await page.inst(username, login, true)
 		} else {
 			const elementHandle = await page.$('iframe');
@@ -95,9 +96,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		}
 
 
-		const currentPage = username
-			? page
-			: frame
+		const currentPage = frame || page
 
 		await currentPage.evaluate((captcha) => {
 			setTimeout(() => {

@@ -398,10 +398,26 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (issueAccount) { throw 'del' }
 			}
 
-			const tidalConnect = async () => {
+			const tidalConnect = async (destroy) => {
 				let notConnected = true
 				let needLog = false
 				let needreLog = false
+
+				if (destroy) {
+					const elementHandle = await page.$('iframe');
+					const frame = await elementHandle.contentFrame();
+
+					const captchaCheck = await frame.evaluate(() => {
+						return document.body.textContent
+					})
+
+					console.log(/want to make sure it/.test(captchaCheck))
+					if (/want to make sure it/.test(captchaCheck)) {
+						await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
+
+						await page.waitFor(5000 + rand(2000))
+					}
+				}
 
 				await page.gotoUrl(album())
 				notConnected = await page.ext(notLoggedDom)
@@ -413,22 +429,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('beforeClick')
 						await page.clk(notLoggedDom)
 						console.log('afterClick')
-
-						const elementHandle = await page.$('iframe');
-						const frame = await elementHandle.contentFrame();
-
-						const captchaCheck = await frame.evaluate(() => {
-							return document.body.textContent
-						})
-
-						console.log(/want to make sure it/.test(captchaCheck))
-						if (/want to make sure it/.test(captchaCheck)) {
-							await captcha(frame, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
-
-							await page.waitFor(5000 + rand(2000))
-
-							return
-						}
 
 						needLog = await page.ext(username)
 						needreLog = await page.ext(reLog)
@@ -448,14 +448,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 					}
 					catch (e) {
-						console.log('titdalError', e)
-						page = await page.cbc()
-
-						await page.waitFor(5000 + rand(2000))
-
+						if (/context was destroyed/.test(e)) {
+							page = await page.cbc()
+							await page.waitFor(5000 + rand(2000))
+							tidalConnect(true)
+							return
+						}
 						await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
-
-						throw 'humanCaptcha'
 					}
 
 					const waitForPass = async () => {
