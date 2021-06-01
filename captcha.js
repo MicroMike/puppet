@@ -20,20 +20,6 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 
 	let frame
-	let elementHandle
-
-	if (username) {
-		await page.rload()
-		await page.inst(username, login, true)
-	} else {
-		elementHandle = await page.$('iframe');
-		frame = await elementHandle.contentFrame();
-		elementHandle = await frame.$('iframe');
-		frame = await elementHandle.contentFrame();
-	}
-
-	// console.log(captcha)
-
 	const currentPage = frame || page
 
 	const recaptcha = await currentPage.evaluate(() => {
@@ -41,6 +27,12 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 	})
 
 	console.log(recaptcha)
+
+	const grecaptcha_cfg = await currentPage.evaluate(() => {
+		return window.___grecaptcha_cfg
+	})
+
+	console.log(grecaptcha_cfg)
 	return
 
 	try {
