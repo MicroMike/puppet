@@ -398,12 +398,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (issueAccount) { throw 'del' }
 			}
 
-			const tidalConnect = async (destroy) => {
+			let errorhuman = false
+
+			const tidalConnect = async () => {
 				let notConnected = true
 				let needLog = false
 				let needreLog = false
 
-				if (destroy) {
+				if (errorhuman) {
+					errorhuman = false
 					console.log('destroy')
 					const elementHandle = await page.$('iframe');
 					const frame = await elementHandle.contentFrame();
@@ -438,6 +441,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						needLog = await page.ext(username)
 						needreLog = await page.ext(reLog)
 
+						console.log('needLog', needLog)
+						console.log('needreLog', needreLog)
+
 						if (needreLog) {
 							console.log('needreLog')
 							await page.clk(reLog)
@@ -459,11 +465,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						if (/context was destroyed/.test(e)) {
 							page = await page.cbc()
 							await page.waitFor(5000 + rand(2000))
-							tidalConnect(true)
-							return
+							errorhuman = true
+							tidalConnect()
+						} else {
+							await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
 						}
-						await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
 					}
+
+					if (errorhuman) { return }
 
 					const waitForPass = async () => {
 						try {
