@@ -444,7 +444,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 					catch (e) {
 						console.log('titdalError', e)
-						await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
+						const pages = await page.cbc.pages()
+						console.log(pages)
+						// await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
 					}
 
 					const waitForPass = async () => {

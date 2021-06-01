@@ -298,6 +298,8 @@ module.exports = async (userDataDir, noCache = false, headless = false) => {
 	const pages = await browserContext.pages()
 	const page = pages[0]
 
+	page.cbc = browserContext;
+
 	await page.evaluateOnNewDocument(() => {
 		Object.defineProperty(navigator, 'webdriver', {
 			get: () => false,
