@@ -398,31 +398,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (issueAccount) { throw 'del' }
 			}
 
-			let errorhuman = false
-
 			const tidalConnect = async () => {
 				let notConnected = true
 				let needLog = false
 				let needreLog = false
-
-				if (errorhuman) {
-					errorhuman = false
-					console.log('destroy')
-					const elementHandle = await page.$('iframe');
-					const frame = await elementHandle.contentFrame();
-
-					const captchaCheck = await frame.evaluate(() => {
-						return document.body.textContent
-					})
-
-					console.log('captchaCheck', /want to make sure it/.test(captchaCheck))
-
-					if (/want to make sure it/.test(captchaCheck)) {
-						await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
-
-						await page.waitFor(5000 + rand(2000))
-					}
-				}
 
 				console.log('gotoalbum')
 				await page.gotoUrl(album())
@@ -462,17 +441,31 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 					catch (e) {
 						console.log(e)
+
 						if (/context was destroyed/.test(e)) {
+							console.log('destroy')
+
 							page = await page.cbc()
 							await page.waitFor(5000 + rand(2000))
-							errorhuman = true
-							tidalConnect()
+
+							const elementHandle = await page.$('iframe');
+							const frame = await elementHandle.contentFrame();
+
+							const captchaCheck = await frame.evaluate(() => {
+								return document.body.textContent
+							})
+
+							console.log('captchaCheck', /want to make sure it/.test(captchaCheck))
+
+							if (/want to make sure it/.test(captchaCheck)) {
+								await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
+								await page.waitFor(5000 + rand(2000))
+								takeScreenshot('humanNextStep')
+							}
 						} else {
 							await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
 						}
 					}
-
-					if (errorhuman) { return }
 
 					const waitForPass = async () => {
 						try {
