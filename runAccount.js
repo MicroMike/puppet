@@ -453,7 +453,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						})
 
 						const captchaBody = await page.evaluate(() => {
-							return document.body.outerHTML
+							return document.body.parentElement.outerHTML
 						})
 
 						const grecaptcha_cfg = await page.evaluate(() => {
