@@ -416,16 +416,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				console.log('captchaCheck', /want to make sure it/.test(captchaCheck))
 
 				const recaptcha = await frame.evaluate(() => {
-					return document.body.parentElement.outerHTML
+					return window.___grecaptcha_cfg
 				})
 
 				console.log(recaptcha)
 
 				const recaptcha2 = await frame2.evaluate(() => {
-					return document.body.parentElement.outerHTML
+					return window.___grecaptcha_cfg
 				})
 
 				console.log(recaptcha2)
+
+				const recaptcha3 = await page.evaluate(() => {
+					return window.___grecaptcha_cfg
+				})
+
+				console.log(recaptcha3)
 
 				if (/want to make sure it/.test(captchaCheck)) {
 					await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
