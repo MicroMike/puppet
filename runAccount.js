@@ -413,6 +413,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				console.log('captchaCheck', /want to make sure it/.test(captchaCheck))
 
+				const recaptcha = await frame.evaluate(() => {
+					return document.body.parentElement.outerHTML
+				})
+
+				console.log(recaptcha)
+
 				if (/want to make sure it/.test(captchaCheck)) {
 					await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
 					await page.waitFor(5000 + rand(2000))

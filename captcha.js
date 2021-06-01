@@ -26,7 +26,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		return document.body.parentElement.outerHTML
 	})
 
-	console.log(recaptcha)
+	// console.log(recaptcha)
 
 	const grecaptcha_cfg = await currentPage.evaluate(() => {
 		return window.___grecaptcha_cfg
