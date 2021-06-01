@@ -438,11 +438,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
 						}
 
+						await page.evaluate(() => {
+							window.scrollTo(0, document.body.scrollHeight);
+						})
+
 						const elementHandle = await page.$('iframe');
 						const frame = await elementHandle.contentFrame();
 
 						const captchaCheck = await frame.evaluate(() => {
-							window.scrollTo(0, document.body.scrollHeight);
 							return document.body.textContent
 						})
 
