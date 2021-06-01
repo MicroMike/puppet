@@ -9,7 +9,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 	}
 
 	const v2task = {
-		type: "RecaptchaV2TaskProxyless",
+		type: "RecaptchaV3TaskProxyless",
 		websiteURL,
 		websiteKey
 	}
