@@ -421,7 +421,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					console.log(humanUrl)
 					await page.gotoUrl(humanUrl)
 
-					await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
+					await captcha(page, 'https://geo.captcha-delivery.com/captcha', keyCaptchaHuman)
 
 					await page.waitFor(5000 + rand(2000))
 				}
