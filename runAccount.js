@@ -435,13 +435,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.waitFor(5000 + rand(2000))
 
 						if (/want to make sure it/.test(captchaCheck)) {
-							await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
+							// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
 						}
 
 						const elementHandle = await page.$('iframe');
 						const frame = await elementHandle.contentFrame();
 
 						const captchaCheck = await frame.evaluate(() => {
+							window.scrollTo(0, document.body.scrollHeight);
 							return document.body.textContent
 						})
 
