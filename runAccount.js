@@ -434,10 +434,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						await page.waitFor(5000 + rand(2000))
 
-						if (/want to make sure it/.test(captchaCheck)) {
-							// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
-						}
-
 						await page.evaluate(() => {
 							window.scrollTo(0, document.body.scrollHeight);
 						})
@@ -448,6 +444,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						const captchaCheck = await frame.evaluate(() => {
 							return document.body.textContent
 						})
+
+						if (/want to make sure it/.test(captchaCheck)) {
+							// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
+						}
 
 						const captchaBody = await frame.evaluate(() => {
 							return document.body.parentElement.outerHTML
