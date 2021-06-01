@@ -448,6 +448,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 					}
 					catch (e) {
+						console.log(e)
 						if (/context was destroyed/.test(e)) {
 							page = await page.cbc()
 							await page.waitFor(5000 + rand(2000))
