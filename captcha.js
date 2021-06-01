@@ -5,7 +5,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		type: 'NoCaptchaTaskProxyless',
 		websiteURL,
 		websiteKey,
-		invisible
+		invisible: true
 	}
 
 	const v2task = {
