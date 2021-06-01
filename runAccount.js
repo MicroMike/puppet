@@ -434,10 +434,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						await page.waitFor(5000 + rand(2000))
 
-						const captchaBody = await page.evaluate(() => {
-							return document.body.parentElement.outerHTML
-						})
-
 						const elementHandle = await page.$('iframe');
 						const frame = await elementHandle.contentFrame();
 
@@ -445,26 +441,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							return document.body.textContent
 						})
 
-						// if (/want to make sure it/.test(captchaCheck)) {
-						await captcha(frame, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
-						// }
+						console.log(captchaCheck)
+						if (/want to make sure it/.test(captchaCheck)) {
+							await captcha(frame, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
+							tidalConnect()
+						}
 
-						// const captchaBody = await frame.evaluate(() => {
-						// 	return document.body.parentElement.outerHTML
-						// })
-
-						// const grecaptcha_cfg = await frame.evaluate(() => {
-						// 	return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients[0]
-						// })
-
-						// console.log('captchaCheck', captchaCheck)
-						// console.log('captchaBody', captchaBody)
-						// console.log('___grecaptcha_cfg', grecaptcha_cfg)
-						tidalConnect()
-
-						// throw 'humanCaptcha'
-						// await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
-						// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
+						throw 'humanCaptcha'
 					}
 
 					const waitForPass = async () => {
