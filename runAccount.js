@@ -404,6 +404,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				let needreLog = false
 
 				if (destroy) {
+					console.log('destroy')
 					const elementHandle = await page.$('iframe');
 					const frame = await elementHandle.contentFrame();
 
@@ -411,7 +412,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						return document.body.textContent
 					})
 
-					console.log(/want to make sure it/.test(captchaCheck))
+					console.log('captchaCheck', /want to make sure it/.test(captchaCheck))
+
 					if (/want to make sure it/.test(captchaCheck)) {
 						await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
 
@@ -419,10 +421,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 				}
 
+				console.log('gotoalbum')
 				await page.gotoUrl(album())
+
 				notConnected = await page.ext(notLoggedDom)
 
 				if (notConnected) {
+					console.log('notConnected')
 					// if (!check) { throw 'tidalError' }
 
 					try {
