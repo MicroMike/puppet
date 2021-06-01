@@ -445,21 +445,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							return document.body.textContent
 						})
 
-						if (/want to make sure it/.test(captchaCheck)) {
-							// await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
-						}
+						// if (/want to make sure it/.test(captchaCheck)) {
+						await captcha(frame, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
+						// }
 
 						// const captchaBody = await frame.evaluate(() => {
 						// 	return document.body.parentElement.outerHTML
 						// })
 
-						const grecaptcha_cfg = await frame.evaluate(() => {
-							return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients[0]
-						})
+						// const grecaptcha_cfg = await frame.evaluate(() => {
+						// 	return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients[0]
+						// })
 
-						console.log('captchaCheck', captchaCheck)
-						console.log('captchaBody', captchaBody)
-						console.log('___grecaptcha_cfg', grecaptcha_cfg)
+						// console.log('captchaCheck', captchaCheck)
+						// console.log('captchaBody', captchaBody)
+						// console.log('___grecaptcha_cfg', grecaptcha_cfg)
+						tidalConnect()
 
 						throw 'humanCaptcha'
 						// await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
