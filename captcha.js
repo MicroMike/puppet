@@ -92,6 +92,12 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 		console.log(captcha)
 
+		const grecaptcha_cfg = await page.evaluate(() => {
+			return window.___grecaptcha_cfg
+		})
+
+		console.log(grecaptcha_cfg)
+
 		await page.evaluate((captcha) => {
 			setTimeout(() => {
 				let clients = window.___grecaptcha_cfg.clients[0]
