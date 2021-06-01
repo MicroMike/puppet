@@ -1,5 +1,23 @@
 module.exports = async (page, websiteURL, websiteKey, username, login) => {
 	const request = require('ajax-request');
+
+	const invisibleTask = {
+		type: 'NoCaptchaTaskProxyless',
+		websiteURL,
+		websiteKey,
+		invisible
+	}
+
+	const v2task = {
+		type: "RecaptchaV2TaskProxyless",
+		websiteURL,
+		websiteKey
+	}
+
+	const task = username
+		? invisibleTask
+		: v2task
+
 	try {
 		const anticaptcha = (invisible = false) => {
 			return new Promise((resolve, reject) => {
@@ -9,12 +27,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 					json: true,
 					data: {
 						clientKey: '1598b04fcee925998a78c2b75fd4dbd0',
-						task: {
-							type: 'NoCaptchaTaskProxyless',
-							websiteURL,
-							websiteKey,
-							invisible
-						}
+						task
 					}
 				}, function (err, res, response) {
 					if (!response || !response.taskId) {
@@ -71,13 +84,22 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 		const captcha = await resolveCaptcha()
 
-		await page.rload()
+		let frame
 
 		if (username) {
+			await page.rload()
 			await page.inst(username, login, true)
+		} else {
+			const elementHandle = await page.$('iframe');
+			frame = await elementHandle.contentFrame();
 		}
 
-		await page.evaluate((captcha) => {
+
+		const currentPage = username
+			? page
+			: frame
+
+		await currentPage.evaluate((captcha) => {
 			setTimeout(() => {
 				let clients = window.___grecaptcha_cfg.clients[0]
 				Object.keys(clients).map(key => {
@@ -90,6 +112,16 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 				})
 			}, 5000);
 		}, captcha)
+
+		// } else {
+		// 	const elementHandle = await page.$('iframe');
+		// 	const frame = await elementHandle.contentFrame();
+		// 	await frame.waitForSelector('#g-recaptcha-response');
+		// 	await frame.evaluate(() => {
+		// 		document.querySelector('#g-recaptcha-response').textContent = captcha
+		// 	}, captcha)
+		// }
+
 
 		return true
 	}

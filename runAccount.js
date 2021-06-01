@@ -309,6 +309,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				nextBtn = '[data-test="next"]'
 
 				keyCaptcha = '6LcaN-0UAAAAAN056lYOwirUdIJ70tvy9QwNBajZ'
+				keyCaptchaHuman = '6LccSjEUAAAAANCPhaM2c-WiRxCZ5CzsjR_vd8uX'
 
 				usedDom = '.WARN'
 				reLog = 'button.btn-client-primary'
@@ -412,21 +413,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.clk(notLoggedDom)
 						console.log('afterClick')
 
-						const captchaCheck = await page.evaluate(() => {
-							return document.body.textContent
-						})
-
-						const captchaBody = await page.evaluate(() => {
-							return document.body.outerHTML
-						})
-
-						console.log('captchaCheck', captchaCheck)
-						console.log('captchaBody', captchaBody)
-
-						if (/want to make sure it/.test(captchaCheck)) {
-							await captcha(page, 'https://login.tidal.com', keyCaptcha)
-						}
-
 						needLog = await page.ext(username)
 
 						if (!needLog) {
@@ -448,15 +434,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						await page.waitFor(5000 + rand(2000))
 
-						const captchaCheck = await page.evaluate(() => {
+						if (/want to make sure it/.test(captchaCheck)) {
+							await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
+						}
+
+						const elementHandle = await page.$('iframe');
+						const frame = await elementHandle.contentFrame();
+
+						const captchaCheck = await frame.evaluate(() => {
 							return document.body.textContent
 						})
 
-						const captchaBody = await page.evaluate(() => {
+						const captchaBody = await frame.evaluate(() => {
 							return document.body.parentElement.outerHTML
 						})
 
-						const grecaptcha_cfg = await page.evaluate(() => {
+						const grecaptcha_cfg = await frame.evaluate(() => {
 							return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients[0]
 						})
 
@@ -464,7 +457,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('captchaBody', captchaBody)
 						console.log('___grecaptcha_cfg', grecaptcha_cfg)
 						// await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
-						// await captcha(page, 'https://login.tidal.com', keyCaptcha)
+						await captcha(page, 'https://login.tidal.com', keyCaptchaHuman)
 					}
 
 					const waitForPass = async () => {
