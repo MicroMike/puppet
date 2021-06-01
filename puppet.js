@@ -265,8 +265,8 @@ module.exports = async (userDataDir, noCache = false, headless = false) => {
 		headless,
 		args: [
 			'--no-sandbox',
-			// '--disable-setuid-sandbox',
-			// '--disable-gpu',
+			'--disable-setuid-sandbox',
+			'--disable-gpu',
 		],
 		timeout: 0,
 		defaultViewport: {
@@ -285,7 +285,7 @@ module.exports = async (userDataDir, noCache = false, headless = false) => {
 	}
 	catch (e) {
 		try {
-			params.executablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+			params.executablePath = "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 			launch = await puppeteer.launch(params);
 			browserContext = launch.defaultBrowserContext()
 		}
