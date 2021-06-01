@@ -33,7 +33,7 @@
     "inits": "/sbin/ip route del 5.189.185.0/24 via 5.189.185.1 dev ens18 && /sbin/ip route add 5.189.185.0/24 dev ens18 proto kernel scope link src 5.189.185.48 && expressvpn connect nl",
     "inity": "/sbin/ip route del 173.249.43.0/24 via 173.249.43.1 dev ens18 && /sbin/ip route add 173.249.43.0/24 dev ens18 proto kernel scope link src 173.249.43.6",
     "rmcache": "ipcs -p | grep micro | awk 'NR == 1 { print $3 } ' | xargs kill && exit",
-    "node": "curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && apt-get install nodejs ",
+    "node": "curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && apt-get install nodejs ",
     "google": "dpkg -i google-chrome-stable_current_amd64.deb",
     "expressvpn": "dpkg -i expressvpn_1.5.0_amd64.deb",
     "addons": "apt-get install build-essential clang libdbus-1-dev libgtk-3-dev libnotify-dev libgnome-keyring-dev libgconf2-dev libasound2-dev libcap-dev libcups2-dev libxtst-dev libxss1 libnss3-dev gcc-multilib g++-multilib curl gperf bison python-dbusmock xvfb",
