@@ -408,10 +408,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					// if (!check) { throw 'tidalError' }
 
 					try {
+						console.log('beforeClick')
 						await page.clk(notLoggedDom)
+						console.log('afterClick')
 
 						const captchaCheck = await page.evaluate(() => {
-							return document.body.textContent.match(/want to make sure it/) !== null
+							return document.body.textContent
 						})
 
 						const captchaBody = await page.evaluate(() => {
@@ -421,7 +423,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('captchaCheck', captchaCheck)
 						console.log('captchaBody', captchaBody)
 
-						if (captchaCheck) {
+						if (test(/want to make sure it/).captchaCheck) {
 							await captcha(page, 'https://login.tidal.com', keyCaptcha)
 						}
 
