@@ -18,23 +18,6 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		? invisibleTask
 		: v2task
 
-
-	let frame
-	const currentPage = frame || page
-
-	const recaptcha = await currentPage.evaluate(() => {
-		return document.body.parentElement.outerHTML
-	})
-
-	// console.log(recaptcha)
-
-	const grecaptcha_cfg = await currentPage.evaluate(() => {
-		return window.___grecaptcha_cfg
-	})
-
-	console.log(grecaptcha_cfg)
-	return
-
 	try {
 		const anticaptcha = (invisible = false) => {
 			return new Promise((resolve, reject) => {
@@ -101,27 +84,15 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 		const captcha = await resolveCaptcha()
 
-		let frame
+		await page.rload()
 
 		if (username) {
-			await page.rload()
 			await page.inst(username, login, true)
-		} else {
-			const elementHandle = await page.$('iframe');
-			frame = await elementHandle.contentFrame();
 		}
 
 		console.log(captcha)
 
-		const currentPage = frame || page
-
-		const recaptcha = await currentPage.evaluate(() => {
-			return document.body.parentElement.outerHTML
-		})
-
-		console.log(recaptcha)
-
-		await currentPage.evaluate((captcha) => {
+		await page.evaluate((captcha) => {
 			setTimeout(() => {
 				let clients = window.___grecaptcha_cfg.clients[0]
 				Object.keys(clients).map(key => {

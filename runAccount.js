@@ -406,8 +406,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				const elementHandle = await page.$('iframe');
 				const frame = await elementHandle.contentFrame();
-				const elementHandle2 = await frame.$('iframe');
-				const frame2 = await elementHandle2.contentFrame();
 
 				const captchaCheck = await frame.evaluate(() => {
 					return document.body.textContent
@@ -415,29 +413,17 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				console.log('captchaCheck', /want to make sure it/.test(captchaCheck))
 
-				const recaptcha = await frame.evaluate(() => {
-					return document.body.parentElement.outerHTML
-					return window.___grecaptcha_cfg
-				})
-
-				console.log('recaptcha', recaptcha)
-
-				const recaptcha2 = await frame2.evaluate(() => {
-					return document.body.parentElement.outerHTML
-					return window.___grecaptcha_cfg
-				})
-
-				console.log('recaptcha2', recaptcha2)
-
-				const recaptcha3 = await page.evaluate(() => {
-					return document.body.parentElement.outerHTML
-					return window.___grecaptcha_cfg
-				})
-
-				console.log('recaptcha3', recaptcha3)
-
 				if (/want to make sure it/.test(captchaCheck)) {
+					const humanUrl = await page.evaluate(() => {
+						return document.querySelector('iframe').getAttribute('src')
+					})
+
+					console.log(humanUrl)
+					await page.gotoUrl(humanUrl)
+					return
+
 					await captcha(page, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
+
 					await page.waitFor(5000 + rand(2000))
 				}
 			}
