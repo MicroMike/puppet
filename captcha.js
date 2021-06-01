@@ -86,9 +86,8 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 		let frame
 
-		await page.rload()
-
 		if (username) {
+			await page.rload()
 			await page.inst(username, login, true)
 		} else {
 			const elementHandle = await page.$('iframe');
@@ -98,6 +97,12 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		console.log(captcha)
 
 		const currentPage = frame || page
+
+		const recaptcha = await currentPage.evaluate(() => {
+			return window.___grecaptcha_cfg && window.___grecaptcha_cfg.clients
+		})
+
+		console.log(recaptcha)
 
 		await currentPage.evaluate((captcha) => {
 			setTimeout(() => {
