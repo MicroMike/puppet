@@ -434,10 +434,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						needreLog = await page.ext(reLog)
 
 						if (needreLog) {
+							console.log('needreLog')
 							await page.clk(reLog)
 						}
 
 						if (needLog) {
+							console.log('needLog')
 							await page.inst(username, login, true)
 							await page.clk('#recap-invisible')
 
