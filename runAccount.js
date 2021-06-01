@@ -410,17 +410,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					try {
 						await page.clk(notLoggedDom)
 
-						needLog = await page.ext(username)
-
 						const captchaCheck = await page.evaluate(() => {
 							return document.body.textContent.match(/want to make sure it/) !== null
 						})
 
+						const captchaBody = await page.evaluate(() => {
+							return document.body.outerHTML
+						})
+
 						console.log('captchaCheck', captchaCheck)
+						console.log('captchaBody', captchaBody)
 
 						if (captchaCheck) {
 							await captcha(page, 'https://login.tidal.com', keyCaptcha)
 						}
+
+						needLog = await page.ext(username)
 
 						if (!needLog) {
 							await page.clk(reLog)
