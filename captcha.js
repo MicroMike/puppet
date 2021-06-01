@@ -20,12 +20,15 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 
 	let frame
+	let elementHandle
 
 	if (username) {
 		await page.rload()
 		await page.inst(username, login, true)
 	} else {
-		const elementHandle = await page.$('iframe');
+		elementHandle = await page.$('iframe');
+		frame = await elementHandle.contentFrame();
+		elementHandle = await frame.$('iframe');
 		frame = await elementHandle.contentFrame();
 	}
 
