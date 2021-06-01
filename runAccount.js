@@ -457,7 +457,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						})
 
 						const grecaptcha_cfg = await page.evaluate(() => {
-							return window.___grecaptcha_cfg.clients[0]
+							try {
+								return window.___grecaptcha_cfg.clients[0]
+							} catch (e) {
+								return e
+							}
 						})
 
 						console.log('captchaCheck', captchaCheck)
