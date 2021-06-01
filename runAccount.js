@@ -401,6 +401,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const tidalConnect = async () => {
 				let notConnected = true
 				let needLog = false
+				let needreLog = false
 
 				await page.gotoUrl(album())
 				notConnected = await page.ext(notLoggedDom)
@@ -413,12 +414,30 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.clk(notLoggedDom)
 						console.log('afterClick')
 
-						needLog = await page.ext(username)
+						const elementHandle = await page.$('iframe');
+						const frame = await elementHandle.contentFrame();
 
-						if (!needLog) {
+						const captchaCheck = await frame.evaluate(() => {
+							return document.body.textContent
+						})
+
+						console.log(/want to make sure it/.test(captchaCheck))
+						if (/want to make sure it/.test(captchaCheck)) {
+							await captcha(frame, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
+
+							await page.waitFor(5000 + rand(2000))
+
+							return
+						}
+
+						needLog = await page.ext(username)
+						needreLog = await page.ext(reLog)
+
+						if (needreLog) {
 							await page.clk(reLog)
 						}
-						else {
+
+						if (needLog) {
 							await page.inst(username, login, true)
 							await page.clk('#recap-invisible')
 
@@ -434,19 +453,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						await page.waitFor(5000 + rand(2000))
 
-						const elementHandle = await page.$('iframe');
-						const frame = await elementHandle.contentFrame();
-
-						const captchaCheck = await frame.evaluate(() => {
-							return document.body.textContent
-						})
-
-						console.log(/want to make sure it/.test(captchaCheck))
-						if (/want to make sure it/.test(captchaCheck)) {
-							await captcha(frame, 'https://geo.captcha-delivery.com', keyCaptchaHuman)
-							tidalConnect()
-							return
-						}
+						await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
 
 						throw 'humanCaptcha'
 					}
