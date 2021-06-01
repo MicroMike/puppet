@@ -95,6 +95,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 			frame = await elementHandle.contentFrame();
 		}
 
+		console.log(captcha)
 
 		const currentPage = frame || page
 
