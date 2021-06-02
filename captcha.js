@@ -87,19 +87,19 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		if (username) {
 			await page.rload()
 			await page.inst(username, login, true)
+		} else {
+			const grecaptcha_cfg = await page.evaluate((captcha) => {
+				const recaptchaResponse = document.querySelector('#g-recaptcha-response')
+				if (recaptchaResponse) {
+					recaptchaResponse.textContent = captcha
+					return 'ok'
+				}
+				return 'error'
+			}, captcha)
+
+			console.log('grecaptcha_cfg', grecaptcha_cfg)
+			console.log(captcha)
 		}
-
-		const grecaptcha_cfg = await page.evaluate((captcha) => {
-			const recaptchaResponse = document.querySelector('#g-recaptcha-response')
-			if (recaptchaResponse) {
-				recaptchaResponse.textContent = captcha
-				return 'ok'
-			}
-			return 'error'
-		}, captcha)
-
-		console.log('grecaptcha_cfg', grecaptcha_cfg)
-		console.log(captcha)
 
 		await page.evaluate((captcha) => {
 			setTimeout(() => {
