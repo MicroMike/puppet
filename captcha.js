@@ -84,8 +84,9 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 		const captcha = await resolveCaptcha()
 
+		await page.rload()
+
 		if (username) {
-			await page.rload()
 			await page.inst(username, login, true)
 
 			await page.evaluate((captcha) => {
