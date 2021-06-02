@@ -84,9 +84,8 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 		const captcha = await resolveCaptcha()
 
-		await page.rload()
-
 		if (username) {
+			await page.rload()
 			await page.inst(username, login, true)
 		}
 
@@ -110,7 +109,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 					Object.keys(client).map(k => {
 						let l = client[k]
 						const callback = l && l.callback
-						callback && callback(username ? captcha : '')
+						callback && callback(captcha)
 					})
 				})
 			}, 5000);
