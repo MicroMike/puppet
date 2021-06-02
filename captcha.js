@@ -107,6 +107,10 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 				const recaptchaResponse = document.querySelector('#g-recaptcha-response')
 				if (recaptchaResponse) {
 					recaptchaResponse.textContent = captcha
+					setTimeout(() => {
+						let a = window.___grecaptcha_cfg.clients[0].U
+						Object.values(a)[0].callback('')
+					}, 5000);
 					return 'ok'
 				}
 				return 'error'
@@ -114,13 +118,6 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 			console.log('grecaptcha_cfg', grecaptcha_cfg)
 			console.log(captcha)
-
-			await page.evaluate((captcha) => {
-				setTimeout(() => {
-					let a = window.___grecaptcha_cfg.clients[0].U
-					Object.values(a)[0].callback('')
-				}, 5000);
-			}, captcha)
 		}
 
 		// } else {
