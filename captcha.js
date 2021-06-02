@@ -87,6 +87,20 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 		if (username) {
 			await page.rload()
 			await page.inst(username, login, true)
+
+			await page.evaluate((captcha) => {
+				setTimeout(() => {
+					let clients = window.___grecaptcha_cfg.clients[0]
+					Object.keys(clients).map(key => {
+						let client = clients[key]
+						Object.keys(client).map(k => {
+							let l = client[k]
+							const callback = l && l.callback
+							callback && callback(captcha)
+						})
+					})
+				}, 5000);
+			}, captcha)
 		} else {
 			const grecaptcha_cfg = await page.evaluate((captcha) => {
 				const recaptchaResponse = document.querySelector('#g-recaptcha-response')
@@ -99,21 +113,14 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 
 			console.log('grecaptcha_cfg', grecaptcha_cfg)
 			console.log(captcha)
-		}
 
-		await page.evaluate(({ captcha, username }) => {
-			setTimeout(() => {
-				let clients = window.___grecaptcha_cfg.clients[0]
-				Object.keys(clients).map(key => {
-					let client = clients[key]
-					Object.keys(client).map(k => {
-						let l = client[k]
-						const callback = l && l.callback
-						callback && callback(username ? captcha : '')
-					})
-				})
-			}, 5000);
-		}, { captcha, username })
+			await page.evaluate((captcha) => {
+				setTimeout(() => {
+					let a = window.___grecaptcha_cfg.clients[0].U
+					Object.values(a)[0].callback('')
+				}, 5000);
+			}, captcha)
+		}
 
 		// } else {
 		// 	const elementHandle = await page.$('iframe');
