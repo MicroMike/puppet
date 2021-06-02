@@ -94,7 +94,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 			const recaptchaResponse = document.querySelector('#g-recaptcha-response')
 			if (recaptchaResponse) {
 				recaptchaResponse.textContent = captcha
-				return recaptchaResponse.attributes('style')
+				return recaptchaResponse.attributes.style
 			}
 			return 'error'
 		}, captcha)
