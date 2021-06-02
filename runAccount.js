@@ -426,7 +426,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					console.log('done')
 
 					await page.waitFor(5000 + rand(2000))
-
+					return
 					resolveTidal()
 				}
 

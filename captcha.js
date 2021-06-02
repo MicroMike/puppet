@@ -108,8 +108,8 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 				if (recaptchaResponse) {
 					recaptchaResponse.textContent = captcha
 					setTimeout(() => {
-						let a = window.___grecaptcha_cfg.clients[0].U
-						Object.values(a)[0].callback('')
+						// let a = window.___grecaptcha_cfg.clients[0].U
+						// Object.values(a)[0].callback('')
 					}, 5000);
 					return 'ok'
 				}
