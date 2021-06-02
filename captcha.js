@@ -94,11 +94,13 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 			const recaptchaResponse = document.querySelector('#g-recaptcha-response')
 			if (recaptchaResponse) {
 				recaptchaResponse.textContent = captcha
+				return recaptchaResponse
 			}
-			return recaptchaResponse
+			return 'error'
 		}, captcha)
 
-		console.log(grecaptcha_cfg)
+		console.log('grecaptcha_cfg', grecaptcha_cfg)
+		console.log(captcha)
 
 		await page.evaluate((captcha) => {
 			setTimeout(() => {
