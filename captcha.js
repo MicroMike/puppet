@@ -94,7 +94,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 			const recaptchaResponse = document.querySelector('#g-recaptcha-response')
 			if (recaptchaResponse) {
 				recaptchaResponse.textContent = captcha
-				return recaptchaResponse
+				return recaptchaResponse.attributes('style')
 			}
 			return 'error'
 		}, captcha)
@@ -110,7 +110,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 					Object.keys(client).map(k => {
 						let l = client[k]
 						const callback = l && l.callback
-						callback && callback(username ? captcha : null)
+						callback && callback(username ? captcha : '')
 					})
 				})
 			}, 5000);
