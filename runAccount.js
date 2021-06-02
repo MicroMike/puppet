@@ -423,6 +423,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await captcha(page, 'https://geo.captcha-delivery.com/captcha', keyCaptchaHuman)
 
+					console.log('done')
+
 					await page.waitFor(5000 + rand(2000))
 				}
 			}

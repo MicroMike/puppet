@@ -101,7 +101,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 			console.log(captcha)
 		}
 
-		await page.evaluate((captcha) => {
+		await page.evaluate(({ captcha, username }) => {
 			setTimeout(() => {
 				let clients = window.___grecaptcha_cfg.clients[0]
 				Object.keys(clients).map(key => {
@@ -113,7 +113,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 					})
 				})
 			}, 5000);
-		}, captcha)
+		}, { captcha, username })
 
 		// } else {
 		// 	const elementHandle = await page.$('iframe');
