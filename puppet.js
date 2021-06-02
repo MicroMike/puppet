@@ -310,13 +310,15 @@ module.exports = async (userDataDir, noCache = false, headless = false) => {
 		});
 	});
 
+	await page.setRequestInterception(true);
+	page.on('request', interceptedRequest => {
+		console.log(interceptedRequest.url())
+		// if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
+		// 	interceptedRequest.abort();
+		// else
+		interceptedRequest.continue();
+	});
+
 	return page && addFcts(page)
 
-	//   await page.setRequestInterception(true);
-	//   page.on('request', interceptedRequest => {
-	//     if (interceptedRequest.url().endsWith('.png') || interceptedRequest.url().endsWith('.jpg'))
-	//       interceptedRequest.abort();
-	//     else
-	//       interceptedRequest.continue();
-	//   });
 }
