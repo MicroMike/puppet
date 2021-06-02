@@ -90,11 +90,13 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 			await page.inst(username, login, true)
 		}
 
-		console.log(captcha)
-
-		const grecaptcha_cfg = await page.evaluate(() => {
-			return window.___grecaptcha_cfg
-		})
+		const grecaptcha_cfg = await page.evaluate((captcha) => {
+			const recaptchaResponse = document.querySelector('#g-recaptcha-response')
+			if (recaptchaResponse) {
+				recaptchaResponse.textContent = captcha
+			}
+			return recaptchaResponse
+		}, captcha)
 
 		console.log(grecaptcha_cfg)
 
@@ -106,7 +108,7 @@ module.exports = async (page, websiteURL, websiteKey, username, login) => {
 					Object.keys(client).map(k => {
 						let l = client[k]
 						const callback = l && l.callback
-						callback && callback(captcha)
+						callback && callback(username ? captcha : null)
 					})
 				})
 			}, 5000);
