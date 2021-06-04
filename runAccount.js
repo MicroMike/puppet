@@ -226,7 +226,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			if (player === "spotify") {
 				if (code === 6) {
-					shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+					// shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
 					//   await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
 				}
 				// await page.gotoUrl('https://spotify.com/logout', true)
