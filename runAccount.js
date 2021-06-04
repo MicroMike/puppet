@@ -716,6 +716,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.waitFor(2000 + rand(2000))
 
 						if (player === 'napster' || player === 'spotify') {
+							await page.evaluate(() => {
+								window.scrollTo(0, 0)
+							})
 							const error = loginError && await page.ext(loginError)
 							if (error) { throw 'del' }
 
