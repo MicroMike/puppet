@@ -213,7 +213,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socketEmit('retryOk')
 			}
 
-			if (code === 6) {
+			if (code === 6 && e !== 'spotifyError') {
 				request('http://173.249.43.6:3000' + '/error?check/' + account, function (error, response, body) { })
 			}
 
