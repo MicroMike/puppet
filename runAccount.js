@@ -195,6 +195,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			code = e === 'del' ? 4 : code
 			code = e === 'tidalError' ? 6 : code
 			code = e === 'amazonError' ? 6 : code
+			code = e === 'spotifyError' ? 6 : code
 			code = e === 'used' ? 7 : code
 			code = e === 'firstPlay' ? 210 : code
 			code = e === 'failedLoop' ? 210 : code
@@ -716,9 +717,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await page.waitFor(2000 + rand(2000))
 
 						if (player === 'napster' || player === 'spotify') {
-							await page.evaluate(() => {
-								window.scrollTo(0, 0)
+							const errorMessage = await page.evaluate(() => {
+								return /went wrong/.test(document.body.textContent)
 							})
+
+							if (errorMessage) {
+								throw 'spotifyError'
+							}
+
 							const error = loginError && await page.ext(loginError)
 							if (error) { throw 'del' }
 
