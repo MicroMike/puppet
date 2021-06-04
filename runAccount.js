@@ -224,12 +224,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				await takeScreenshot(e)
 			}
 
-			// if (player === "spotify") {
-			//   if (code === 2) {
-			//     await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
-			//   }
-			//   await page.gotoUrl('https://spotify.com/logout', true)
-			// }
+			if (player === "spotify") {
+				if (code === 6) {
+					shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
+					//   await page.gotoUrl('https://accounts.spotify.com/revoke_sessions', true)
+				}
+				// await page.gotoUrl('https://spotify.com/logout', true)
+			}
 
 			if (code === 4) {
 				request('http://173.249.43.6:3000' + '/error?del/' + account, function (error, response, body) { })
