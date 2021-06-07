@@ -129,7 +129,7 @@ const addFcts = async (page) => {
 			}, { selector, text: type ? '' : text })
 
 			if (type) {
-				await page.type(selector, text, { delay: 500 + rand(500) });
+				await page.type(selector, text, { delay: 250 + rand(250) });
 			}
 
 			return true
@@ -153,7 +153,7 @@ const addFcts = async (page) => {
 			}, { selector, text: type ? '' : text })
 
 			if (type) {
-				await page.type(selector, text, { delay: 500 + rand(500) });
+				await page.type(selector, text, { delay: 250 + rand(250) });
 			}
 
 			return true

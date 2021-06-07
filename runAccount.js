@@ -976,7 +976,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						changeLoop++
 					}
 
-					if (changeLoop > 4) {
+					if (changeLoop > 8) {
 						exitLoop = true
 					}
 
