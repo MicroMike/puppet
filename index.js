@@ -21,23 +21,6 @@ const connect = () => new Promise((resolve, reject) => {
 	loop()
 })
 
-const expression = `var keyboardEvent = document.createEvent('KeyboardEvent');
-var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
-
-keyboardEvent[initMethod](
-  'keypress', // event type: keydown, keyup, keypress
-  true, // bubbles
-  true, // cancelable
-  window.body, // view: should be window
-  false, // ctrlKey
-  false, // altKey
-  false, // shiftKey
-  false, // metaKey
-  0, // keyCode: unsigned long - the virtual key code, else 0
-  'a', // charCode: unsigned long - the Unicode character associated with the depressed key, else 0
-);
-document.dispatchEvent(keyboardEvent);`
-
 const waitForSelector = (selector) => new Promise((res, rej) => {
 	const loop = async () => {
 		const el = await R.evaluate({ expression: 'document.querySelector(\'' + selector + '\')' })
