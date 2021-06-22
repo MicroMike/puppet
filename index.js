@@ -9,10 +9,8 @@ let N, P, R;
 const connect = () => new Promise((resolve, reject) => {
 	const loop = async () => {
 		const ls = await shell.exec('chrome-remote-interface list --port=' + port, { silent: false })
-		console.log(/Error/.test(ls.stderr))
 		if (/Error/.test(ls.stderr)) {
 			loop()
-			console.log(ls.stderr)
 		} else {
 			resolve(ls.stdout)
 		}
@@ -24,11 +22,9 @@ const connect = () => new Promise((resolve, reject) => {
 const waitForSelector = (selector) => new Promise((res, rej) => {
 	const loop = async () => {
 		const el = await R.evaluate({ expression: 'document.querySelector(\'' + selector + '\')' })
-		console.log(el)
 		if (!el.result.objectId) {
 			loop()
 		} else {
-			console.log(selector + ' found')
 			res('ok')
 		}
 	}
