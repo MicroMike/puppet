@@ -47,13 +47,17 @@ const click = (selector) => new Promise(async (res, rej) => {
 })
 
 const takeScreenshot = async (filename = 'sc.png') => {
-	const { data } = await Page.captureScreenshot();
+	const { data } = await P.captureScreenshot();
+	console.log(Buffer(data).toString('base64'))
 	fs.writeFileSync(filename, Buffer.from(data, 'base64'));
 }
 
 async function example() {
-	// await shell.exec('"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome" --no-first-run --user-data-dir="tidal' + port + '" --remote-debugging-port=' + port, { async: true })
-	await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --no-first-run --user-data-dir="tidal' + port + '" --remote-debugging-port=' + port, { async: true })
+	try {
+		await shell.exec('"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome" --no-first-run --user-data-dir="tidal' + port + '" --remote-debugging-port=' + port, { async: true })
+	} catch (error) {
+		await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --no-first-run --user-data-dir="tidal' + port + '" --remote-debugging-port=' + port, { async: true })
+	}
 
 	await connect()
 
