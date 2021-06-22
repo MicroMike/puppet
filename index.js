@@ -53,11 +53,8 @@ const takeScreenshot = async (filename = 'sc.png') => {
 }
 
 async function example() {
-	try {
-		await shell.exec('"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome" --no-first-run --user-data-dir="tidal' + port + '" --remote-debugging-port=' + port, { async: true })
-	} catch (error) {
-		await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --no-first-run --user-data-dir="tidal' + port + '" --remote-debugging-port=' + port, { async: true })
-	}
+	// await shell.exec('"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome" --no-first-run --user-data-dir="tidal' + port + '" --remote-debugging-port=' + port, { async: true })
+	await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --no-first-run --user-data-dir="tidal' + port + '" --remote-debugging-port=' + port, { async: true })
 
 	await connect()
 
