@@ -8,7 +8,7 @@ let N, P, R;
 
 const connect = () => new Promise((resolve, reject) => {
 	const loop = async () => {
-		const ls = await shell.exec('chrome-remote-interface list --port=' + port, { silent: false })
+		const ls = await shell.exec('chrome-remote-interface list --port=' + port, { silent: true })
 		if (/Error/.test(ls.stderr)) {
 			loop()
 		} else {
