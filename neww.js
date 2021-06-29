@@ -39,9 +39,9 @@ clientSocket.on('activate', async (socketId) => {
 		const b = shell.exec('git fetch && git status', { silent: true })
 		if (!b.match(/up to date/g)) {
 			console.log('----- PULL ' + arg + ' -----')
-			shell.exec('npm run rm && npm run clear', { silent: true })
-			shell.exec('git reset --hard origin/master', { silent: true })
-			shell.exec('git pull', { silent: true })
+			// shell.exec('npm run rm && npm run clear', { silent: true })
+			// shell.exec('git reset --hard origin/master', { silent: true })
+			// shell.exec('git pull', { silent: true })
 		}
 		shell.exec('npm run buff', { silent: true })
 	}
@@ -96,16 +96,26 @@ clientSocket.on('mRun', async () => {
 	}
 
 	let page
+	const isTidal = /tidal/.test(player)
+	const isSpotify = /spotify/.test(player)
 
 	try {
-		page = await puppet('save/' + player + '_' + login, player.match(/apple/))
+		if (!isTidal && !isSpotify) {
+			page = await puppet('save/' + player + '_' + login, player.match(/apple/))
+		}
 	}
 	catch (e) {
 		exit()
 	}
 
-	const runAccount = require('./runAccount');
-	await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
+	if (!isTidal && !isSpotify) {
+		const runAccount = require('./runAccount');
+		await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
+	}
+	else {
+		const runTidal = require('./index');
+		await runTidal(clientSocket, page, parentId, streamId, arg === 'check', account)
+	}
 
 	exit()
 })
