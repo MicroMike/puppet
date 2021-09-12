@@ -100,7 +100,7 @@ clientSocket.on('mRun', async () => {
 	const isSpotify = /spotify/.test(player)
 
 	try {
-		if (!isTidal && !isSpotify) {
+		if (!isTidal) {
 			page = await puppet('save/' + player + '_' + login, player.match(/apple/))
 		}
 	}
