@@ -28,7 +28,11 @@ const exit = (code = '0') => {
 }
 
 process.on('SIGINT', () => {
-	exit()
+	clientSocket && clientSocket.disconnect()
+	request('http://173.249.43.6:3000' + '/noUseAccount?' + account, () => {
+		process.exit()
+		exit()
+	})
 })
 
 clientSocket.on('activate', async (socketId) => {
@@ -36,14 +40,14 @@ clientSocket.on('activate', async (socketId) => {
 	parentId = arg
 
 	try {
-		const b = shell.exec('git fetch && git status', { silent: true })
-		if (!b.match(/up to date/g)) {
-			console.log('----- PULL ' + arg + ' -----')
-			// shell.exec('npm run rm && npm run clear', { silent: true })
-			// shell.exec('git reset --hard origin/master', { silent: true })
-			// shell.exec('git pull', { silent: true })
-		}
-		shell.exec('npm run buff', { silent: true })
+		// const b = shell.exec('git fetch && git status', { silent: true })
+		// if (!b.match(/up to date/g)) {
+		// 	console.log('----- PULL ' + arg + ' -----')
+		// 	shell.exec('npm run rm && npm run clear', { silent: true })
+		// 	shell.exec('git reset --hard origin/master', { silent: true })
+		// 	shell.exec('git pull', { silent: true })
+		// }
+		// shell.exec('npm run buff', { silent: true })
 	}
 	catch (e) { }
 
@@ -66,10 +70,6 @@ clientSocket.on('canRun', async () => {
 			exit()
 		}
 	})
-})
-
-clientSocket.on('Cdisconnect', () => {
-	exit('1')
 })
 
 // clientSocket.on('CdisconnectU', () => {
@@ -108,7 +108,7 @@ clientSocket.on('mRun', async () => {
 		exit()
 	}
 
-	if (!isTidal && !isSpotify) {
+	if (!isTidal) {
 		const runAccount = require('./runAccount');
 		await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
 	}
