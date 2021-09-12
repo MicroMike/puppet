@@ -91,7 +91,7 @@ clientSocket.on('mRun', async () => {
 	let player = accountInfo[0]
 	let login = accountInfo[1]
 
-	if (check || player.match(/spotify|napster|apple/)) {
+	if (check || player.match(/napster|apple/)) {
 		shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
 	}
 
