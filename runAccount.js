@@ -321,7 +321,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 			if (player === 'spotify') {
 				url = 'https://accounts.spotify.com/login'
-				loggedDom = '.sessionInfo'
+				loggedDom = '[data-testid="user-widget-link"]'	
 				notLoggedDom = '[data-testid="login-button"]'
 
 				username = '#login-username'
