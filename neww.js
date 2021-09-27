@@ -63,7 +63,7 @@ const getAccount = async () => {
 	const accountType = check ? 'checkAccount' : 'useAccount'
 	request('http://173.249.43.6:3000' + '/' + accountType, (error, response, body) => {
 		account = JSON.parse(body).account;
-		const isSpotify = /spotify/.test(player)
+		const isSpotify = /spotify/.test(account)
 
 		if (!isSpotify) {
 			getAccount()
