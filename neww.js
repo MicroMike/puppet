@@ -104,23 +104,22 @@ clientSocket.on('mRun', async () => {
 	const isTidal = /tidal/.test(player)
 	const isSpotify = /spotify/.test(account)
 
-	try {
-		// if (!isTidal && !isSpotify) {
-			page = await puppet('save/' + player + '_' + login, player.match(/apple/))
-		// }
-	}
-	catch (e) {
-		exit()
-	}
+	// try {
+	// 	if (!isTidal && !isSpotify) {
+	// 		page = await puppet('save/' + player + '_' + login, player.match(/apple/))
+	// 	}
+	// }
+	// catch (e) {
+	// 	exit()
+	// }
 
 	// if (!isTidal && !isSpotify) {
-		const runAccount = require('./runAccount');
-		await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
+	// 	const runAccount = require('./runAccount');
+	// 	await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
 	// }
-	// else {
-	// 	const runTidal = require('./index');
-	// 	await runTidal(clientSocket, page, parentId, streamId, arg === 'check', account)
-	// }
+
+	const runTidal = require('./index');
+	await runTidal(clientSocket, page, parentId, streamId, arg === 'check', account)
 
 	exit()
 })
