@@ -269,10 +269,10 @@ module.exports = async (userDataDir, noCache = false, headless = false) => {
 			'--disable-gpu',
 		],
 		timeout: 0,
-		defaultViewport: {
-			width: 851,
-			height: 450,
-		}
+		// defaultViewport: {
+		// 	width: 851,
+		// 	height: 450,
+		// }
 	}
 
 	if (noCache) {
