@@ -329,7 +329,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await wait(5000)
 
 					const body = await get('body', 'innerText')
-					const corectLoad = /robot|Accueil/i.test(body)
+					const corectLoad = /home|robot|Accueil/i.test(body)
 
 					if (corectLoad) {
 						return true
