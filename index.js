@@ -323,7 +323,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const goToPage = async (url) => {
 				try {
-					await P.navigate({ url });
+					await P.navigate({ url: url || album() });
 					await P.loadEventFired();
 
 					await wait(5000)
@@ -337,7 +337,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await goToPage(url)
 				} catch (error) {
-					if (!closed) {
+					if (!url) {
+						album()
+						goToPage()
+					} else if (!closed) {
 						console.log('navigate', url)
 						catchFct(error)
 					}
@@ -421,14 +424,24 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await getTimePlayer()
 
-					let repeat = await waitForSelector('[data-type="button__repeatAll"]', 1)
-					if (!repeat) {
-						await click('[data-test="repeat"]', 1)
+					if (isTidal) {
+						let repeat = await waitForSelector('[data-type="button__repeatAll"]', 1)
+						if (!repeat) {
+							await click('[data-test="repeat"]', 1)
+						}
+					}
+
+					if (isSpotify) {
+						let repeat = await waitForSelector('[data-testid="control-button-repeat"][aria-checked="false"]', 1)
+						if (repeat) {
+							await click('[data-testid="control-button-repeat"]', 1)
+						}
 					}
 
 					const matchTime = Number(time)
 
 					if (currTime === matchTime) {
+						console.log(login, currTime, matchTime)
 						pauseCount++
 					} else {
 						pauseCount = 0
@@ -436,8 +449,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (pauseCount === 10) {
 						pauseCount = 0
-						// throw 'freeze'
-						await click(S.play)
+						console.log(login, 'freeze')
+						throw 'freeze'
+						// await click(S.play)
 						// return
 					}
 
@@ -531,7 +545,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// const { result } = await R.evaluate({ expression: '/essayer gratuitement/i.test(document.body.innerHTML)' })
 
 						if (error) {
-							throw 'del'
+							if (isTidal) {
+								throw 'del'
+							}
+							throw 'out'
 						}
 						// }
 					}
@@ -541,7 +558,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const logSuccess = await waitForSelector(S.noNeedLog, 30)
 					if (!logSuccess) {
 						await wait(rand(3000, 1000))
-						throw 'tidalError'
+						if (isTidal) {
+							throw 'tidalError'
+						}
+						throw 'out'
 					}
 
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })

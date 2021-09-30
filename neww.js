@@ -108,7 +108,7 @@ clientSocket.on('mRun', async () => {
 	const isTidal = /tidal/.test(player)
 
 	try {
-		if (!isTidal) {
+		if (!isTidal && !isSpotify) {
 			page = await puppet('save/' + player + '_' + login, player.match(/apple/))
 		}
 	}
@@ -116,7 +116,7 @@ clientSocket.on('mRun', async () => {
 		exit()
 	}
 
-	if (!isTidal) {
+	if (!isTidal && !isSpotify) {
 		const runAccount = require('./runAccount');
 		await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
 	}
