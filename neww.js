@@ -63,12 +63,8 @@ const getAccount = async () => {
 	const accountType = check ? 'checkAccount' : 'useAccount'
 	request('http://173.249.43.6:3000' + '/' + accountType, (error, response, body) => {
 		account = JSON.parse(body).account;
-		const isSpotify = /spotify/.test(account)
 
-		if (!isSpotify) {
-			getAccount()
-		}
-		else if (account) {
+		if (account) {
 			clientSocket.emit('client', { parentId, streamId, account, max })
 		}
 		else {
@@ -106,6 +102,7 @@ clientSocket.on('mRun', async () => {
 
 	let page
 	const isTidal = /tidal/.test(player)
+	const isSpotify = /spotify/.test(account)
 
 	try {
 		if (!isTidal && !isSpotify) {
