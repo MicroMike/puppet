@@ -100,6 +100,12 @@ clientSocket.on('mRun', async () => {
 		shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
 	}
 
+	try {
+		shell.exec('scp -r root@185.170.214.227:/root/puppet/puppet/' + login + ' /root/puppet/puppet', { silent: true })
+	} catch (e) {
+		console.log(e)
+	}
+
 	let page
 	const isTidal = /tidal/.test(player)
 	const isSpotify = /spotify/.test(account)
