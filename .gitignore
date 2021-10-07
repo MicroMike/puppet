@@ -1,6 +1,7 @@
 node_modules
 save/*/*/*
 !Cookies
+puppet/*/*.*
 save/*/*.*
 save/*/DevToolsActivePort
 save/*/SingletonLock
