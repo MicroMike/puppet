@@ -101,7 +101,7 @@ clientSocket.on('mRun', async () => {
 	}
 
 	try {
-		shell.exec('scp -r root@185.170.214.227:/root/puppet/puppet/' + login + ' /root/puppet/puppet', { silent: true })
+		shell.exec('scp -r root@185.170.214.227:/root/puppet/puppet/' + login + ' /root/puppet/puppet', { silent: false })
 	} catch (e) {
 		console.log(e)
 	}
