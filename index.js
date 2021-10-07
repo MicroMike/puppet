@@ -441,7 +441,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const matchTime = Number(time)
 
 					if (currTime === matchTime) {
-						console.log(login, currTime, matchTime)
+						// console.log(login, currTime, matchTime)
 						pauseCount++
 					} else {
 						pauseCount = 0
