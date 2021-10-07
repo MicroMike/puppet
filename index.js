@@ -442,9 +442,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (currTime === matchTime) {
 						// console.log(login, currTime, matchTime)
+						socketEmit('playerInfos', { time, freeze: true, warn: true, countPlays })
 						pauseCount++
 					} else {
+						socketEmit('playerInfos', { time, ok: true, countPlays })
 						pauseCount = 0
+					}
+
+					if (pauseCount === 5) {
+						socketEmit('playerInfos', { time, freeze: true, countPlays })
 					}
 
 					if (pauseCount === 10) {
@@ -481,7 +487,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						nextMusic = false
 					}
 
-					socketEmit('playerInfos', { time, ok: true, countPlays })
+					// socketEmit('playerInfos', { time, ok: true, countPlays })
 
 					if (check) {
 						request('http://173.249.43.6:3000' + '/checkOk?' + account, async (error, response, body) => { })
