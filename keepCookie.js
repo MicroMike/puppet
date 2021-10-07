@@ -20,7 +20,7 @@ else {
 		// const [player, login, pass] = folder.split(':')
 		console.log(login)
 		const log = 'aaa' + login
-		if (!login) return
+		if (!/@/.test(login)) return
 		shell.exec(`mkdir -p "puppet/${log}/Default"`)
 		shell.exec(`cp -R "puppet/${login}/Default/Local Storage" "puppet/${log}/Default"`)
 		shell.exec(`cp -R "puppet/${login}/Default/Session Storage" "puppet/${log}/Default"`)
