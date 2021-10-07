@@ -19,6 +19,7 @@ const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + ran
 let account
 let back
 let parentId
+let login
 
 const copyBack = () => {
 	try {
@@ -104,7 +105,7 @@ clientSocket.on('mRun', async () => {
 
 	const accountInfo = account.split(':')
 	let player = accountInfo[0]
-	let login = accountInfo[1]
+	login = accountInfo[1]
 
 	if (check || player.match(/napster|apple/)) {
 		shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
