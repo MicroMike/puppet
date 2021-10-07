@@ -20,8 +20,17 @@ let account
 let back
 let parentId
 
+const copyBack = () => {
+	try {
+		shell.exec('scp -r /root/puppet/puppet/' + login + ' root@185.170.214.227:/root/puppet/puppet/', { silent: false })
+	} catch (e) {
+		console.log(e)
+	}
+}
+
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
+	copyBack()
 	request('http://173.249.43.6:3000' + '/noUseAccount?' + account, () => {
 		process.exit(code)
 	})
@@ -29,6 +38,7 @@ const exit = (code = '0') => {
 
 process.on('SIGINT', () => {
 	clientSocket && clientSocket.disconnect()
+	copyBack()
 	request('http://173.249.43.6:3000' + '/noUseAccount?' + account, () => {
 		process.exit()
 		exit()
