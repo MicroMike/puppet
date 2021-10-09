@@ -132,7 +132,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (code === 6 && e !== 'spotifyError') {
-				request('http://173.249.43.6:3000' + '/error?check/' + account, function (error, response, body) { })
+				request('http://216.158.239.199:3000' + '/error?check/' + account, function (error, response, body) { })
 			}
 
 			if (code >= 4 && code !== 7 && code !== 220) {
@@ -143,7 +143,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (code === 4) {
-				request('http://173.249.43.6:3000' + '/error?del/' + account, function (error, response, body) { })
+				request('http://216.158.239.199:3000' + '/error?del/' + account, function (error, response, body) { })
 			}
 			else if (code === 7) {
 				socketEmit('used')
@@ -490,7 +490,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					// socketEmit('playerInfos', { time, ok: true, countPlays })
 
 					if (check) {
-						request('http://173.249.43.6:3000' + '/checkOk?' + account, async (error, response, body) => { })
+						request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 					}
 
 					if (nextMusic && countPlays > 10) {

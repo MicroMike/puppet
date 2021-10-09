@@ -16,7 +16,7 @@
     "all": "FILE=napsterAccount.txt RAND=true node index",
     "big": "FILE=napsterAccount.txt RAND=true BIG=true node index",
     "check": "CHECK=true node new check",
-    "start": "MUSIC_APP_BASE_URL=http://173.249.43.6:3000 node m",
+    "start": "MUSIC_APP_BASE_URL=http://216.158.239.199:3000 node m",
     "xstart": "killall node && node n",
     "clean": "find save/ -type f ! -iname \"Cookies\" -delete",
     "clear": "git clean -fd",

@@ -13,7 +13,7 @@ const rand = (max, min) => {
 	return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
-const clientSocket = require('socket.io-client')('http://173.249.43.6:3000', { transports: ['websocket'] });
+const clientSocket = require('socket.io-client')('http://216.158.239.199:3000', { transports: ['websocket'] });
 const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
 
 let account
@@ -32,7 +32,7 @@ const copyBack = () => {
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
 	copyBack()
-	request('http://173.249.43.6:3000' + '/noUseAccount?' + account, () => {
+	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
 		process.exit(code)
 	})
 }
@@ -40,7 +40,7 @@ const exit = (code = '0') => {
 process.on('SIGINT', () => {
 	clientSocket && clientSocket.disconnect()
 	copyBack()
-	request('http://173.249.43.6:3000' + '/noUseAccount?' + account, () => {
+	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
 		process.exit()
 		exit()
 	})
@@ -72,7 +72,7 @@ clientSocket.on('activate', async (socketId) => {
 
 const getAccount = async () => {
 	const accountType = check ? 'checkAccount' : 'useAccount'
-	request('http://173.249.43.6:3000' + '/' + accountType, (error, response, body) => {
+	request('http://216.158.239.199:3000' + '/' + accountType, (error, response, body) => {
 		account = JSON.parse(body).account;
 
 		if (account) {
