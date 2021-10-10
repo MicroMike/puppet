@@ -442,13 +442,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (currTime === matchTime) {
 						// console.log(login, currTime, matchTime)
-						socketEmit('playerInfos', { time, freeze: true, warn: true, countPlays })
 						pauseCount++
 					} else {
 						socketEmit('playerInfos', { time, ok: true, countPlays })
 						pauseCount = 0
 					}
 
+					if (pauseCount < 5) {
+						socketEmit('playerInfos', { time, freeze: true, warn: true, countPlays })
+					}
 					if (pauseCount === 5) {
 						socketEmit('playerInfos', { time, freeze: true, countPlays })
 					}
