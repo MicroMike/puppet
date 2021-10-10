@@ -1,7 +1,7 @@
 const shell = require('shelljs');
 
 
-const ls = shell.exec('ls puppet', { silent: true })
+const ls = shell.exec('ls /root/puppet/puppet', { silent: true })
 
 	ls.stdout.split('\n').forEach(login => {
 		// if (/93jimd@gmail.com:93billyj/.test(folder)) {
@@ -9,13 +9,13 @@ const ls = shell.exec('ls puppet', { silent: true })
 		console.log(login)
 		const log = 'aaa' + login
 		if (!/@/.test(login)) return
-		shell.exec(`mkdir -p "puppet/${log}/Default"`)
-		shell.exec(`cp -R "puppet/${login}/Default/Local Storage" "puppet/${log}/Default"`)
-		shell.exec(`cp -R "puppet/${login}/Default/Session Storage" "puppet/${log}/Default"`)
-		shell.exec(`cp -R "puppet/${login}/Default/Sessions" "puppet/${log}/Default"`)
-		shell.exec(`cp -R "puppet/${login}/Default/Storage" "puppet/${log}/Default"`)
-		shell.exec(`rm -Rf "puppet/${login}"`)
-		shell.exec(`mv "puppet/${log}" "puppet/${login}"`)
+		shell.exec(`mkdir -p "/root/puppet/puppet/${log}/Default"`)
+		shell.exec(`cp -R "/root/puppet/puppet/${login}/Default/Local Storage" "/root/puppet/puppet/${log}/Default"`)
+		shell.exec(`cp -R "/root/puppet/puppet/${login}/Default/Session Storage" "/root/puppet/puppet/${log}/Default"`)
+		shell.exec(`cp -R "/root/puppet/puppet/${login}/Default/Sessions" "/root/puppet/puppet/${log}/Default"`)
+		shell.exec(`cp -R "/root/puppet/puppet/${login}/Default/Storage" "/root/puppet/puppet/${log}/Default"`)
+		shell.exec(`rm -Rf "/root/puppet/puppet/${login}"`)
+		shell.exec(`mv "/root/puppet/puppet/${log}" "/root/puppet/puppet/${login}"`)
 		// }
 	})
 
