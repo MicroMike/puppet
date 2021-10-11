@@ -397,7 +397,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('playStop', account)
 						usedCount++
 
-						if (usedCount > 3) {
+						if (usedCount >= 3) {
 							console.log('playStop 3 times', account)
 							throw 'used'
 						}
