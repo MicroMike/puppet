@@ -390,7 +390,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const connectedCheck = async () => {
 				try {
-					const { result } = await R.evaluate({ expression: '/interrompue/i.test(document.body.innerHTML)' })
+					const { result } = await R.evaluate({ expression: '/interrompue|paused because/i.test(document.body.innerHTML)' })
 
 					if (isTidal && result.value) {
 						await click('[data-test="notification-close"]', 1)
