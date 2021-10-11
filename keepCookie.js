@@ -3,6 +3,7 @@ const shell = require('shelljs');
 const arg = process.argv[2]
 
 if (arg) {
+	console.log('keepCookie: ' + arg)
 	const log = 'aaa' + arg
 	if (!/@/.test(arg)) return
 	shell.exec(`mkdir -p "/root/puppet/puppet/${log}/Default"`)
