@@ -21,10 +21,11 @@ process.on('SIGINT', () => {
 	exit()
 })
 
+shell.exec('rm -rf /root/puppet/puppet/*', { silent: false })
+
 const fct = async (i = 1) => {
 	if (close) { return }
 
-	shell.exec('rm -rf /root/puppet/puppet/*', { silent: false })
 
 	// const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
 	shell.exec('node neww ' + arg + ' ' + nb, (a, b, c) => {
