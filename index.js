@@ -394,7 +394,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (isTidal && result.value) {
 						await click('[data-test="notification-close"]', 1)
-						console.log('playStop', account)
+						// console.log('playStop', account)
 						usedCount++
 
 						if (usedCount >= 3) {
