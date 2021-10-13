@@ -38,7 +38,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			play: '[data-test="shuffle-all"]',
 			timeLine: '[data-test="current-time"]',
 			callback: a => (a.split(':').reduce((a, b) => a * 60 + Number(b))),
-			nextBtn = '[data-test="next"]'
+			nextBtn: '[data-test="next"]'
 		}
 
 		if (player === 'spotify') {
