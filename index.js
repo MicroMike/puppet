@@ -474,9 +474,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 							// await T.activateTarget(targetId)
 
-							const clickNext = rand(2) &&
-								(currentAlbum === 'https://listen.tidal.com/album/88716570')
-								|| (currentAlbum === 'https://music.amazon.fr/albums/B07CZDXC9B')
+							const clickNext = rand(2)
+								// &&
+								// (currentAlbum === 'https://listen.tidal.com/album/88716570')
+								// || (currentAlbum === 'https://music.amazon.fr/albums/B07CZDXC9B')
 
 							if (clickNext && S.nextBtn) {
 								nextOk = true
