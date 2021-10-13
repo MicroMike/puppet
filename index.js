@@ -38,6 +38,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			play: '[data-test="shuffle-all"]',
 			timeLine: '[data-test="current-time"]',
 			callback: a => (a.split(':').reduce((a, b) => a * 60 + Number(b))),
+			nextBtn = '[data-test="next"]'
 		}
 
 		if (player === 'spotify') {
@@ -444,7 +445,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// console.log(login, currTime, matchTime)
 						pauseCount++
 					} else {
-						socketEmit('playerInfos', { time, ok: true, countPlays })
+						currTime % 2 === 0 && socketEmit('playerInfos', { time, ok: true, countPlays })
 						pauseCount = 0
 					}
 
@@ -477,9 +478,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 								(currentAlbum === 'https://listen.tidal.com/album/88716570')
 								|| (currentAlbum === 'https://music.amazon.fr/albums/B07CZDXC9B')
 
-							if (clickNext) {
-								// nextOk = true
-								// await page.jClk(nextBtn)
+							if (clickNext && S.nextBtn) {
+								nextOk = true
+								await click(S.nextBtn)
 							}
 
 							socketEmit('plays', { next: nextOk, currentAlbum, matchTime, countPlays })
