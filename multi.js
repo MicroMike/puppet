@@ -11,8 +11,9 @@ let close = false
 
 const exit = () => {
 	close = true
-	shell.exec('killall -9 chrome', { silent: true })
-	shell.exec('taskkill /F /IM chrome.exe', { silent: true })
+	shell.exec('killall /opt/google/chrome/chrome', { silent: true })
+	// shell.exec('killall -9 chrome', { silent: true })
+	// shell.exec('taskkill /F /IM chrome.exe', { silent: true })
 	console.log('----- END ' + arg + ' -----')
 	process.exit()
 }
