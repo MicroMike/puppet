@@ -668,7 +668,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				// client.close();
 			}).on('error', (err) => {
-				client.close();
 				console.error('err2', err);
 				catchFct(err)
 			});
