@@ -81,10 +81,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
 			}
 
-			try {
-				B.close()
-			}
-			catch (e) { console.log('exit', login, e) }
+			B && B.close()
 
 			shell.exec('node saveCookies.js ' + login, { silent: true })
 			r(socket)
@@ -671,6 +668,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				// client.close();
 			}).on('error', (err) => {
+				client.close();
 				console.error('err2', err);
 				catchFct(err)
 			});
