@@ -140,9 +140,10 @@ clientSocket.on('mRun', async () => {
 	// 	await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
 	// }
 
-	const runTidal = require('./index');
+	const runAccount = require('./runAccount');
+	// const runTidal = require('./index');
 	page = await puppet('/root/puppet/puppet/' + login)
-	await runTidal(clientSocket, page, parentId, streamId, arg === 'check', account)
+	await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
 
 	exit()
 })
