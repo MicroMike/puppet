@@ -318,10 +318,21 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				timeLine = '[data-test="current-time"]'
 				callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
+
+				loggedDom = '[class*="badgeContainer"]'
+				goToLogin = '[data-test="no-user--login"]'
+				loginError = '.box-error'
+				username = '#email'
+				password = '#password'
+				loginBtn = '.btn-success.btn-client-primary'
+				playBtn = '[data-test="shuffle-all"]'
+				timeLine = '[data-test="current-time"]'
+				callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
+				nextBtn = '[data-test="next"]'
 			}
 			if (player === 'spotify') {
 				url = 'https://accounts.spotify.com/login'
-				loggedDom = '[data-testid="user-widget-link"]'	
+				loggedDom = '[data-testid="user-widget-link"]'
 				notLoggedDom = '[data-testid="login-button"]'
 
 				username = '#login-username'
@@ -436,97 +447,42 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const tidalConnect = async () => {
-				let notConnected = true
-				let needLog = false
-				let needreLog = false
-
-				console.log('gotoalbum')
 				await page.gotoUrl(album())
 
-				notConnected = await page.ext(notLoggedDom)
+				const isLogged = await page.wfs(loggedDom)
 
-				if (notConnected) {
-					console.log('notConnected')
-					// if (!check) { throw 'tidalError' }
+				if (!isLogged) {
+					// if (!check) {
+					// 	throw 'tidalError';
+					// }
+					// else {
+					await page.clk(goToLogin)
 
-					try {
-						console.log('beforeClick')
-						await page.clk(notLoggedDom)
-						console.log('afterClick')
-
-						needLog = await page.ext(username)
-						needreLog = await page.ext(reLog)
-
-						console.log('needLog', needLog)
-						console.log('needreLog', needreLog)
-
-						if (needreLog) {
-							console.log('needreLog')
-							await page.clk(reLog)
-						} else if (needLog) {
-							console.log('needLog')
-							await page.inst(username, login, true)
-							await page.clk('#recap-invisible')
-
-							await page.waitFor(5000 + rand(2000))
-
-							const exist = await page.ext(password)
-							if (!exist) { throw 'fail' }
-						}
-						else {
-							await resolveTidal()
-						}
-					}
-					catch (e) {
-						console.log(e)
-						if (/context was destroyed/.test(e)) {
-							await resolveTidal()
-						} else {
-							await captcha(page, 'https://login.tidal.com', keyCaptcha, username, login)
-						}
-					}
-
-					takeScreenshot('humanNextStep')
-
-					const waitForPass = async () => {
+					const hasEmailInput = async () => {
 						try {
-							const exist = await page.ext(password)
-							if (!exist) { throw 'failed' }
-						}
-						catch (e) {
-							await waitForPass()
+							await page.wfs(username, true)
+						} catch (e) {
+							await hasEmailInput()
 						}
 					}
 
-					if (needLog) {
-						await waitForPass()
-						await page.inst(password, pass, true)
-						await page.waitFor(5000 + rand(2000))
-						await page.clk('button.btn-success.btn-client-primary', 'tidal connect')
-						await page.waitFor(5000 + rand(2000))
-						const delTidal = await page.ext('.box-error')
-						if (delTidal) { throw 'del' }
+					await hasEmailInput()
 
-						await page.waitFor(5000 + rand(2000))
+					await page.inst(username, login)
+					await page.clk('#recap-invisible')
+					await page.inst(password, pass)
+
+					await page.clk(loginBtn)
+
+					const error = await page.ext(loginError)
+					// const { result } = await R.evaluate({ expression: '/essayer gratuitement/i.test(document.body.innerHTML)' })
+
+					if (error) {
+						throw 'del'
 					}
+
+					await page.gotoUrl(album())
 				}
-
-				// notConnected = await page.jClk(goToLogin)
-
-				// if (notConnected) {
-				//   const tryClick = async () => {
-				//     const done = await page.jClk(reLog, true)
-				//     const existInput = await page.ext(username)
-
-				//     if (!done && !existInput) {
-				//       await tryClick()
-				//     }
-
-				//     return existInput
-				//   }
-
-				//   const needLog = await tryClick()
-				// }
 			}
 
 			const checkFill = async () => {
@@ -798,56 +754,56 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						throw playError
 					}
 
-					if (player === 'tidal') {
-						let updateBtn
-						try {
-							await page.evaluate(() => {
-								const update = document.querySelector('.client-eula-font + .btn-client-primary')
-								update && update.click()
-							})
+					// if (player === 'tidal') {
+					// 	let updateBtn
+					// 	try {
+					// 		await page.evaluate(() => {
+					// 			const update = document.querySelector('.client-eula-font + .btn-client-primary')
+					// 			update && update.click()
+					// 		})
 
-							updateBtn = await page.evaluate(() => {
-								const update = document.querySelectorAll('button')
-								update && update.forEach(b => b.innerText === 'Update' && b.click())
-								return update
-							})
-						}
-						catch (e) { }
+					// 		updateBtn = await page.evaluate(() => {
+					// 			const update = document.querySelectorAll('button')
+					// 			update && update.forEach(b => b.innerText === 'Update' && b.click())
+					// 			return update
+					// 		})
+					// 	}
+					// 	catch (e) { }
 
-						if (!updateBtn) {
-							await page.rload()
-							await waitForPlayBtn(playError)
-						}
-					}
-					else if (player === 'amazon') {
-						const waitForReady = async () => {
-							const amazonStyle = await page.evaluate(() => {
-								return document.querySelector('#mainContentLoadingSpinner').style['display']
-							})
+					// 	if (!updateBtn) {
+					// 		await page.rload()
+					// 		await waitForPlayBtn(playError)
+					// 	}
+					// }
+					// else if (player === 'amazon') {
+					// 	const waitForReady = async () => {
+					// 		const amazonStyle = await page.evaluate(() => {
+					// 			return document.querySelector('#mainContentLoadingSpinner').style['display']
+					// 		})
 
-							if (amazonStyle !== 'none') {
-								await takeScreenshot('amazonFreeze')
-								await page.waitFor(2000 + rand(2000))
-								await waitForReady()
-							}
-						}
+					// 		if (amazonStyle !== 'none') {
+					// 			await takeScreenshot('amazonFreeze')
+					// 			await page.waitFor(2000 + rand(2000))
+					// 			await waitForReady()
+					// 		}
+					// 	}
 
-						await waitForReady()
+					// 	await waitForReady()
 
-						try { await page.clk(playBtn) }
-						catch (e) {
-							await page.rload()
-							await waitForPlayBtn(playError)
-						}
-					}
-					else {
-						await page.gotoUrl(album())
+					// 	try { await page.clk(playBtn) }
+					// 	catch (e) {
+					// 		await page.rload()
+					// 		await waitForPlayBtn(playError)
+					// 	}
+					// }
+					// else {
+					// 	await page.gotoUrl(album())
 
-						const logged = await page.wfs(loggedDom)
-						if (!logged) { throw 'logout' }
+					// 	const logged = await page.wfs(loggedDom)
+					// 	if (!logged) { throw 'logout' }
 
-						await waitForPlayBtn(playError)
-					}
+					// 	await waitForPlayBtn(playError)
+					// }
 				}
 			}
 
@@ -906,9 +862,17 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (player === 'napster') { await napsterCheck() }
 
 					if (player === 'tidal') {
+						const usedTidal = await page.get('body', 'innerText')
+						used = /interrompue|paused because/.test(usedTidal)
+
 						await page.evaluate(() => {
-							document.querySelectorAll('[class*=notification] button').forEach(e => e.click())
+							document.querySelectorAll('[data-test="notification-close"]').forEach(e => e.click())
 						})
+
+						let repeat = await page.ext('[data-type="button__repeatAll"]')
+						if (!repeat) {
+							await page.clk('[data-test="repeat"]')
+						}
 					}
 
 					if (player === 'amazon') {
@@ -924,20 +888,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					if (used) {
-						if (player === 'tidal') {
-							used = await page.get(usedDom)
-							used = String(used).match(/currently/) ? used : false
-
-							if (!used) {
-								await page.jClk('.WARN + div + button[data-test="notification-close"]')
-							}
-							else {
-								throw 'used'
-							}
-						}
-						else {
-							throw 'used'
-						}
+						throw 'used'
 					}
 
 					t2 = t1
