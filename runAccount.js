@@ -169,7 +169,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			socket.emit('outLog', 'freezeConnect')
 			console.log('freezeConnect')
 			if (player === 'tidal') {
-				catchFct(tidalError);
+				catchFct('tidalError');
 			} else {
 				exit('freezeConnect')
 			}
