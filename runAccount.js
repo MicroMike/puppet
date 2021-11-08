@@ -168,7 +168,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			await takeScreenshot('freezeConnect')
 			socket.emit('outLog', 'freezeConnect')
 			console.log('freezeConnect')
-			exit('freezeConnect')
+			if (player === 'tidal') {
+				catchFct(tidalError);
+			} else {
+				exit('freezeConnect')
+			}
 		}, 1000 * 60 * 10);
 
 		socketEmit('playerInfos', { time: 'RUN', other: true })
