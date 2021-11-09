@@ -17,7 +17,7 @@ const rand = (max, min) => {
 const clientSocket = require('socket.io-client')('http://216.158.239.199:3000', { transports: ['websocket'] });
 const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
 
-let account = checkAccount
+let account
 let back
 let parentId
 let login
@@ -76,7 +76,13 @@ clientSocket.on('activate', async (socketId) => {
 })
 
 const getAccount = async () => {
+	if (checkAccount) {
+		clientSocket.emit('client', { parentId, streamId, account: checkAccount, max })
+		return;
+	}
+
 	const accountType = check ? 'checkAccount' : 'useAccount'
+
 	request('http://216.158.239.199:3000' + '/' + accountType, (error, response, body) => {
 		account = JSON.parse(body).account;
 
