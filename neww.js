@@ -6,6 +6,7 @@ const request = require('ajax-request');
 
 const arg = process.argv[2]
 const max = process.argv[3] || 1
+const checkAccount = process.argv[4]
 
 const check = arg === 'check'
 
@@ -16,7 +17,7 @@ const rand = (max, min) => {
 const clientSocket = require('socket.io-client')('http://216.158.239.199:3000', { transports: ['websocket'] });
 const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
 
-let account
+let account = checkAccount
 let back
 let parentId
 let login
