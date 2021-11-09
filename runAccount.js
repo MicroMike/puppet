@@ -951,6 +951,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							// startStream()
 							if (player === 'tidal') {
 								await page.jClk(playBtn)
+							} else if (player === 'amazon') {
+								await page.gotoUrl(album())
+								await page.jClk(playBtn)
 							}
 							else {
 								await page.jClk(pauseBtn)
