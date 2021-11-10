@@ -49,7 +49,7 @@ const addFcts = async (page) => {
 		if (page.closed) { return }
 		try {
 			await page.waitFor(1000 + rand(2000))
-			await page.waitForSelector(selector, { timeout: time || 1000 * 60 })
+			await page.waitForSelector(selector, { timeout: 1000 * (time || 60) })
 			return true
 		} catch (e) {
 			if (error) {
