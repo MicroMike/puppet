@@ -465,6 +465,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					const hasEmailInput = async () => {
 						try {
+							await page.waitFor(2000 + rand(2000))
+							console.log('waitForInput')
 							await page.ext(username, true)
 						} catch (e) {
 							await hasEmailInput()
@@ -472,6 +474,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					await hasEmailInput()
+
+					console.log('input OK')
 
 					await page.inst(username, login)
 					await page.clk('#recap-invisible')
