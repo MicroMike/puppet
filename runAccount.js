@@ -477,9 +477,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					console.log('input OK')
 
-					await page.inst(username, login)
+					await page.inst(username, login, true)
 					await page.clk('#recap-invisible')
-					await page.inst(password, pass)
+					await page.inst(password, pass, true)
 
 					await page.clk(loginBtn)
 
