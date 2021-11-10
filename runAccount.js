@@ -737,6 +737,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (!check) {
 				await connectFct()
 			}
+			else {
+				await page.gotoUrl(album())
+			}
 
 			clearTimeout(freezeConnect)
 
