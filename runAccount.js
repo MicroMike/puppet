@@ -467,7 +467,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						try {
 							await page.waitFor(2000 + rand(2000))
 							console.log('waitForInput')
-							await page.ext(username, true)
+							await page.wfs(username, true, 10)
 						} catch (e) {
 							await hasEmailInput()
 						}

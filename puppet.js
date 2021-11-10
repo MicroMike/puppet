@@ -45,11 +45,11 @@ const addFcts = async (page) => {
 		}
 	}
 
-	page.wfs = async (selector, error) => {
+	page.wfs = async (selector, error, time) => {
 		if (page.closed) { return }
 		try {
 			await page.waitFor(1000 + rand(2000))
-			await page.waitForSelector(selector, { timeout: 1000 * 60 })
+			await page.waitForSelector(selector, { timeout: time || 1000 * 60 })
 			return true
 		} catch (e) {
 			if (error) {
