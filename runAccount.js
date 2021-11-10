@@ -734,7 +734,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			await connectFct()
+			if (!check) {
+				await connectFct()
+			}
 
 			clearTimeout(freezeConnect)
 
