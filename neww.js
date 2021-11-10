@@ -21,16 +21,17 @@ let account
 let back
 let parentId
 let login
+let player
 
 const copyBack = () => {
 	try {
 		if (login) {
-			console.log('start save copy', account)	
+			console.log('start save copy', account)
 			if (!/amazon/.test(account)) {
-				shell.exec('node keepCookie ' + login, { silent: false })
+				shell.exec('node keepCookie ' + player + login, { silent: false })
 			}
-			shell.exec('scp -r /root/puppet/puppet/' + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
-			shell.exec('rm -rf /root/puppet/puppet/' + login, { silent: false })
+			shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
+			shell.exec('rm -rf /root/puppet/puppet/' + player + login, { silent: false })
 			console.log('end save copy', account)
 		}
 	} catch (e) {
@@ -128,7 +129,7 @@ clientSocket.on('mRun', async () => {
 	if (!account) { return console.log('no account') }
 
 	const accountInfo = account.split(':')
-	let player = accountInfo[0]
+	player = accountInfo[0]
 	login = accountInfo[1]
 
 	if (check || player.match(/napster|apple/)) {
@@ -136,9 +137,9 @@ clientSocket.on('mRun', async () => {
 	}
 
 	try {
-		shell.exec('rm -rf /root/puppet/puppet/' + login, { silent: false })
+		shell.exec('rm -rf /root/puppet/puppet/' + player + login, { silent: false })
 		console.log('start copy', account)
-		shell.exec('scp -r root@216.158.239.199:/root/puppet/' + login + ' /root/puppet/puppet/', { silent: false })
+		shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' /root/puppet/puppet/', { silent: false })
 		console.log('end copy', account)
 	} catch (e) {
 		console.log(e)
