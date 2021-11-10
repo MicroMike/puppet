@@ -453,19 +453,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const tidalConnect = async () => {
 				await page.gotoUrl(album())
 
-				const isLogged = await page.wfs(loggedDom)
+				const isLogged = await page.ext(loggedDom)
 				const isGoToLogin = await page.ext(goToLogin)
-
-				console.log('isCheck', check)
-				console.log('isLogged', isLogged)
-				console.log('isGoToLogin', isGoToLogin)
 
 				if (!isLogged && isGoToLogin) {
 					if (!check) {
 						throw 'tidalError';
 					}
 
-					await page.clk(goToLogin)
+					// await page.clk(goToLogin)
 
 					const hasEmailInput = async () => {
 						try {
