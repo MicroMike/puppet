@@ -78,7 +78,6 @@ clientSocket.on('activate', async (socketId) => {
 })
 
 const getAccount = async () => {
-	console.log('checkAccount', checkAccount, !!checkAccount);
 	if (checkAccount) {
 		request('http://216.158.239.199:3000' + '/useAccount?' + checkAccount, (error, response, body) => {
 			account = JSON.parse(body).account;
