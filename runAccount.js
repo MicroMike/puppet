@@ -734,11 +734,20 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
+			const waitForLogged = async (dom) => {
+				try {
+					await page.wfs(dom, true)
+				} catch (e) {
+					waitForLogged(dom)
+				}
+			}
+
 			if (!check) {
 				await connectFct()
 			}
 			else {
 				await page.gotoUrl(album())
+				await waitForLogged(loggedDom)
 			}
 
 			clearTimeout(freezeConnect)
