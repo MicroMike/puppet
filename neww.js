@@ -25,7 +25,9 @@ let login
 const copyBack = () => {
 	try {
 		if (login) {
-			shell.exec('node keepCookie ' + login, { silent: false })
+			if (!/amazon/.test(account)) {
+				shell.exec('node keepCookie ' + login, { silent: false })
+			}
 			shell.exec('scp -r /root/puppet/puppet/' + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
 			shell.exec('rm -rf /root/puppet/puppet/' + login, { silent: false })
 		}
