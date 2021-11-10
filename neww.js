@@ -76,8 +76,18 @@ clientSocket.on('activate', async (socketId) => {
 })
 
 const getAccount = async () => {
+	console.log('checkAccount', checkAccount, !!checkAccount);
 	if (checkAccount) {
-		clientSocket.emit('client', { parentId, streamId, account: checkAccount, max })
+		request('http://216.158.239.199:3000' + '/useAccount?' + checkAccount, (error, response, body) => {
+			account = JSON.parse(body).account;
+
+			if (account) {
+				clientSocket.emit('client', { parentId, streamId, account, max })
+			}
+			else {
+				exit()
+			}
+		})
 		return;
 	}
 
