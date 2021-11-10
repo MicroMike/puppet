@@ -742,10 +742,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			if (!check) {
-				await connectFct()
-			}
-			else {
+			await connectFct()
+
+			if (check) {
 				await page.gotoUrl(album())
 				await waitForLogged(loggedDom)
 			}
