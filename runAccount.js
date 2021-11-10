@@ -454,8 +454,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				await page.gotoUrl(album())
 
 				const isLogged = await page.wfs(loggedDom)
+				const isGoToLogin = await page.ext(goToLogin)
 
-				if (!isLogged) {
+				if (!isLogged && isGoToLogin) {
 					// if (!check) {
 					// 	throw 'tidalError';
 					// }
