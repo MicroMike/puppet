@@ -457,10 +457,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				const isGoToLogin = await page.ext(goToLogin)
 
 				if (!isLogged && isGoToLogin) {
-					// if (!check) {
-					// 	throw 'tidalError';
-					// }
-					// else {
+					if (!check) {
+						throw 'tidalError';
+					}
+
 					await page.clk(goToLogin)
 
 					const hasEmailInput = async () => {
