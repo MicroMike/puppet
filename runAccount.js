@@ -465,7 +465,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					const hasEmailInput = async () => {
 						try {
-							await page.wfs(username, true)
+							await page.ext(username, true)
 						} catch (e) {
 							await hasEmailInput()
 						}
