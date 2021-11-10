@@ -356,7 +356,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				usedDom = '.ConnectBar'
 
-				timeLine = '.playback-bar__progress-time'
+				timeLine = '[data-test="current-time"]'
 				callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
 			}
 			if (player === 'heart') {
@@ -846,7 +846,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			let startLoop = false
 			let exitLoop = false
 
-			let changePlay = rand(15)
+			let changePlay = rand(player === 'amazon' ? 10 : 15)
 			let changeLoop = 0
 
 			const loop = async () => {
@@ -927,7 +927,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await waitForPlayBtn('changePlay')
 
 						countPlays === 0
-						changePlay = rand(15)
+						changePlay = rand(player === 'amazon' ? 10 : 15)
 						changeLoop++
 					}
 
