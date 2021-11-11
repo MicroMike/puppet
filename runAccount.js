@@ -842,17 +842,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			// if (check) {
-			// 	request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => {
-			// 		// startCheck()
-			// 		// shell.exec('git add save/' + player + '_' + login + ' && git commit -m "add account" && git push')
-			// 		mailPage && await mailPage.cls(true)
-			// 		await page.cls(true)
-
-			// 		catchFct('check')
-			// 	})
-			// 	return
-			// }
+			if (check) {
+				await page.cls(true)
+				catchFct('check')
+				returnƒ
+			}
 
 			// ***************************************************************************************************************************************************************
 			// *************************************************************************** LOOP ******************************************************************************
