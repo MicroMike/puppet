@@ -356,7 +356,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				usedDom = '.ConnectBar'
 
-				timeLine = '[data-test="current-time"]'
+				timeLine = '[data-testid="playback-position"]'
 				callback = a => (a.split(':').reduce((a, b) => a * 60 + Number(b)))
 			}
 			if (player === 'heart') {
