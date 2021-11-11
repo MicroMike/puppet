@@ -22,6 +22,7 @@ let back
 let parentId
 let login
 let player
+let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
 
 const copyBack = () => {
 	try {
@@ -30,8 +31,8 @@ const copyBack = () => {
 			if (!/amazon|apple/.test(account)) {
 				shell.exec('node keepCookie ' + player + login, { silent: false })
 			}
-			shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
-			shell.exec('rm -rf /root/puppet/puppet/' + player + login, { silent: false })
+			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
+			shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 			console.log('end save copy', account)
 		}
 	} catch (e) {
@@ -137,9 +138,9 @@ clientSocket.on('mRun', async () => {
 	}
 
 	try {
-		shell.exec('rm -rf /root/puppet/puppet/' + player + login, { silent: false })
+		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		console.log('start copy', account)
-		shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' /root/puppet/puppet/', { silent: false })
+		shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' ' + varPath, { silent: false })
 		console.log('end copy', account)
 	} catch (e) {
 		console.log(e)
@@ -168,7 +169,7 @@ clientSocket.on('mRun', async () => {
 	if (check) {
 		console.log(account);
 	}
-	page = await puppet('/root/puppet/puppet/' + player + login)
+	page = await puppet(varPath + player + login)
 	await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
 
 	exit()
