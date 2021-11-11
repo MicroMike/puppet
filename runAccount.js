@@ -845,7 +845,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (check) {
 				await page.cls(true)
 				catchFct('check')
-				returnƒ
+				return
 			}
 
 			// ***************************************************************************************************************************************************************
