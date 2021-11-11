@@ -138,9 +138,12 @@ clientSocket.on('mRun', async () => {
 
 	try {
 		shell.exec('rm -rf /root/puppet/puppet/' + player + login, { silent: false })
-		console.log('start copy', account)
-		shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' /root/puppet/puppet/', { silent: false })
-		console.log('end copy', account)
+		if (!check) {
+			console.log('start copy', account)
+			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' /root/puppet/puppet/', { silent: false })
+			console.log('end copy', account)
+
+		}
 	} catch (e) {
 		console.log(e)
 	}
