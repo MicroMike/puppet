@@ -2,17 +2,19 @@ const shell = require('shelljs');
 
 const arg = process.argv[2]
 
+let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
+
 if (arg) {
 	console.log('keepCookie: ' + arg)
-	const log = 'aaa' + arg
+	const log = varPath + 'aaa' + arg
 	if (!/@/.test(arg)) return
-	shell.exec(`mkdir -p "/root/puppet/puppet/${log}/Default"`)
-	shell.exec(`cp -R "/root/puppet/puppet/${arg}/Default/Local Storage" "/root/puppet/puppet/${log}/Default"`)
-	shell.exec(`cp -R "/root/puppet/puppet/${arg}/Default/Session Storage" "/root/puppet/puppet/${log}/Default"`)
-	shell.exec(`cp -R "/root/puppet/puppet/${arg}/Default/Sessions" "/root/puppet/puppet/${log}/Default"`)
-	shell.exec(`cp -R "/root/puppet/puppet/${arg}/Default/Storage" "/root/puppet/puppet/${log}/Default"`)
-	shell.exec(`rm -Rf "/root/puppet/puppet/${arg}"`)
-	shell.exec(`mv "/root/puppet/puppet/${log}" "/root/puppet/puppet/${arg}"`)
+	shell.exec(`mkdir -p "${log}/Default"`)
+	shell.exec(`cp -R "${varPath+arg}/Default/Local Storage" "${log}/Default"`)
+	shell.exec(`cp -R "${varPath+arg}/Default/Session Storage" "${log}/Default"`)
+	shell.exec(`cp -R "${varPath+arg}/Default/Sessions" "${log}/Default"`)
+	shell.exec(`cp -R "${varPath+arg}/Default/Storage" "${log}/Default"`)
+	shell.exec(`rm -Rf "${varPath+arg}"`)
+	shell.exec(`mv "${log}" "${varPath+arg}"`)
 	return;
 }
 
