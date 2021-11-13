@@ -456,10 +456,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				const isLogged = await page.ext(loggedDom)
 				const isGoToLogin = await page.ext(goToLogin)
 
-				if (check || (!isLogged && isGoToLogin)) {
-					if (!check) {
-						throw 'tidalError';
-					}
+				if (!isLogged && isGoToLogin) {
+					// if (!check) {
+					// 	throw 'tidalError';
+					// }
 
 					// await page.clk(goToLogin)
 
