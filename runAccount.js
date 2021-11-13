@@ -890,7 +890,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						let repeat = await page.ext('[data-type="button__repeatAll"]')
 						if (!repeat) {
-							await page.clk('[data-test="repeat"]')
+							await page.jClk('[data-test="repeat"]')
 						}
 					}
 
