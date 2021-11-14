@@ -6,6 +6,7 @@ const request = require('ajax-request');
 
 const arg = process.argv[2]
 const nb = Number(process.argv[3]) || 1
+const checkAccount = process.argv[4]
 
 let close = false
 
@@ -29,7 +30,7 @@ const fct = async (i = 1) => {
 
 
 	// const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
-	shell.exec('node neww ' + arg + ' ' + nb, (a, b, c) => {
+	shell.exec('node neww ' + arg + ' ' + nb + ' ' + checkAccount, (a, b, c) => {
 		try {
 			const b = shell.exec('git fetch && git status', { silent: true })
 			if (!b.match(/up-to-date/g)) {
