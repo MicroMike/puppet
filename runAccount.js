@@ -81,8 +81,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			let img
 
 			try {
-				await page.screenshot({ path: name + '_' + login + '.png' });
-				img = await image2base64(name + '_' + login + '.png')
+				await page.screenshot({ path: name + '_' + account + '.png' });
+				img = await image2base64(name + '_' + account + '.png')
 			}
 			catch (e) { }
 
