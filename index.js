@@ -526,7 +526,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					album()
 					await goToPage(currentAlbum)
 
-					const noNeedLog = await waitForSelector(S.noNeedLog, 10)
+					const noNeedLog = await waitForSelector(S.noNeedLog, check ? 1 : 10)
 
 					if (!noNeedLog) {
 						// if (!check) {
