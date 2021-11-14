@@ -618,6 +618,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// await shell.exec('"/Applications/Chromium.app/Contents/MacOS/Chromium" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="saveCookie/' + account + '" --remote-debugging-port=' + port, { async: true })
 			await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --disable-setuid-sandbox --no-first-run --disable-features=Translate --user-data-dir="puppet/' + login + '" --remote-debugging-port=' + port, { async: true, silent: true })
 
+			await wait(1000)
+
 			await connect()
 
 			const options = {
