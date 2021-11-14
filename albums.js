@@ -31,7 +31,7 @@ module.exports = {
     'https://music.amazon.fr/albums/B07VC9S3JM',
     'https://music.amazon.fr/albums/B07TC99Y6V',
     'https://music.amazon.fr/albums/B07WCHK4JR',//my-stash
-    'https://music.amazon.fr/albums/B07V1W5978',//marching-smile
+    // 'https://music.amazon.fr/albums/B07V1W5978',//marching-smile
     // 'https://music.amazon.fr/albums/B07VV7H96Z',//avalanches-of-ability
     // 'https://music.amazon.fr/albums/B07V4BZFM2',
     // 'https://music.amazon.fr/albums/B07G9RM2MG',
@@ -50,7 +50,7 @@ module.exports = {
     'https://listen.tidal.com/album/108790098',
     'https://listen.tidal.com/album/108980716',
     'https://listen.tidal.com/album/111577934',
-    'https://listen.tidal.com/album/112888253',//marching-smile
+    // 'https://listen.tidal.com/album/112888253',//marching-smile
     'https://listen.tidal.com/album/113608807',
     'https://listen.tidal.com/album/113976818',
     // 'https://listen.tidal.com/album/114337349',//avalanches-of-ability
@@ -91,7 +91,7 @@ module.exports = {
 	apple: [
 		'https://music.apple.com/tr/album/boombeats/1383283815',
 		'https://music.apple.com/tr/album/house-of-beats/1380210761',
-		'https://music.apple.com/tr/album/marching-smile/1472877269',
+		// 'https://music.apple.com/tr/album/marching-smile/1472877269',
 		'https://music.apple.com/tr/album/stone-distraction/1448967982',
 		'https://music.apple.com/tr/album/satisfaction-spell/1455114950',
 		'https://music.apple.com/tr/album/my-stash/1476078813',
