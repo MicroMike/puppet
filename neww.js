@@ -139,7 +139,8 @@ clientSocket.on('mRun', async () => {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
 			console.log('start copy', account)
-			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' ' + varPath, { silent: false })
+			shell.exec(`mkdir -p ` + varPath + player + login)
+			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + '/Default ' + varPath + player + login, { silent: false })
 			console.log('end copy', account)
 		}
 	} catch (e) {
