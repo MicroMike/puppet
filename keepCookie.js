@@ -9,7 +9,7 @@ if (arg) {
 	const log = varPath + 'aaa' + arg
 	if (!/@/.test(arg)) return
 	shell.exec(`mkdir -p "${log}/Default"`)
-	shell.exec(`cp -R "${varPath + arg}/Default" "${log}"`)
+	shell.exec(`cp -R "${varPath + arg}/Default" "${log}/Default"`)
 	shell.exec(`rm -Rf "${varPath + arg}"`)
 	shell.exec(`mv "${log}" "${varPath + arg}"`)
 	return;
