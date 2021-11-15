@@ -136,7 +136,7 @@ clientSocket.on('mRun', async () => {
 	}
 
 	try {
-		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
+		// shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
 			console.log('start copy', account)
 			shell.exec(`mkdir -p ` + varPath + player + login)
