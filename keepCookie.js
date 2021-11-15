@@ -9,7 +9,15 @@ if (arg) {
 	const log = varPath + 'aaa' + arg
 	if (!/@/.test(arg)) return
 	shell.exec(`mkdir -p "${log}/Default"`)
-	shell.exec(`cp -R "${varPath + arg}/Default" "${log}"`)
+	shell.exec(`cp -R "${varPath + arg}/Default/Local Storage" "${log}/Default"`)
+	shell.exec(`cp -R "${varPath + arg}/Default/Session Storage" "${log}/Default"`)
+	shell.exec(`cp -R "${varPath + arg}/Default/Sessions" "${log}/Default"`)
+	shell.exec(`cp -R "${varPath + arg}/Default/Storage" "${log}/Default"`)
+
+	if (/apple/.test(arg)) {
+		shell.exec(`cp -R "${varPath + arg}/Default/Cookies" "${log}/Default"`)
+		shell.exec(`cp -R "${varPath + arg}/Default/Cookies-journal" "${log}/Default"`)
+	}
 	shell.exec(`rm -Rf "${varPath + arg}"`)
 	shell.exec(`mv "${log}" "${varPath + arg}"`)
 	return;
