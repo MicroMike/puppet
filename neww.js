@@ -30,7 +30,7 @@ const copyBack = () => {
 			console.log('start save copy', account)
 			// shell.exec('node keepCookie ' + player + login, { silent: false })
 			shell.exec('scp -r ' + varPath + player + login + '/Default root@216.158.239.199:/root/puppet/' + player + login, { silent: false })
-			// shell.exec('rm -rf ' + varPath + player + login, { silent: false })
+			shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 			console.log('end save copy', account)
 		}
 	} catch (e) {
@@ -136,7 +136,7 @@ clientSocket.on('mRun', async () => {
 	}
 
 	try {
-		// shell.exec('rm -rf ' + varPath + player + login, { silent: false })
+		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
 			console.log('start copy', account)
 			shell.exec(`mkdir -p ` + varPath + player + login)
