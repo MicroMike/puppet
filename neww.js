@@ -28,8 +28,8 @@ const copyBack = () => {
 	try {
 		if (login) {
 			console.log('start save copy', account)
-			shell.exec('node keepCookie ' + player + login, { silent: false })
-			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
+			// shell.exec('node keepCookie ' + player + login, { silent: false })
+			shell.exec('scp -r ' + varPath + player + login + '/Default root@216.158.239.199:/root/puppet/' + player + login, { silent: false })
 			shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 			console.log('end save copy', account)
 		}
