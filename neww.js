@@ -24,23 +24,23 @@ let login
 let player
 let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
 
-const copyBack = () => {
-	try {
-		if (login) {
-			console.log('start save copy', account)
-			shell.exec('node keepCookie ' + player + login, { silent: false })
-			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
-			shell.exec('rm -rf ' + varPath + player + login, { silent: false })
-			console.log('end save copy', account)
-		}
-	} catch (e) {
-		console.log(e)
-	}
-}
+// const copyBack = () => {
+// 	try {
+// 		if (login) {
+// 			console.log('start save copy', account)
+// 			shell.exec('node keepCookie ' + player + login, { silent: false })
+// 			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
+// 			shell.exec('rm -rf ' + varPath + player + login, { silent: false })
+// 			console.log('end save copy', account)
+// 		}
+// 	} catch (e) {
+// 		console.log(e)
+// 	}
+// }
 
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
-	copyBack()
+	// copyBack()
 	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
 		process.exit(code)
 	})
@@ -48,7 +48,7 @@ const exit = (code = '0') => {
 
 process.on('SIGINT', () => {
 	clientSocket && clientSocket.disconnect()
-	copyBack()
+	// copyBack()
 	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
 		process.exit()
 		exit()
