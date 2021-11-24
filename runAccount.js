@@ -214,20 +214,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// code = e === 'login' ? 9 : code
 			// code = e === 'nobar' ? 10 : code
 
-			if (code !== 4 && code !== 6) {
-				try {
-					if (login) {
-						console.log('start save copy', account)
-						shell.exec('node keepCookie ' + player + login, { silent: false })
-						shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
-						shell.exec('rm -rf ' + varPath + player + login, { silent: false })
-						console.log('end save copy', account)
-					}
-				} catch (e) {
-					console.log(e)
-				}
-			}
-
 			if (code === 1) {
 				socketEmit('retryOk')
 			}
