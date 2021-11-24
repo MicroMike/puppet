@@ -214,7 +214,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// code = e === 'login' ? 9 : code
 			// code = e === 'nobar' ? 10 : code
 
-			if (code !== 3 || code !== 4 || code !== 6) {
+			if (code !== 4 || code !== 6) {
 				try {
 					if (login) {
 						console.log('start save copy', account)
