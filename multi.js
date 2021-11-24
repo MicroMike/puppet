@@ -29,8 +29,9 @@ const fct = async (i = 1) => {
 	if (close) { return }
 
 	console.log('checkAccount', checkAccount);
+	const cmd = checkAccount ? 'node neww ' + arg + ' ' + nb + ' ' + checkAccount : 'node neww ' + arg + ' ' + nb
 	// const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
-	shell.exec('node neww ' + arg + ' ' + nb + ' ' + checkAccount, (a, b, c) => {
+	shell.exec(cmd, (a, b, c) => {
 		try {
 			const b = shell.exec('git fetch && git status', { silent: true })
 			if (!b.match(/up-to-date/g)) {
