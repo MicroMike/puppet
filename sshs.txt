@@ -1,0 +1,16 @@
+ssh root@185.170.214.227
+ssh root@45.137.151.177
+ssh root@45.137.151.56
+ssh root@185.170.214.110
+ssh root@185.170.214.130
+ssh root@45.153.185.219
+ssh root@185.170.214.244
+ssh root@45.153.185.243
+ssh root@185.170.214.246
+ssh root@45.153.185.28
+ssh root@185.170.214.249
+ssh root@93.114.133.137
+
+xvfb-run -a node multi A 7
+
+ssh root@216.158.239.199
