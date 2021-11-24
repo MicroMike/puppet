@@ -192,6 +192,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			close = true
 
 			let code = 5
+			let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
 
 			code = e === 'loop' ? 1 : code
 			code = e === 'freeze' ? 2 : code
