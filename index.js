@@ -295,9 +295,21 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const getTimePlayer = async () => {
 				try {
+					if (player === 'apple') {
+						const getTimeExpression =
+							`const times = document.querySelector('.web-chrome-playback-lcd__scrub').getAttribute('aria-valuetext').split(' ').filter(v => !isNaN(v))
+							if (times.length > 1) {
+								return Number(times[0]) * 60 + Number(times[1])
+							}
+							else {
+								return Number(times[0])
+							}`
+
+						time = await R.evaluate({ expression: getTimeExpression })
+						return
+					}
 					let { result } = await R.evaluate({ expression: `document.querySelector('${S.timeLine}') && document.querySelector('${S.timeLine}').innerText` })
-					const timeNow = result.value && S.callback(result.value)
-					time = timeNow
+					time = result.value && S.callback(result.value)
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
