@@ -304,14 +304,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						const { result } = await R.evaluate({ expression: getTimeExpression })
 						let times = result.value.split('/')
 
-						console.log('apple time', result.value)
 						if (times.length > 1) {
 							time = Number(times[0]) * 60 + Number(times[1])
 						}
 						else {
 							time = Number(times[0])
 						}
-						console.log('apple time', time)
 
 						return
 					}
