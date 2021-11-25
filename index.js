@@ -550,10 +550,18 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
+			const disableAlert = async () => {
+				await R.evaluate({ expression: `window.alert = () => { };` })
+			}
+
 			const loopConnect = async () => {
 				try {
 					album()
 					await goToPage(currentAlbum)
+
+					if (player === 'apple') {
+						disableAlert()
+					}
 
 					const noNeedLog = await waitForSelector(S.noNeedLog, check ? 1 : 10)
 
