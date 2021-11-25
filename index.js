@@ -305,7 +305,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 								return Number(times[0])
 							}`
 
-						time = await R.evaluate({ expression: getTimeExpression })
+						const { result } = await R.evaluate({ expression: getTimeExpression })
+						time = result.value
+
 						return
 					}
 					let { result } = await R.evaluate({ expression: `document.querySelector('${S.timeLine}') && document.querySelector('${S.timeLine}').innerText` })
