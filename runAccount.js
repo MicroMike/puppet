@@ -60,17 +60,17 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 		}
 
-		const exit = async (e) => {
+		const exit = async (e, code) => {
 			close = true
 
 			try { await page.cls(true) }
-			catch (e) { }
+			catch (err) { }
 
 			if (e !== 'loop') {
 				socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
 			}
 
-			r(socket)
+			r(code)
 		}
 
 		socket.on('forceOut', () => {
@@ -247,7 +247,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socketEmit('used')
 			}
 
-			exit(e)
+			exit(e, code)
 		}
 
 		try {
@@ -843,7 +843,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
+			// request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 
 			if (check) {
 				await page.cls(true)

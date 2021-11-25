@@ -40,7 +40,10 @@ const copyBack = () => {
 
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
-	copyBack()
+	if (code !== 6) {
+		request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
+		copyBack()
+	}
 	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
 		process.exit(code)
 	})
@@ -48,7 +51,7 @@ const exit = (code = '0') => {
 
 process.on('SIGINT', () => {
 	clientSocket && clientSocket.disconnect()
-	copyBack()
+	// copyBack()
 	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
 		process.exit()
 		exit()
@@ -170,7 +173,7 @@ clientSocket.on('mRun', async () => {
 		console.log(account);
 	}
 	page = !check && !checkAccount && await puppet(varPath + player + login)
-	await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
-
-	exit()
+	const returnCode = await runAccount(clientSocket, page, parentId, streamId, arg === 'check', account)
+	console.log('returnCode', returnCode)
+	exit(returnCode)
 })
