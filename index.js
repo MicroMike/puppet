@@ -76,7 +76,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
 		}
 
-		const exit = async (e) => {
+		const exit = async (e, code) => {
 			if (e !== 'loop') {
 				socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
 			}
@@ -84,7 +84,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			B && B.close()
 
 			shell.exec('node saveCookies.js ' + login, { silent: true })
-			r(socket)
+			r(code)
 		}
 
 		const takeScreenshot = async (e) => {
@@ -147,7 +147,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socketEmit('used')
 			}
 
-			exit(e)
+			exit(e, code)
 		}
 
 		timeout = setTimeout(() => {
