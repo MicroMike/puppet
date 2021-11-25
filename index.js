@@ -299,16 +299,19 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				try {
 					if (player === 'apple') {
 						const getTimeExpression =
-							`const times = document.querySelector('.web-chrome-playback-lcd__scrub').getAttribute('aria-valuetext').split(' ').filter(v => !isNaN(v))
-							if (times.length > 1) {
-								return Number(times[0]) * 60 + Number(times[1])
-							}
-							else {
-								return Number(times[0])
-							}`
+							`document.querySelector('.web-chrome-playback-lcd__scrub').getAttribute('aria-valuetext').split(' ').filter(v => !isNaN(v)).join('/')`
 
 						const { result } = await R.evaluate({ expression: getTimeExpression })
-						time = result.value
+						let times = result.value.split('/')
+
+						console.log('apple time', result.value)
+						if (times.length > 1) {
+							time = Number(times[0]) * 60 + Number(times[1])
+						}
+						else {
+							time = Number(times[0])
+						}
+						console.log('apple time', time)
 
 						return
 					}
