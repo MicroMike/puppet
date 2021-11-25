@@ -73,10 +73,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			r(code)
 		}
 
-		socket.on('forceOut', () => {
-			exit('forceOut')
-		})
-
 		const takeScreenshot = async (name) => {
 			let img
 
@@ -249,6 +245,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			exit(e, code)
 		}
+
+		socket.on('forceOut', () => {
+			catchFct('forceOut')
+		})
 
 		try {
 			if (player === 'napster') {
