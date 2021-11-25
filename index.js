@@ -92,9 +92,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
 			}
 
-			B && B.close()
+			try {
+				B && B.close()
+			} catch (error) { console.log('catch error close exit') }
 
-			shell.exec('node saveCookies.js ' + login, { silent: true })
+			// shell.exec('node saveCookies.js ' + login, { silent: true })
 			r(code)
 		}
 
