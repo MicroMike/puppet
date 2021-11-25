@@ -32,6 +32,7 @@ const copyBack = () => {
 			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
 			shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 			console.log('end save copy', account)
+			request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 		}
 	} catch (e) {
 		console.log(e)
@@ -41,7 +42,6 @@ const copyBack = () => {
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
 	if (code !== 6) {
-		request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 		copyBack()
 	}
 	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
