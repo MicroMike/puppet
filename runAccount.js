@@ -396,6 +396,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				unlock1 = '.spoticon-pause-16'
 				unlock2 = '.spoticon-play-16'
 				playBtn = '.shuffle-button.action-button'
+				pauseBtn = '.web-chrome-playback-controls__playback-btn[aria-label="Pause"]'
 				// repeatBtn = '[class*="spoticon-repeat"]'
 				// repeatBtnOk = '.spoticon-repeat-16.control-button--active'
 				// shuffleBtn = '.spoticon-shuffle-16:not(.control-button--active)'
@@ -940,6 +941,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					if (countPlays > changePlay) {
+						if (player === 'apple') {
+							await page.jClk(pauseBtn)
+						}
+
 						await page.gotoUrl(album())
 						await waitForPlayBtn('changePlay')
 
@@ -966,6 +971,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (freeze === 3) {
 							// startStream()
+							if (player === 'apple') {
+								await page.jClk(pauseBtn)
+							}
 							await page.gotoUrl(album())
 							await waitForPlayBtn('changePlay')
 						}
