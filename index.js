@@ -367,6 +367,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				try {
 					await click(S.pauseBtn, 1, false)
 
+					await wait(3000)
+
 					await P.navigate({ url: url || album() });
 					await P.loadEventFired();
 
