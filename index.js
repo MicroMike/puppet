@@ -356,7 +356,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await wait(5000)
 
 					const body = await get('body', 'innerText')
-					const corectLoad = /rechercher|écouter|listen now|tracks|shuffle|playing|home|robot|Accueil/i.test(body)
+					const corectLoad = /titres|rechercher|écouter|listen now|tracks|shuffle|playing|home|robot|Accueil/i.test(body)
 
 					if (corectLoad || check) {
 						return true
