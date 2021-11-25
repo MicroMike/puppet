@@ -41,7 +41,7 @@ const copyBack = () => {
 
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
-	if (code !== 6) {
+	if (code !== 6 && code !== 8) {
 		copyBack()
 	}
 	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
