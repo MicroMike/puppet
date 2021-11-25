@@ -964,19 +964,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						++freeze
 						socketEmit('playerInfos', { time: t1, freeze: true, warn: true, countPlays })
 
-						if (freeze === 1) {
+						if (freeze === 3) {
 							// startStream()
-							if (player === 'tidal') {
-								await page.jClk(playBtn)
-							} else if (player === 'amazon') {
-								await page.gotoUrl(album())
-								await page.jClk(playBtn)
-							}
-							else {
-								await page.jClk(pauseBtn)
-								await page.waitFor(rand(2000))
-								await page.jClk(replayBtn)
-							}
+							await page.gotoUrl(album())
+							await waitForPlayBtn('changePlay')
 						}
 					}
 					else {
@@ -986,11 +977,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					if (freeze > 0) {
-						if (freeze > 3) {
+						if (freeze > 5) {
 							// await takeScreenshot(parentId + 'freeze' + countPlays)
 							throw 'freeze'
 						}
-						else {
+						else if (freeze >= 3) {
 							socketEmit('playerInfos', { time: t1, freeze: true, countPlays })
 						}
 
