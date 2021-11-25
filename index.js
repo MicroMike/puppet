@@ -66,6 +66,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			S.pass = '#password_text_field'
 			S.connectBtn = '#sign-in'
 			S.play = '.shuffle-button'
+			S.pauseBtn = '.web-chrome-playback-controls__playback-btn[aria-label="Pause"]'
 			S.timeLine = '[data-test="player-current-time"]'
 		}
 
@@ -244,7 +245,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}, time * 1000);
 			})
 
-			const click = (selector, time) => new Promise(async (res, rej) => {
+			const click = (selector, time, exitOnError = true) => new Promise(async (res, rej) => {
 				try {
 					const wfs = await waitForSelector(selector, time)
 
@@ -258,7 +259,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					res(true)
 				} catch (error) {
-					if (!closed) {
+					if (!closed && exitOnError) {
 						catchFct(error)
 					}
 				}
@@ -364,6 +365,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const goToPage = async (url) => {
 				try {
+					await click(S.pauseBtn, 1, false)
+
 					await P.navigate({ url: url || album() });
 					await P.loadEventFired();
 
