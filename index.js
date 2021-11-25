@@ -58,6 +58,17 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// S.usedDom = '.ConnectBar'
 		}
 
+		if (player === 'apple') {
+			S.noNeedLog = '.web-navigation__auth-button--sign-out'
+			S.gotoLog = '.web-navigation__auth-button--sign-in'
+			S.loginError = '.alert.alert-warning'
+			S.email = '#account_name_text_field'
+			S.pass = '#password_text_field'
+			S.connectBtn = '#sign-in'
+			S.play = '.shuffle-button'
+			S.timeLine = '[data-test="player-current-time"]'
+		}
+
 		const socketEmit = (event, params) => {
 			socket.emit(event, {
 				parentId,
