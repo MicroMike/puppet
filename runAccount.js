@@ -277,7 +277,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 			if (player === 'amazon') {
 				url = 'https://music.amazon.fr/gp/dmusic/cloudplayer/forceSignIn'
-				loggedDom = '.actionSection.settings'
+				loggedDom = '#accountSetting'
 				notLoggedDom = '#signInButton'
 
 				username = '#ap_email'
