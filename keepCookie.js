@@ -14,10 +14,10 @@ if (arg) {
 	shell.exec(`cp -R "${varPath + arg}/Default/Sessions" "${log}/Default"`)
 	shell.exec(`cp -R "${varPath + arg}/Default/Storage" "${log}/Default"`)
 
-	if (/apple/.test(arg)) {
-		shell.exec(`cp -R "${varPath + arg}/Default/Cookies" "${log}/Default"`)
-		shell.exec(`cp -R "${varPath + arg}/Default/Cookies-journal" "${log}/Default"`)
-	}
+	// if (/apple/.test(arg)) {
+	shell.exec(`cp -R "${varPath + arg}/Default/Cookies" "${log}/Default"`)
+	shell.exec(`cp -R "${varPath + arg}/Default/Cookies-journal" "${log}/Default"`)
+	// }
 	shell.exec(`rm -Rf "${varPath + arg}"`)
 	shell.exec(`mv "${log}" "${varPath + arg}"`)
 	return;
