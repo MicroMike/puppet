@@ -246,8 +246,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			exit(e, code)
 		}
 
-		socket.on('Cdisconnect', () => {
-			catchFct('Cdisconnect')
+		socket.on('forceOut', () => {
+			catchFct('forceOut')
 		})
 
 		try {
