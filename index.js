@@ -71,7 +71,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		}
 
 		if (player === 'amazon') {
-			S.noNeedLog = '.actionSection.settings'
+			S.noNeedLog = '#accountSetting'
 			S.gotoLog = '#signInButton'
 			S.loginError = '.upsellButton'
 			S.email = '#ap_email'
