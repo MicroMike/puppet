@@ -69,6 +69,20 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			S.timeLine = '[data-test="player-current-time"]'
 		}
 
+		if (player === 'amazon') {
+			S.noNeedLog = '.actionSection.settings'
+			S.gotoLog = '#signInButton'
+			S.loginError = '.upsellButton'
+			S.email = '#ap_email'
+			S.pass = '#ap_password'
+			S.connectBtn = '#signInSubmit'
+			S.play = '#detailHeaderButton2'
+			S.timeLine = '#transport > :last-child > :last-child span'
+
+			// remember = '[name="rememberMe"]'
+			// usedDom = '.concurrentStreamsPopover'
+		}
+
 		const socketEmit = (event, params) => {
 			socket.emit(event, {
 				parentId,
