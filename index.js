@@ -490,7 +490,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					// socketEmit('playerInfos', { time, ok: true, countPlays })
 
-					request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
+					// request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 
 					if (check) {
 						catchFct('check')
