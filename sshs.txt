@@ -14,3 +14,9 @@ ssh root@93.114.133.137
 xvfb-run -a node multi A 7
 
 ssh root@216.158.239.199
+
+cd "/root/puppet"
+node m A 7 &
+tmux
+
+@reboot  /root/start.sh

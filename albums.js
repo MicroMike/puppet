@@ -42,7 +42,7 @@ module.exports = {
 	],
 	tidal: [
 		'https://listen.tidal.com/album/112888253',//marching-smile
-		'https://listen.tidal.com/album/206322539',//mior lunar
+		// 'https://listen.tidal.com/album/206322539',//mior lunar
 		'https://listen.tidal.com/album/205826377',//mior good memories
 		'https://listen.tidal.com/album/102503463',//red beast
 		'https://listen.tidal.com/album/113608807',// He Knows She Knows
