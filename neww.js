@@ -141,6 +141,7 @@ clientSocket.on('mRun', async () => {
 	try {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
+			clientSocket.emit('playerInfos', { time: 'BACKUP', other: true })
 			console.log('start copy', account)
 			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' ' + varPath, { silent: false })
 			console.log('end copy', account)
