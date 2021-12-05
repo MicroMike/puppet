@@ -987,12 +987,18 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (freeze > 0) {
 						if (freeze > 10) {
 							// await takeScreenshot(parentId + 'freeze' + countPlays)
+							if (player === 'apple') {
+								await page.jClk(pauseBtn)
+							}
 							throw 'freeze'
 						}
 						else if (freeze >= 3) {
 							socketEmit('playerInfos', { time: t1, freeze: true, countPlays })
 						}
 
+						if (player === 'apple') {
+							await page.jClk(pauseBtn)
+						}
 						const logged = await page.wfs(loggedDom)
 						if (!logged) { throw 'logout' }
 					}

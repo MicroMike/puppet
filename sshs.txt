@@ -1,9 +1,9 @@
-ssh root@185.170.214.227
-ssh root@45.137.151.177
-ssh root@45.137.151.56
-ssh root@185.170.214.110
-ssh root@185.170.214.130
-ssh root@45.153.185.219
+ssh root@185.170.214.227 reboot
+ssh root@45.137.151.177 reboot
+ssh root@45.137.151.56 reboot
+ssh root@185.170.214.110 reboot
+ssh root@185.170.214.130 reboot
+ssh root@45.153.185.219 reboot
 ssh root@185.170.214.244
 ssh root@45.153.185.243
 ssh root@185.170.214.246
