@@ -182,7 +182,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		timeout = setTimeout(() => {
 			catchFct('tooLong')
-			shell.exec('killall node', { silent: false })
+			check && shell.exec('killall node', { silent: false })
 		}, 2 * 60 * 1000);
 
 		try {
