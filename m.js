@@ -47,6 +47,7 @@ const fct = async (i = 1) => {
 }
 
 shell.exec('killall -9 chrome', { silent: true })
+shell.exec('./update.sh', { silent: true })
 
 try {
 	shell.exec('expressvpn disconnect', { silent: true })
