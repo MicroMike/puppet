@@ -21,11 +21,11 @@ module.exports = {
 	],
 	amazon: [
 		'https://music.amazon.fr/albums/B07V1W5978',//marching-smile
-		'https://music.amazon.fr/albums/B09MG4RYBF',//mior lunar
 		'https://music.amazon.fr/albums/B09M8JTGVH',//mior good memories
 		'https://music.amazon.fr/albums/B07MTV7JYS',//red Beast
 		'https://music.amazon.fr/albums/B07VC9S3JM',//He Knows She Knows
 		'https://music.amazon.fr/albums/B07WCHK4JR',//my-stash
+		// 'https://music.amazon.fr/albums/B09MG4RYBF',//mior lunar
 		// 'https://music.amazon.fr/albums/B07CZDXC9B',
 		// 'https://music.amazon.fr/albums/B07G5PPYSY',
 		// 'https://music.amazon.fr/albums/B07PGN58LX',
@@ -42,11 +42,11 @@ module.exports = {
 	],
 	tidal: [
 		'https://listen.tidal.com/album/112888253',//marching-smile
-		// 'https://listen.tidal.com/album/206322539',//mior lunar
 		'https://listen.tidal.com/album/205826377',//mior good memories
 		'https://listen.tidal.com/album/102503463',//red beast
 		'https://listen.tidal.com/album/113608807',// He Knows She Knows
 		'https://listen.tidal.com/album/115558312', // my stash
+		// 'https://listen.tidal.com/album/206322539',//mior lunar
 		// 'https://listen.tidal.com/album/93312939',
 		// 'https://listen.tidal.com/album/112969038',
 		// 'https://listen.tidal.com/album/93087422',
@@ -62,12 +62,12 @@ module.exports = {
 		// 'https://listen.tidal.com/album/107892456',
 	],
 	spotify: [
-		'https://open.spotify.com/album/1Coms61c9kWhzH11cZzCrD',//mior lunar
 		'https://open.spotify.com/album/1VFYQwx6WVZ9eLRLkQEPRH',//mior good memories
 		'https://open.spotify.com/album/4EYeIhS1bRq51bui82dGNR',//marching smile
 		'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',//red beast
 		'https://open.spotify.com/album/4griwLkxXcEjmW1gIHDFRf',//He Knows She Knows
 		'https://open.spotify.com/album/7IQzrFiKgjNqqdetqxEiIz',//my stash
+		// 'https://open.spotify.com/album/1Coms61c9kWhzH11cZzCrD',//mior lunar
 		// 'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
 		// 'https://open.spotify.com/album/2jmPHLM2be2g19841vHjWE',
 		// 'https://open.spotify.com/album/5CPIRky6BGgl3CCdzMYAXZ',
@@ -101,8 +101,8 @@ module.exports = {
 		'https://music.apple.com/tr/album/my-stash/1476078813',
 		'https://music.apple.com/tr/album/marching-smile/1472877269',
 		'https://music.apple.com/tr/album/he-knows-she-knows/1472572875',
-		'https://music.apple.com/tr/album/lunar-january/1596985047',
 		'https://music.apple.com/tr/album/good-memories-single/1596423159',
+		// 'https://music.apple.com/tr/album/lunar-january/1596985047',
 		// 'https://music.apple.com/tr/album/boombeats/1383283815',
 		// 'https://music.apple.com/tr/album/house-of-beats/1380210761',
 		// 'https://music.apple.com/tr/album/stone-distraction/1448967982',
