@@ -8,7 +8,8 @@ const arg = process.argv[2]
 const max = process.argv[3] || 1
 const checkAccount = process.argv[4]
 
-const check = arg === 'check'
+const check = /check/.test(arg)
+const checkLive = /checklive/.test(arg)
 
 const rand = (max, min) => {
 	return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
@@ -112,7 +113,7 @@ const getAccount = async () => {
 }
 
 clientSocket.on('canRun', async () => {
-	await getAccount()
+	!checkLive && await getAccount()
 })
 
 // clientSocket.on('CdisconnectU', () => {
@@ -127,7 +128,8 @@ clientSocket.on('accountAlreadyUsed', async () => {
 	clientSocket.emit('canRun', { parentId, streamId, max })
 })
 
-clientSocket.on('mRun', async () => {
+clientSocket.on('mRun', async ({ account: a }) => {
+	if (a) { account = a }
 	if (!account) { return console.log('no account') }
 
 	const accountInfo = account.split(':')

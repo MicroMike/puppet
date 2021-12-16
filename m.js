@@ -8,7 +8,7 @@ const arg = process.argv[2]
 const nb = Number(process.argv[3]) || 1
 const thread = Number(process.argv[4]) || 1
 
-const check = arg === 'check'
+const check = /check/.test(arg)
 
 let close = false
 process.on('SIGINT', () => {

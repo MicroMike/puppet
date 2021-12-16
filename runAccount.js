@@ -218,6 +218,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				request('http://216.158.239.199:3000' + '/error?check/' + account, function (error, response, body) { })
 			}
 
+			if (e === 'tidalError') {
+				socketEmit('tidalError', { account })
+			}
+
 			if (code >= 4 && code !== 7 && code !== 220) {
 				socket.emit('outLog', e)
 				logError(e)
