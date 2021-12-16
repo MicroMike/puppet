@@ -128,8 +128,8 @@ clientSocket.on('accountAlreadyUsed', async () => {
 	clientSocket.emit('canRun', { parentId, streamId, max })
 })
 
-clientSocket.on('mRun', async ({ account: a }) => {
-	if (a) { account = a }
+clientSocket.on('mRun', async (props) => {
+	if (props) { account = props.account }
 	if (!account) { return console.log('no account') }
 
 	const accountInfo = account.split(':')
