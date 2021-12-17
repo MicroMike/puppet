@@ -163,6 +163,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				check && shell.exec('killall node', { silent: false })
 			}
 
+			if (e === 'tidalError') {
+				socketEmit('tidalError', { account })
+			}
+
 			if (code >= 4 && code !== 7 && code !== 220) {
 				socket.emit('outLog', e)
 				logError(e)
