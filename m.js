@@ -40,7 +40,7 @@ const fct = async (i = 1) => {
 	catch (e) { }
 
 	const ram = shell.exec('free -m |awk \'{ print $2 }\' | awk \'NR == 2\'', { silent: true }).stdout.trim()
-	shell.exec((check || /^X/.test(arg) ? '' : 'xvfb-run -a') + ' node --max-old-space-size=' + ram + ' multi ' + (check ? 'check' : current) + ' ' + nb, () => {
+	shell.exec((check || /^X/.test(arg) ? '' : 'xvfb-run -a') + ' node --max-old-space-size=' + ram + ' multi ' + (check ? arg : current) + ' ' + nb, () => {
 		if (close) { return }
 		fct(i)
 	})
