@@ -890,10 +890,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (player === 'tidal') {
 						const usedTidal = await page.get('body', 'innerText')
 						used = /interrompue|paused because/.test(usedTidal)
+						const tidalNotPremium = /quota/.test(usedTidal)
 
-						await page.evaluate(() => {
-							// document.querySelectorAll('[data-test="notification-close"]').forEach(e => e.click())
-						})
+						if (tidalNotPremium) { throw 'del' }
+
+						if (used) {
+							await page.evaluate(() => {
+								document.querySelectorAll('[data-test="notification-close"]').forEach(e => e.click())
+							})
+						}
 
 						let repeat = await page.ext('[data-type="button__repeatAll"]')
 						if (!repeat) {
