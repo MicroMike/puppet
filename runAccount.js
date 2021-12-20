@@ -495,9 +495,18 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (error) {
 						throw 'del'
 					}
-
-					await page.gotoUrl(album())
 				}
+
+				await page.gotoUrl('https://listen.tidal.com/settings')
+
+				const freeAccountHtml = await page.get('body', 'innerText')
+				const freeAccount = /tidal free/i.test(freeAccountHtml)
+
+				if (freeAccount) {
+					throw 'del'
+				}
+
+				await page.gotoUrl(album())
 			}
 
 			const checkFill = async () => {
@@ -890,9 +899,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (player === 'tidal') {
 						const usedTidal = await page.get('body', 'innerText')
 						used = /interrompue|paused because/.test(usedTidal)
-						const tidalNotPremium = /quota/.test(usedTidal)
-
-						if (tidalNotPremium) { throw 'del' }
 
 						if (used) {
 							await page.evaluate(() => {
