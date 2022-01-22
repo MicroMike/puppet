@@ -67,6 +67,7 @@ module.exports = {
 		'https://open.spotify.com/album/0Tt1ldQ8b4zn5LRcM706ll',//red beast
 		'https://open.spotify.com/album/4griwLkxXcEjmW1gIHDFRf',//He Knows She Knows
 		'https://open.spotify.com/album/7IQzrFiKgjNqqdetqxEiIz',//my stash
+		'https://open.spotify.com/album/4szjKFxbsHKpqpxhrm7H6L',// fresh mix
 		// 'https://open.spotify.com/album/1Coms61c9kWhzH11cZzCrD',//mior lunar
 		// 'https://open.spotify.com/album/3FJdPTLyJVPYMqQQUyb6lr',
 		// 'https://open.spotify.com/album/2jmPHLM2be2g19841vHjWE',
