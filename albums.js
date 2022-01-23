@@ -1,12 +1,12 @@
 module.exports = {
 	napster: [
-		'https://app.napster.com/artist/yokem/album/boombeats', // micro
-		'https://app.napster.com/artist/xondes/album/the-last-heat', //honey
-		'https://app.napster.com/artist/lenitap/album/above-everybody-wind', //hanke
-		'https://app.napster.com/artist/erati/album/he-knows-she-knows', // yohann
-		'https://app.napster.com/artist/benriam/album/the-gift-give', // benriam
-		'https://app.napster.com/artist/john-millson/album/my-stash', // yoan
 		'https://app.napster.com/artist/prestync/album/marching-smile',
+		'https://app.napster.com/artist/john-millson/album/my-stash', // yoan
+		'https://app.napster.com/artist/erati/album/he-knows-she-knows', // yohann
+		// 'https://app.napster.com/artist/benriam/album/the-gift-give', // benriam
+		// 'https://app.napster.com/artist/lenitap/album/above-everybody-wind', //hanke
+		// 'https://app.napster.com/artist/xondes/album/the-last-heat', //honey
+		// 'https://app.napster.com/artist/yokem/album/boombeats', // micro
 		// 'https://app.napster.com/artist/prestync/album/avalanches-of-ability',
 		// 'https://app.napster.com/artist/micro-beats-and-breaks/album/micro-one',
 		// 'https://app.napster.com/artist/mahone/album/stone-distraction',
