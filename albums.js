@@ -25,6 +25,7 @@ module.exports = {
 		'https://music.amazon.fr/albums/B07MTV7JYS',//red Beast
 		'https://music.amazon.fr/albums/B07VC9S3JM',//He Knows She Knows
 		'https://music.amazon.fr/albums/B07WCHK4JR',//my-stash
+		'https://music.amazon.fr/albums/B09PF7R5H1',// fresh mix
 		// 'https://music.amazon.fr/albums/B09MG4RYBF',//mior lunar
 		// 'https://music.amazon.fr/albums/B07CZDXC9B',
 		// 'https://music.amazon.fr/albums/B07G5PPYSY',
