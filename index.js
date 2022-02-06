@@ -591,7 +591,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const noNeedLog = await waitForSelector(S.noNeedLog, check ? 1 : 10)
 
 					if (!noNeedLog) {
-						console.log(S.email, 'needLog')
+						console.log(login, 'needLog', S.gotoLog)
 						// if (!check) {
 						// 	throw 'tidalError';
 						// }
