@@ -596,7 +596,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// 	throw 'tidalError';
 						// }
 						// else {
-						await click(S.gotoLog)
+						if (player === 'amazon') {
+							await goToPage('https://music.amazon.fr/forceSignIn?useHorizonte=true')
+						} else {
+							await click(S.gotoLog)
+						}
 
 						const hasEmailInput = await waitForSelector(S.email)
 
