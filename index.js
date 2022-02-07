@@ -15,6 +15,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const [player, login, pass] = account.split(':')
 		const isTidal = player === 'tidal'
 		const isSpotify = player === 'spotify'
+		const isAmazon = player === 'amazon'
 
 		let albums = al[player]
 		let currentAlbum
@@ -598,8 +599,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// 	throw 'tidalError';
 						// }
 						// else {
-						if (player === 'amazon') {
-							console.log(login, 'needLog', S.gotoLog)
+						if (isAmazon) {
 							await P.navigate({ url: 'https://music.amazon.fr/forceSignIn?useHorizonte=true' });
 							await P.loadEventFired();
 						} else {
@@ -657,6 +657,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
 					isSpotify && await click('#onetrust-accept-btn-handler', 5)
+					isAmazon && await goToPage(currentAlbum)
 
 					await wait(rand(3000, 1000))
 
