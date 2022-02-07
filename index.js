@@ -371,7 +371,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const goToPage = async (url) => {
 				try {
-					await click(S.pauseBtn, 1, false)
+					if (player === 'apple') {
+						await click(S.pauseBtn, 1, false)
+					}
 
 					await wait(3000)
 
