@@ -594,13 +594,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const noNeedLog = await waitForSelector(S.noNeedLog, check ? 1 : 10)
 
 					if (!noNeedLog) {
-						console.log(login, 'needLog', S.gotoLog)
 						// if (!check) {
 						// 	throw 'tidalError';
 						// }
 						// else {
 						if (player === 'amazon') {
-							await goToPage('https://music.amazon.fr/forceSignIn?useHorizonte=true')
+							console.log(login, 'needLog', S.gotoLog)
+							await P.navigate({ url: 'https://music.amazon.fr/forceSignIn?useHorizonte=true' });
+							await P.loadEventFired();
 						} else {
 							await click(S.gotoLog)
 						}
