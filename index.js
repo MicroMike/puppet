@@ -384,6 +384,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const corectLoad = /titres|rechercher|écouter|listen now|tracks|shuffle|playing|home|robot|Accueil/i.test(body)
 
 					if (corectLoad || check) {
+						console.log('gotoPage', url);
 						return true
 					}
 
