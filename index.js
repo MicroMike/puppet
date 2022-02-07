@@ -383,7 +383,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await wait(5000)
 
 					const body = await get('body', 'innerHTML')
-					const corectLoad = /titres|rechercher|écouter|listen now|tracks|shuffle|playing|home|robot|Accueil/i.test(body)
+					const corectLoad = /mot de passe|titres|rechercher|écouter|listen now|tracks|shuffle|playing|home|robot|Accueil/i.test(body)
 
 					if (corectLoad || check) {
 						console.log('gotoPage', url);
