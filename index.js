@@ -662,14 +662,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						error = await waitForSelector(S.loginError, 10)
 						// const { result } = await R.evaluate({ expression: '/essayer gratuitement/i.test(document.body.innerHTML)' })
 
-						await tidalSelect()
-
 						if (error) {
 							if (isTidal) {
 								throw 'del'
 							}
 							throw 'out'
 						}
+
+						await tidalSelect()
 						// }
 					}
 
