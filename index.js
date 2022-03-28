@@ -252,7 +252,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}, time * 1000);
 			})
 
-			const tidalSelect = () => new Promise((res, rej) => {
+			const tidalSelect = () => new Promise(async (res, rej) => {
 				const expression = `
 					const rand = (max, min = 0) => {
 						return Math.floor(Math.random() * Math.floor(max) + min);
