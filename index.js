@@ -643,7 +643,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						await type(login, S.email)
 
-						isTidal && await click('#recap-invisible')
+						isTidal && await click(S.connectBtn)
 
 						let error = await waitForSelector(S.loginError, 10)
 
