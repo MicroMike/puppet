@@ -35,7 +35,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			loginError: '.box-error',
 			email: '#email',
 			pass: '#password',
-			connectBtn: '.btn-success.btn-client-primary',
+			connectBtn: '[ui-test-id="check-user-continue-button"]',
 			play: '[data-test="shuffle-all"]',
 			timeLine: '[data-test="current-time"]',
 			callback: a => (a.split(':').reduce((a, b) => a * 60 + Number(b))),
