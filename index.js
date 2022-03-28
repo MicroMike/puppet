@@ -683,6 +683,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 						throw 'out'
 					}
+					else if (!noNeedLog) {
+						console.log(login, 'log Success')
+					}
 
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
