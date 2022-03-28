@@ -1,9 +1,9 @@
 ssh root@185.170.214.227 reboot
 ssh root@45.137.151.177 reboot
 ssh root@45.137.151.56 reboot
-ssh root@185.170.214.110 reboot
-ssh root@185.170.214.130 reboot
-ssh root@45.153.185.219 reboot
+ssh root@185.170.214.110 killall node
+ssh root@185.170.214.130 killall node
+ssh root@45.153.185.219 killall node
 ssh root@185.170.214.244
 ssh root@45.153.185.243
 ssh root@185.170.214.246
@@ -16,7 +16,9 @@ xvfb-run -a node multi A 7
 ssh root@216.158.239.199
 
 cd "/root/puppet"
-node m A 7 &
+node m A 5 &
 tmux
 
 @reboot  /root/start.sh
+
+killall node & killall chrome

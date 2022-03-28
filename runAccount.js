@@ -601,8 +601,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const tidalCheck = async () => {
 				await page.evaluate(() => {
-					const rand = (max, min) => {
-						return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
+					const rand = (max, min = 0) => {
+						return Math.floor(Math.random() * Math.floor(max) + min);
 					}
 					const artist = document.querySelectorAll('[class*="artistContainer"]')
 

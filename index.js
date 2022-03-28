@@ -252,6 +252,33 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}, time * 1000);
 			})
 
+			const tidalSelect = () => new Promise((res, rej) => {
+				const expression = `
+					const rand = (max, min = 0) => {
+						return Math.floor(Math.random() * Math.floor(max) + min);
+					}
+
+					const artist = document.querySelectorAll('[class*="artistContainer"]')
+
+					if(artist?.length > 0) {
+						setTimeout(() => {
+							artist[rand(artist.length)].click()
+						}, 1000 * 1);
+						setTimeout(() => {
+							artist[rand(artist.length)].click()
+						}, 1000 * 2);
+						setTimeout(() => {
+							artist[rand(artist.length)].click()
+						}, 1000 * 3);
+
+						setTimeout(() => {
+							document.querySelector('[class*="continueButtonContainer"] button').click()
+						}, 1000 * 4);
+					}
+					`
+				R && await R.evaluate({ expression })
+			})
+
 			const click = (selector, time, exitOnError = true) => new Promise(async (res, rej) => {
 				try {
 					const wfs = await waitForSelector(selector, time)
@@ -633,6 +660,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						error = await waitForSelector(S.loginError, 10)
 						// const { result } = await R.evaluate({ expression: '/essayer gratuitement/i.test(document.body.innerHTML)' })
+
+						await tidalSelect()
 
 						if (error) {
 							if (isTidal) {
