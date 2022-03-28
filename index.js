@@ -278,6 +278,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 					`
 				R && await R.evaluate({ expression })
+				res(true)
 			})
 
 			const click = (selector, time, exitOnError = true) => new Promise(async (res, rej) => {
