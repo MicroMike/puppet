@@ -35,7 +35,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			loginError: '.box-error',
 			email: '#email',
 			pass: '#password',
-			connectBtn: '.btn-client-primary',
+			next: '.btn-client-primary',
+			connectBtn: '.btn-success.btn-client-primary',
 			play: '[data-test="shuffle-all"]',
 			timeLine: '[data-test="current-time"]',
 			callback: a => (a.split(':').reduce((a, b) => a * 60 + Number(b))),
@@ -643,7 +644,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						await type(login, S.email)
 
-						isTidal && await click(S.connectBtn)
+						isTidal && await click(S.next)
 
 						let error = await waitForSelector(S.loginError, 10)
 
