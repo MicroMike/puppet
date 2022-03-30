@@ -26,6 +26,7 @@ module.exports = {
 		'https://music.amazon.fr/albums/B07VC9S3JM',//He Knows She Knows
 		'https://music.amazon.fr/albums/B07WCHK4JR',//my-stash
 		'https://music.amazon.fr/albums/B09PF7R5H1',// fresh mix
+		'https://music.amazon.fr/albums/B09WRFW2Y6',// alvin fay
 		// 'https://music.amazon.fr/albums/B09MG4RYBF',//mior lunar
 		// 'https://music.amazon.fr/albums/B07CZDXC9B',
 		// 'https://music.amazon.fr/albums/B07G5PPYSY',
@@ -47,6 +48,8 @@ module.exports = {
 		'https://listen.tidal.com/album/102503463',//red beast
 		'https://listen.tidal.com/album/113608807',// He Knows She Knows
 		'https://listen.tidal.com/album/115558312', // my stash
+		'https://listen.tidal.com/album/222894826', // alvin fay
+		'https://listen.tidal.com/album/210703692', // fresh mix
 		// 'https://listen.tidal.com/album/206322539',//mior lunar
 		// 'https://listen.tidal.com/album/93312939',
 		// 'https://listen.tidal.com/album/112969038',
