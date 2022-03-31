@@ -86,6 +86,19 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// usedDom = '.concurrentStreamsPopover'
 		}
 
+		if (player === 'napster') {
+			// url = 'https://app.napster.com/login/'
+			S.noNeedLog = '.icon-settings2'
+			S.gotoLog = '#nav-login-btn'
+			S.loginError = '.login-error'
+			S.email = '#username'
+			S.pass = '#password'
+			S.connectBtn = '.signin'
+			S.play = '.track-list-header .shuffle-button.icon-shuffle2'
+			S.timeLine = '.player-time'
+			S.callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
+		}
+
 		const socketEmit = (event, params) => {
 			socket.emit(event, {
 				parentId,
