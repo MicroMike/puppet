@@ -752,6 +752,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const launchChrome = async () => {
 				return await chromeLauncher.launch({
 					chromeFlags: [
+						'--chromePath="/bin/google-chrome-stable"',
 						'--no-first-run',
 						'--headless',
 						'--disable-gpu',
