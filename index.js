@@ -754,7 +754,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					chromeFlags: [
 						'--chromePath="/bin/google-chrome-stable"',
 						'--no-first-run',
-						'--headless',
 						'--disable-gpu',
 						'--disable-setuid-sandbox',
 						'--disable-features=Translate',
