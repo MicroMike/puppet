@@ -821,9 +821,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			} catch (err) {
 				catchFct(err)
 			} finally {
-				if (client) {
+				// if (client) {
 					// await client.close();
-				}
+				// }
 			}
 
 			protocol.close();
