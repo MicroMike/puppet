@@ -6,6 +6,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const image2base64 = require('image-to-base64');
 		const request = require('ajax-request');
 		const al = require('./albums')
+		const chromeLauncher = require('chrome-launcher');
 
 		let closed = false
 		let C, N, P, R, D, B, I, T;
@@ -218,7 +219,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				return Math.floor(Math.random() * Math.floor(max)) + 1 + min;
 			}
 
-			const port = rand(1000, 8000)
+			const port = rand(1000, 9000)
 			let countStream, streamOn;
 			const keyCaptchaHuman = '6LccSjEUAAAAANCPhaM2c-WiRxCZ5CzsjR_vd8uX'
 
@@ -747,66 +748,88 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// await shell.exec('"C:/Program Files (x86)/Google/Chrome/Application/chrome.exe" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="/puppet/saveCookie/' + login + '" --remote-debugging-port=' + port, { async: true, silent: true })
 			// await shell.exec('"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="saveCookie/' + account + '" --remote-debugging-port=' + port, { async: true, silent: true })
 			// await shell.exec('"/Applications/Chromium.app/Contents/MacOS/Chromium" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="saveCookie/' + account + '" --remote-debugging-port=' + port, { async: true })
-			await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --disable-setuid-sandbox --no-first-run --disable-features=Translate --user-data-dir="puppet/' + player + login + '" --remote-debugging-port=' + port, { async: true, silent: true })
-
-			await wait(3000)
-
-			await connect()
+			// await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --disable-setuid-sandbox --no-first-run --disable-features=Translate --user-data-dir="puppet/' + player + login + '" --remote-debugging-port=' + port, { async: true, silent: true })
+			const launchChrome = async () => {
+				return await chromeLauncher.launch({
+					chromeFlags: [
+						'--no-first-run',
+						'--headless',
+						'--disable-gpu',
+						'--disable-setuid-sandbox',
+						'--disable-features=Translate',
+						'--no-sandbox',
+						'--user-data-dir="puppet/' + player + login + '"',
+						'--remote-debugging-port=' + port,
+					]
+				});
+			}
 
 			const options = {
 				host: '127.0.0.1',
 				port
 			}
 
-			await wait(3000)
+			const chrome = await launchChrome();
+			const protocol = await CDP(options);
 
-			await CDP(options, async (client) => {
-				console.log('Connected!');
+			await Promise.all([
+				Page.enable(),
+				Runtime.enable(),
+				DOM.enable()
+			]);
 
-				try {
-					// connect to endpoint
-					console.log(client)
-					// client = await CDP(options);
-					C = client
+			// await wait(3000)
+			// await connect()
+			// await wait(3000)
 
-					// extract domains
-					const { Network, Page, Runtime, DOM, Input, Browser, Target } = client;
-					N = Network;
-					P = Page;
-					R = Runtime;
-					D = DOM;
-					B = Browser;
-					I = Input;
-					T = Target;
+			// await CDP(options, async (client) => {
+			console.log('Connected!');
 
-					// setup handlers
-					Network.requestWillBeSent((params) => {
-						// console.log(params.request.url);
-					});
-					// enable events then start!
-					await Network.enable();
-					await Page.enable();
+			try {
+				// connect to endpoint
+				// console.log(client)
+				// client = await CDP(options);
+				// C = client
 
-					const { targetInfos } = await Target.getTargets();
-					targetId = targetInfos.find(t => t.type === 'page').targetId
+				// extract domains
+				const { Network, Page, Runtime, DOM, Input, Browser, Target } = protocol;
+				N = Network;
+				P = Page;
+				R = Runtime;
+				D = DOM;
+				B = Browser;
+				I = Input;
+				T = Target;
 
-					await loopConnect();
-					// catchFct()
-					closed = true
-					console.log('out', account)
-				} catch (err) {
-					catchFct(err)
-				} finally {
-					if (client) {
-						// await client.close();
-					}
-				}
+				// setup handlers
+				Network.requestWillBeSent((params) => {
+					// console.log(params.request.url);
+				});
+				// enable events then start!
+				await Network.enable();
+				await Page.enable();
 
-				// client.close();
-			}).on('error', (err) => {
-				console.error('err2', err);
+				const { targetInfos } = await Target.getTargets();
+				targetId = targetInfos.find(t => t.type === 'page').targetId
+
+				await loopConnect();
+				// catchFct()
+				closed = true
+				console.log('out', account)
+			} catch (err) {
 				catchFct(err)
-			});
+			} finally {
+				if (client) {
+					// await client.close();
+				}
+			}
+
+			protocol.close();
+			chrome.kill();
+			// }).on('error', (err) => {
+			// 	console.error('err2', err);
+			// 	catchFct(err)
+			// });
 		}
 		catch (e) {
 			console.log('globalCatch', e)

@@ -46,6 +46,7 @@
   "license": "ISC",
   "dependencies": {
     "ajax-request": "^1.2.3",
+    "chrome-launcher": "^0.15.0",
     "chromy": "^0.5.11",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.1",
