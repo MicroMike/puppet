@@ -759,17 +759,18 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						'--disable-features=Translate',
 						'--no-sandbox',
 						'--user-data-dir="puppet/' + player + login + '"',
-						'--remote-debugging-port=' + port,
+						// '--remote-debugging-port=' + port,
 					]
 				});
 			}
 
+			const chrome = await launchChrome();
+
 			const options = {
 				host: '127.0.0.1',
-				port
+				port: chrome.port
 			}
 
-			const chrome = await launchChrome();
 			const protocol = await CDP(options);
 
 			const { Network, Page, Runtime, DOM, Input, Browser, Target } = protocol;
@@ -784,8 +785,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			await Promise.all([
 				Page.enable(),
+				Network.enable(),
 				Runtime.enable(),
-				DOM.enable()
+				DOM.enable(),
 			]);
 
 			// await wait(3000)
@@ -807,7 +809,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				});
 				// enable events then start!
 				await Network.enable();
-				await Page.enable();
+				// await Page.enable();
 
 				const { targetInfos } = await Target.getTargets();
 				targetId = targetInfos.find(t => t.type === 'page').targetId
