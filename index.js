@@ -772,6 +772,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const chrome = await launchChrome();
 			const protocol = await CDP(options);
 
+			const { Network, Page, Runtime, DOM, Input, Browser, Target } = protocol;
+			// extract domains
+			N = Network;
+			P = Page;
+			R = Runtime;
+			D = DOM;
+			B = Browser;
+			I = Input;
+			T = Target;
+
 			await Promise.all([
 				Page.enable(),
 				Runtime.enable(),
@@ -790,16 +800,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				// console.log(client)
 				// client = await CDP(options);
 				// C = client
-
-				// extract domains
-				const { Network, Page, Runtime, DOM, Input, Browser, Target } = protocol;
-				N = Network;
-				P = Page;
-				R = Runtime;
-				D = DOM;
-				B = Browser;
-				I = Input;
-				T = Target;
 
 				// setup handlers
 				Network.requestWillBeSent((params) => {
