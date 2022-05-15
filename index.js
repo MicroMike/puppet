@@ -760,12 +760,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			await wait(3000)
 
-			CDP(options, async (client) => {
+			await CDP(options, async (client) => {
 				console.log('Connected!');
 
 				try {
 					// connect to endpoint
-					client = await CDP(options);
+					console.log(client)
+					// client = await CDP(options);
 					C = client
 
 					// extract domains
