@@ -818,16 +818,17 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				// catchFct()
 				closed = true
 				console.log('out', account)
+
+				protocol.close();
+				chrome.kill();
 			} catch (err) {
 				catchFct(err)
 			} finally {
 				// if (client) {
-					// await client.close();
+				// await client.close();
 				// }
 			}
 
-			protocol.close();
-			chrome.kill();
 			// }).on('error', (err) => {
 			// 	console.error('err2', err);
 			// 	catchFct(err)
