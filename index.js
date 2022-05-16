@@ -667,7 +667,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							if (isTidal) {
 								throw 'del'
 							}
-							throw 'out'
+							throw 'out_no_logging'
 						}
 
 						await type(pass, S.pass)
@@ -681,7 +681,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							if (isTidal) {
 								throw 'del'
 							}
-							throw 'out'
+							throw 'out_error_connect'
 						}
 
 						await tidalSelect()
@@ -696,7 +696,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						if (isTidal) {
 							throw 'tidalError'
 						}
-						throw 'out'
+						throw 'out_log_error'
 					}
 					else if (!noNeedLog) {
 						console.log(login, 'log Success')
@@ -835,6 +835,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// });
 		}
 		catch (e) {
+			protocol.close();
+			chrome.kill();
 			console.log('globalCatch', e)
 			catchFct(e)
 		}
