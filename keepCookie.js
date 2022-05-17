@@ -1,11 +1,12 @@
 const shell = require('shelljs');
+var colors = require('colors');
 
 const arg = process.argv[2]
 
 let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
 
 if (arg) {
-	console.log('keepCookie: ' + arg)
+	console.log('keepCookie: ' + arg.yellow)
 	const log = varPath + 'aaa' + arg
 	if (!/@/.test(arg)) return
 	shell.exec(`mkdir -p "${log}/Default"`)

@@ -7,6 +7,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const request = require('ajax-request');
 		const al = require('./albums')
 		const chromeLauncher = require('chrome-launcher');
+		var colors = require('colors');
 
 		let closed = false
 		let C, N, P, R, D, B, I, T;
@@ -183,7 +184,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (code >= 4 && code !== 7 && code !== 220) {
 				socket.emit('outLog', e)
 				logError(e)
-				console.log(getTime() + " ERR ", account, e)
+				console.log(getTime() + " ERR ".red, account, e)
 				await takeScreenshot(e)
 			}
 
@@ -499,7 +500,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						usedCount++
 
 						if (usedCount >= 3) {
-							console.log('playStop 3 times', account)
+							console.log('playStop 3 times'.red, account)
 							throw 'used'
 						}
 
@@ -560,7 +561,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (pauseCount === 10) {
 						pauseCount = 0
-						console.log(login, 'freeze')
+						console.log(login, 'freeze'.blue)
 						throw 'freeze'
 						// await click(S.play)
 						// return
@@ -703,7 +704,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						throw 'out_log_error'
 					}
 					else if (!noNeedLog) {
-						console.log(login, 'log Success')
+						console.log(login, 'log Success'.green)
 					}
 
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })
@@ -803,7 +804,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// await wait(3000)
 
 			// await CDP(options, async (client) => {
-			console.log('Connected!');
+			console.log('Connected!'.green);
 
 			try {
 				// connect to endpoint
