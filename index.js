@@ -144,6 +144,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		}
 
 		const catchFct = async (e) => {
+			if (closed) { return }
+
 			closed = true
 			clearTimeout(timeout)
 
@@ -827,7 +829,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				await loopConnect();
 
-				closed = true
 				console.log('out', account)
 
 				try {
@@ -836,6 +837,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) { }
 
 				catchFct('out')
+				closed = true
 
 			} catch (err) {
 				catchFct(err)
