@@ -826,7 +826,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				targetId = targetInfos.find(t => t.type === 'page').targetId
 
 				await loopConnect();
-				// catchFct()
+
 				closed = true
 				console.log('out', account)
 
@@ -834,6 +834,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					protocol.close();
 					chrome.kill();
 				} catch (error) { }
+
+				catchFct('out')
 
 			} catch (err) {
 				catchFct(err)
