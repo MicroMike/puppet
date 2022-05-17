@@ -771,12 +771,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const chrome = await launchChrome();
 
-			try {
-				chrome.process.on('close', () => {
-					catchFct('out')
-				})
-			} catch (error) { }
-
 			const options = {
 				host: '127.0.0.1',
 				port: chrome.port
@@ -800,6 +794,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				Runtime.enable(),
 				DOM.enable(),
 			]);
+
+			try {
+				chrome.process.on('close', () => {
+					catchFct('out')
+				})
+			} catch (error) { }
 
 			// await wait(3000)
 			// await connect()
