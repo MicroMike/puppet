@@ -776,7 +776,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const chrome = await launchChrome();
 
 			chrome.process.on('close', () => {
-				closed = true
+				catchFct('out')
 			})
 
 			const options = {
