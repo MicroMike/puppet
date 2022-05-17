@@ -518,6 +518,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const playCheck = async () => {
+				if (closed) { return }
+
 				try {
 					await connectedCheck();
 
