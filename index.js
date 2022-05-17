@@ -766,7 +766,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const chrome = await launchChrome();
 
-			chrome.process.on('close', () => console.log('chrome closed'))
+			chrome.process.on('close', () => {
+				closed = true
+			})
 
 			const options = {
 				host: '127.0.0.1',
