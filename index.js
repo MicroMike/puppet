@@ -701,7 +701,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						if (isTidal) {
 							throw 'tidalError'
 						}
-						throw 'out_log_error'
+						return catchFct('out_log_error')
 					}
 					else if (!noNeedLog) {
 						console.log(login, 'log Success'.green)
