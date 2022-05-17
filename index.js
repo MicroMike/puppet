@@ -432,7 +432,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const corectLoad = /mot de passe|titres|rechercher|écouter|listen now|tracks|shuffle|playing|home|robot|Accueil/i.test(body)
 
 					if (corectLoad || check) {
-						console.log('gotoPage', url);
+						// console.log('gotoPage', url);
 						return true
 					}
 
@@ -442,7 +442,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						album()
 						goToPage()
 					} else if (!closed) {
-						console.log('navigate', url)
+						// console.log('navigate', url)
 						catchFct(error)
 					}
 				}
