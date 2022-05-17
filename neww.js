@@ -28,11 +28,11 @@ let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' :
 const copyBack = () => {
 	try {
 		if (login) {
-			console.log('start save copy', account)
+			console.log('start save copy'.yellow, account.yellow)
 			shell.exec('node keepCookie ' + player + login, { silent: false })
 			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
 			// shell.exec('rm -rf ' + varPath + player + login, { silent: false })
-			console.log('end save copy', account)
+			console.log('end save copy'.yellow, account.yellow)
 			request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 		}
 	} catch (e) {
@@ -143,9 +143,9 @@ clientSocket.on('mRun', async (props) => {
 	try {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
-			console.log('start copy', account)
+			console.log('start copy'.yellow, account.yellow)
 			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' ' + varPath, { silent: false })
-			console.log('end copy', account)
+			console.log('end copy'.yellow, account.yellow)
 		}
 	} catch (e) {
 		console.log(e)
