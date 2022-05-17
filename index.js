@@ -771,9 +771,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const chrome = await launchChrome();
 
-			chrome.process.on('close', () => {
-				catchFct('out')
-			})
+			try {
+				chrome.process.on('close', () => {
+					catchFct('out')
+				})
+			} catch (error) { }
 
 			const options = {
 				host: '127.0.0.1',
@@ -833,7 +835,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) { }
 
 				catchFct('out')
-				closed = true
 
 			} catch (err) {
 				catchFct(err)
