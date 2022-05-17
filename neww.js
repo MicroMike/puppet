@@ -30,7 +30,7 @@ const copyBack = () => {
 	try {
 		if (login) {
 			console.log('start save copy'.yellow, account.yellow)
-			if (player !== 'amazon') {
+			if (player !== 'napster') {
 				shell.exec('node keepCookie ' + player + login, { silent: false })
 			}
 			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
