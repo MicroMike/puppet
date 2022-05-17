@@ -263,9 +263,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 				}
 
-				if (closed) { res(false) }
-
-				loop()
+				if (!closed) {
+					loop()
+				}
 
 				setTimeout(() => {
 					res(false)
@@ -523,7 +523,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const playCheck = async () => {
-				if (closed) { return }
+				if (closed) { return catchFct('out') }
 
 				try {
 					await connectedCheck();
