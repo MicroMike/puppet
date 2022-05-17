@@ -244,7 +244,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			})
 
 			const waitForSelector = (selector, time = 60) => new Promise((res, rej) => {
+
 				const loop = async () => {
+					if (closed) { return }
+
 					try {
 						const el = R && await R.evaluate({ expression: 'document.querySelector(\'' + selector + '\')' })
 
@@ -259,6 +262,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 					}
 				}
+
+				if (closed) { res(false) }
 
 				loop()
 
