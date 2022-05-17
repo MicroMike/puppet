@@ -3,6 +3,7 @@ process.setMaxListeners(Infinity)
 const puppet = require('./puppet')
 const shell = require('shelljs');
 const request = require('ajax-request');
+var colors = require('colors');
 
 const arg = process.argv[2]
 const max = process.argv[3] || 1
