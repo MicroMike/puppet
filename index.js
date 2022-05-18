@@ -559,6 +559,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (pauseCount && pauseCount < 5) {
 						socketEmit('playerInfos', { time, freeze: true, warn: true, countPlays })
+						await click(S.play)
 					}
 					if (pauseCount === 5) {
 						socketEmit('playerInfos', { time, freeze: true, countPlays })
