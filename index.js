@@ -124,6 +124,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
 			}
 
+			try {
+				protocol.close();
+				chrome.kill();
+			} catch (error) { }
+
 			r(code)
 		}
 
