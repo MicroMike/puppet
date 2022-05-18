@@ -837,9 +837,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				try {
 					protocol.close();
 					chrome.kill();
+					catchFct('out')
 				} catch (error) { }
-
-				catchFct('out')
 
 			} catch (err) {
 				catchFct(err)
