@@ -803,9 +803,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			try {
 				chrome.process.on('close', () => {
-					catchFct('out')
+					try {
+						catchFct('out')
+					} catch (error) {
+						console.log('catchOut')
+					}
 				})
-			} catch (error) { }
+			} catch (error) {
+				console.log('catchOut')
+			}
 
 			// await wait(3000)
 			// await connect()
@@ -839,7 +845,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					protocol.close();
 					chrome.kill();
 					catchFct('out')
-				} catch (error) { }
+				} catch (error) {
+					console.log('catchOut')
+				}
 
 			} catch (err) {
 				catchFct(err)
@@ -849,7 +857,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			try {
 				protocol.close();
 				chrome.kill();
-			} catch (error) { }
+			} catch (error) {
+				console.log('catchOut')
+			}
 
 			console.log('globalCatch', e)
 			catchFct(e)
