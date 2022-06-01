@@ -126,7 +126,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			try {
 				protocol.close();
-				chrome.kill();
+				// chrome.kill();
 			} catch (error) { }
 
 			r(code)
@@ -822,14 +822,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				DOM.enable(),
 			]);
 
+			const fct = () => {
+				try {
+					catchFct('out')
+				} catch (error) {
+					console.log('catchOut 1')
+				}
+			}
+
 			try {
-				chrome.process.on('close', () => {
-					try {
-						catchFct('out')
-					} catch (error) {
-						console.log('catchOut 1')
-					}
-				})
+				chrome.process.on('close', fct)
 			} catch (error) {
 				console.log('catchOut 2')
 			}
@@ -864,7 +866,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				try {
 					protocol.close();
-					chrome.kill();
+					// chrome.kill();
 					catchFct('out')
 				} catch (error) {
 					console.log('catchOut')
@@ -877,7 +879,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		catch (e) {
 			try {
 				protocol.close();
-				chrome.kill();
+				// chrome.kill();
 			} catch (error) {
 				console.log('catchOut 3')
 			}
