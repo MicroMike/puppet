@@ -207,7 +207,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		try {
 			timeout = setTimeout(() => {
-				throw 'tooLong'
+				catchFct('tooLong')
 			}, 2 * 60 * 1000);
 
 			const album = () => {
@@ -859,7 +859,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				protocol.close();
 				chrome.kill();
 			} catch (error) {
-				console.log('catchOut')
+				console.log('catchOut 3')
 			}
 
 			console.log('globalCatch', e)
