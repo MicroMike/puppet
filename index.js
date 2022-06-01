@@ -147,6 +147,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const catchFct = async (e) => {
 			if (closed) { return }
 
+			isTidal && check && shell.exec('killall node & killall chrome', { silent: false })
+
 			closed = true
 			clearTimeout(timeout)
 
@@ -203,12 +205,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			exit(e, code)
 		}
 
-		timeout = setTimeout(() => {
-			catchFct('tooLong')
-			isTidal && check && shell.exec('killall node & killall chrome', { silent: false })
-		}, 2 * 60 * 1000);
-
 		try {
+			timeout = setTimeout(() => {
+				throw 'tooLong'
+			}, 2 * 60 * 1000);
+
 			const album = () => {
 				let albumUrl = albums[rand(albums.length)]
 				// while (currentAlbum === albumUrl) {
