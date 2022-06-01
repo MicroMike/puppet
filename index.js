@@ -229,25 +229,25 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			let countStream, streamOn;
 			const keyCaptchaHuman = '6LccSjEUAAAAANCPhaM2c-WiRxCZ5CzsjR_vd8uX'
 
-			const connect = () => new Promise((resolve, reject) => {
-				try {
-					const loop = async () => {
-						const ls = await shell.exec('chrome-remote-interface list --port=' + port, { silent: true })
-						if (/Error/.test(ls.stderr)) {
-							loop()
-						} else {
-							resolve(ls.stdout)
-							return
-						}
-					}
+			// const connect = () => new Promise((resolve, reject) => {
+			// 	try {
+			// 		const loop = async () => {
+			// 			const ls = await shell.exec('chrome-remote-interface list --port=' + port, { silent: true })
+			// 			if (/Error/.test(ls.stderr)) {
+			// 				loop()
+			// 			} else {
+			// 				resolve(ls.stdout)
+			// 				return
+			// 			}
+			// 		}
 
-					loop()
-				} catch (error) {
-					if (!closed) {
-						catchFct(error)
-					}
-				}
-			})
+			// 		loop()
+			// 	} catch (error) {
+			// 		if (!closed) {
+			// 			catchFct(error)
+			// 		}
+			// 	}
+			// })
 
 			const loop = async (selector, res) => {
 				if (closed) { return }
