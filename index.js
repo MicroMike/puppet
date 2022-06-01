@@ -249,28 +249,27 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			})
 
-			const waitForSelector = (selector, time = 60) => new Promise((res, rej) => {
+			const loop = async (selector) => {
+				if (closed) { return }
 
-				const loop = async () => {
-					if (closed) { return }
+				try {
+					const el = R && await R.evaluate({ expression: 'document.querySelector(\'' + selector + '\')' })
 
-					try {
-						const el = R && await R.evaluate({ expression: 'document.querySelector(\'' + selector + '\')' })
-
-						if (!el.result.objectId) {
-							loop()
-						} else {
-							res(true)
-						}
-					} catch (error) {
-						if (!closed) {
-							catchFct(error)
-						}
+					if (!el.result.objectId) {
+						loop(selector)
+					} else {
+						res(true)
+					}
+				} catch (error) {
+					if (!closed) {
+						catchFct(error)
 					}
 				}
+			}
 
+			const waitForSelector = (selector, time = 60) => new Promise((res, rej) => {
 				if (!closed) {
-					loop()
+					loop(selector)
 				}
 
 				setTimeout(() => {
