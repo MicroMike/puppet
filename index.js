@@ -10,6 +10,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		var colors = require('colors');
 
 		let closed = false
+		let kill = false
 		let C, N, P, R, D, B, I, T;
 		let targetId = false;
 		let timeout
@@ -124,11 +125,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
 			}
 
-			try {
-				protocol.close();
-				// chrome.kill();
-			} catch (error) { }
-
 			r(code)
 		}
 
@@ -145,6 +141,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		}
 
 		const catchFct = async (e) => {
+			try {
+				protocol.close();
+				!kill && chrome.kill();
+				kill = true
+			} catch (error) { }
+
 			if (closed) { return }
 
 			isTidal && check && shell.exec('killall node & killall chrome', { silent: false })
@@ -824,6 +826,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const fct = () => {
 				try {
+					kill = true;
 					catchFct('out')
 				} catch (error) {
 					console.log('catchOut 1')
@@ -865,8 +868,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				console.log('out', account)
 
 				try {
-					protocol.close();
-					// chrome.kill();
 					catchFct('out')
 				} catch (error) {
 					console.log('catchOut')
@@ -877,13 +878,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 		}
 		catch (e) {
-			try {
-				protocol.close();
-				// chrome.kill();
-			} catch (error) {
-				console.log('catchOut 3')
-			}
-
 			console.log('globalCatch', e)
 			catchFct(e)
 		}
