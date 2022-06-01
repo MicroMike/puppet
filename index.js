@@ -268,13 +268,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const waitForSelector = (selector, time = 60) => new Promise((res, rej) => {
-				if (!closed) {
-					loop(selector)
-				}
-
 				setTimeout(() => {
 					res(false)
 				}, time * 1000);
+
+				if (!closed) {
+					loop(selector)
+				}
 			})
 
 			const tidalSelect = () => new Promise(async (res, rej) => {
