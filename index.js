@@ -354,6 +354,25 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			})
 
+			const paste = (value, selector) => new Promise(async (res, rej) => {
+				try {
+					await waitForSelector(selector)
+					await wait(5000)
+
+					const typeExpression = `
+						const el = document.querySelector('${selector}')
+						el.setAttribute('value', '${value}');
+					`
+
+					await R.evaluate({ expression: typeExpression })
+					res(true)
+				} catch (error) {
+					if (!closed) {
+						catchFct(error)
+					}
+				}
+			})
+
 			const get = async (selector, getter = 'innerHTML') => {
 				try {
 					await wait(1000)
@@ -682,7 +701,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							throw 'out_no_logging'
 						}
 
-						await type(pass, S.pass)
+						isTidal && await type(pass, S.pass)
+						!isTidal && await paste(pass, S.pass)
 
 						await click(S.connectBtn)
 
