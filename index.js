@@ -807,11 +807,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					try {
 						catchFct('out')
 					} catch (error) {
-						console.log('catchOut')
+						console.log('catchOut 1')
 					}
 				})
 			} catch (error) {
-				console.log('catchOut')
+				console.log('catchOut 2')
 			}
 
 			// await wait(3000)
