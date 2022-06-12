@@ -801,8 +801,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							shell.exec('node keepCookie ' + player + login, { silent: false })
 						}
 
-						const copy = shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
-						copy.then(() => console.log('end save copy'.yellow, account.yellow))
+						shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
 					} catch (e) {
 						console.log(e)
 					}
