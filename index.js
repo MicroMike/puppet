@@ -92,15 +92,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		if (player === 'napster') {
 			// url = 'https://app.napster.com/login/'
+			// S.gotoLog = '#nav-login-btn'
+			// S.loginError = '.login-error'
 			S.noNeedLog = '[data-testid="top-navigation-dropdown"]'
-			S.gotoLog = '#nav-login-btn'
-			S.loginError = '.login-error'
 			S.email = '[data-testid="username"]'
 			S.pass = '[data-testid="password"]'
 			S.connectBtn = '[data-testid="login-button"]'
-			S.play = '.track-list-header .shuffle-button.icon-shuffle2'
-			S.timeLine = '.player-time'
-			S.callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
+			S.play = '[data-testid="box"] [type="button"]'
+			S.timeLine = '[data-testid="mini-player"] [data-testid="box"] span'
 		}
 
 		const socketEmit = (event, params) => {
