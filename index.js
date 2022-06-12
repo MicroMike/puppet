@@ -870,17 +870,19 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			]);
 
 			const fct = () => {
-				try {
-					console.log('CHROME OUT'.red)
-					kill = true;
-					catchFct('out')
-				} catch (error) {
-					console.log('catchOut 1')
+				if (!closed) {
+					try {
+						console.log('CHROME OUT'.red)
+						kill = true;
+						catchFct('out')
+					} catch (error) {
+						console.log('catchOut 1')
+					}
 				}
 			}
 
 			try {
-				!closed && chrome.process.on('close', fct)
+				chrome.process.on('close', fct)
 			} catch (error) {
 				console.log('catchOut 2')
 			}
