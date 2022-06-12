@@ -12,6 +12,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let closed = false
 		let kill = false
 		let C, N, P, R, D, B, I, T;
+		let proto
+		let chro
 		let targetId = false;
 		let timeout
 
@@ -142,8 +144,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		const catchFct = async (e) => {
 			try {
-				protocol.close();
-				!kill && chrome.kill();
+				proto.close();
+				!kill && chro.kill();
 				kill = true
 			} catch (error) {
 				if (e === 'out_log_error') {
@@ -825,6 +827,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const chrome = await launchChrome();
+			chro = chrome
 
 			const options = {
 				host: '127.0.0.1',
@@ -832,6 +835,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const protocol = await CDP(options);
+			proto = protocol
 
 			const { Network, Page, Runtime, DOM, Input, Browser, Target } = protocol;
 			// extract domains
