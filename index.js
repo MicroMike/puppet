@@ -95,9 +95,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			S.noNeedLog = '[data-testid="top-navigation-dropdown"]'
 			S.gotoLog = '#nav-login-btn'
 			S.loginError = '.login-error'
-			S.email = '#username'
-			S.pass = '#password'
-			S.connectBtn = '.signin'
+			S.email = '[data-testid="username"]'
+			S.pass = '[data-testid="password"]'
+			S.connectBtn = '[data-testid="login-button"]'
 			S.play = '.track-list-header .shuffle-button.icon-shuffle2'
 			S.timeLine = '.player-time'
 			S.callback = a => (a.split(' / ')[0].split(':').reduce((a, b) => a * 60 + Number(b)))
