@@ -145,7 +145,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				protocol.close();
 				!kill && chrome.kill();
 				kill = true
-			} catch (error) { }
+			} catch (error) {
+				if (e === 'out_log_error') {
+					console.log('error out_log_error', error)
+				}
+			}
 
 			if (closed) { return }
 
@@ -825,6 +829,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const fct = () => {
 				try {
+					console.log('CHROME OUT'.red)
 					kill = true;
 					catchFct('out')
 				} catch (error) {
