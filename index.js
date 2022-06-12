@@ -12,6 +12,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let closed = false
 		let kill = false
 		let C, N, P, R, D, B, I, T;
+		let protocol;
 		let targetId = false;
 		let timeout
 
@@ -831,7 +832,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				port: chrome.port
 			}
 
-			const protocol = await CDP(options);
+			protocol = await CDP(options);
 
 			const { Network, Page, Runtime, DOM, Input, Browser, Target } = protocol;
 			// extract domains
