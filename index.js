@@ -762,18 +762,19 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 					else if (!noNeedLog) {
 						console.log(login, 'log Success'.green)
-						const varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
+					}
 
-						try {
-							console.log('start save copy'.yellow, account.yellow)
-							if (player === 'tidal') {
-								shell.exec('node keepCookie ' + player + login, { silent: false })
-							}
-							const copy = shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
-							copy.then(() => console.log('end save copy'.yellow, account.yellow))
-						} catch (e) {
-							console.log(e)
+					const varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
+
+					try {
+						console.log('start save copy'.yellow, account.yellow)
+						if (player === 'tidal') {
+							shell.exec('node keepCookie ' + player + login, { silent: false })
 						}
+						const copy = shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
+						copy.then(() => console.log('end save copy'.yellow, account.yellow))
+					} catch (e) {
+						console.log(e)
 					}
 
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })
