@@ -752,7 +752,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await wait(rand(3000, 1000))
 
-					const logSuccess = await waitForSelector(S.noNeedLog, 30)
+					const logSuccess = await waitForSelector(S.noNeedLog, 120)
 					if (!logSuccess) {
 						await wait(rand(3000, 1000))
 						if (isTidal) {
