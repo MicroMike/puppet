@@ -34,7 +34,7 @@ const copyBack = () => {
 				shell.exec('node keepCookie ' + player + login, { silent: false })
 			}
 			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
-			// shell.exec('rm -rf ' + varPath + player + login, { silent: false })
+			shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 			console.log('end save copy'.yellow, account.yellow)
 			request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 		}
