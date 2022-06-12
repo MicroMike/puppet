@@ -1,10 +1,10 @@
 module.exports = {
 	napster: [
-		'https://app.napster.com/artist/prestync/album/marching-smile',
-		'https://app.napster.com/artist/john-millson/album/my-stash',
-		'https://app.napster.com/artist/erati/album/he-knows-she-knows',
-		'https://app.napster.com/artist/mior/album/good-memories',
-		'https://app.napster.com/artist/alvin-fay/album/lonely-melody-656819496',
+		'https://web.napster.com/album/alb.389842349',//marching-smile
+		'https://web.napster.com/album/alb.398248284',//my-stash
+		'https://web.napster.com/album/alb.390623666',//He Knows She Knows
+		'https://web.napster.com/album/alb.626894074',//mior good memories
+		'https://web.napster.com/album/alb.656819496',// alvin fay
 		// 'https://app.napster.com/artist/benriam/album/the-gift-give', // benriam
 		// 'https://app.napster.com/artist/lenitap/album/above-everybody-wind', //hanke
 		// 'https://app.napster.com/artist/xondes/album/the-last-heat', //honey
