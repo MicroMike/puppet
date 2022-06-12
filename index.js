@@ -764,19 +764,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log(login, 'log Success'.green)
 					}
 
-					const varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
-
-					try {
-						console.log('start save copy'.yellow, account.yellow)
-						if (player === 'tidal') {
-							shell.exec('node keepCookie ' + player + login, { silent: false })
-						}
-						const copy = shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
-						copy.then(() => console.log('end save copy'.yellow, account.yellow))
-					} catch (e) {
-						console.log(e)
-					}
-
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
 					isSpotify && await click('#onetrust-accept-btn-handler', 5)
@@ -803,6 +790,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						} */
 
 					socketEmit('playerInfos', { time: 'PLAY', ok: true })
+
+					await wait(rand(3000, 1000))
+
+					try {
+						console.log('start save copy'.yellow, account.yellow)
+						const varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
+
+						if (player === 'tidal') {
+							shell.exec('node keepCookie ' + player + login, { silent: false })
+						}
+
+						const copy = shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
+						copy.then(() => console.log('end save copy'.yellow, account.yellow))
+					} catch (e) {
+						console.log(e)
+					}
 
 					if (isTidal) {
 						const delTidal = await get('.ReactModal__Overlay', 'innerText')
