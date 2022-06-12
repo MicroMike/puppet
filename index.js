@@ -19,6 +19,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const isTidal = player === 'tidal'
 		const isSpotify = player === 'spotify'
 		const isAmazon = player === 'amazon'
+		const isNapster = player === 'napster'
 
 		let albums = al[player]
 		let currentAlbum
@@ -91,7 +92,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		if (player === 'napster') {
 			// url = 'https://app.napster.com/login/'
-			S.noNeedLog = '.icon-settings2'
+			S.noNeedLog = '[data-testid="top-navigation-dropdown"]'
 			S.gotoLog = '#nav-login-btn'
 			S.loginError = '.login-error'
 			S.email = '#username'
@@ -320,6 +321,26 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await wait(3000)
 					await R.evaluate({ expression: 'document.querySelectorAll(\'' + selector + '\')[0].click()' })
+
+					res(true)
+				} catch (error) {
+					if (!closed && exitOnError) {
+						catchFct(error)
+					}
+				}
+			})
+
+			const clickon = (selector, text, time, exitOnError = true) => new Promise(async (res, rej) => {
+				try {
+					const wfs = await waitForSelector(selector, time)
+
+					if (wfs !== true) {
+						res(false)
+						return
+					}
+
+					await wait(3000)
+					await R.evaluate({ expression: `document.querySelectorAll('${selector}').forEach(b=>{if(/${text}/i.test(b.textContent) && b.click()})` })
 
 					res(true)
 				} catch (error) {
@@ -680,6 +701,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// else {
 						if (isAmazon) {
 							await P.navigate({ url: 'https://music.amazon.fr/forceSignIn?useHorizonte=true' });
+							await P.loadEventFired();
+						} else if (isNapster) {
+							await P.navigate({ url: 'https://web.napster.com/auth/login' });
 							await P.loadEventFired();
 						} else {
 							await click(S.gotoLog)
