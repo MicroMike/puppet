@@ -769,9 +769,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							if (player === 'tidal') {
 								shell.exec('node keepCookie ' + player + login, { silent: false })
 							}
-							shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
-							shell.exec('rm -rf ' + varPath + player + login, { silent: false })
-							console.log('end save copy'.yellow, account.yellow)
+							const copy = shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
+							copy.then(() => console.log('end save copy'.yellow, account.yellow))
 						} catch (e) {
 							console.log(e)
 						}
