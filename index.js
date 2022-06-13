@@ -829,13 +829,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const launchChrome = async () => {
 				return await chromeLauncher.launch({
 					chromeFlags: [
-						'--chromePath="/bin/google-chrome-stable"',
+						'--chromePath=/bin/google-chrome-stable',
 						'--no-first-run',
 						'--disable-gpu',
 						'--disable-setuid-sandbox',
 						'--disable-features=Translate',
 						'--no-sandbox',
-						'--user-data-dir="/root/puppet/puppet/' + player + login + '"',
+						'--user-data-dir=/root/puppet/puppet/' + player + login,
 						// '--remote-debugging-port=' + port,
 					]
 				});
