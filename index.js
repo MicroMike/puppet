@@ -614,7 +614,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (pauseCount === 10) {
 						pauseCount = 0
-						console.log(login, 'freeze'.blue)
+						console.log(player, login, 'freeze'.blue)
 						return catchFct('freeze')
 						// await click(S.play)
 						// return
