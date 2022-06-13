@@ -767,7 +767,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
 					isSpotify && await click('#onetrust-accept-btn-handler', 5)
-						(isAmazon || isNapster) && await goToPage(currentAlbum)
+
+					if (isAmazon || isNapster) {
+						await goToPage(currentAlbum)
+					}
 
 					await wait(rand(3000, 1000))
 
