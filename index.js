@@ -797,11 +797,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('start save copy'.yellow, account.yellow)
 						const varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
 
-						if (player === 'tidal') {
-							shell.exec('node keepCookie ' + player + login, { silent: false })
-						}
+						// isTidal && shell.exec('node keepCookie ' + player + login, { silent: false })
 
-						shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
+						const copy = shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
+						copy.stdout.on('data', function (data) {
+							console.log('end save copy'.yellow, account.yellow)
+						});
 					} catch (e) {
 						console.log(e)
 					}
