@@ -836,7 +836,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						'--disable-setuid-sandbox',
 						'--disable-features=Translate',
 						'--no-sandbox',
-						'--user-data-dir="puppet/' + player + login + '"',
+						'--user-data-dir="/root/puppet/puppet/' + player + login + '"',
 						// '--remote-debugging-port=' + port,
 					]
 				});
