@@ -486,6 +486,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (corectLoad || check) {
 						// console.log('gotoPage', url);
+						if (isNapster) {
+							await wait(3000)
+							await click('.ant-modal-close', 1, false)
+						}
 						return true
 					}
 
