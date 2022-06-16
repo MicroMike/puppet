@@ -684,7 +684,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				await R.evaluate({ expression: `window.alert = () => { };` })
 			}
 
-			const loopConnect = async () => {
+			const loopConnect = async (first = false) => {
 				try {
 					album()
 					await goToPage(currentAlbum)
@@ -764,7 +764,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!noNeedLog) {
 						console.log(login, 'log Success'.green)
 					}
-					if (noNeedLog) {
+					if (first && noNeedLog) {
 						console.log(login, 'log Success'.green, 'noNeedLog'.yellow)
 					}
 
@@ -918,7 +918,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				const { targetInfos } = await Target.getTargets();
 				targetId = targetInfos.find(t => t.type === 'page').targetId
 
-				await loopConnect();
+				await loopConnect(true);
 
 				console.log('out'.green, account)
 
