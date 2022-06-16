@@ -16,6 +16,16 @@ const rand = (max, min) => {
 	return Math.floor(Math.random() * Math.floor(max) + (typeof min !== 'undefined' ? min : 0));
 }
 
+try {
+	const b = shell.exec('git fetch && git status', { silent: true })
+	if (!b.match(/up-to-date/g)) {
+		console.log('----- PULL ' + arg + ' -----')
+		shell.exec('npm run rm && npm run clear', { silent: true })
+		shell.exec('git pull', { silent: true })
+	}
+}
+catch (e) { }
+
 const clientSocket = require('socket.io-client')('http://216.158.239.199:3000', { transports: ['websocket'] });
 const streamId = rand(10000) + '-' + rand(10000) + '-' + rand(10000) + '-' + rand(10000)
 
