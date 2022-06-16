@@ -19,7 +19,7 @@ const rand = (max, min) => {
 try {
 	const b = shell.exec('git fetch && git status', { silent: true })
 	if (!b.match(/up-to-date/g)) {
-		console.log('----- PULL ' + arg + ' -----'.pink)
+		console.log('----- PULL -----'.blue)
 		shell.exec('npm run rm && npm run clear', { silent: true })
 		shell.exec('git pull', { silent: true })
 	}
