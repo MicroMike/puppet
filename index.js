@@ -663,7 +663,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						return
 					}
 
-					if (nextMusic && countPlaysLoop > 3) {
+					if (nextMusic && countPlaysLoop > 5) {
 						throw 'logout'
 						return
 					}
@@ -801,13 +801,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await wait(rand(3000, 1000))
 
 					try {
-						console.log('start save copy'.yellow, account)
+						first && console.log('start save copy'.yellow, account)
 
 						// isTidal && shell.exec('node keepCookie ' + player + login, { silent: false })
 
 						const copy = shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
 						copy.on('message', () => {
-							console.log('end save copy'.yellow, account)
+							first && console.log('end save copy'.yellow, account)
 						});
 					} catch (e) {
 						console.log(e)
@@ -877,19 +877,19 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			]);
 
 			const fct = () => {
-				if (!closed) {
-					try {
-						console.log('CHROME OUT'.red)
-						kill = true;
-						catchFct('out')
-					} catch (error) {
-						console.log('catchOut 1')
-					}
-				}
+				// if (!closed) {
+				// 	try {
+				console.log('CHROME OUT'.red)
+				// 		kill = true;
+				// 		catchFct('out')
+				// 	} catch (error) {
+				// 		console.log('catchOut 1')
+				// 	}
+				// }
 			}
 
 			try {
-				// chrome.process.on('close', fct)
+				chrome.process.on('close', fct)
 			} catch (error) {
 				console.log('catchOut 2')
 			}
