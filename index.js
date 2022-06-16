@@ -801,7 +801,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						// isTidal && shell.exec('node keepCookie ' + player + login, { silent: false })
 
-						const copy = shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: false })
+						const copy = shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
 						copy.stdout.on('data', function (data) {
 							console.log('end save copy'.yellow, account.yellow)
 						});

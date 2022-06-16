@@ -26,22 +26,22 @@ let login
 let player
 let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' : '/root/puppet/puppet/'
 
-const copyBack = () => {
-	try {
-		if (login) {
-			console.log('start save copy'.yellow, account.yellow)
-			if (player === 'tidal') {
-				shell.exec('node keepCookie ' + player + login, { silent: false })
-			}
-			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: false })
-			shell.exec('rm -rf ' + varPath + player + login, { silent: false })
-			console.log('end save copy'.yellow, account.yellow)
-			request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
-		}
-	} catch (e) {
-		console.log(e)
-	}
-}
+// const copyBack = () => {
+// 	try {
+// 		if (login) {
+// 			console.log('start save copy'.yellow, account.yellow)
+// 			if (player === 'tidal') {
+// 				shell.exec('node keepCookie ' + player + login, { silent: false })
+// 			}
+// 			shell.exec('scp -r ' + varPath + player + login + ' root@216.158.239.199:/root/puppet/', { silent: true })
+// 			shell.exec('rm -rf ' + varPath + player + login, { silent: true })
+// 			console.log('end save copy'.yellow, account.yellow)
+// 			request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
+// 		}
+// 	} catch (e) {
+// 		console.log(e)
+// 	}
+// }
 
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
@@ -149,7 +149,7 @@ clientSocket.on('mRun', async (props) => {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
 			console.log('start copy'.yellow, account.yellow)
-			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' ' + varPath, { silent: false })
+			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' ' + varPath, { silent: true })
 			console.log('end copy'.yellow, account.yellow)
 		}
 	} catch (e) {
