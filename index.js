@@ -760,8 +760,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 						throw 'out_log_error'
 					}
-					else if (!noNeedLog) {
+
+					if (!noNeedLog) {
 						console.log(login, 'log Success'.green)
+					}
+					if (noNeedLog) {
+						console.log(login, 'log Success'.green, 'noNeedLog'.yellow)
 					}
 
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })
@@ -797,13 +801,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await wait(rand(3000, 1000))
 
 					try {
-						console.log('start save copy'.yellow, account.yellow)
+						console.log('start save copy'.yellow, account)
 
 						// isTidal && shell.exec('node keepCookie ' + player + login, { silent: false })
 
 						const copy = shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
 						copy.stdout.on('data', function (data) {
-							console.log('end save copy'.yellow, account.yellow)
+							console.log('end save copy'.yellow, account)
 						});
 					} catch (e) {
 						console.log(e)
@@ -895,7 +899,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// await wait(3000)
 
 			// await CDP(options, async (client) => {
-			console.log('Connected!'.green);
+			console.log('Connected!'.green, login);
 
 			try {
 				// connect to endpoint
@@ -916,7 +920,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				await loopConnect();
 
-				console.log('out', account)
+				console.log('out'.green, account)
 
 				try {
 					catchFct('out')
