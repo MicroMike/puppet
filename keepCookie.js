@@ -31,7 +31,7 @@ ls.stdout.split('\n').forEach(login => {
 	// const [player, login, pass] = folder.split(':')
 	console.log(login)
 	const log = 'aaa' + login
-	if (!/@/.test(login)) return
+	if (!/@/.test(login) || !/tidal/i.test(login)) return
 	shell.exec(`mkdir -p "/root/puppet/puppet/${log}/Default"`)
 	shell.exec(`cp -R "/root/puppet/puppet/${login}/Default/Local Storage" "/root/puppet/puppet/${log}/Default"`)
 	shell.exec(`cp -R "/root/puppet/puppet/${login}/Default/Session Storage" "/root/puppet/puppet/${log}/Default"`)
