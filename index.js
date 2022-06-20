@@ -148,9 +148,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				!kill && chro.kill();
 				kill = true
 			} catch (error) {
-				if (e === 'out_log_error') {
-					console.log('error out_log_error', error)
-				}
+				console.log('error catchFct', error)
 			}
 
 			if (closed) { return }
