@@ -143,13 +143,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		}
 
 		const catchFct = async (e) => {
-			try {
-				!kill && chro.kill();
-				kill = true
-			} catch (error) {
-				console.log('error catchFct', error)
-			}
-
 			if (closed) { return }
 
 			isTidal && check && shell.exec('killall node & killall chrome', { silent: false })
@@ -895,6 +888,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		} finally {
 			if (proto) {
 				await proto.close();
+				chro.kill()
 			}
 		}
 	})
