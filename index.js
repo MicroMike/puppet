@@ -933,6 +933,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 
 			} catch (err) {
+				console.log('catchOut 2')
 				catchFct(err)
 			}
 		}
