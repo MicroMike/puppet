@@ -557,7 +557,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (usedCount >= 3) {
 							console.log('playStop 3 times'.red, account)
-							throw 'used'
+							return catchFct('used')
 						}
 
 						await loopConnect()
@@ -567,7 +567,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const result2 = await R.evaluate({ expression: '/Votre abonnement a expiré|Choisissez un abonnement/i.test(document.body.innerHTML)' })
 
 					if (isTidal && result2.result.value) {
-						throw 'del'
+						return catchFct('del')
 					}
 				} catch (error) {
 					if (!closed) {
@@ -668,7 +668,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					if (nextMusic && countPlaysLoop > 5) {
-						throw 'logout'
+						return catchFct('logout')
 						return
 					}
 
@@ -700,10 +700,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const noNeedLog = await waitForSelector(S.noNeedLog, check ? 1 : 10)
 
 					if (!noNeedLog) {
-						// if (!check) {
-						// 	throw 'tidalError';
-						// }
-						// else {
 						if (isAmazon) {
 							await P.navigate({ url: 'https://music.amazon.fr/forceSignIn?useHorizonte=true' });
 							await P.loadEventFired();
@@ -730,9 +726,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (error) {
 							if (isTidal) {
-								throw 'del'
+								return catchFct('del')
 							}
-							throw 'out_no_logging'
+							return catchFct('out_no_logging')
 						}
 
 						isTidal && await type(pass, S.pass)
@@ -745,9 +741,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (error) {
 							if (isTidal) {
-								throw 'del'
+								return catchFct('del')
 							}
-							throw 'out_error_connect'
+							return catchFct('out_error_connect')
 						}
 
 						await tidalSelect()
@@ -760,9 +756,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!logSuccess) {
 						await wait(rand(3000, 1000))
 						if (isTidal) {
-							throw 'tidalError'
+							return catchFct('tidalError')
 						}
-						throw 'out_log_error'
+						return catchFct('out_log_error')
 					}
 
 					if (!noNeedLog) {
@@ -820,7 +816,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (isTidal) {
 						const delTidal = await get('.ReactModal__Overlay', 'innerText')
 						if (/expired/.test(delTidal)) {
-							throw 'del'
+							return catchFct('del')
 							return
 						}
 					}
