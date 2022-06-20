@@ -144,7 +144,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		const catchFct = async (e) => {
 			try {
-				proto.close();
 				!kill && chro.kill();
 				kill = true
 			} catch (error) {
@@ -232,26 +231,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const port = rand(1000, 9000)
 			let countStream, streamOn;
 			const keyCaptchaHuman = '6LccSjEUAAAAANCPhaM2c-WiRxCZ5CzsjR_vd8uX'
-
-			// const connect = () => new Promise((resolve, reject) => {
-			// 	try {
-			// 		const loop = async () => {
-			// 			const ls = await shell.exec('chrome-remote-interface list --port=' + port, { silent: true })
-			// 			if (/Error/.test(ls.stderr)) {
-			// 				loop()
-			// 			} else {
-			// 				resolve(ls.stdout)
-			// 				return
-			// 			}
-			// 		}
-
-			// 		loop()
-			// 	} catch (error) {
-			// 		if (!closed) {
-			// 			catchFct(error)
-			// 		}
-			// 	}
-			// })
 
 			const loop = async (selector, res) => {
 				if (closed) { return }
@@ -892,48 +871,31 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				console.log('catchOut 2')
 			}
 
-			// await wait(3000)
-			// await connect()
-			// await wait(3000)
-
-			// await CDP(options, async (client) => {
 			console.log('Connected!'.green, login);
 
-			try {
-				// connect to endpoint
-				// console.log(client)
-				// client = await CDP(options);
-				// C = client
+			// setup handlers
+			Network.requestWillBeSent((params) => {
+				// console.log(params.request.url);
+			});
+			// enable events then start!
+			await Network.enable();
+			// await Page.enable();
 
-				// setup handlers
-				Network.requestWillBeSent((params) => {
-					// console.log(params.request.url);
-				});
-				// enable events then start!
-				await Network.enable();
-				// await Page.enable();
+			const { targetInfos } = await Target.getTargets();
+			targetId = targetInfos.find(t => t.type === 'page').targetId
 
-				const { targetInfos } = await Target.getTargets();
-				targetId = targetInfos.find(t => t.type === 'page').targetId
+			await loopConnect(true);
 
-				await loopConnect(true);
+			console.log('out'.green, account)
 
-				console.log('out'.green, account)
-
-				try {
-					catchFct('out')
-				} catch (error) {
-					console.log('catchOut')
-				}
-
-			} catch (err) {
-				console.log('catchOut 2')
-				catchFct(err)
-			}
+			catchFct('out')
 		}
 		catch (e) {
 			console.log('globalCatch', e)
-			catchFct(e)
+		} finally {
+			if (proto) {
+				await proto.close();
+			}
 		}
 	})
 }
