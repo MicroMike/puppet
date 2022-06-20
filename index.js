@@ -779,7 +779,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						const copy = shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
 						copy.on('message', () => {
 							first && console.log('end save copy'.yellow, account)
-						});
+						})
 					} catch (e) {
 						console.log(e)
 					}
@@ -871,9 +871,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			Network.requestWillBeSent((params) => {
 				// console.log(params.request.url);
 			});
-			// enable events then start!
-			await Network.enable();
-			// await Page.enable();
 
 			const { targetInfos } = await Target.getTargets();
 			targetId = targetInfos.find(t => t.type === 'page').targetId
@@ -888,8 +885,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			console.log('globalCatch', e)
 		} finally {
 			if (proto) {
-				await proto.close();
 				chro.kill()
+				await proto.close();
 			}
 		}
 	})

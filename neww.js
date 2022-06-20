@@ -160,7 +160,7 @@ clientSocket.on('mRun', async (props) => {
 		if (!check) {
 			console.log('start copy'.yellow, account.yellow)
 			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' ' + varPath, { silent: true })
-			console.log('end copy'.yellow, account.yellow)
+			// console.log('end copy'.yellow, account.yellow)
 		}
 	} catch (e) {
 		console.log(e)
