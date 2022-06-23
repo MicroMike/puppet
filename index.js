@@ -635,7 +635,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (nextMusic && countPlays > 10) {
 						countPlays = 0
 						countPlaysLoop++
-						loopConnect()
+						await loopConnect()
 						return
 					}
 
@@ -648,7 +648,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await wait(3000)
 					await click('[data-test="notification-close"]', 1)
-					playCheck()
+					await playCheck()
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
