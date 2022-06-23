@@ -241,6 +241,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			}
@@ -299,6 +301,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed && exitOnError) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			})
@@ -319,6 +323,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed && exitOnError) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			})
@@ -349,6 +355,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			})
@@ -368,6 +376,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			})
@@ -383,6 +393,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			}
@@ -410,6 +422,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			}
@@ -436,6 +450,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			}
@@ -473,6 +489,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					} else if (!closed) {
 						// console.log('navigate', url)
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			}
@@ -544,6 +562,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			}
@@ -652,6 +672,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			}
@@ -798,6 +820,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
+					} else {
+						console.log('closed')
 					}
 				}
 			}
