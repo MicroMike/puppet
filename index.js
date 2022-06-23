@@ -132,14 +132,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		const takeScreenshot = async (e) => {
 			try {
-				const filename = 'screenshot/' + (e || '') + '-' + login + '.png'
+				const filename = 'screenshot/' + (e || '') + '-' + player + login + '.png'
 				const { data } = await P.captureScreenshot();
 				fs.writeFileSync(filename, Buffer.from(data, 'base64'));
 
 				img = await image2base64(filename)
 				socketEmit('screen', { img, log: login + ' => ' + e })
 			}
-			catch (e) { }
+			catch (e) {
+				console.log('screenshot error')
+			}
 		}
 
 		const catchFct = async (e) => {
@@ -633,7 +635,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (nextMusic && countPlays > 10) {
 						countPlays = 0
 						countPlaysLoop++
-						await loopConnect()
+						loopConnect()
 						return
 					}
 
@@ -646,7 +648,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await wait(3000)
 					await click('[data-test="notification-close"]', 1)
-					await playCheck()
+					playCheck()
 				} catch (error) {
 					if (!closed) {
 						catchFct(error)
@@ -831,6 +833,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			proto = protocol
 
 			const { Network, Page, Runtime, DOM, Input, Browser, Target } = protocol;
+
 			// extract domains
 			N = Network;
 			P = Page;
