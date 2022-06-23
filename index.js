@@ -913,8 +913,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		catch (e) {
 			console.log('globalCatch', e)
 		} finally {
-			chro.kill()
-			proto.close();
+			try {
+				chro.kill()
+				proto.close();
+			} catch (e) {
+				console.log('finally', e)
+			}
 		}
 	})
 }
