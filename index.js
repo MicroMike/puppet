@@ -802,10 +802,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// isTidal && shell.exec('node keepCookie ' + player + login, { silent: false })
 
 						isTidal && shell.exec('rm -rf /root/puppet/puppet/' + player + login + '/Default/Cache', { silent: true })
-						const copy = shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
-						copy.on('message', () => {
-							first && console.log('end save copy'.yellow, account)
-						})
+
+						if (check) {
+							await shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
+						}
+						else {
+							const copy = shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
+							copy.on('message', () => {
+								first && console.log('end save copy'.yellow, account)
+							})
+						}
 					} catch (e) {
 						console.log(e)
 					}
