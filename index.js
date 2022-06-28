@@ -714,6 +714,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						clearTimeout(timeout)
 
+						I.dispatchMouseEvent({
+							type: 'mousePressed',
+							button: 'left',
+							x: 315,
+							y: 390
+						})
+
 						await type(login, S.email)
 
 						isTidal && await click(S.next)
