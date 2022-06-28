@@ -183,7 +183,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			if (code === 6 && e !== 'spotifyError') {
 				request('http://216.158.239.199:3000' + '/error?check/' + account, function (error, response, body) { })
-				check && shell.exec('killall node', { silent: false })
+				// check && shell.exec('killall node', { silent: false })
 			}
 
 			if (e === 'tidalError') {
