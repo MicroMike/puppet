@@ -147,7 +147,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const catchFct = async (e) => {
 			if (closed) { return }
 
-			isTidal && check && shell.exec('killall node & killall chrome', { silent: false })
+			// isTidal && check && shell.exec('killall node & killall chrome', { silent: false })
 
 			closed = true
 			clearTimeout(timeout)
