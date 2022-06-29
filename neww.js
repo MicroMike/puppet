@@ -55,14 +55,18 @@ let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' :
 
 const exit = (code = '0') => {
 	clientSocket && clientSocket.disconnect()
+
 	if (code !== 6 && (code !== 8 || player !== 'tidal')) {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
-		request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
+		account && request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 		// copyBack()
 	}
-	request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
+
+	account && request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
 		process.exit(code)
 	})
+
+	!account && process.exit(code)
 }
 
 process.on('SIGINT', () => {
