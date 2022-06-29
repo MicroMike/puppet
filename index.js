@@ -16,6 +16,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let chro
 		let targetId = false;
 		let timeout
+		let code
 
 		const [player, login, pass] = account.split(':')
 		const isTidal = player === 'tidal'
@@ -122,12 +123,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			return date.getUTCHours() + 1 + 'H' + date.getUTCMinutes()
 		}
 
-		const exit = async (e, code) => {
+		const exit = async (e) => {
 			if (e !== 'loop') {
 				socket.emit('log', parentId + ' - out: ' + account + ' => ' + e)
 			}
-
-			r(code)
 		}
 
 		const takeScreenshot = async (e) => {
@@ -154,7 +153,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			closed = true
 			clearTimeout(timeout)
 
-			let code = 5
+			code = 5
 
 			code = e === 'loop' ? 1 : code
 			code = e === 'freeze' ? 2 : code
@@ -934,6 +933,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			} catch (e) {
 				console.log('finally', e)
 			}
+			r(code)
 		}
 	})
 }
