@@ -813,6 +813,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { silent: true })
 
+						clearTimeout(timeout)
+
 						first && console.log('end save copy'.yellow, account)
 					} catch (e) {
 						console.log(e)
