@@ -251,6 +251,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const waitForSelector = (selector, time = 60) => new Promise((res, rej) => {
+				if (closed) { return }
+
 				setTimeout(() => {
 					res(false)
 				}, time * 1000);
@@ -921,10 +923,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			// setup handlers
 			// Network.requestWillBeSent((params) => {
-				// console.log(params.request.url);
+			// console.log(params.request.url);
 			// });
 
-			await loopConnect(true);
+			// await loopConnect(true);
 
 			console.log('out'.green, account)
 
