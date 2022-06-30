@@ -946,7 +946,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			} catch (e) {
 				console.log('finally', e)
 			}
-			r(code)
+
+			setTimeout(() => {
+				r(code)
+			}, 1000 * 5);
 		}
 	})
 }

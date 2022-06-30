@@ -181,7 +181,5 @@ clientSocket.on('mRun', async (props) => {
 	page = !newScript && await puppet(varPath + player + login)
 	const returnCode = await runAccount(clientSocket, page, parentId, streamId, check, account)
 	console.log('returnCode', returnCode)
-	setTimeout(() => {
-		exit(returnCode)
-	}, 1000 * 5);
+	exit(returnCode)
 })
