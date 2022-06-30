@@ -833,8 +833,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						isTidal && shell.exec('rm -rf /root/puppet/puppet/' + player + login + '/Default/Cache', { silent: true })
 
 						clearTimeout(timeout)
-						shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
-						// first && console.log('end save copy'.yellow, account)
+						shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: !check, silent: true })
+						check && console.log('end save copy'.yellow, account)
 					} catch (e) {
 						console.log(e)
 					}
