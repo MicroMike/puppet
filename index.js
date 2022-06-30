@@ -238,7 +238,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (!el.result.objectId) {
 						await wait(1000)
-						loop(selector, res)
+						await loop(selector, res)
 					} else {
 						res(true)
 					}
