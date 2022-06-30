@@ -171,7 +171,7 @@ clientSocket.on('mRun', async (props) => {
 	}
 
 	let page
-	
+
 	const newScript = check || checkAccount || /^X/.test(arg)
 	const runAccount = newScript ? require('./index') : require('./runAccount');
 	// const runTidal = require('./index');
@@ -181,5 +181,7 @@ clientSocket.on('mRun', async (props) => {
 	page = !newScript && await puppet(varPath + player + login)
 	const returnCode = await runAccount(clientSocket, page, parentId, streamId, check, account)
 	console.log('returnCode', returnCode)
-	exit(returnCode)
+	setTimeout(() => {
+		exit(returnCode)
+	}, 1000 * 5);
 })
