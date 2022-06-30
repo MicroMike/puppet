@@ -795,13 +795,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await click(S.play)
 					await wait(rand(3000, 1000))
 
-					/* 	if (firstPlay) {
-							firstPlay = false
-							setTimeout(() => {
-								catchFct('out')
-							}, 1000 * 60 * 15);
-						} */
-
 					socketEmit('playerInfos', { time: 'PLAY', ok: true })
 
 					await wait(rand(3000, 1000))
