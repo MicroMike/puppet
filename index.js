@@ -880,15 +880,13 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			]);
 
 			const fct = () => {
-				// if (!closed) {
-				// 	try {
+				closed = true
 				console.log('CHROME OUT'.red)
-				// 		kill = true;
-				// 		catchFct('out')
-				// 	} catch (error) {
-				// 		console.log('catchOut 1')
-				// 	}
-				// }
+				try {
+					proto.close();
+				} catch (e) {
+					console.log('proto error', e)
+				}
 			}
 
 			try {
