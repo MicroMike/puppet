@@ -14,7 +14,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let C, N, P, R, D, B, I, T;
 		let proto
 		let chro
-		let targetId = false;
 		let timeout
 		let code
 
@@ -446,7 +445,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (closed) { return }
 
 				try {
-					// await T.activateTarget(targetId)
 					const hasEmailInput = await waitForSelector(S.email)
 
 					if (hasEmailInput) {
@@ -646,8 +644,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							nextMusic = true
 							let nextOk = false
 							countPlays++
-
-							// await T.activateTarget(targetId)
 
 							const clickNext = rand(2)
 								&&
@@ -916,7 +912,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			try {
-				chrome.process.on('close', fct)
+				// chrome.process.on('close', fct)
 			} catch (error) {
 				console.log('catchOut 2')
 			}
@@ -924,12 +920,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			console.log('Connected!'.green, login);
 
 			// setup handlers
-			Network.requestWillBeSent((params) => {
+			// Network.requestWillBeSent((params) => {
 				// console.log(params.request.url);
-			});
-
-			const { targetInfos } = await Target.getTargets();
-			targetId = targetInfos.find(t => t.type === 'page').targetId
+			// });
 
 			await loopConnect(true);
 
@@ -947,9 +940,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				console.log('finally', e)
 			}
 
-			setTimeout(() => {
-				r(code)
-			}, 1000 * 5);
+			r(code)
 		}
 	})
 }
