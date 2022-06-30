@@ -775,8 +775,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							return
 						}
 
-						await tidalSelect()
-						// }
+						first && await tidalSelect()
 					}
 
 					await wait(rand(3000, 1000))
