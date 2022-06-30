@@ -145,7 +145,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const catchFct = async (e) => {
 			if (closed) { return }
 
-			chro.kill()
+			shell.exec('rm -rf /tmp/lighthouse*', { silent: false })
 
 			// isTidal && check && shell.exec('killall node & killall chrome', { silent: false })
 
