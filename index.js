@@ -209,7 +209,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		}
 
 		try {
-			timeout = setTimeout(() => {
+			timeout = setTimeout(async () => {
 				await catchFct('tooLong')
 			}, 2 * 60 * 1000);
 
