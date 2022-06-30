@@ -237,6 +237,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const el = R && await R.evaluate({ expression: 'document.querySelector(\'' + selector + '\')' })
 
 					if (!el.result.objectId) {
+						await wait(1000)
 						loop(selector, res)
 					} else {
 						res(true)
@@ -708,12 +709,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 
 						const hasEmailInput = await waitForSelector(S.email)
+						const amazonReLog = await waitForSelector('#ap-credential-autofill-hint', 5)
 
-						if (!hasEmailInput) {
+						if (!hasEmailInput && !amazonReLog) {
 							await emailCheck()
 						}
-
-						clearTimeout(timeout)
 
 						I.dispatchMouseEvent({
 							type: 'mousePressed',
@@ -722,7 +722,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							y: 390
 						})
 
-						await type(login, S.email)
+						!amazonReLog && await type(login, S.email)
 
 						isTidal && await click(S.next)
 
@@ -771,6 +771,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (first && noNeedLog) {
 						console.log(login, 'log Success'.green, 'noNeedLog'.yellow)
 					}
+
+					clearTimeout(timeout)
 
 					socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
