@@ -262,6 +262,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			})
 
 			const tidalSelect = () => new Promise(async (res, rej) => {
+				if (closed) { return }
+
 				const expression = `
 					const rand = (max, min = 0) => {
 						return Math.floor(Math.random() * Math.floor(max) + min);
@@ -290,6 +292,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			})
 
 			const click = (selector, time, exitOnError = true) => new Promise(async (res, rej) => {
+				if (closed) { return }
+
 				try {
 					const wfs = await waitForSelector(selector, time)
 
@@ -340,6 +344,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			})
 
 			const type = (value, selector) => new Promise(async (res, rej) => {
+				if (closed) { return }
+
 				try {
 					await waitForSelector(selector)
 					await wait(5000)
@@ -387,6 +393,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			})
 
 			const get = async (selector, getter = 'innerHTML') => {
+				if (closed) { return }
+
 				try {
 					await wait(1000)
 
@@ -404,6 +412,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const getTimePlayer = async () => {
+				if (closed) { return }
+
 				try {
 					if (player === 'apple') {
 						const getTimeExpression =
@@ -433,6 +443,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const emailCheck = async () => {
+				if (closed) { return }
+
 				try {
 					// await T.activateTarget(targetId)
 					const hasEmailInput = await waitForSelector(S.email)
@@ -461,6 +473,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const goToPage = async (url) => {
+				if (closed) { return }
+
 				try {
 					if (player === 'apple') {
 						await click(S.pauseBtn, 1, false)
@@ -541,6 +555,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			socketEmit('playerInfos', { time: 'RUN', other: true })
 
 			const connectedCheck = async () => {
+				if (closed) { return }
+
 				try {
 					const { result } = await R.evaluate({ expression: '/interrompue|paused because/i.test(document.body.innerHTML)' })
 
@@ -690,6 +706,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const loopConnect = async (first = false) => {
+				if (closed) { return }
+
 				try {
 					album()
 					await goToPage(currentAlbum)
@@ -740,8 +758,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							return
 						}
 
-						isTidal && await type(pass, S.pass)
-						!isTidal && await paste(pass, S.pass)
+						await type(pass, S.pass)
+						// !isTidal && await paste(pass, S.pass)
 
 						await click(S.connectBtn)
 
