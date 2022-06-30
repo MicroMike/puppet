@@ -210,7 +210,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		try {
 			timeout = setTimeout(() => {
-				catchFct('tooLong')
+				await catchFct('tooLong')
 			}, 2 * 60 * 1000);
 
 			const album = () => {
@@ -244,7 +244,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -308,7 +308,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					res(true)
 				} catch (error) {
 					if (!closed && exitOnError) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -330,7 +330,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					res(true)
 				} catch (error) {
 					if (!closed && exitOnError) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -364,7 +364,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					res(true)
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -385,7 +385,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					res(true)
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -404,7 +404,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					return result.value
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -435,7 +435,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					time = result.value && S.callback(result.value)
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -465,7 +465,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await emailCheck()
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -506,7 +506,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						goToPage()
 					} else if (!closed) {
 						// console.log('navigate', url)
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -567,7 +567,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (usedCount >= 3) {
 							console.log('playStop 3 times'.red, account)
-							catchFct('used')
+							await catchFct('used')
 							return
 						}
 
@@ -578,12 +578,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const result2 = await R.evaluate({ expression: '/Votre abonnement a expiré|Choisissez un abonnement/i.test(document.body.innerHTML)' })
 
 					if (isTidal && result2.result.value) {
-						catchFct('del')
+						await catchFct('del')
 						return
 					}
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -591,7 +591,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const playCheck = async () => {
-				if (closed) { catchFct('out') }
+				if (closed) { return }
 
 				try {
 					await connectedCheck();
@@ -633,7 +633,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (pauseCount === 10) {
 						pauseCount = 0
 						console.log(player, login, 'freeze'.blue)
-						catchFct('freeze')
+						await catchFct('freeze')
 						return
 						// await click(S.play)
 						// return
@@ -671,7 +671,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					// request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 
 					if (check) {
-						catchFct('check')
+						await catchFct('check')
 						return
 					}
 
@@ -683,7 +683,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					if (nextMusic && countPlaysLoop > 5) {
-						catchFct('logout')
+						await catchFct('logout')
 						return
 					}
 
@@ -694,7 +694,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await playCheck()
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -751,10 +751,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (error) {
 							if (isTidal) {
-								catchFct('del')
+								await catchFct('del')
 								return
 							}
-							catchFct('out_no_logging')
+							await catchFct('out_no_logging')
 							return
 						}
 
@@ -768,10 +768,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						if (error) {
 							if (isTidal) {
-								catchFct('del')
+								await catchFct('del')
 								return
 							}
-							catchFct('out_error_connect')
+							await catchFct('out_error_connect')
 							return
 						}
 
@@ -784,10 +784,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!logSuccess) {
 						await wait(rand(3000, 1000))
 						if (isTidal) {
-							catchFct('tidalError')
+							await catchFct('tidalError')
 							return
 						}
-						catchFct('out_log_error')
+						await catchFct('out_log_error')
 						return
 					}
 
@@ -842,7 +842,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (isTidal) {
 						const delTidal = await get('.ReactModal__Overlay', 'innerText')
 						if (/expired/.test(delTidal)) {
-							catchFct('del')
+							await catchFct('del')
 							return
 						}
 					}
@@ -850,7 +850,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await playCheck()
 				} catch (error) {
 					if (!closed) {
-						catchFct(error)
+						await catchFct(error)
 					} else {
 						console.log('closed')
 					}
@@ -935,7 +935,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			console.log('out'.green, account)
 
-			catchFct('out')
+			await catchFct('out')
 		}
 		catch (e) {
 			console.log('globalCatch', e)
