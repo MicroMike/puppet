@@ -926,7 +926,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// console.log(params.request.url);
 			// });
 
-			// await loopConnect(true);
+			await loopConnect(true);
 
 			console.log('out'.green, account)
 
