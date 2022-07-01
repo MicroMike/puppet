@@ -16,6 +16,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let chro
 		let timeout
 		let code
+		let pid
 
 		const [player, login, pass] = account.split(':')
 		const isTidal = player === 'tidal'
@@ -209,7 +210,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		try {
 			timeout = setTimeout(async () => {
 				await catchFct('tooLong')
-			}, 2 * 60 * 1000);
+			}, 3 * 60 * 1000);
 
 			const album = () => {
 				let albumUrl = albums[rand(albums.length)]
@@ -875,6 +876,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			const chrome = await launchChrome();
 			chro = chrome
+			pid = chrome.pid
 
 			const options = {
 				host: '127.0.0.1',
@@ -937,6 +939,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			try {
 				chro.kill()
 				proto.close();
+				shell.exec('kill -9 ' + pid)
 			} catch (e) {
 				console.log('finally', e)
 			}
