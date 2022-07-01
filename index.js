@@ -937,7 +937,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			console.log('globalCatch', e)
 		} finally {
 			try {
-				chro.kill()
+				// chro.kill()
 				proto.close();
 				shell.exec('kill -9 ' + pid)
 			} catch (e) {
