@@ -192,7 +192,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socket.emit('outLog', e)
 				logError(e)
 				console.log(getTime() + " ERR ".red, account, e)
-				await takeScreenshot(e)
+				// await takeScreenshot(e)
 			}
 
 			if (code === 4) {
