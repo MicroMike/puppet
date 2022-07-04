@@ -148,8 +148,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			clearTimeout(timeout)
 
-			// isTidal && check && shell.exec('killall node & killall chrome', { silent: false })
-
 			closed = true
 
 			code = 5
@@ -937,9 +935,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			console.log('globalCatch', e)
 		} finally {
 			try {
-				// chro.kill()
+				chro.kill()
 				proto.close();
-				shell.exec('kill -9 ' + pid)
+				// shell.exec('kill -9 ' + pid)
 			} catch (e) {
 				console.log('finally', e)
 			}
