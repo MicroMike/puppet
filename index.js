@@ -243,7 +243,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed loop')
 					}
 				}
 			}
@@ -309,7 +309,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed && exitOnError) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed click')
 					}
 				}
 			})
@@ -331,7 +331,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed && exitOnError) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed clickon')
 					}
 				}
 			})
@@ -365,7 +365,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+					 	console.log('closed type')
 					}
 				}
 			})
@@ -386,7 +386,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed paste')
 					}
 				}
 			})
@@ -405,7 +405,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed get')
 					}
 				}
 			}
@@ -436,7 +436,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed getTimePlayer')
 					}
 				}
 			}
@@ -465,7 +465,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed emailCheck')
 					}
 				}
 			}
@@ -506,7 +506,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// console.log('navigate', url)
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed goToPage')
 					}
 				}
 			}
@@ -583,7 +583,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed connectedCheck')
 					}
 				}
 			}
@@ -692,7 +692,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed playCheck')
 					}
 				}
 			}
@@ -848,7 +848,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed')
+						console.log('closed loopConnect')
 					}
 				}
 			}
