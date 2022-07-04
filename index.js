@@ -365,7 +365,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-					 	console.log('closed type')
+						console.log('closed type')
 					}
 				}
 			})
@@ -832,7 +832,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: !check, silent: true })
 						check && console.log('end save copy'.yellow, account)
 					} catch (e) {
-						console.log(e)
+						console.log('copy error'.red, e)
 					}
 
 					if (isTidal) {
