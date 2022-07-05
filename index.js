@@ -730,7 +730,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						const hasEmailInput = await waitForSelector(S.email)
 						const amazonReLog = await waitForSelector('#ap-credential-autofill-hint', 5)
 
-						if (!hasEmailInput && !amazonReLog) {
+						if (!isApple && !hasEmailInput && !amazonReLog) {
 							await emailCheck()
 						}
 
@@ -739,6 +739,19 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							button: 'left',
 							x: 315,
 							y: 390
+						})
+
+						I.dispatchKeyEvent({
+							type: 'keyDown',
+							code: 'Tab',
+						})
+						I.dispatchKeyEvent({
+							type: 'keyDown',
+							code: 'Tab',
+						})
+						I.dispatchKeyEvent({
+							type: 'keyDown',
+							code: 'Tab',
 						})
 
 						check && isApple && console.log('emailCheck OK')
