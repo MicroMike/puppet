@@ -734,12 +734,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							await emailCheck()
 						}
 
-						I.dispatchMouseEvent({
+						!isApple && I.dispatchMouseEvent({
 							type: 'mousePressed',
 							button: 'left',
 							x: 315,
 							y: 390
 						})
+
+						await wait(1000)
 
 						I.dispatchKeyEvent({
 							type: 'keyDown',
@@ -748,13 +750,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							nativeVirtualKeyCode: 9,
 							windowsVirtualKeyCode: 9
 						})
-						I.dispatchKeyEvent({
-							type: 'keyDown',
-							key: 'Tab',
-							code: 'Tab',
-							nativeVirtualKeyCode: 9,
-							windowsVirtualKeyCode: 9
-						})
+
+						await wait(1000)
+
 						I.dispatchKeyEvent({
 							type: 'keyDown',
 							key: 'Tab',
