@@ -741,8 +741,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							y: 390
 						})
 
+						check && isApple && console.log('emailCheck OK')
+
 						!isApple && !amazonReLog && await type(login, S.email)
-						isApple && await type(login, S.email)
+						isApple && await paste(login, S.email)
+
+						check && isApple && console.log('paste email OK')
 
 						isTidal && await click(S.next)
 
