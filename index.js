@@ -703,6 +703,28 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				await R.evaluate({ expression: `window.alert = () => { };` })
 			}
 
+			const press = (key) => new Promise((res, rej) => {
+				if (closed) { return }
+
+				await wait(1000)
+
+				I.dispatchKeyEvent({
+					type: 'keyDown',
+					key: key,
+					code: key,
+				})
+
+				await wait(500)
+
+				I.dispatchKeyEvent({
+					type: 'keyUp',
+					key: key,
+					code: key,
+				})
+
+				res(true)
+			})
+
 			const loopConnect = async (first = false) => {
 				if (closed) { return }
 
@@ -741,25 +763,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							y: 390
 						})
 
-						await wait(5000)
-
-						I.dispatchKeyEvent({
-							type: 'keyDown',
-							key: 'Tab',
-							code: 'Tab',
-							nativeVirtualKeyCode: 9,
-							windowsVirtualKeyCode: 9
-						})
-
-						await wait(1000)
-
-						I.dispatchKeyEvent({
-							type: 'keyUp',
-							key: 'Tab',
-							code: 'Tab',
-							nativeVirtualKeyCode: 9,
-							windowsVirtualKeyCode: 9
-						})
+						if (isApple) {
+							await wait(5000)
+							await press('Tab')
+							await press('Tab')
+							await press('Enter')
+						}
 
 						check && isApple && console.log('emailCheck OK')
 
