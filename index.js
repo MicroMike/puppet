@@ -757,21 +757,23 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							await press('Tab')
 							await press('Tab')
 
+							await wait(3000)
 							await I.insertText({
 								text: login,
 							})
 
 							await wait(3000)
-							await I.dispatchKeyEvent({ type: 'char', text: "\r" })
+							await press(13)
 
 							await press('Tab')
 
+							await wait(3000)
 							await I.insertText({
 								text: pass,
 							})
 
 							await wait(3000)
-							await I.dispatchKeyEvent({ type: 'char', text: "\r" })
+							await press(13)
 						} else {
 							if (!hasEmailInput && !amazonReLog) {
 								await emailCheck()
