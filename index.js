@@ -941,12 +941,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		catch (e) {
 			console.log('globalCatch', e)
 			console.log('pid', pid)
+			pid && shell.exec('kill -9 ' + pid)
 			await catchFct('ERROR')
 		} finally {
 			try {
 				chro.kill()
 				proto.close();
-				// shell.exec('kill -9 ' + pid)
 			} catch (e) {
 				console.log('finally', e)
 			}
