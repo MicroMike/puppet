@@ -708,7 +708,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				await wait(1000)
 
-				I.dispatchKeyEvent({
+				await I.dispatchKeyEvent({
 					type: 'keyDown',
 					key: key,
 					code: key,
@@ -716,7 +716,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				await wait(500)
 
-				I.dispatchKeyEvent({
+				await I.dispatchKeyEvent({
 					type: 'keyUp',
 					key: key,
 					code: key,
@@ -757,25 +757,25 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							await press('Tab')
 							await press('Tab')
 
-							I.insertText({
+							await I.insertText({
 								text: login,
 							})
 
-							await press('Enter')
+							await I.dispatchKeyEvent({ type: 'char', text: "\r" })
 
 							await press('Tab')
 
-							I.insertText({
+							await I.insertText({
 								text: pass,
 							})
 
-							await press('Enter')
+							await I.dispatchKeyEvent({ type: 'char', text: "\r" })
 						} else {
 							if (!hasEmailInput && !amazonReLog) {
 								await emailCheck()
 							}
 
-							I.dispatchMouseEvent({
+							await I.dispatchMouseEvent({
 								type: 'mousePressed',
 								button: 'left',
 								x: 315,
@@ -850,7 +850,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await wait(rand(3000, 1000))
 
-					I.dispatchMouseEvent({
+					await I.dispatchMouseEvent({
 						type: 'mousePressed',
 						button: 'left',
 						x: 315,
