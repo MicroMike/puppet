@@ -761,6 +761,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 								text: login,
 							})
 
+							await wait(3000)
 							await I.dispatchKeyEvent({ type: 'char', text: "\r" })
 
 							await press('Tab')
@@ -769,6 +770,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 								text: pass,
 							})
 
+							await wait(3000)
 							await I.dispatchKeyEvent({ type: 'char', text: "\r" })
 						} else {
 							if (!hasEmailInput && !amazonReLog) {
