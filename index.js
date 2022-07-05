@@ -710,7 +710,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				await I.dispatchKeyEvent({
 					type: 'keyDown',
-					key: key,
+					key: key.toString(),
 					code: key,
 				})
 
@@ -718,7 +718,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				await I.dispatchKeyEvent({
 					type: 'keyUp',
-					key: key,
+					key: key.toString(),
 					code: key,
 				})
 
