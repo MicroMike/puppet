@@ -879,6 +879,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			console.log('pid', pid)
 
 			if (!pid) {
+				console.log('chrome error', chrome)
 				chrome.process.kill()
 				throw 'error pid'
 			}
