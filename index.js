@@ -703,14 +703,14 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				await R.evaluate({ expression: `window.alert = () => { };` })
 			}
 
-			const press = (key) => new Promise(async (res, rej) => {
+			const press = async (key) => {
 				if (closed) { return }
 
 				await wait(3000)
 
 				await I.dispatchKeyEvent({
 					type: 'keyDown',
-					key: key.toString(),
+					key: key,
 					code: key,
 				})
 
@@ -718,12 +718,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				await I.dispatchKeyEvent({
 					type: 'keyUp',
-					key: key.toString(),
+					key: key,
 					code: key,
 				})
+			}
 
-				res(true)
-			})
+			const pressedEnter = async () => {
+				await Input.dispatchKeyEvent({ "type": "rawKeyDown", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
+				await Input.dispatchKeyEvent({ "type": "char", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
+				await Input.dispatchKeyEvent({ "type": "keyUp", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
+			}
 
 			const loopConnect = async (first = false) => {
 				if (closed) { return }
@@ -763,7 +767,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							})
 
 							await wait(3000)
-							await press(13)
+							await pressedEnter()
 
 							await press('Tab')
 
@@ -773,7 +777,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							})
 
 							await wait(3000)
-							await press(13)
+							await pressedEnter()
 						} else {
 							if (!hasEmailInput && !amazonReLog) {
 								await emailCheck()
