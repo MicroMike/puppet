@@ -876,6 +876,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const chrome = await launchChrome();
 			chro = chrome
 			pid = chrome.pid
+			console.log('pid', pid)
 
 			const options = {
 				host: '127.0.0.1',
