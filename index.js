@@ -752,66 +752,70 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						const hasEmailInput = !isApple && await waitForSelector(S.email)
 						const amazonReLog = isAmazon && await waitForSelector('#ap-credential-autofill-hint', 5)
 
-						if (!isApple && !hasEmailInput && !amazonReLog) {
-							await emailCheck()
-						}
-
-						!isApple && I.dispatchMouseEvent({
-							type: 'mousePressed',
-							button: 'left',
-							x: 315,
-							y: 390
-						})
-
 						if (isApple) {
 							await wait(5000)
 							await press('Tab')
 							await press('Tab')
-							await press('Enter')
 
 							I.insertText({
-								text: 'mousePressed',
+								text: login,
 							})
-						}
 
-						check && isApple && console.log('emailCheck OK')
+							await press('Enter')
 
-						!isApple && !amazonReLog && await type(login, S.email)
-						isApple && await paste(login, S.email)
+							await press('Tab')
 
-						check && isApple && console.log('paste email OK')
+							I.insertText({
+								text: pass,
+							})
 
-						isTidal && await click(S.next)
+							await press('Enter')
+						} else {
+							if (!hasEmailInput && !amazonReLog) {
+								await emailCheck()
+							}
 
-						let error = await waitForSelector(S.loginError, 10)
+							I.dispatchMouseEvent({
+								type: 'mousePressed',
+								button: 'left',
+								x: 315,
+								y: 390
+							})
 
-						if (error) {
-							if (isTidal) {
-								await catchFct('del')
+							!amazonReLog && await type(login, S.email)
+
+							isTidal && await click(S.next)
+
+							let error = await waitForSelector(S.loginError, 10)
+
+							if (error) {
+								if (isTidal) {
+									await catchFct('del')
+									return
+								}
+								await catchFct('out_no_logging')
 								return
 							}
-							await catchFct('out_no_logging')
-							return
-						}
 
-						await type(pass, S.pass)
-						// !isTidal && await paste(pass, S.pass)
+							await type(pass, S.pass)
+							// !isTidal && await paste(pass, S.pass)
 
-						await click(S.connectBtn)
+							await click(S.connectBtn)
 
-						error = await waitForSelector(S.loginError, 10)
-						// const { result } = await R.evaluate({ expression: '/essayer gratuitement/i.test(document.body.innerHTML)' })
+							error = await waitForSelector(S.loginError, 10)
+							// const { result } = await R.evaluate({ expression: '/essayer gratuitement/i.test(document.body.innerHTML)' })
 
-						if (error) {
-							if (isTidal) {
-								await catchFct('del')
+							if (error) {
+								if (isTidal) {
+									await catchFct('del')
+									return
+								}
+								await catchFct('out_error_connect')
 								return
 							}
-							await catchFct('out_error_connect')
-							return
-						}
 
-						first && await tidalSelect()
+							first && await tidalSelect()
+						}
 					}
 
 					await wait(rand(3000, 1000))
