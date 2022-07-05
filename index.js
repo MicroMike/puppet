@@ -741,7 +741,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							y: 390
 						})
 
-						await wait(1000)
+						await wait(5000)
 
 						I.dispatchKeyEvent({
 							type: 'keyDown',
@@ -754,7 +754,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await wait(1000)
 
 						I.dispatchKeyEvent({
-							type: 'keyDown',
+							type: 'keyUp',
 							key: 'Tab',
 							code: 'Tab',
 							nativeVirtualKeyCode: 9,
