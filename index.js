@@ -728,7 +728,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						}
 
 						const hasEmailInput = await waitForSelector(S.email)
-						const amazonReLog = await waitForSelector('#ap-credential-autofill-hint', 5)
+						const amazonReLog = amazonReLog && await waitForSelector('#ap-credential-autofill-hint', 5)
 
 						if (!isApple && !hasEmailInput && !amazonReLog) {
 							await emailCheck()
