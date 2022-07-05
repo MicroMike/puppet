@@ -743,15 +743,24 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						I.dispatchKeyEvent({
 							type: 'keyDown',
+							key: 'Tab',
 							code: 'Tab',
+							nativeVirtualKeyCode: 9,
+							windowsVirtualKeyCode: 9
 						})
 						I.dispatchKeyEvent({
 							type: 'keyDown',
+							key: 'Tab',
 							code: 'Tab',
+							nativeVirtualKeyCode: 9,
+							windowsVirtualKeyCode: 9
 						})
 						I.dispatchKeyEvent({
 							type: 'keyDown',
+							key: 'Tab',
 							code: 'Tab',
+							nativeVirtualKeyCode: 9,
+							windowsVirtualKeyCode: 9
 						})
 
 						check && isApple && console.log('emailCheck OK')
