@@ -878,6 +878,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			pid = chrome.pid
 			console.log('pid', pid)
 
+			if (!pid) {
+				chrome.process.kill()
+				throw 'error pid'
+			}
+
 			const options = {
 				host: '127.0.0.1',
 				port: chrome.port
