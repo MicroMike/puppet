@@ -769,8 +769,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							await wait(3000)
 							await pressedEnter()
 
-							await press('Tab')
-
 							await wait(3000)
 							await I.insertText({
 								text: pass,
