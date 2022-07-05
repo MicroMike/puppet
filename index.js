@@ -740,7 +740,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						disableAlert()
 					}
 
-					const noNeedLog = await waitForSelector(S.noNeedLog, check ? 1 : 10)
+					const noNeedLog = await waitForSelector(S.noNeedLog, check ? 1 : 30)
 
 					if (!noNeedLog) {
 						if (isAmazon) {
