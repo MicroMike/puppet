@@ -703,7 +703,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				await R.evaluate({ expression: `window.alert = () => { };` })
 			}
 
-			const press = (key) => new Promise((res, rej) => {
+			const press = (key) => new Promise(async (res, rej) => {
 				if (closed) { return }
 
 				await wait(1000)
