@@ -768,6 +768,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							await press('Tab')
 							await press('Tab')
 							await press('Enter')
+
+							I.insertText({
+								text: 'mousePressed',
+							})
 						}
 
 						check && isApple && console.log('emailCheck OK')
