@@ -23,6 +23,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const isSpotify = player === 'spotify'
 		const isAmazon = player === 'amazon'
 		const isNapster = player === 'napster'
+		const isApple = player === 'apple'
 
 		let albums = al[player]
 		let currentAlbum
@@ -740,7 +741,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							y: 390
 						})
 
-						!amazonReLog && await type(login, S.email)
+						!isApple && !amazonReLog && await type(login, S.email)
+						isApple && await type(login, S.email)
 
 						isTidal && await click(S.next)
 
