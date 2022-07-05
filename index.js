@@ -706,7 +706,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const press = (key) => new Promise(async (res, rej) => {
 				if (closed) { return }
 
-				await wait(1000)
+				await wait(3000)
 
 				await I.dispatchKeyEvent({
 					type: 'keyDown',
