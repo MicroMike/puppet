@@ -167,6 +167,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			code = e === 'failedLoop' ? 210 : code
 			code = e === 'failedTime' ? 210 : code
 			code = e === 'logout' ? 220 : code
+			code = e === 'ERROR' ? 300 : code
 
 			// code = e === 'retry' ? 5 : code
 			// code = e === 'crashed' ? 6 : code
@@ -933,6 +934,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		}
 		catch (e) {
 			console.log('globalCatch', e)
+			console.log('pid', pid)
+			await catchFct('ERROR')
 		} finally {
 			try {
 				chro.kill()
