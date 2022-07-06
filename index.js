@@ -575,7 +575,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							return
 						}
 
-						return
+						return true
 					}
 
 					const result2 = await R.evaluate({ expression: '/Votre abonnement a expiré|Choisissez un abonnement/i.test(document.body.innerHTML)' })
@@ -682,7 +682,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (nextMusic && countPlays > 10) {
 						countPlays = 0
 						countPlaysLoop++
-						await loopConnect()
 						return
 					}
 
