@@ -560,6 +560,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				try {
 					const { result } = await R.evaluate({ expression: '/interrompue|paused because/i.test(document.body.innerHTML)' })
 
+					const noNeedLog = await waitForSelector(S.noNeedLog, 1)
+
+					if (!noNeedLog) { return false }
+
 					if (isTidal && result.value) {
 						await click('[data-test="notification-close"]', 1)
 						// console.log('playStop', account)
@@ -571,7 +575,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							return
 						}
 
-						await loopConnect()
 						return
 					}
 
@@ -594,7 +597,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (closed) { return }
 
 				try {
-					await connectedCheck();
+					const stillConnected = await connectedCheck();
+
+					if (!stillConnected) {
+						await catchFct('out_error_connect')
+						return
+					}
 
 					await getTimePlayer()
 
@@ -688,7 +696,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					clearTimeout(timeout)
 
 					await wait(3000)
-					await click('[data-test="notification-close"]', 1)
+
 					await playCheck()
 				} catch (error) {
 					if (!closed) {
