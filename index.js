@@ -990,7 +990,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			console.log('out'.green, account)
 
-			await catchFct('out')
+			await catchFct('logout')
 		}
 		catch (e) {
 			console.log('globalCatch', e)
