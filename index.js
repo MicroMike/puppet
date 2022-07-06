@@ -682,7 +682,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (nextMusic && countPlays > 10) {
 						countPlays = 0
 						countPlaysLoop++
-						return
 					}
 
 					if (nextMusic && countPlaysLoop > 5) {
