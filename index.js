@@ -572,7 +572,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						if (usedCount >= 3) {
 							console.log('playStop 3 times'.red, account)
 							await catchFct('used')
-							return
+							return false
 						}
 					}
 
@@ -580,7 +580,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (isTidal && result2.result.value) {
 						await catchFct('del')
-						return
+						return false
 					}
 
 					return true
