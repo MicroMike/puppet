@@ -643,8 +643,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log(player, login, 'freeze'.blue)
 						await catchFct('freeze')
 						return
-						// await click(S.play)
-						// return
 					}
 
 					currTime = matchTime
