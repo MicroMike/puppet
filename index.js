@@ -560,7 +560,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				try {
 					const { result } = await R.evaluate({ expression: '/interrompue|paused because/i.test(document.body.innerHTML)' })
 
-					const noNeedLog = await waitForSelector(S.noNeedLog, 1)
+					const noNeedLog = await waitForSelector(S.noNeedLog, 10)
 
 					if (!noNeedLog) { return false }
 
@@ -574,8 +574,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 							await catchFct('used')
 							return
 						}
-
-						return true
 					}
 
 					const result2 = await R.evaluate({ expression: '/Votre abonnement a expiré|Choisissez un abonnement/i.test(document.body.innerHTML)' })
@@ -584,6 +582,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await catchFct('del')
 						return
 					}
+
+					return true
 				} catch (error) {
 					if (!closed) {
 						await catchFct(error)
