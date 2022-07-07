@@ -934,6 +934,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				if (!pid) {
 					console.log('chrome error', chrome)
+					await wait(5000)
 					await launchChrome();
 				}
 			}
