@@ -880,7 +880,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						// isTidal && shell.exec('node keepCookie ' + player + login, { silent: false })
 
-						isTidal && shell.exec('rm -rf /root/puppet/puppet/' + player + login + '/Default/Cache', { silent: true })
+						shell.exec('rm -rf /root/puppet/puppet/' + player + login + '/Default/Cache', { silent: true })
+						shell.exec("rm -rf /root/puppet/puppet/" + player + login + "/Default/'Session Storage'", { silent: true })
 
 						clearTimeout(timeout)
 						shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: !check, silent: true })
