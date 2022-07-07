@@ -933,7 +933,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				console.log('pid', pid)
 
 				if (!pid) {
-					console.log('chrome error', chrome, player, login)
+					console.log('CHROME ERROR'.red, chrome, player, login)
 					await wait(5000)
 					await launchChrome();
 				}
@@ -946,6 +946,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				port: chrome.port
 			}
 
+			await wait(10 * 1000)
 			const protocol = await CDP(options);
 			proto = protocol
 
