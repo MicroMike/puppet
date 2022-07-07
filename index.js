@@ -9,6 +9,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const chromeLauncher = require('chrome-launcher');
 		var colors = require('colors');
 
+		const port = 8000 + rand(1000)
 		let closed = false
 		let kill = false
 		let C, N, P, R, D, B, I, T;
@@ -264,7 +265,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			socketEmit('playerInfos', { time: 'RUN', other: true })
 
-			const port = rand(1000, 9000)
 			let countStream, streamOn;
 			const keyCaptchaHuman = '6LccSjEUAAAAANCPhaM2c-WiRxCZ5CzsjR_vd8uX'
 
@@ -910,7 +910,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// await shell.exec('"C:/Program Files (x86)/Google/Chrome/Application/chrome.exe" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="/puppet/saveCookie/' + login + '" --remote-debugging-port=' + port, { async: true, silent: true })
 			// await shell.exec('"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="saveCookie/' + account + '" --remote-debugging-port=' + port, { async: true, silent: true })
 			// await shell.exec('"/Applications/Chromium.app/Contents/MacOS/Chromium" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="saveCookie/' + account + '" --remote-debugging-port=' + port, { async: true })
-			// await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --disable-setuid-sandbox --no-first-run --disable-features=Translate --user-data-dir="puppet/' + player + login + '" --remote-debugging-port=' + port, { async: true, silent: true })
+			await shell.exec('google-chrome-stable --no-first-run --no-sandbox --disable-gpu --disable-setuid-sandbox --disable-features=Translate --user-data-dir=/root/puppet/puppet/' + player + login + ' --remote-debugging-port=' + port, { async: true, silent: true })
 
 			let chrome
 
@@ -919,10 +919,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					chromeFlags: [
 						'--chromePath=/bin/google-chrome-stable',
 						'--no-first-run',
+						'--no-sandbox',
 						'--disable-gpu',
 						'--disable-setuid-sandbox',
 						'--disable-features=Translate',
-						'--no-sandbox',
 						'--user-data-dir=/root/puppet/puppet/' + player + login,
 						// '--remote-debugging-port=' + port,
 					]
@@ -939,11 +939,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			await launchChrome();
+			// await launchChrome();
 
 			const options = {
 				host: '127.0.0.1',
-				port: chrome.port
+				port,
 			}
 
 			const protocol = await CDP(options);
@@ -978,7 +978,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			try {
-				chrome.process.on('close', fct)
+				// chrome.process.on('close', fct)
 			} catch (error) {
 				console.log('catchOut 2')
 			}
@@ -1003,8 +1003,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			await catchFct('ERROR')
 		} finally {
 			try {
-				chro.kill()
-				proto.close();
+				chro && chro.kill()
+				proto && proto.close();
 			} catch (e) {
 				console.log('finally error')
 			}
