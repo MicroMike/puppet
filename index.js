@@ -8,6 +8,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const al = require('./albums')
 		const chromeLauncher = require('chrome-launcher');
 		var colors = require('colors');
+		const spawn  = require('child_process').spawn
 
 		let closed = false
 		let kill = false
