@@ -947,13 +947,16 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				port,
 			}
 
+			let cdp
 			const connectRemote = async () => {
-				try {
-					const cdp = await CDP(options);
-					return cdp
-				} catch (error) {
+				cdp = await CDP(options);
+
+				if (!cdp) {
+					await wait(3000)
 					await connectRemote()
 				}
+
+				return
 			}
 
 			const protocol = await connectRemote()
