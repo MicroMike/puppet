@@ -747,6 +747,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					const noNeedLog = !check && await waitForSelector(S.noNeedLog, 30)
 
 					if (!noNeedLog) {
+						check && console.log('need log'.green, player, login)
+
 						if (isAmazon) {
 							await P.navigate({ url: 'https://music.amazon.fr/forceSignIn?useHorizonte=true' });
 							await P.loadEventFired();
