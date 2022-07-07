@@ -147,8 +147,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const catchFct = async (e) => {
 			if (closed) { return }
 
-			clearTimeout(timeout)
-
 			closed = true
 
 			code = 5
@@ -209,7 +207,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		try {
 			timeout = setTimeout(async () => {
-				throw 'tooLong'
+				await catchFct('tooLong')
 			}, 3 * 60 * 1000);
 
 			const album = () => {
@@ -994,14 +992,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			await catchFct('logout')
 		}
 		catch (e) {
-			if (e === 'tooLong') {
-				await catchFct(e)
-			} else {
-				console.log('globalCatch', e)
-				console.log('pid', pid, chro)
-				pid && shell.exec('kill -9 ' + pid)
-				await catchFct('ERROR')
-			}
+			console.log('globalCatch', e)
+			console.log('pid', pid, chro)
+			pid && shell.exec('kill -9 ' + pid)
+			await catchFct('ERROR')
 		} finally {
 			try {
 				chro.kill()
