@@ -9,7 +9,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const chromeLauncher = require('chrome-launcher');
 		var colors = require('colors');
 
-		const port = 8000 + rand(1000)
 		let closed = false
 		let kill = false
 		let C, N, P, R, D, B, I, T;
@@ -223,6 +222,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const rand = (max, min = 0) => {
 				return Math.floor(Math.random() * Math.floor(max)) + 1 + min;
 			}
+
+			const port = 8000 + rand(1000)
 
 			socket.on('forceOut', () => {
 				exit('forceOut')
