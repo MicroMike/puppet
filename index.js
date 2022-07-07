@@ -878,7 +878,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					await wait(rand(3000, 1000))
 
 					try {
-						first && console.log('start save copy'.yellow, account)
+						first && console.log('start save copy'.yellow, player, login)
 
 						// isTidal && shell.exec('node keepCookie ' + player + login, { silent: false })
 
@@ -886,7 +886,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 						clearTimeout(timeout)
 						shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: !check, silent: true })
-						check && console.log('end save copy'.yellow, account)
+						check && console.log('end save copy'.yellow, player, login)
 					} catch (e) {
 						console.log('copy error'.red, e)
 					}
@@ -980,7 +980,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				console.log('catchOut 2')
 			}
 
-			console.log('Connected!'.green, login);
+			console.log('Connected!'.green, player, login);
 
 			// setup handlers
 			// Network.requestWillBeSent((params) => {
@@ -989,7 +989,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			await loopConnect(true);
 
-			console.log('out'.green, account)
+			console.log('out'.green, player, login)
 
 			await catchFct('logout')
 		}
