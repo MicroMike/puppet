@@ -911,8 +911,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// await shell.exec('"/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="saveCookie/' + account + '" --remote-debugging-port=' + port, { async: true, silent: true })
 			// await shell.exec('"/Applications/Chromium.app/Contents/MacOS/Chromium" --mute-audio --disable-features=Translate --no-first-run --user-data-dir="saveCookie/' + account + '" --remote-debugging-port=' + port, { async: true })
 			// await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --disable-setuid-sandbox --no-first-run --disable-features=Translate --user-data-dir="puppet/' + player + login + '" --remote-debugging-port=' + port, { async: true, silent: true })
+
+			let chrome
+
 			const launchChrome = async () => {
-				return await chromeLauncher.launch({
+				chrome = await chromeLauncher.launch({
 					chromeFlags: [
 						'--chromePath=/bin/google-chrome-stable',
 						'--no-first-run',
@@ -924,17 +927,18 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						// '--remote-debugging-port=' + port,
 					]
 				});
+
+				chro = chrome
+				pid = chrome.pid
+				console.log('pid', pid)
+
+				if (!pid) {
+					console.log('chrome error', chrome)
+					await launchChrome();
+				}
 			}
 
-			const chrome = await launchChrome();
-			chro = chrome
-			pid = chrome.pid
-			console.log('pid', pid)
-
-			if (!pid) {
-				console.log('chrome error', chrome)
-				throw 'error pid'
-			}
+			await launchChrome();
 
 			const options = {
 				host: '127.0.0.1',
