@@ -957,9 +957,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				, '--user-data-dir=/root/puppet/puppet/' + player + login
 			]
 
-			var ps = spawn('/bin/google-chrome-stable', args, {
-				env: opts.env || process.env
-			})
+			var ps = spawn('/bin/google-chrome-stable', args, process.env)
 
 			const options = {
 				host: '127.0.0.1',
