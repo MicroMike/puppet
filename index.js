@@ -8,7 +8,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const al = require('./albums')
 		const chromeLauncher = require('chrome-launcher');
 		var colors = require('colors');
-		const spawn = require('child_process').spawn
 
 		let closed = false
 		let kill = false
@@ -940,26 +939,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			// await launchChrome();
+			await launchChrome();
 
-			album()
-			var args = [
-				currentAlbum
-				, '--no-sandbox'
-				, '--disable-gpu'
-				, '--disable-setuid-sandbox'
-				, '--no-first-run'
-				, '--no-default-browser-check'
-				, '--disable-translate'
-				, '--disable-default-apps'
-				, '--disable-popup-blocking'
-				, '--disable-zero-browsers-open-for-tests'
-				, '--user-data-dir=/root/puppet/puppet/' + player + login
-			]
-
-			var ps = spawn('/bin/google-chrome-stable', args, process.env)
-			console.log('ps', ps)
-			
 			const options = {
 				host: '127.0.0.1',
 				port: chrome.port
