@@ -958,7 +958,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			]
 
 			var ps = spawn('/bin/google-chrome-stable', args, process.env)
-
+			console.log('ps', ps)
+			
 			const options = {
 				host: '127.0.0.1',
 				port: chrome.port
