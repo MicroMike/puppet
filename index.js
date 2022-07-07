@@ -77,7 +77,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			S.connectBtn = '#sign-in'
 			S.play = '.shuffle-button'
 			S.pauseBtn = '.web-chrome-playback-controls__playback-btn[aria-label="Pause"]'
-			S.timeLine = '[data-test="player-current-time"]'
+			S.timeLine = '.web-chrome-playback-lcd__playback-time'
 		}
 
 		if (player === 'amazon') {
