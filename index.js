@@ -223,6 +223,47 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				return Math.floor(Math.random() * Math.floor(max)) + 1 + min;
 			}
 
+			socket.on('forceOut', () => {
+				exit('forceOut')
+			})
+
+			socket.on('Cdisconnect', () => {
+				close = true
+				exit('forceOut')
+			})
+
+			const stream = async () => {
+				await takeScreenshot('stream')
+				await wait(3000)
+
+				countStream++
+
+				if (countStream > 30) {
+					streamOn = false
+				}
+
+				if (streamOn) { stream() }
+			}
+
+			const startStream = () => {
+				countStream = 0
+				streamOn = true
+
+				stream()
+			}
+
+			socket.on('screenshot', () => {
+				takeScreenshot('getScreen')
+			})
+
+			socket.on('streamOn', startStream)
+
+			socket.on('streamOff', () => {
+				streamOn = false
+			})
+
+			socketEmit('playerInfos', { time: 'RUN', other: true })
+
 			const port = rand(1000, 9000)
 			let countStream, streamOn;
 			const keyCaptchaHuman = '6LccSjEUAAAAANCPhaM2c-WiRxCZ5CzsjR_vd8uX'
@@ -511,46 +552,35 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 			}
 
-			socket.on('forceOut', () => {
-				exit('forceOut')
-			})
+			const press = async (key) => {
+				if (closed) { return }
 
-			socket.on('Cdisconnect', () => {
-				close = true
-				exit('forceOut')
-			})
-
-			const stream = async () => {
-				await takeScreenshot('stream')
 				await wait(3000)
 
-				countStream++
+				await I.dispatchKeyEvent({
+					type: 'keyDown',
+					key: key,
+					code: key,
+				})
 
-				if (countStream > 30) {
-					streamOn = false
-				}
+				await wait(500)
 
-				if (streamOn) { stream() }
+				await I.dispatchKeyEvent({
+					type: 'keyUp',
+					key: key,
+					code: key,
+				})
 			}
 
-			const startStream = () => {
-				countStream = 0
-				streamOn = true
-
-				stream()
+			const pressedEnter = async () => {
+				await Input.dispatchKeyEvent({ "type": "rawKeyDown", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
+				await Input.dispatchKeyEvent({ "type": "char", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
+				await Input.dispatchKeyEvent({ "type": "keyUp", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
 			}
 
-			socket.on('screenshot', () => {
-				takeScreenshot('getScreen')
-			})
-
-			socket.on('streamOn', startStream)
-
-			socket.on('streamOff', () => {
-				streamOn = false
-			})
-
-			socketEmit('playerInfos', { time: 'RUN', other: true })
+			const disableAlert = async () => {
+				await R.evaluate({ expression: `window.alert = () => { };` })
+			}
 
 			const connectedCheck = async () => {
 				if (closed) { return }
@@ -699,36 +729,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						console.log('closed playCheck')
 					}
 				}
-			}
-
-			const disableAlert = async () => {
-				await R.evaluate({ expression: `window.alert = () => { };` })
-			}
-
-			const press = async (key) => {
-				if (closed) { return }
-
-				await wait(3000)
-
-				await I.dispatchKeyEvent({
-					type: 'keyDown',
-					key: key,
-					code: key,
-				})
-
-				await wait(500)
-
-				await I.dispatchKeyEvent({
-					type: 'keyUp',
-					key: key,
-					code: key,
-				})
-			}
-
-			const pressedEnter = async () => {
-				await Input.dispatchKeyEvent({ "type": "rawKeyDown", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
-				await Input.dispatchKeyEvent({ "type": "char", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
-				await Input.dispatchKeyEvent({ "type": "keyUp", "windowsVirtualKeyCode": 13, "unmodifiedText": "\r", "text": "\r" })
 			}
 
 			const loopConnect = async (first = false) => {
@@ -933,7 +933,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				console.log('pid', pid)
 
 				if (!pid) {
-					console.log('chrome error', chrome)
+					console.log('chrome error', chrome, player, login)
 					await wait(5000)
 					await launchChrome();
 				}
