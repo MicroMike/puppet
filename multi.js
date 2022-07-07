@@ -25,6 +25,7 @@ process.on('SIGINT', () => {
 
 shell.exec('rm -rf /root/puppet/puppet/*', { silent: false })
 shell.exec('rm -rf /tmp/lighthouse*', { silent: false })
+shell.exec('rm -rf /tmp/shelljs*', { silent: false })
 
 const fct = async (i = 1) => {
 	if (close) { return }
