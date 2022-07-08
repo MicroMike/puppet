@@ -214,7 +214,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			if (Number(time) > currTime && !nextMusic) {
 				nextMusic = true
-				socketEmit('plays', { next: nextOk, currentAlbum, matchTime, countPlays })
+				socketEmit('plays', { next: false, currentAlbum, matchTime, countPlays })
 			}
 
 			if (Number(time) < currTime) {
