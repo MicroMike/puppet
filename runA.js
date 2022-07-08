@@ -207,7 +207,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			return albumUrl
 		}
 
-		const checkPlay = async () => {
+		const save = async () => {
+			try {
+				console.log('start save copy'.yellow, player, login)
+
+				shell.exec('rm -rf /root/puppet/puppet/' + player + login + '/Default/Cache', { silent: true })
+				shell.exec("rm -rf /root/puppet/puppet/" + player + login + "/Default/'Session Storage'", { silent: true })
+
+				shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { silent: true })
+
+				console.log('end save copy'.yellow, player, login)
+			} catch (e) {
+				console.log('copy error'.red, e)
+			}
+		}
+
+		const checkPlay = async (first = false) => {
 			const time = await page.getTime(S.timeLine, S.callback)
 			const matchTime = Number(time)
 
@@ -215,11 +230,29 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			if (matchTime > currTime && !nextMusic) {
 				nextMusic = true
+				countPlays++
 				socketEmit('plays', { next: false, currentAlbum, matchTime, countPlays })
 			}
 
 			if (matchTime < currTime) {
 				nextMusic = false
+			}
+
+			if (countPlays > 5) {
+				countPlays = 0
+				countPlaysLoop++
+			}
+
+			if (countPlaysLoop > 5) {
+				countPlaysLoop = 0
+				album()
+				await page.gotoUrl(currentAlbum)
+
+				save()
+			}
+
+			if (first) {
+				save()
 			}
 
 			await page.waitFor(3000)
@@ -247,7 +280,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			socketEmit('playerInfos', { time: 'PLAY', ok: true })
 
-			await checkPlay()
+			await checkPlay(true)
 		}
 		catch (e) {
 			await catchFct(e)
