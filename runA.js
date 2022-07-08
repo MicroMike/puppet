@@ -228,10 +228,24 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			socketEmit('playerInfos', { time, ok: true, countPlays })
 
-			if (matchTime > currTime && !nextMusic) {
-				nextMusic = true
-				countPlays++
-				socketEmit('plays', { next: false, currentAlbum, matchTime, countPlays })
+			if (matchTime === currTime) {
+				pauseCount++
+			}
+
+			if (pauseCount > 1) {
+				socketEmit('playerInfos', { time: currTime, freeze: true, warn: true, countPlays })
+			}
+
+			if (matchTime > currTime) {
+				pauseCount = 0
+
+				if (freeze > 0) { socketEmit('playerInfos', { time: currTime, ok: true, countPlays }) }
+
+				if (!nextMusic) {
+					nextMusic = true
+					countPlays++
+					socketEmit('plays', { next: false, currentAlbum, matchTime, countPlays })
+				}
 			}
 
 			if (matchTime < currTime) {
@@ -243,7 +257,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				countPlaysLoop++
 			}
 
-			if (countPlaysLoop > 5) {
+			if (countPlaysLoop > 5 || pauseCount > 5) {
+				pauseCount = 0
 				countPlaysLoop = 0
 
 				album()
