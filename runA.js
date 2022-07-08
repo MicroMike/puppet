@@ -209,9 +209,22 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		const checkPlay = async () => {
 			const time = await page.getTime(S.timeLine, S.callback)
-			console.log('time', time)
 
-			await page.waitFor(5000)
+			socketEmit('playerInfos', { time, ok: true, countPlays })
+
+			if (Number(time) > currTime && !nextMusic) {
+				nextMusic = true
+				socketEmit('plays', { next: nextOk, currentAlbum, matchTime, countPlays })
+			}
+
+			if (Number(time) < currTime) {
+				nextMusic = false
+			}
+
+			await page.waitFor(3000)
+
+			currTime = Number(time)
+
 			await checkPlay()
 		}
 
