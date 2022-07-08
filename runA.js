@@ -26,6 +26,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let firstPlay = true
 		let usedCount = 0
 		let code
+		let closed = false
+		let timeout
 
 		const S = {
 			noNeedLog: '[class*="badgeContainer"]',
