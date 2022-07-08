@@ -29,6 +29,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let closed = false
 		let timeout
 
+		const rand = (max, min = 0) => {
+			return Math.floor(Math.random() * Math.floor(max)) + 1 + min;
+		}
+
 		const S = {
 			noNeedLog: '[class*="badgeContainer"]',
 			gotoLog: '[data-test="no-user--login"]',
