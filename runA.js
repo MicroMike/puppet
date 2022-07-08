@@ -207,7 +207,17 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			return albumUrl
 		}
 
+		const checkPlay = async () => {
+			const time = await page.getTime(S.timeLine, S.callback)
+			console.log('time', time)
+
+			await page.waitFor(5000)
+			await checkPlay()
+		}
+
 		try {
+			socketEmit('playerInfos', { time: 'CONNECT', other: true })
+
 			album()
 			await page.gotoUrl(currentAlbum)
 
@@ -218,6 +228,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			await page.clk(S.play)
+
+			socketEmit('playerInfos', { time: 'PLAY', ok: true })
+
+			await checkPlay()
 		}
 		catch (e) {
 			await catchFct(e)
