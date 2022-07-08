@@ -265,8 +265,10 @@ module.exports = async (userDataDir, noCache = false, headless = false) => {
 		headless,
 		args: [
 			'--no-sandbox',
-			'--disable-setuid-sandbox',
 			'--disable-gpu',
+			'--disable-setuid-sandbox',
+			'--no-first-run',
+			'--disable-features=Translate',
 		],
 		timeout: 0,
 		// defaultViewport: {

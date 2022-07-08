@@ -173,7 +173,7 @@ clientSocket.on('mRun', async (props) => {
 	let page
 
 	const newScript = check || checkAccount || /^X/.test(arg)
-	const runAccount = newScript ? require('./index') : require('./runAccount');
+	const runAccount = newScript ? require('./index') : require('./runA');
 	// const runTidal = require('./index');
 	if (check) {
 		console.log(account);
