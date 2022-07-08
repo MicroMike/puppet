@@ -237,9 +237,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (matchTime > currTime) {
+				if (pauseCount > 0) { socketEmit('playerInfos', { time: currTime, ok: true, countPlays }) }
 				pauseCount = 0
-
-				if (freeze > 0) { socketEmit('playerInfos', { time: currTime, ok: true, countPlays }) }
 
 				if (!nextMusic) {
 					nextMusic = true
