@@ -235,6 +235,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			album()
 			await page.gotoUrl(currentAlbum)
 
+			console.log('Connected!'.green, player, login)
+
 			const isConnected = await page.wfs(S.noNeedLog, false, 15)
 
 			if (!isConnected) {
