@@ -201,9 +201,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			exit(e, code)
 		}
 
-		const album = () => {
+		const album = async () => {
 			let albumUrl = albums[rand(albums.length)]
 			currentAlbum = albumUrl
+
+			await page.waitFor(1000)
+
 			return albumUrl
 		}
 
@@ -255,7 +258,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				countPlays = 0
 				countPlaysLoop++
 
-				album()
+				await album()
 				await page.gotoUrl(currentAlbum)
 
 				await page.clk(S.play)
@@ -281,7 +284,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		try {
 			socketEmit('playerInfos', { time: 'CONNECT', other: true })
 
-			album()
+			await album()
 			await page.gotoUrl(currentAlbum)
 
 			console.log('Connected!'.green, player, login)
