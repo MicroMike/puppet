@@ -254,11 +254,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			if (countPlays > 5) {
 				countPlays = 0
 				countPlaysLoop++
-			}
-
-			if (countPlaysLoop > 5 || pauseCount > 5) {
-				pauseCount = 0
-				countPlaysLoop = 0
 
 				album()
 				await page.gotoUrl(currentAlbum)
@@ -266,6 +261,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				await page.clk(S.play)
 
 				save()
+			}
+
+			if (countPlaysLoop > 5 || pauseCount > 5) {
+				return
 			}
 
 			if (first) {
