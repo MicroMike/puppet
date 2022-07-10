@@ -262,8 +262,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				await page.gotoUrl(currentAlbum)
 
 				await page.clk(S.play)
-
-				save()
 			}
 
 			if (countPlaysLoop > 5 || pauseCount > 5) {
@@ -300,6 +298,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			socketEmit('playerInfos', { time: 'PLAY', ok: true })
 
 			await checkPlay(true)
+			await catchFct('out')
 		}
 		catch (e) {
 			await catchFct(e)
