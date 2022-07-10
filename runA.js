@@ -298,7 +298,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			socketEmit('playerInfos', { time: 'PLAY', ok: true })
 
 			await checkPlay(true)
-			await catchFct('out')
+			await catchFct('logout')
 		}
 		catch (e) {
 			await catchFct(e)
