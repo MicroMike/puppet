@@ -30,7 +30,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let timeout
 
 		const rand = (max, min = 0) => {
-			return Math.floor(Math.random() * Math.floor(max)) + 1 + min;
+			return Math.floor(Math.random() * Math.floor(max)) + min;
 		}
 
 		const S = {
