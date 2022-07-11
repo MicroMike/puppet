@@ -131,8 +131,9 @@ const getAccount = async () => {
 	})
 }
 
-clientSocket.on('canRun', async () => {
-	!checkLive && await getAccount()
+clientSocket.on('canRun', async ({ account }) => {
+	!checkLive && clientSocket.emit('client', { parentId, streamId, account, max })
+	// !checkLive && await getAccount()
 })
 
 // clientSocket.on('CdisconnectU', () => {
