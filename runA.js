@@ -214,9 +214,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				shell.exec('rm -rf /root/puppet/puppet/' + player + login + '/Default/Cache', { silent: true })
 				shell.exec("rm -rf /root/puppet/puppet/" + player + login + "/Default/'Session Storage'", { silent: true })
 
-				shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { silent: true })
+				shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
 
-				console.log('end save copy'.yellow, player, login)
+				// console.log('end save copy'.yellow, player, login)
 			} catch (e) {
 				console.log('copy error'.red, e)
 			}
