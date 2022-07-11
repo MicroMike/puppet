@@ -262,7 +262,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (countPlaysLoop > 5 || pauseCount > 5) {
-				return
+				return pauseCount > 5 ? 'freeze' : 'outlog'
 			}
 
 			if (first) {
@@ -294,8 +294,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 			socketEmit('playerInfos', { time: 'PLAY', ok: true })
 
-			await checkPlay(true)
-			await catchFct('logout')
+			const val = await checkPlay(true)
+			await catchFct(val)
 		}
 		catch (e) {
 			await catchFct(e)
