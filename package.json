@@ -57,7 +57,7 @@
     "fs-extra": "^7.0.1",
     "image-to-base64": "^2.0.1",
     "ip": "^1.1.5",
-    "puppeteer": "^3.0.1",
+    "puppeteer": "^15.3.2",
     "puppeteer-core": "^1.17.0",
     "shelljs": "^0.8.5",
     "socket.io-client": "^2.2.0"
