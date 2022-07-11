@@ -266,7 +266,7 @@ module.exports = async (userDataDir, noCache = false, headless = false) => {
 		args: [
 			'--no-sandbox',
 			'--disable-gpu',
-			'--disable-setuid-sandbox',
+			// '--disable-setuid-sandbox',
 			'--no-first-run',
 			'--disable-features=Translate',
 		],
