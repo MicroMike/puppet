@@ -223,57 +223,61 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		}
 
 		const checkPlay = async (first = false) => {
-			const time = await page.getTime(S.timeLine, S.callback)
-			const matchTime = Number(time)
+			try {
+				const time = await page.getTime(S.timeLine, S.callback)
+				const matchTime = Number(time)
 
-			socketEmit('playerInfos', { time, ok: true, countPlays })
+				socketEmit('playerInfos', { time, ok: true, countPlays })
 
-			if (matchTime === currTime) {
-				pauseCount++
-			}
-
-			if (pauseCount > 1) {
-				socketEmit('playerInfos', { time: currTime, freeze: true, warn: true, countPlays })
-			}
-
-			if (matchTime > currTime) {
-				if (pauseCount > 0) { socketEmit('playerInfos', { time: currTime, ok: true, countPlays }) }
-				pauseCount = 0
-
-				if (!nextMusic) {
-					nextMusic = true
-					countPlays++
-					socketEmit('plays', { next: false, currentAlbum, matchTime, countPlays })
+				if (matchTime === currTime) {
+					pauseCount++
 				}
+
+				if (pauseCount > 1) {
+					socketEmit('playerInfos', { time: currTime, freeze: true, warn: true, countPlays })
+				}
+
+				if (matchTime > currTime) {
+					if (pauseCount > 0) { socketEmit('playerInfos', { time: currTime, ok: true, countPlays }) }
+					pauseCount = 0
+
+					if (!nextMusic) {
+						nextMusic = true
+						countPlays++
+						socketEmit('plays', { next: false, currentAlbum, matchTime, countPlays })
+					}
+				}
+
+				if (matchTime < currTime) {
+					nextMusic = false
+				}
+
+				if (countPlays > 5) {
+					countPlays = 0
+					countPlaysLoop++
+
+					album()
+					await page.gotoUrl(currentAlbum)
+
+					await page.clk(S.play)
+				}
+
+				if (countPlaysLoop > 5 || pauseCount > 5) {
+					return pauseCount > 5 ? 'freeze' : 'outlog'
+				}
+
+				if (first) {
+					save()
+				}
+
+				await page.waitFor(3000)
+
+				currTime = matchTime
+
+				await checkPlay()
+			} catch (e) {
+				return e
 			}
-
-			if (matchTime < currTime) {
-				nextMusic = false
-			}
-
-			if (countPlays > 5) {
-				countPlays = 0
-				countPlaysLoop++
-
-				album()
-				await page.gotoUrl(currentAlbum)
-
-				await page.clk(S.play)
-			}
-
-			if (countPlaysLoop > 5 || pauseCount > 5) {
-				return pauseCount > 5 ? 'freeze' : 'outlog'
-			}
-
-			if (first) {
-				save()
-			}
-
-			await page.waitFor(3000)
-
-			currTime = matchTime
-
-			await checkPlay()
 		}
 
 		try {
