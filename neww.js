@@ -66,7 +66,7 @@ const exit = (code = '0') => {
 		process.exit(code)
 	})
 
-	!account && process.exit(code)
+	account && process.exit(code)
 }
 
 process.on('SIGINT', () => {
