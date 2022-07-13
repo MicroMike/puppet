@@ -209,7 +209,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		try {
 			timeout = setTimeout(async () => {
 				await catchFct('tooLong')
-			}, 3 * 60 * 1000);
+			}, 5 * 60 * 1000);
 
 			const album = () => {
 				let albumUrl = albums[rand(albums.length)]
