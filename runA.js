@@ -140,6 +140,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 		}
 
+		socket.on('screenshot', () => {
+			takeScreenshot('getScreen')
+		})
+
 		const catchFct = async (e) => {
 			if (closed) { return }
 
