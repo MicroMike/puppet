@@ -58,7 +58,8 @@ const exit = async (code = '0') => {
 	clientSocket && clientSocket.disconnect()
 
 	if (code !== 6 && (code !== 8 || player !== 'tidal')) {
-		account && request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => {
+		console.log('account', account)
+		account && request('http://216.158.239.199:3000/checkOk?' + account, (error, response, body) => {
 			console.log('checkOk', account, error, response, body)
 		})
 		await copyBack(player, login)

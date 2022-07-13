@@ -9,7 +9,7 @@ const getSession = (player, login) => new Promise((res, rej) => {
 		exec(`scp -r root@216.158.239.199:"/root/puppet/${folder}/Default/Local\\ Storage" /root/puppet/puppet/${folder}/Default/`)
 	}
 
-	if (player === 'amazon') {
+	if (player === 'amazon' || player === 'spotify') {
 		exec(`mkdir -p /root/puppet/puppet/${folder}/Default`)
 		exec(`scp -r root@216.158.239.199:"/root/puppet/${folder}/Default/Session\\ Storage" /root/puppet/puppet/${folder}/Default/`)
 		exec(`scp -r root@216.158.239.199:"/root/puppet/${folder}/Default/Local\\ Storage" /root/puppet/puppet/${folder}/Default/`)
@@ -43,7 +43,7 @@ const copyBack = (player, login) => new Promise((res, rej) => {
 })
 
 // getSession('tidal', 'nawof36088@iistoria.com')
-copyBack('tidal', 'nawof36088@iistoria.com')
+// copyBack('tidal', 'nawof36088@iistoria.com')
 
 module.exports = {
 	getSession,
