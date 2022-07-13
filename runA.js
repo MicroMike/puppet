@@ -1,3 +1,4 @@
+
 module.exports = async (socket, page, parentId, streamId, check, account) => {
 	return new Promise(async (r) => {
 		const fs = require('fs');
@@ -5,6 +6,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const image2base64 = require('image-to-base64');
 		const request = require('ajax-request');
 		const al = require('./albums')
+		const { copyBack } = require('./copy');
 		var colors = require('colors');
 
 		const [player, login, pass] = account.split(':')
@@ -224,21 +226,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			return albumUrl
 		}
 
-		const save = async () => {
-			try {
-				console.log('start save copy'.yellow, player, login)
-
-				shell.exec('rm -rf /root/puppet/puppet/' + player + login + '/Default/Cache', { silent: true })
-				shell.exec("rm -rf /root/puppet/puppet/" + player + login + "/Default/'Session Storage'", { silent: true })
-
-				shell.exec('scp -r /root/puppet/puppet/' + player + login + ' root@216.158.239.199:/root/puppet/', { async: true, silent: true })
-
-				// console.log('end save copy'.yellow, player, login)
-			} catch (e) {
-				console.log('copy error'.red, e)
-			}
-		}
-
 		const checkPlay = async (first = false) => {
 			try {
 				const time = await page.getTime(S.timeLine, S.callback)
@@ -284,7 +271,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				}
 
 				if (first) {
-					save()
+					copyBack(player, login)
 				}
 
 				await page.waitFor(3000)
