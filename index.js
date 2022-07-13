@@ -700,6 +700,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					// socketEmit('playerInfos', { time, ok: true, countPlays })
+					await copyBack(player, login)
 
 					if (check) {
 						// request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
@@ -891,7 +892,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					// } catch (e) {
 					// 	console.log('copy error'.red, e)
 					// }
-					await copyBack(player, login)
 
 					if (isTidal) {
 						const delTidal = await get('.ReactModal__Overlay', 'innerText')
