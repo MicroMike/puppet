@@ -701,9 +701,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					// socketEmit('playerInfos', { time, ok: true, countPlays })
 					clearTimeout(timeout)
-					await copyBack(player, login)
 
 					if (check) {
+						await copyBack(player, login)
 						// request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
 						await catchFct('check')
 						return
@@ -875,22 +875,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					await wait(rand(3000, 1000))
 
-					// try {
-					// 	first && console.log('start save copy'.yellow, player, login)
-
-					// 	// isTidal && shell.exec('node keepCookie ' + player + login, { silent: false })
-
-					// 	// shell.exec('rm -rf /root/puppet/puppet/' + player + login + '/Default/Cache', { silent: true })
-					// 	// shell.exec("rm -rf /root/puppet/puppet/" + player + login + "/Default/'Session Storage'", { silent: true })
-					// 	// shell.exec("rm -rf /root/puppet/puppet/" + player + login + "/Default/'Service Worker'", { silent: true })
-
-					// 	clearTimeout(timeout)
-					// 	shell.exec('scp -r /root/puppet/puppet/' + player + login + '/Local Storage root@216.158.239.199:/root/puppet/', { async: !check, silent: true })
-					// 	shell.exec('scp -r /root/puppet/puppet/' + player + login + '/Session Storage root@216.158.239.199:/root/puppet/', { async: !check, silent: true })
-					// 	check && console.log('end save copy'.yellow, player, login)
-					// } catch (e) {
-					// 	console.log('copy error'.red, e)
-					// }
+					!check && await copyBack(player, login)
 
 					if (isTidal) {
 						const delTidal = await get('.ReactModal__Overlay', 'innerText')

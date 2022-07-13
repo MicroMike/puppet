@@ -62,7 +62,7 @@ const exit = async (code = '0') => {
 		account && request('http://216.158.239.199:3000/checkOk?' + account, (error, response, body) => {
 			console.log('checkOk', account, error, response, body)
 		})
-		await copyBack(player, login)
+		!check & await copyBack(player, login)
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 	}
 
