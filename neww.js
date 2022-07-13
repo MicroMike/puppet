@@ -1,6 +1,7 @@
 process.setMaxListeners(Infinity)
 
 const puppet = require('./puppet')
+const copy = require('./copy')
 const shell = require('shelljs');
 const request = require('ajax-request');
 var colors = require('colors');
@@ -156,16 +157,10 @@ clientSocket.on('mRun', async (props) => {
 	player = accountInfo[0]
 	login = accountInfo[1]
 
-	if (check || player.match(/napster|apple/)) {
-		shell.exec('rm -Rf save/' + player + '_' + login, { silent: true })
-	}
-
 	try {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
-			console.log('start copy'.yellow, account)
-			shell.exec('scp -r root@216.158.239.199:/root/puppet/' + player + login + ' ' + varPath, { silent: true })
-			// console.log('end copy'.yellow, account.yellow)
+			copy(player, login)
 		}
 	} catch (e) {
 		console.log(e)

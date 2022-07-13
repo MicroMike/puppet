@@ -6,7 +6,7 @@ const getSession = (player, login) => new Promise((res, rej) => {
 	if (player === 'tidal') {
 		exec(`mkdir -p /root/puppet/puppet/${folder}/Default`)
 		exec(`scp -r root@216.158.239.199:"/root/puppet/${folder}/Default/Session\\ Storage" /root/puppet/puppet/${folder}/Default/`)
-		exec(`scp -r root@216.158.239.199:"/root/puppet/${folder}/Default/Local\\ Storage" /root/puppet/puppet/${folder}/Default/`);
+		exec(`scp -r root@216.158.239.199:"/root/puppet/${folder}/Default/Local\\ Storage" /root/puppet/puppet/${folder}/Default/`)
 	}
 
 	if (player === 'amazon') {
@@ -21,6 +21,31 @@ const getSession = (player, login) => new Promise((res, rej) => {
 	res(true)
 })
 
-getSession('tidal', 'nawof36088@iistoria.com')
+const copyBack = (player, login) => new Promise((res, rej) => {
+	const folder = player + login
 
-module.exports = getSession
+	if (player === 'tidal') {
+		exec(`mkdir -p /root/puppet/${folder}/Default`)
+		exec(`scp -r /root/puppet/puppet/${folder}/Default/Session\\ Storage root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
+		exec(`scp -r /root/puppet/puppet/${folder}/Default/Local\\ Storage root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
+	}
+
+	if (player === 'amazon') {
+		exec(`mkdir -p /root/puppet/${folder}/Default`)
+		exec(`scp -r /root/puppet/puppet/${folder}/Default/Session\ Storage root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
+		exec(`scp -r /root/puppet/puppet/${folder}/Default/Local\ Storage root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
+		exec(`scp -r /root/puppet/puppet/${folder}/Default/Login\ Data\ For\ Account root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
+		exec(`scp -r /root/puppet/puppet/${folder}/Default/Login\ Data root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
+		exec(`scp -r /root/puppet/puppet/${folder}/Default/Cookies root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
+	}
+
+	res(true)
+})
+
+// getSession('tidal', 'nawof36088@iistoria.com')
+copyBack('tidal', 'nawof36088@iistoria.com')
+
+module.exports = {
+	getSession,
+	copyBack,
+}
