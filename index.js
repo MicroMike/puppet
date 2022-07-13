@@ -269,7 +269,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			let countStream, streamOn;
 			const keyCaptchaHuman = '6LccSjEUAAAAANCPhaM2c-WiRxCZ5CzsjR_vd8uX'
 
-			const loop = async (selector, res) => {
+			const loop = async (selector, res, ttw) => {
 				if (closed) { return }
 
 				try {
@@ -277,8 +277,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 					if (!el.result.objectId) {
 						await wait(1000)
-						await loop(selector, res)
+						await loop(selector, res, ttw)
 					} else {
+						clearTimeout(ttw)
 						res(true)
 					}
 				} catch (error) {
@@ -293,12 +294,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const waitForSelector = (selector, time = 60) => new Promise((res, rej) => {
 				if (closed) { return }
 
-				setTimeout(() => {
+				const timeToWait = setTimeout(() => {
 					res(false)
 				}, time * 1000);
 
 				if (!closed) {
-					loop(selector, res)
+					loop(selector, res, timeToWait)
 				}
 			})
 
@@ -587,11 +588,10 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (closed) { return }
 
 				try {
-					const { result } = await R.evaluate({ expression: '/interrompue|paused because/i.test(document.body.innerHTML)' })
-
 					const noNeedLog = await waitForSelector(S.noNeedLog, 10)
-
 					if (!noNeedLog) { return false }
+
+					const { result } = await R.evaluate({ expression: '/interrompue|paused because/i.test(document.body.innerHTML)' })
 
 					if (isTidal && result.value) {
 						await click('[data-test="notification-close"]', 1)
