@@ -1,6 +1,6 @@
 const { exec } = require("child_process");
 
-export const getSession = (player, login) => new Promise((res, rej) => {
+const getSession = (player, login) => new Promise((res, rej) => {
 	const folder = player + login
 
 	if (player === 'tidal') {
@@ -22,3 +22,5 @@ export const getSession = (player, login) => new Promise((res, rej) => {
 })
 
 getSession('tidal', 'nawof36088@iistoria.com')
+
+module.exports = getSession
