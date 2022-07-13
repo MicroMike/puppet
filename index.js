@@ -700,6 +700,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					}
 
 					// socketEmit('playerInfos', { time, ok: true, countPlays })
+					clearTimeout(timeout)
 					await copyBack(player, login)
 
 					if (check) {
@@ -717,8 +718,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						await catchFct('logout')
 						return
 					}
-
-					clearTimeout(timeout)
 
 					await wait(3000)
 
