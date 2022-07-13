@@ -126,19 +126,32 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 		}
 
-		const takeScreenshot = async (e) => {
+		const takeScreenshot = async (name) => {
 			try {
-				const filename = 'screenshot/' + (e || '') + '-' + player + login + '.png'
-				const { data } = await P.captureScreenshot();
-				fs.writeFileSync(filename, Buffer.from(data, 'base64'));
+				await page.screenshot({ path: name + '_' + player + login + '.png' });
+				const img = await image2base64(name + '_' + player + login + '.png')
 
-				img = await image2base64(filename)
-				socketEmit('screen', { img, log: login + ' => ' + e })
+				socketEmit('screen', { img, log: login + ' => ' + name })
 			}
 			catch (e) {
 				console.log('screenshot error', e)
 			}
+
 		}
+
+		// const takeScreenshot = async (e) => {
+		// 	try {
+		// 		const filename = 'screenshot/' + (e || '') + '-' + player + login + '.png'
+		// 		const { data } = await P.captureScreenshot();
+		// 		fs.writeFileSync(filename, Buffer.from(data, 'base64'));
+
+		// 		img = await image2base64(filename)
+		// 		socketEmit('screen', { img, log: login + ' => ' + e })
+		// 	}
+		// 	catch (e) {
+		// 		console.log('screenshot error', e)
+		// 	}
+		// }
 
 		socket.on('screenshot', () => {
 			takeScreenshot('getScreen')
