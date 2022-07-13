@@ -1,7 +1,7 @@
 process.setMaxListeners(Infinity)
 
 const puppet = require('./puppet')
-const copy = require('./copy')
+const { getSession, copyBack } = require('./copy')
 const shell = require('shelljs');
 const request = require('ajax-request');
 var colors = require('colors');
@@ -54,13 +54,13 @@ let varPath = process.platform === 'darwin' ? '/Users/mike/Dev/puppet/puppet/' :
 // 	}
 // }
 
-const exit = (code = '0') => {
+const exit = async (code = '0') => {
 	clientSocket && clientSocket.disconnect()
 
 	if (code !== 6 && (code !== 8 || player !== 'tidal')) {
-		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		account && request('http://216.158.239.199:3000' + '/checkOk?' + account, async (error, response, body) => { })
-		// copyBack()
+		await copyBack(player, login)
+		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 	}
 
 	account && request('http://216.158.239.199:3000' + '/noUseAccount?' + account, () => {
@@ -160,7 +160,7 @@ clientSocket.on('mRun', async (props) => {
 	try {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
-			copy(player, login)
+			getSession(player, login)
 		}
 	} catch (e) {
 		console.log(e)
