@@ -163,7 +163,7 @@ clientSocket.on('mRun', async (props) => {
 	try {
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 		if (!check) {
-			getSession(player, login)
+			await getSession(player, login)
 		}
 	} catch (e) {
 		console.log(e)
