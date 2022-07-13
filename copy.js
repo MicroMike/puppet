@@ -43,7 +43,7 @@ const copyBack = (player, login) => new Promise((res, rej) => {
 })
 
 // getSession('tidal', 'nawof36088@iistoria.com')
-copyBack('amazon', 'dirn.maks@protonmail.com')
+// copyBack('amazon', 'dirn.maks@protonmail.com')
 
 module.exports = {
 	getSession,
