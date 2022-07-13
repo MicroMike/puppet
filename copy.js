@@ -30,7 +30,7 @@ const copyBack = (player, login) => new Promise((res, rej) => {
 		exec(`scp -r /root/puppet/puppet/${folder}/Default/Local\\ Storage root@216.158.239.199:"/root/puppet/${folder}/Default/Local\\ Storage"`)
 	}
 
-	if (player === 'amazon') {
+	if (player === 'amazon' || player === 'spotify') {
 		exec(`ssh root@216.158.239.199 mkdir -p /root/puppet/${folder}/Default`)
 		exec(`scp -r /root/puppet/puppet/${folder}/Default/Session\\ Storage root@216.158.239.199:"/root/puppet/${folder}/Default/Session\\ Storage"`)
 		exec(`scp -r /root/puppet/puppet/${folder}/Default/Local\\ Storage root@216.158.239.199:"/root/puppet/${folder}/Default/Local\\ Storage"`)
