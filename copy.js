@@ -1,4 +1,5 @@
 const { exec } = require("child_process");
+var colors = require('colors');
 
 const getSession = (player, login) => new Promise((res, rej) => {
 	const folder = player + login
@@ -17,6 +18,8 @@ const getSession = (player, login) => new Promise((res, rej) => {
 		exec(`scp -r root@216.158.239.199:"/root/puppet/${folder}/Default/Login\\ Data" /root/puppet/puppet/${folder}/Default/`)
 		exec(`scp -r root@216.158.239.199:"/root/puppet/${folder}/Default/Cookies" /root/puppet/puppet/${folder}/Default/`)
 	}
+
+	console.log('getSession'.green, player, login)
 
 	res(true)
 })
@@ -38,6 +41,8 @@ const copyBack = (player, login) => new Promise((res, rej) => {
 		exec(`scp -r /root/puppet/puppet/${folder}/Default/Login\\ Data root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
 		exec(`scp -r /root/puppet/puppet/${folder}/Default/Cookies root@216.158.239.199:"/root/puppet/${folder}/Default/"`)
 	}
+
+	console.log('copyBack'.green, player, login)
 
 	res(true)
 })
