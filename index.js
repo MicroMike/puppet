@@ -891,7 +891,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			const launchChrome = async () => {
 				chrome = await chromeLauncher.launch({
 					chromeFlags: [
-						isTidal ? '' : '--proxy-server=socks5://127.0.0.1:' + proxy[rand(proxy.length)],
+						// isTidal ? '' : '--proxy-server=socks5://127.0.0.1:' + proxy[rand(proxy.length)],
 						'--chromePath=/bin/google-chrome-stable',
 						'--no-first-run',
 						'--disable-gpu',
