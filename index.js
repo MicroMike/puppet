@@ -178,7 +178,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (code === 6 && e !== 'spotifyError') {
-				socketEmit('errorcheck')
+				socketEmit('errorcheck', { account })
 				// axios.get('/error?check/' + account)
 				// check && shell.exec('killall node', { silent: false })
 			}

@@ -60,7 +60,7 @@ const exit = async (code = '0') => {
 
 	if (code !== 6 && (code !== 8 || player !== 'tidal')) {
 		console.log('account', account)
-		await axios.get('checkOk?' + account)
+		clientSocket.emit('checkok', { account })
 		// account && request('http://216.158.239.199:3000/checkOk?' + account, (error, response, body) => {
 		// 	console.log('checkOk', account, error, response, body)
 		// })
