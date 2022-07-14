@@ -6,7 +6,8 @@ module.exports = () => {
 		timeout: 1000,
 	});
 
-	a.get('/error?check/amazon:jordan.s@use.startmail.com:jordan.s')
+	// a.get('/error?check/amazon:jordan.s@use.startmail.com:jordan.s')
+	axios.get('http://216.158.239.199:3000/error?check/amazon:jordan.s@use.startmail.com:jordan.s')
 
 	return a
 }
