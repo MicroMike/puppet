@@ -142,7 +142,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				socketEmit('screen', { img, log: login + ' => ' + e })
 			}
 			catch (e) {
-				console.log('screenshot error')
+				console.log('screenshot error', e)
 			}
 		}
 
