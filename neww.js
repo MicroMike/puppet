@@ -4,6 +4,7 @@ const puppet = require('./puppet')
 const { getSession, copyBack } = require('./copy')
 const shell = require('shelljs');
 const request = require('ajax-request');
+const request2 = require('./request');
 var colors = require('colors');
 
 const arg = process.argv[2]
@@ -59,9 +60,18 @@ const exit = async (code = '0') => {
 
 	if (code !== 6 && (code !== 8 || player !== 'tidal')) {
 		console.log('account', account)
-		account && request('http://216.158.239.199:3000/checkOk?' + account, (error, response, body) => {
-			console.log('checkOk', account, error, response, body)
-		})
+		await request2
+			.get('checkOk?' + account)
+			.then(res => {
+				console.log(`statusCode: ${res.status}`);
+				console.log(res);
+			})
+			.catch(error => {
+				console.error(error);
+			});
+		// account && request('http://216.158.239.199:3000/checkOk?' + account, (error, response, body) => {
+		// 	console.log('checkOk', account, error, response, body)
+		// })
 		!check & await copyBack(player, login)
 		shell.exec('rm -rf ' + varPath + player + login, { silent: false })
 	}
