@@ -727,7 +727,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed playCheck')
+						console.log('closed playCheck', error)
 					}
 				}
 			}
