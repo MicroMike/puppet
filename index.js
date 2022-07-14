@@ -220,7 +220,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			const rand = (max, min = 0) => {
-				return Math.floor(Math.random() * Math.floor(max)) + 1 + min;
+				return Math.floor(Math.random() * Math.floor(max)) + min;
 			}
 
 			socket.on('forceOut', () => {
@@ -883,10 +883,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			// await shell.exec('google-chrome-stable --no-sandbox --disable-gpu --disable-setuid-sandbox --no-first-run --disable-features=Translate --user-data-dir="puppet/' + player + login + '" --remote-debugging-port=' + port, { async: true, silent: true })
 
 			let chrome
-
+			const proxy = [
+				9052,
+				9053,
+				9054,
+			]
 			const launchChrome = async () => {
 				chrome = await chromeLauncher.launch({
 					chromeFlags: [
+						'--proxy-server=socks5://127.0.0.1:' + proxy[rand(proxy.length)],
 						'--chromePath=/bin/google-chrome-stable',
 						'--no-first-run',
 						'--disable-gpu',
