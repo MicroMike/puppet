@@ -46,6 +46,7 @@
   "license": "ISC",
   "dependencies": {
     "ajax-request": "^1.2.3",
+    "axios": "^0.27.2",
     "chrome-launcher": "^0.15.1",
     "chrome-remote-interface": "^0.31.2",
     "chromy": "^0.5.11",

@@ -4,7 +4,7 @@ const puppet = require('./puppet')
 const { getSession, copyBack } = require('./copy')
 const shell = require('shelljs');
 const request = require('ajax-request');
-const request2 = require('./request');
+const axios = require('./request');
 var colors = require('colors');
 
 const arg = process.argv[2]
@@ -60,15 +60,7 @@ const exit = async (code = '0') => {
 
 	if (code !== 6 && (code !== 8 || player !== 'tidal')) {
 		console.log('account', account)
-		await request2
-			.get('checkOk?' + account)
-			.then(res => {
-				console.log(`statusCode: ${res.status}`);
-				console.log(res);
-			})
-			.catch(error => {
-				console.error(error);
-			});
+		await axios.get('checkOk?' + account)
 		// account && request('http://216.158.239.199:3000/checkOk?' + account, (error, response, body) => {
 		// 	console.log('checkOk', account, error, response, body)
 		// })

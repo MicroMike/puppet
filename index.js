@@ -5,6 +5,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		const shell = require('shelljs');
 		const image2base64 = require('image-to-base64');
 		const request = require('ajax-request');
+		const axios = require('./request');
 		const al = require('./albums')
 		const { copyBack } = require('./copy');
 		const chromeLauncher = require('chrome-launcher');
@@ -181,7 +182,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (code === 6 && e !== 'spotifyError') {
-				request('http://216.158.239.199:3000' + '/error?check/' + account, function (error, response, body) { })
+				axios.get('/error?check/' + account)
 				// check && shell.exec('killall node', { silent: false })
 			}
 
@@ -197,7 +198,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			if (code === 4) {
-				request('http://216.158.239.199:3000' + '/error?del/' + account, function (error, response, body) { })
+				axios.get('/error?del/' + account)
 			}
 			else if (code === 7) {
 				socketEmit('used')
