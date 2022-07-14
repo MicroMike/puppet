@@ -900,7 +900,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						'--chromePath=/bin/google-chrome-stable',
 						'--no-first-run',
 						'--disable-gpu',
-						'--disable-setuid-sandbox',
+						// '--disable-setuid-sandbox',
 						'--disable-features=Translate',
 						'--no-sandbox',
 						'--user-data-dir=/root/puppet/puppet/' + player + login,
