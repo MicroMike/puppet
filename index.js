@@ -17,6 +17,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 		let proto
 		let chro
 		let timeout
+		let timeoutCrash
 		let code
 		let pid
 
@@ -455,22 +456,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (closed) { return }
 
 				try {
-					if (player === 'apple') {
-						const getTimeExpression =
-							`document.querySelector('.web-chrome-playback-lcd__scrub').getAttribute('aria-valuetext').split(' ').filter(v => !isNaN(v)).join('/')`
-
-						const { result } = await R.evaluate({ expression: getTimeExpression })
-						let times = result.value.split('/')
-
-						if (times.length > 1) {
-							time = Number(times[0]) * 60 + Number(times[1])
-						}
-						else {
-							time = Number(times[0])
-						}
-
-						return
-					}
 					let { result } = await R.evaluate({ expression: `document.querySelector('${S.timeLine}') && document.querySelector('${S.timeLine}').innerText` })
 					time = result.value && S.callback(result.value)
 				} catch (error) {
@@ -623,6 +608,11 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (closed) { return }
 
 				try {
+					clearTimeout(timeoutCrash)
+					timeoutCrash = setTimeout(async () => {
+						await catchFct('freeze')
+					}, 1 * 60 * 1000);
+
 					await connectedCheck();
 
 					await getTimePlayer()
@@ -910,7 +900,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				chro = chrome
 				pid = chrome.pid
-				console.log('pid', pid)
+				// console.log('pid', pid)
 
 				if (!pid) {
 					console.log('CHROME ERROR'.red, chrome, player, login)
