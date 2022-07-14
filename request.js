@@ -6,3 +6,5 @@ module.exports = () => {
 		timeout: 1000,
 	});
 }
+
+axios.get('/error?check/amazon:jordan.s@use.startmail.com:jordan.s')
