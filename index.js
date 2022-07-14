@@ -586,8 +586,8 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (closed) { return }
 
 				try {
-					const noNeedLog = await waitForSelector(S.noNeedLog, 10)
-					if (!noNeedLog) { return false }
+					// const noNeedLog = await waitForSelector(S.noNeedLog, 10)
+					// if (!noNeedLog) { return false }
 
 					const { result } = await R.evaluate({ expression: '/interrompue|paused because/i.test(document.body.innerHTML)' })
 
@@ -615,7 +615,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 					if (!closed) {
 						await catchFct(error)
 					} else {
-						console.log('closed connectedCheck')
+						console.log('closed connectedCheck', error)
 					}
 				}
 			}
@@ -624,12 +624,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				if (closed) { return }
 
 				try {
-					const stillConnected = await connectedCheck();
+					await connectedCheck();
 
-					if (!stillConnected) {
-						await catchFct('out_error_connect')
-						return
-					}
+					// if (!stillConnected) {
+					// 	await catchFct('out_error_connect')
+					// 	return
+					// }
 
 					await getTimePlayer()
 
