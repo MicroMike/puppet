@@ -587,10 +587,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				try {
 					// const noNeedLog = await waitForSelector(S.noNeedLog, 10)
-					// if (!noNeedLog) { return false }
+					// if (!noNeedLog) {
+					// 	await catchFct('out_error_connect')
+					// 	return
+					// }
 
 					const { result } = await R.evaluate({ expression: '/interrompue|paused because/i.test(document.body.innerHTML)' })
-
 					if (isTidal && result.value) {
 						await click('[data-test="notification-close"]', 1)
 						// console.log('playStop', account)
@@ -599,18 +601,15 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						if (usedCount >= 3) {
 							console.log('playStop 3 times'.red, account)
 							await catchFct('used')
-							return false
+							return
 						}
 					}
 
 					const result2 = await R.evaluate({ expression: '/Votre abonnement a expiré|Choisissez un abonnement/i.test(document.body.innerHTML)' })
-
 					if (isTidal && result2.result.value) {
 						await catchFct('del')
-						return false
+						return
 					}
-
-					return true
 				} catch (error) {
 					if (!closed) {
 						await catchFct(error)
@@ -625,11 +624,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 				try {
 					await connectedCheck();
-
-					// if (!stillConnected) {
-					// 	await catchFct('out_error_connect')
-					// 	return
-					// }
 
 					await getTimePlayer()
 
