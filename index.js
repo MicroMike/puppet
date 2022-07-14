@@ -134,11 +134,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 
 		const takeScreenshot = async (e) => {
 			try {
-				// const filename = 'screenshot/' + (e || '') + '-' + player + login + '.png'
 				const { data } = await P.captureScreenshot();
-				// fs.writeFileSync(filename, Buffer.from(data, 'base64'));
-
-				// img = await image2base64(filename)
 				socketEmit('screen', { img: data, log: login + ' => ' + e })
 			}
 			catch (e) {
