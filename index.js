@@ -691,12 +691,12 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						return
 					}
 
-					if (nextMusic && countPlays > 10) {
+					if (nextMusic && countPlays > 5) {
 						countPlays = 0
 						countPlaysLoop++
 					}
 
-					if (nextMusic && countPlaysLoop > 5) {
+					if (nextMusic && countPlaysLoop > 3) {
 						await catchFct('logout')
 						return
 					}
