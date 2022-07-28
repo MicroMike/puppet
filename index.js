@@ -943,9 +943,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 				DOM.enable(),
 			]);
 
-			const fct = () => {
+			const fct = (e) => () => {
 				closed = true
-				console.log('CHROME OUT'.red)
+				console.log('CHROME OUT'.red, e)
 				try {
 					proto.close();
 				} catch (e) {
@@ -954,7 +954,9 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			try {
-				chrome.process.onExited(fct)
+				chrome.process.on('close', () => fct('close'))
+				chrome.process.on('crash', () => fct('crash'))
+				chrome.process.on('crashed', () => fct('crashed'))
 			} catch (error) {
 				console.log('catchOut 2')
 			}
