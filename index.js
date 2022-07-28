@@ -895,8 +895,6 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 						'--chromePath=/bin/google-chrome-stable',
 						'--no-first-run',
 						'--disable-gpu',
-						'--enable-crash-reporter',
-						'--enable-crash-reporter-for-testing',
 						// '--disable-setuid-sandbox',
 						'--disable-features=Translate',
 						'--no-sandbox',
