@@ -954,7 +954,7 @@ module.exports = async (socket, page, parentId, streamId, check, account) => {
 			}
 
 			try {
-				chrome.process.on('close', fct)
+				chrome.process.onExited(fct)
 			} catch (error) {
 				console.log('catchOut 2')
 			}
